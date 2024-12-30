@@ -1,0 +1,47 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Upload Employee Detail</h4>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row filter-row">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row no-gutters">
+                            <div class="col-md-4 pl-2 pr-2">
+                           <div class="form-group">
+                               <label>Title:</label>
+                             {{form.title}}
+                           </div>
+                         </div>
+                        
+                         <div class="col-md-6 pl-2 pr-2">
+                            <div class="form-group">
+                                <label>Upload:</label>
+                            {{ form.file }}
+                        </div>
+                    </div>
+                    </div>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                   
+                </div>
+            </div>
+        </div>
+     
+    </div>
+ 
+</div>
+<!--/ content-->
+
+{% endblock %}

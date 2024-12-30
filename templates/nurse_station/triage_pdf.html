@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient- {{triage_info.uhid}}</title>
+<!--    <link rel="stylesheet" href="../static/assets/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <style>
+        input[type=text]{
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #000000;;
+        }
+    </style>
+</head>
+<body>
+    <div id="hello1" class="container" style="border: 1px solid rgb(121, 118, 118);">
+        <div class="col-md-12" >
+              <div class="row">
+            <div class="col-md-6">
+                <h5 style="text-align: center;"> Urgent Care Triage Form</h5>
+            </div>
+
+              </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-8">
+                    <label>Patient Name(last,first)</label>
+                    <input type="text"  disabled class="form-control" value="{{triage_info.patient_name}}">
+                </div>
+                <div class="col-md-4">
+                    <label>Date:</label>
+                    <input type="text" class="form-control" disabled value="{{triage_info.visit_date}}">
+                </div>
+                <div class="col-md-6">
+                    <label> Patient Complaint:</label>
+                    <input type="text" class="form-control" disabled value="">
+                </div>
+                <div class="col-md-4">
+                    <label>Time to:Treatment Area:</label>
+                    <input type="text" class="form-control" disabled value="{{triage_info.visit_date}}">
+                </div>
+                <div class="col-md-2">
+                    <label>X-Ray:</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label>Narative:</label>
+                    <textarea type="text" class="form-control" disabled ></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label>Vital Signs:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                    <div class="col-md-6">
+                        <label>Bp:</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Resp:</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Pulse:</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Temp:</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                </div>
+
+
+                <div class="col-md-2">
+                    <label>Tetatus:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                    <div class="col-md-12">
+                        <label> -5 yrs:</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-12">
+                        <label> +5 yrs:</label>
+                        <input type="text" class="form-control">
+                        <br><br><br><br><br><br>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Flu Shot:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                    <div class="col-md-12">
+                        <label> Date:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.visit_date}}">
+                        <br><br><br><br><br><br><br><br><br>
+                    </div>
+
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Social Status:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                    <div class="col-md-12">
+                        <label> Status:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.social_status}}">
+                    </div>
+<!--                    <div class="col-md-12">-->
+<!--                        <label> Married:</label>-->
+<!--                        <input type="text" class="form-control">-->
+<!--                    </div>-->
+<!--                    <div class="col-md-12">-->
+<!--                        <label> Windowed:</label>-->
+<!--                        <input type="text" class="form-control">-->
+<!--                    </div>-->
+<!--                    <div class="col-md-12">-->
+<!--                        <label> Divorced:</label>-->
+<!--                        <input type="text" class="form-control">-->
+<!--                    </div>-->
+
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Alcohol/Tobacco:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                    <div class="col-md-12">
+                        <label> Tobacco:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.tobacco}}">
+                    </div>
+                        <div class="col-md-12">
+                        <label> Tobacco Frequency:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.tobacco_frequency}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label> ETON Use:</label>
+                        <input type="text" class="form-control"  disabled value="{{triage_info.alcohol}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label> Freq:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.alcohol_frequency}}">
+                        <br><br><br>
+                    </div>
+
+
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Visual Aculty:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                    <div class="col-md-12">
+                        <label> OU:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.OU}}">
+                    </div>
+                        <div class="col-md-12">
+                        <label> OU Corrected:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.OU_corrected}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label> OD:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.OD}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label> OD Corrected:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.OD_corrected}}">
+                    </div>
+
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Family History:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                    <div class="col-md-12">
+                        <label> Heart Disease:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.heart_disease}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label> Cancer:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.cancer}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label> Diabetics:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.diabetes}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label> Others:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.other_family_disease}}">
+                    </div>
+
+                    </div>
+                </div>
+
+
+                <div class="col-md-3">
+                    <label>Mental Status:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                    <div class="col-md-12">
+                        <label>Alert/Oriented:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.alert}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label>Awake/Confused:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.awake}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label>Verbally Unresponsive:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.unresponsive}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label>Reported to pain:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.response_to_pain}}">
+                    </div>
+                </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Physical Assessment:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                    <div class="col-md-6">
+                        <label>Color</label>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Skin</label>
+
+                    </div>
+                    <div class="col-md-6">
+                        <label>Pink:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.color_pink}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Warm:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.skin_warm}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Mottled:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.color_palle}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Cool:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.skin_cold}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Hot:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.skin_hot}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label>dry:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.skin_dry}}">
+                    </div>
+                </div>
+                 </div>
+                <div class="col-md-3">
+
+                    <label>Past Medical History:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                    <div class="col-md-6">
+                        <label>HTN:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.past_HTN}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label>HIV:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.past_HIV}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Heart Disease:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.past_heart_disease}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Diabetes:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.past_diabetes}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Cancer:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.past_cancer}}">
+                    </div>
+                        <div class="col-md-6">
+                        <label>TB:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.past_TB}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label>Others:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.past_other_disease}}">
+                        <br><br><br>
+                    </div>
+                </div>
+
+                </div>
+                <div class="col-md-3" >
+
+                    <label>Past Surgeries:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                    <div class="col-md-12">
+                        <label>Gail:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.past_surgery_gall_bladder}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label>Appendix:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.past_surgery_appendix}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label>Hydera:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.past_surgery_hernia}}">
+                    </div>
+                    <div class="col-md-12">
+                        <label>Others:</label>
+                        <input type="text" class="form-control" disabled value="{{triage_info.past_surgery_other}}">
+                        <br><br><br>
+                    </div>
+                </div>
+                </div>
+                <div class="col-md-6">
+                    <label>Allergies:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                        <div class="col-md-12">
+                            <label>Name:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-md-12">
+                            <label>Unknown:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6" >
+                    <label>Medication:</label>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);">
+                        <div class="col-md-12">
+                            <label>Name:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-md-12">
+                            <label>Unknown:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <label>Total Assessment Completed:</label>
+                            <input type="text" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label>Signature:</label>
+                            <input type="text" class="form-control">
+                </div>
+
+            </div>
+        </div>
+    </div>
+     <div class="col-md-6">
+                <button  onclick="codespeedy1()" style="text-align: left" class="btn-primary">Print</button>
+            </div>
+<script type="text/javascript">
+
+    function codespeedy1(){
+// ment
+    var printContents = document.getElementById('hello1').innerHTML;
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+  </script>
+</body>
+</html>

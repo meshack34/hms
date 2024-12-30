@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="widtd=device-width, initial-scale=1" name="viewport" >
+    <title>General Master Dashboard</title>
+    <!-- Favicon-->
+    <!--  Core Css -->
+    <link rel="stylesheet" href="{% static 'css/StyleOld.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <!-- Favicon-->
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    <style>
+        /* .col-2{
+            padding: 20px;
+        }
+        .card{
+            padding: 20px;
+
+        } */
+        .own_design{
+          padding:10px;
+        }
+        .own_design h3{
+          font-size:20px;
+          color:red;
+        }
+        .col-sm-6{
+          border:5px solid white;
+          margin:1%;
+          background-color:white;
+          border-radius:1em;
+        }
+        .col-sm-6:hover{
+          background-color:black;
+          font-color:white!important;
+        }
+        a:hover{
+          text-decoration:none;
+        }
+    </style>
+</head>
+<body style="background:#747cc0;">
+
+<!--Main Content-->
+
+<div class="main_content"  >
+    <h4 style="color:red;" align="center">General Master Dashboard</h4><hr>
+    <div class="container-fluid">
+        <div class="row clearfix" >
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/title_master" target="_blank">
+                <div class="own_design" style="padding: 20px;" >
+                    <h3 >Title Master</h3>
+                </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/hospital-master" target="_blank">
+                <div class="own_design" >
+                    <h3 >Hospital Master</h3>
+                </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/holiday_master" target="_blank">
+                <div class="own_design" >
+                    <h3 >Holiday Master</h3>
+                </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/gender_master" target="_blank">
+                <div class="own_design" >
+                    <h3 >Gender Master</h3>
+                </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/district" target="_blank">
+                <div class="own_design" >
+                    <h3 >District Master</h3>
+            </div>
+        </a>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/country_master" target="_blank">
+                <div class="own_design" >
+                    <h3 >Country Master</h3>
+                </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/city_master" target="_blank">
+                <div class="own_design" >
+                    <h3 >City Master</h3>
+                </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/most_common_document" target="_blank">
+                <div class="own_design" >
+                    <h3 >Most Document Type</h3>
+                </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/maritial_status" target="_blank">
+                <div class="own_design" >
+                    <h3 >Marital Status</h3>
+                </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/relation" target="_blank">
+                <div class="own_design" >
+                    <h3 >Relation Master</h3>
+                </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/service_master" target="_blank">
+                <div class="own_design" >
+                    <h3 >Service Master</h3>
+                </div>
+            </a>
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/corporate_master" target="_blank">
+                <div class="own_design">
+                    <h3 >Corporate Master</h3>
+                </div>
+            </a>
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/tariff_master" target="_blank">
+                <div class="own_design" >
+                    <h3 >Tariff Master</h3>
+                </div>
+            </a>
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/tariff_charge_master" target="_blank">
+                <div class="own_design" >
+                    <h3 >Tariff Charge Master</h3>
+                </div>
+            </a>
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <a href="/billing_group_tariff" target="_blank">
+                <div class="own_design" >
+                    <h3 >Billing Group Tariff Master</h3>
+                </div>
+            </a>
+          </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

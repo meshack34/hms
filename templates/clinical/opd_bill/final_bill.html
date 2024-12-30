@@ -1,0 +1,45 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block %}
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card">
+            <!--<div class="card-header  bg-primary text-white" >-->
+            <!--    <h4>Finall Bill</h4>-->
+            <!--</div>-->
+            <div class="top-heading lightgreen_bg">
+                <h3 class="section_title" style="text-align:center; color:white; padding:10px;"> Finall Bill</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+                        <thead>
+                            <tr>
+                                <th>S.No.</th>
+                                <th>District</th>
+                                <th>City</th>
+                                <th>Status</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in ins_pending %}
+                            <tr>
+                                <td>{{for}}</td>
+                                <td>{{data.district}}</td>
+                                <td>{{data.city}}</td>
+                                <td>{{data.status}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

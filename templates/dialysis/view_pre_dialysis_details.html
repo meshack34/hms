@@ -1,0 +1,367 @@
+
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+    <div class="container" style="border: 1px solid rgb(121, 118, 118);padding: 10px;" id="hello">
+        <h4 style="text-align: center;"><b> <u>Pre Dialysis Detail</u> </b></h4>
+        <br>
+        <form method="post">
+            {% csrf_token %}
+            <div class="col-md-12">
+                <h5><b>Patient Details</b></h5>
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                    <div class="col-md-4">
+                        <label>MR NO: <b>{{records.uhid}}</b></label>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Name: <b>{{records.first_name| upper}} {{records.last_name| upper}}</b></label>
+                    </div>
+                    <div class="col-md-4">
+                        <label> AGE/GENDER: <b>{{records.age}}y/{{records.gender}}</b></label>
+                    </div>
+                    <div class="col-md-4">
+                        <label>CONTACT NO: <b>{{records.mobile_number}}</b></label>
+                    </div>
+                </div>
+                <br>
+                <h5>Session Details</h5>
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                        <div class="col-md-12">
+                            <label>Prev Post Dialysis</label>
+                            <input type="text" class="form-control" name="pre_post_dialysis" value="{{view.pre_post_dialysis}}" readonly>
+                        </div>
+                        <br>
+                        <div class="col-md-6" style=" height: 30px; width: 10%;">
+                            <label>Status</label>
+                            <select class="form-control" name="status" readonly>
+                                <option>{{view.status}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Pre equip Preparation:</label>
+                            <input type="text" class="form-control" name="pre_equip_preparation" value="{{view.pre_equip_preparation}}" readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label> Physician:</label>
+                            <select class="form-control" name="physian" readonly>
+                                <option>{{view.physian}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Primary Dialysis Theraphy:</label>
+                            <select class="form-control" name="primary_dialysis_theraphy" readonly>
+                                <option>{{view.primary_dialysis_theraphy}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label> Secondary Dialysis Therapist:</label>
+                            <select class="form-control" name="secondry_dialysis_theraphy" readonly>
+                                <option>{{view.secondry_dialysis_theraphy}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label> Password:</label>
+                            <input type="text" class="form-control" name="password" value="{{view.password}}" readonly >
+                        </div>
+                         <div class="col-md-4">
+                            <label> Cannulation Nurse:</label>
+                            <select class="form-control" name="cannulation_nurse" readonly>
+                                <option>{{view.cannulation_nurse}}</option>
+                            </select>
+                         </div>
+                         <div class="col-md-6">
+                            <label> Location:</label>
+                            <select class="form-control" name="location" readonly>
+                                <option>{{view.location}}</option>
+                            </select>
+                         </div>
+                         <div class="col-md-6">
+                            <label> Machine Name:</label>
+                            <select class="form-control" name="machine_name" readonly>
+                                <option>{{view.machine_name}}</option>
+                            </select>
+                         </div>
+                        <div class="col-md-4">
+                            <label> Asset Type:</label>
+                            <select class="form-control" name="asset_type" readonly>
+                                <option>{{view.asset_type}}</option>
+                            </select>
+                        </div>
+                         <div class="col-md-4">
+                            <label> Bruit/Thrill:</label>
+                            <select class="form-control"name="bruit_thrill" readonly>
+                                <option>{{view.bruit_thrill}}</option>
+                            </select>
+                         </div>
+                        <div class="col-md-4">
+                            <label> Cannulation Nurse:</label>
+                            <select class="form-control" name="cannulation_name" readonly>
+                                <option>{{view.cannulation_name}}</option>
+                            </select>
+                        </div>
+                         <div class="col-md-4">
+                            <label> Access Site:</label>
+                             <select class="form-control" name="access_site" readonly>
+                                <option>{{view.access_site}}</option>
+                            </select>
+                         </div>
+                        <div class="col-md-4">
+                            <label> Access Site Infection:</label>
+                            <input type="radio" name="access_site_infection" value="{{view.access_site_infection}}" readonly><span>YES</span>
+                            <input type="radio"  name="access_site_infection" value="{{view.access_site_infection}}" readonly><span>NO</span>
+                        </div>
+                         <div class="col-md-4">
+                            <label> ISO UF:</label>
+                            <input type="radio"  name="iso_uf" value="{{view.iso_uf}}" readonly><span>YES</span>
+                            <input type="radio"  name="iso_uf" value="{{view.iso_uf}}" readonly><span>NO</span>
+                             <input type="text" class="form-control" name="any_remark" value="{{view.any_remark}}" readonly>
+
+                         </div>
+                        <div class="col-md-4">
+                            <label> Dialysate Type:</label>
+                            <select class="form-control" name="dialysis_type" readonly>
+                                <option>{{view.dialysis_type}}</option>
+                            </select>
+                        </div>
+                         <div class="col-md-4">
+                            <label>Name Of any other staff:</label>
+                            <input type="text" class="form-control" name="other_staff" value="{{view.other_staff}}" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label> Completion Status:</label>
+                            <select class="form-control" name="completion_status"  readonly>*
+                                <option>{{view.completion_status}}</option>
+                            </select>
+                        </div>
+                         <div class="col-md-4">
+                            <label>Needle Type:</label>
+                             <select class="form-control" name="needle_type" readonly>*
+                                <option>{{view.needle_type}}</option>
+                            </select>
+                         </div>
+                    </div>
+                </div>
+            <br>
+                    <div class="col-md-12">
+                        <h5><b>Dialyzer Reuse</b></h5>
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+
+                    <div class="col-md-4">
+                        <label>Dialyzer:</label>
+                            <select class="form-control" name="dialyser" readonly>*
+                                <option>{{view.dialyser}}</option>
+                            </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Bundle Volume:</label>
+                        <input type="text" class="form-control" name="bundle_volume" value="{{view.bundle_volume}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Reprocess Number: </label>
+                        <input type="text" class="form-control" name="reprocess_number" value="{{view.reprocess_number}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Reprocessed Date:</label>
+                        <input type="date" class="form-control" name="reprocessed_date" value="{{view.reprocessed_date}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Rating :</label>
+                        <select class="form-control" name="rating" readonly>
+                            <option>{{view.rating}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Single Used Dialyzer: </label>
+                        <input type="checkbox" class="form-control" name="single_used_dialyzer" value="{{view.single_used_dialyzer}}" readonly>
+                    </div>
+                </div>
+                    <h5><b>Patient Condition</b></h5>
+                        <div class="col-md-12">
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                    <div class="col-md-2">
+                        <label>BP Sitting:</label>
+                        <input type="text" class="form-control" name="bp_sitting_max" value="{{view.bp_sitting_max}}" readonly>
+                    </div>
+                    <div class="col-md-2">
+                        <label>.</label>
+                        <input type="text" class="form-control" name="bp_sitting_min" value="{{view.bp_sitting_min}}" readonly>
+                    </div>
+                    <div class="col-md-2">
+                        <label>BP Standing:</label>
+                        <input type="text" class="form-control" name="bp_standing_max" value="{{view.bp_standing_max}}" readonly >
+                    </div>
+                    <div class="col-md-2">
+                        <label>.</label>
+                        <input type="text" class="form-control" name="bp_standing_min" value="{{view.bp_standing_min}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Respiration:</label>
+                        <input type="text" class="form-control" name="respiration" value="{{view.respiration}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Pulse sitting :</label>
+                        <input type="text" class="form-control" name="pulse_sitting" value="{{view.pulse_sitting}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Pulse Standing: </label>
+                        <input type="text" class="form-control" name="pulse_standing" value="{{view.pulse_standing}}" readonly>
+                    </div>
+                     <div class="col-md-4">
+                        <label> Tempreture (F) </label>
+                        <input type="text" class="form-control" name="tempreture" value="{{view.tempreture}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Measured wt: </label>
+                        <input type="text" class="form-control" name="measured_wt" value="{{view.measured_wt}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Wheelchair wt: </label>
+                        <input type="text" class="form-control" name="wheelchair_wt" value="{{view.wheelchair_wt}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Prosthetic: </label>
+                        <input type="text" class="form-control" name="prosthetic_wt" value="{{view.prosthetic_wt}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Current wt: </label>
+                        <input type="text" class="form-control" name="current_wt" value="{{view.current_wt}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Previous wt: </label>
+                        <input type="text" class="form-control" name="previous_wt" value="{{view.previous_wt}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Weight Change: </label>
+                        <input type="text" class="form-control" name="weight_change" value="{{view.previous_wt}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Condition: </label>
+                        <input type="text" class="form-control" name="condition_assessment" value="{{view.condition_assessment}}" readonly>
+                    </div>
+                      <div class="col-md-4">
+                        <label> Assessment: </label>
+                        <input type="text" class="form-control" name="assessment" value="{{view.assessment}}" readonly>
+                    </div>
+                    </div>
+                        </div>
+                        <br>
+                         <h5><b>Dialysis Details</b></h5>
+                        <div class="col-md-12">
+                    <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                    <div class="col-md-4">
+                        <label>Dry Wt/Dry Wt Date / 04-09-2020</label>
+                        <input type="text" class="form-control" name="dry_wt_date" value="{{view.dry_wt_date}}" readonly>
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Target Wt:</label>
+                        <input type="text" class="form-control" name="target_wt" value="{{view.target_wt}}" readonly>
+                    </div>
+                    <div class="col-md-2">
+                        <label>.</label>
+    <!--                    <input type="text" class="form-control" value="88">-->
+                    </div>
+                    <div class="col-md-4">
+                        <label>Excess:</label>
+                        <input type="text" class="form-control" name="excess" value="{{view.excess}}" readonly>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Duration :</label>
+                        <input type="text" class="form-control" name="duration" value="{{view.duration}}" readonly>
+                    </div>
+                         <div class="col-md-2">
+                        <label>.</label>
+    <!--                    <input type="text" class="form-control" value="52">-->
+                    </div>
+                    <div class="col-md-4">
+                        <label> Target UF Vol (kg): </label>
+                        <input type="text" class="form-control" name="target_UF_Vol_kg" value="{{view.target_UF_Vol_kg}}" readonly >
+                    </div>
+                     <div class="col-md-4">
+                        <label> Target UFR Vol (kg/hr): </label>
+                        <input type="text" class="form-control" name="target_UFR_vol_kg_hr" value="{{view.target_UFR_vol_kg_hr}}" readonly >
+                    </div>
+                    <div class="col-md-12">
+                        <label> Anticoagulation: </label>
+                        <select class="form-control" name="anticoagulation" readonly>
+                            <option>{{view.anticoagulation}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Heparin Type: </label>
+                        <select class="form-control" name="heparin_type" readonly >
+                            <option>{{view.heparin_type}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Initial Dose: </label>
+                        <input type="text" class="form-control" name="initial_dose" value="{{view.initial_dose}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Interim Dose: </label>
+                        <input type="text" class="form-control" name="interim_Dose" value="{{view.interim_Dose}}" readonly>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Total Heparin Bolus: </label>
+                        <input type="text" class="form-control" name="total_heparin_bolus" value="{{view.total_heparin_bolus}}" readonly>
+                    </div>
+                        <div class="col-md-2">
+                        <label>Hourly: </label>
+                        <input type="text" class="form-control" name="hourly" value="{{view.hourly}}" readonly>
+                    </div>
+                    <div class="col-md-8">
+                        <label>Unit in syringe</label>: </label>
+                        <input type="text" class="form-control" name="unit_in_syringe" value="{{view.unit_in_syringe}}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Dialysis Odometer Start Reading: </label>
+                        <input type="text" class="form-control" name="dialysis_odometer_str_reading" value="{{view.dialysis_odometer_str_reading}}"readonly>
+                    </div>
+                      <div class="col-md-4">
+                        <label> Pre Dialysis Assessment: </label>
+                          <textarea type="text" class="form-control" name="pre_dialysis_assessment" value="{{view.pre_dialysis_assessment}}"readonly></textarea>
+                    </div>
+                        <div class="col-md-4">
+                        <label>Notes to be shown in next Pre Dialysis Session:</label>
+                          <textarea type="text" class="form-control" name="notes_pre_dialysis_session" value="{{view.notes_pre_dialysis_session}}" readonly></textarea>
+                    </div>
+                        <div class="col-md-4">
+                        <label>Filtration Replacement Fluid Volume(ml): </label>
+                        <input type="text" class="form-control" name="fluids_volume_ml"value="{{view.fluids_volume_ml}}" readonly>
+                    </div>
+                    </div>
+                            <br>
+                            <br>
+                    <div class="col-md-2">
+                        <input type="button" onclick="printDiv('hello')" value="Get Report" class="btn btn-primary"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <br>
+        <br>
+        <br>
+    </div>
+</div>
+</div>
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+
+<!--</body>-->
+{% endblock %}

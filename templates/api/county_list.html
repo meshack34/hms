@@ -1,0 +1,14 @@
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% block head_block %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+{% endblock  %}
+{% block body_block %}<br><br><br><br>
+<div class="container">
+  <h3>API Rending..</h3>
+  {% for data in country %}
+    {{data.country_name}}
+  {% endfor %}
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}

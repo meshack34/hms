@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert DATA </title>
+</head>
+<body>
+<!--<form method="post">-->
+<!--    {% csrf_token %}-->
+<!--    {{form.as_p}}-->
+<!--    <button type="submit" name="submit" class="btn btn-primary">save</button>-->
+<!--</form>-->
+<form method="post">
+    {% csrf_token %}
+    <tr>
+      <td>
+        <input type="text" name="bill_id{{class}}" id="class_num" >
+      </td>
+
+      <td>
+       <input type="text" name="bill_no{{class}}" id="num_of_student" >
+       </td>
+
+       <td>
+       <input type="text" name="uhid{{class}}" id="student_abscence" >
+       </td>
+
+           <td>
+       <input type="text" name="visit_id{{class}}" id="visit_id" >
+       </td>
+
+           <td>
+       <input type="text" name="service_name{{class}}" id="service_name" >
+       </td>
+
+           <td>
+       <input type="text" name="amount{{class}}" id="amount" >
+       </td>
+
+           <td>
+       <input type="text" name="discount{{class}}" id="discount" >
+       </td>
+
+           <td>
+       <input type="text" name="unit{{class}}" id="unit" >
+       </td>
+
+           <td>
+       <input type="text" name="net_amount{{class}}" id="net_amount" >
+       </td>
+
+               <td>
+       <input type="text" name="outstanding_amount{{class}}" id="outstanding_amount" >
+       </td>
+
+               <td>
+       <input type="text" name="total_amount{{class}}" id="total_amount" >
+       </td>
+
+               <td>
+       <input type="text" name="receive_amount{{class}}" id="receive_amount" >
+       </td>
+     </tr>
+    <button type="submit" name="submit" class="btn btn-primary">save</button>
+</form>
+</body>
+</html>

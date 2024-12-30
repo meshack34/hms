@@ -1,0 +1,1120 @@
+{% extends 'user_management/base.html' %}
+{% load static %}
+{% block head_block %}
+
+{% endblock %}
+{% block body_block %}
+<div class="page-wrapper">
+  <div class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="card" style="padding: 20px;">
+            <div>
+              <h3><b>User Access</b></h3>
+            </div>
+            <div class="col-12">
+
+              <div>
+                <form method="post">
+                  {% csrf_token %}
+                  <div>
+
+                    <br>
+                    <div class="icon-button-demo">&nbsp;
+                      <button type="submit" class="btn btn-success" aria-label="Close"> <i
+                          class="fas fa-save">Save</i></button></a>&nbsp;
+                      <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+                          class="fas fa-sync-alt">Refresh</i></button></a>&nbsp;
+                      <a href="/dashboard" class="red_bg"><button type="button" class="btn btn-danger"> <i
+                            class="fas fa-times-circle">Exit</i></button></a>
+                    </div><br><br>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-5">
+                        <label>Profile Name</label>
+                        <input type="text" name="group_name" id="group_name" class="form-control" readonly value="{{record.group_name}}">
+                      </div>
+
+                    </div>
+
+                  </div>
+                  <div><br>
+                    <h3 style="color: blue;"><b>Access</b></h3>
+                  </div><br>
+
+
+
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="patient_reg"
+                        value="patient_registration" onclick="myFunction('patient_reg','patient_button')" {% if 'patient_reg' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="patient_reg">Patient Registration</label>
+                    </div>
+
+
+                  </div><br>
+
+                  <div style="padding-left: 40px; " id="patient_button">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="patient_registration_add"
+                        value="patient_registration_add"  {% if 'patient_registration_add' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="patient_registration_add">Patient registartion
+                        add</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="patient_registration_edit"
+                        value="patient_registration_edit"  {% if 'patient_registration_edit' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="patient_registration_edit">Patient registartion edit</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="patient_registration_delete"
+                        value="patient_registration_delete"  {% if 'patient_registration_delete' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="patient_registration_delete">Patient registartion delete</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="registration_card"
+                        value="registration_card" {% if 'registration_card' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="registration_card">Registartion Card</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="visitor_add"
+                        value="visitor_add" {% if 'visitor_add' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="visitor_add">Vistisor Add</label>
+                    </div>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="admin_dashboard"
+                        value="admin_dashboard"  onclick="myFunction('admin_dashboard','admin_dashboard_screen')" {% if 'admin_dashboard' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="admin_dashboard">Admin</label>
+                    </div>
+
+                  </div><br>
+                  <div style="padding-left: 40px; " id="admin_dashboard_screen">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="appointment_creation"
+                        value="appointment_creation" {% if 'appointment_creation' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="appointment_creation">Appointment Creation
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_creation"
+                        value="doctor_creation" {% if 'doctor_creation' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="doctor_creation">Doctor Creation</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_schedule_creation"
+                        value="doctor_schedule_creation" {% if 'doctor_schedule_creation' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="doctor_schedule_creation">Doctor Schedule Creation</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="admin_report"
+                        value="admin_report" {% if 'admin_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="admin_report">Admin Report</label>
+                    </div>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_dashbord" value="doctor_dashbord" {% if 'doctor_dashbord' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="doctor_dashbord">Doctor Dashbord</label>
+                    </div>
+
+                  </div><br><br>
+
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="opd_billing" value="opd_billing"
+                        onclick="myFunction('opd_billing','opd_bill_button')" {% if 'opd_billing' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="opd_billing">Opd Billing</label>
+                    </div>
+
+                  </div><br>
+                  <div style="padding-left: 40px; " id="opd_bill_button">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="finalized_bill"
+                        value="finalized_bill" {% if 'finalized_bill' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="finalized_bill">Finalized Bill</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="closed_bill"
+                        value="closed_bill" {% if 'closed_bill' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="closed_bill">Closed Bill</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="cancel_bill"
+                        value="cancel_bill" {% if 'cancel_bill' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="cancel_bill">Cancel Bill</label>
+                    </div>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="qms" value="qms"
+                        onclick="myFunction('qms','qms_screen')" {% if 'qms' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="qms">QMS</label>
+                    </div>
+
+                  </div><br>
+                  <div style="padding-left: 40px; " id="qms_screen">
+                    <!-- token msaster configuration-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="token_master_configuration"
+                        value="token_master_configuration"
+                        onclick="myFunction('token_master_configuration','token_master_configuration_button')" {% if 'token_master_configuration' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="token_master_configuration">Token Master
+                        Configuration</label>
+                    </div><br>
+                    <div id="token_master_configuration_button"
+                      style="padding-left: 40px; padding-top:20px;">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="token_master_configuration_save" value="token_master_configuration_save" {% if 'token_master_configuration_save' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success"
+                          for="token_master_configuration_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="token_master_configuration_replicate" value="token_master_configuration_replicate" {% if 'token_master_configuration_replicate' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success"
+                          for="token_master_configuration_replicate">Replicate<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="token_master_configuration_view" value="token_master_configuration_view" {% if 'token_master_configuration_view' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success"
+                          for="token_master_configuration_view">view<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="token_master_configuration_update" value="token_master_configuration_update" {% if 'token_master_configuration_update' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success"
+                          for="token_master_configuration_update">Update<label>
+                      </div>
+                    </div><br>
+                    <!-- Token Creation -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="token_creation"
+                        value="token_creation" onclick="myFunction('token_creation','token_creation_button')" {% if 'token_creation' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="token_creation">Token Creation</label>
+                    </div><br>
+                    <div id="token_creation_button" style="padding-left: 40px; padding-top:20px; ">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="create_token"
+                          value="create_token" {% if 'create_token' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="create_token">Create Token<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="token_get_slip"
+                          value="token_get_slip" {% if 'token_get_slip' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="token_get_slip">Get Slip<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="view_token"
+                          value="view_token" {% if 'view_token' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="view_token">View<label>
+                      </div>
+                    </div><br>
+                    <!--  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="token_slip_generation"
+                        value="token_slip_generation"
+                        onclick="myFunction('token_slip_generation','token_slip_generation_button')" {% if 'token_slip_generation' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="token_slip_generation">Tokaen Slip
+                        Generation</label>
+                    </div><br>
+                    <div id="token_slip_generation_button" style="padding-left: 40px; padding-top:20px; ">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="tokrn_slip_generation_get_slip" value="tokrn_slip_generation_get_slip" {% if 'tokrn_slip_generation_get_slip' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="tokrn_slip_generation_get_slip">Get
+                          Slip<label>
+                      </div>
+                    </div><br>
+                    <!--  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="token_admin_view"
+                        value="token_admin_view" onclick="myFunction('token_admin_view','token_admin_view_button')" {% if 'token_admin_view' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="token_admin_view">Tokaen Admin View</label>
+                    </div><br>
+                    <div id="token_admin_view_button" style="padding-left: 40px; padding-top:20px; ">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="token_in_out"
+                          value="token_in_out" {% if 'token_in_out' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="token_in_out">In & Out<label>
+                      </div>
+                    </div><br>
+                    <!--  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="centralized_view"
+                        value="centralized_view" onclick="myFunction('token_creation','token_creation_button')" {% if 'centralized_view' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="centralized_view">Centralized View</label>
+                    </div><br>
+                  </div><br>
+
+
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="opd_advance"
+                        value="opd_advance" {% if 'opd_advance' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="opd_advance">Opd Advance</label>
+                    </div>
+                  </div><br><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="opd_bill_settlement"
+                        value="opd_bill_settlement" {% if 'opd_bill_settlement' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="opd_bill_settlement">Opd Bill
+                        Settlement</label>
+                    </div>
+                  </div><br><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="nephrology" value="nephrology"
+                        onclick="myFunction('nephrology','nephrology_screen')" {% if 'nephrology' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="nephrology">Nephrology</label>
+                    </div>
+
+                  </div><br>
+                  <div style="padding-left: 40px;" id="nephrology_screen">
+                    <!-- pre_dialysis-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="pre_dialysis"
+                        value="pre_dialysis" onclick="myFunction('pre_dialysis','pre_dialysis_button')" {% if 'pre_dialysis' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="pre_dialysis">Pre dialysis</label>
+                    </div><br>
+                    <div id="pre_dialysis_button" style="padding-left: 40px; padding-top:20px; ">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="pre_dialysis_save"
+                          value="pre_dialysis_save" {% if 'pre_dialysis_save' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="pre_dialysis_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="pre_dialysis_view"
+                          value="pre_dialysis_view" {% if 'pre_dialysis_view' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="pre_dialysis_view">View<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="pre_dialysis_print"
+                          value="pre_dialysis_print" {% if 'pre_dialysis_print' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="pre_dialysis_print">Print<label>
+                      </div>
+                    </div><br>
+                    <!-- post_dialysis-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="post_dialysis"
+                        value="post_dialysis" onclick="myFunction('post_dialysis','post_dialysis_button')" {% if 'post_dialysis' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="post_dialysis">Post dialysis</label>
+                    </div><br>
+                    <div id="post_dialysis_button" style="padding-left: 40px; padding-top:20px; ">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="post_dialysis_save"
+                          value="post_dialysis_save" {% if 'post_dialysis_save' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="post_dialysis_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="post_dialysis_view"
+                          value="post_dialysis_view" {% if 'post_dialysis_view' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="post_dialysis_view">View<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="post_dialysis_print"
+                          value="post_dialysis_print" {% if 'post_dialysis_print' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="post_dialysis_print">Print<label>
+                      </div>
+                    </div><br>
+                    <!-- dialysis_details-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="dialysis_details"
+                        value="dialysis_details" onclick="myFunction('dialysis_details','dialysis_details_button')" {% if 'dialysis_details' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="dialysis_details">Dialysis Details</label>
+                    </div><br>
+                    <div id="dialysis_details_button" style="padding-left: 40px; padding-top:20px; ">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="dialysis_details_print"
+                          value="dialysis_details_print" {% if 'dialysis_details_print' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="dialysis_details_print">Print<label>
+                      </div>
+                    </div><br>
+                    <!-- chemotherapy_treatment-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="chemotherapy_treatment"
+                        value="chemotherapy_treatment"
+                        onclick="myFunction('chemotherapy_treatment','chemotherapy_treatment_button')" {% if 'chemotherapy_treatment' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="chemotherapy_treatment">Chemotherapy
+                        Treatment</label>
+                    </div><br>
+                    <div id="chemotherapy_treatment_button" style="padding-left: 40px; padding-top:20px; ">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="chemotherapy_treatment_save"
+                          value="chemotherapy_treatment_save" {% if 'chemotherapy_treatment_save' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="chemotherapy_treatment_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="chemotherapy_treatment_view"
+                          value="chemotherapy_treatment_view" {% if 'chemotherapy_treatment_view' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="chemotherapy_treatment_view">View<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="chemotherapy_treatment_print"
+                          value="chemotherapy_treatment_print" {% if 'chemotherapy_treatment_print' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="chemotherapy_treatment_print">Print<label>
+                      </div>
+                    </div><br>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_accounting"
+                        value="doctor_accounting" onclick="myFunction('doctor_accounting','doctor_accounting_screen')" {% if 'doctor_accounting' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="doctor_accounting">Doctor Accounting</label>
+                    </div>
+
+                  </div><br>
+                  <div style="padding-left: 40px; " id="doctor_accounting_screen">
+                    <!-- doctor_accounting_services-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_accounting_services"
+                        value="doctor_accounting_services"
+                        onclick="myFunction('doctor_accounting_services','doctor_accounting_services_button')" {% if 'doctor_accounting_services' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info"
+                        for="doctor_accounting_services">doctor_accounting_services</label>
+                    </div><br>
+                    <div id="doctor_accounting_services_button"
+                      style="padding-left: 40px; padding-top:20px; ">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="doctor_accounting_services_save" value="doctor_accounting_services_save" {% if 'doctor_accounting_services_save' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success"
+                          for="doctor_accounting_services_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="doctor_accounting_services_view" value="doctor_accounting_services_view" {% if 'doctor_accounting_services_view' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success"
+                          for="doctor_accounting_services_view">View<label>
+                      </div>
+                    </div><br>
+                    <!-- doctor_accounting_packages-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_accounting_packages"
+                        value="doctor_accounting_packages"
+                        onclick="myFunction('doctor_accounting_packages','doctor_accounting_packages_button')" {% if 'doctor_accounting_packages' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info"
+                        for="doctor_accounting_packages">doctor_accounting_packages</label>
+                    </div><br>
+                    <div id="doctor_accounting_packages_button"
+                      style="padding-left: 40px; padding-top:20px; ">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="doctor_accounting_packages_save" value="doctor_accounting_packages_save" {% if 'doctor_accounting_packages_save' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success"
+                          for="doctor_accounting_packages_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="doctor_accounting_packages_view" value="doctor_accounting_packages_view" {% if 'doctor_accounting_packages_view' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success"
+                          for="doctor_accounting_packages_view">View<label>
+                      </div>
+                    </div><br>
+                    <!-- doctor_accounting_profile-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_accounting_profile"
+                        value="doctor_accounting_profile"
+                        onclick="myFunction('doctor_accounting_profile','doctor_accounting_profile_button')" {% if 'doctor_accounting_profile' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info"
+                        for="doctor_accounting_profile">doctor_accounting_profile</label>
+                    </div><br>
+                    <div id="doctor_accounting_profile_button"
+                      style="padding-left: 40px; padding-top:20px; ">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="doctor_accounting_profile_save" value="doctor_accounting_profile_save" {% if 'doctor_accounting_profile_save' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="doctor_accounting_profile_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="doctor_accounting_profile_view" value="doctor_accounting_profile_view" {% if 'doctor_accounting_profile_view' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="doctor_accounting_profile_view">View<label>
+                      </div>
+                    </div><br>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="clinical_managements"
+                        value="clinical_managements"
+                        onclick="myFunction('clinical_managements','clinical_management_screen')" {% if 'clinical_managements' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="clinical_managements">Clinical
+                        Management</label>
+                    </div>
+
+                  </div><br>
+                  <div style="padding-left: 40px;" id="clinical_management_screen">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="visitor_dashboard"
+                        value="visitor_dashboard" {% if 'visitor_dashboard' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="visitor_dashboard">Visitor Dashboard</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="consultant_dashboard"
+                        value="consultant_dashboard" {% if 'consultant_dashboard' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="consultant_dashboard">Consultant Dashboard</label>
+                    </div>
+                    <!--<div class="form-check form-check-inline">-->
+                    <!--  <input class="form-check-input" type="checkbox" name="access" id="clinical_management"-->
+                    <!--    value="clinical_management" {% if 'clinical_management' in record.screen_access %}checked{% endif %}>-->
+                    <!--  <label class="form-check-label btn btn-info" for="clinical_management">Clinical management</label>-->
+                    <!--</div>-->
+                    <!--<div class="form-check form-check-inline">-->
+                    <!--  <input class="form-check-input" type="checkbox" name="access" id="nurse_station"-->
+                    <!--    value="nurse_station" {% if 'nurse_station' in record.screen_access %}checked{% endif %}>-->
+                    <!--  <label class="form-check-label btn btn-info" for="nurse_station">Nurse Station</label>-->
+                    <!--</div>-->
+                     <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="clinical_patient_report"
+                        value="clinical_patient_report" {% if 'clinical_patient_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="clinical_patient_report">Patient Report</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="oncology"
+                        value="oncology" {% if 'oncology' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="oncology">Oncology</label>
+                    </div>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="user_managemnet"
+                        value="user_managemnet" {% if 'user_managemnet' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="user_managemnet">User management</label>
+                    </div>
+
+                  </div><br><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="master" value="all_master"
+                        onclick="myFunction('master','master_screen')" {% if 'all_master' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="master">Master</label>
+                    </div>
+
+                  </div><br><br>
+
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="pharamacy" value="pharamacy"  onclick="myFunction('pharamacy','pharamacy_screen')" {% if 'pharamacy' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="pharamacy">Pharamacy</label>
+                    </div>
+                  </div><br>
+                  <div id="pharamacy_screen" style="padding-left: 40px;">
+                     <!--procurement  -->
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="access" id="procurement" value="procurement" onclick="myFunction('procurement','procurement_screen')" {% if 'procurement' in record.screen_access %}checked{% endif %}>
+                    <label class="form-check-label btn btn-info" for="procurement">procurement<label>
+                  </div><br>
+
+                  <div style="padding-left: 40px; padding-top:20px;" id="procurement_screen">
+                    <!--purchase_order  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="purchase_order" value="purchase_order" onclick="myFunction('purchase_order','purchase_order_curd')" {% if 'purchase_order' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="purchase_order">purchase_order<label>
+                    </div><br>
+                    <div style="padding-left: 40px; padding-top:20px;display:none" id="purchase_order_curd">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="purchase_order_delete"
+                          value="purchase_order_delete" {% if 'purchase_order_delete' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="purchase_order_delete">purchase order delete<label>
+                      </div>
+                    </div>
+                    <br>
+                     <!--po_approval  -->
+                     <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="po_approval" value="po_approval" onclick="myFunction('po_approval','po_approval_curd')" {% if 'po_approval' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="po_approval">po_approval<label>
+                    </div><br>
+                    <div style="padding-left: 40px; padding-top:20px;" id="po_approval_curd">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="approval_po"
+                          value="approval_po" {% if 'approval_po' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="approval_po"> Approval Po<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="pending_po"
+                          value="pending_po" {% if 'pending_po' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="pending_po">Pending Po<label>
+                      </div>
+                    </div><br>
+                    <!--po_approval  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="stock_entry" value="stock_entry" onclick="myFunction('stock_entry','stock_entry_curd')" {% if 'stock_entry' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="stock_entry">stock_entry<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="vendor_payment" value="vendor_payment" onclick="myFunction('vendor_payment','vendor_payment_curd')" {% if 'vendor_payment' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="vendor_payment">vendor_payment<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="material_indent" value="material_indent" onclick="myFunction('material_indent','material_indent_curd')" {% if 'material_indent' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="material_indent">material_indent<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="indent_inbox" value="indent_inbox" onclick="myFunction('indent_inbox','indent_inbox_curd')" {% if 'indent_inbox' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="indent_inbox">indent_inbox<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="item_issuse" value="item_issuse" onclick="myFunction('item_issuse','item_issuse_curd')" {% if 'item_issuse' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="item_issuse">item_issuse<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="return_to_mainstore" value="return_to_mainstore" onclick="myFunction('return_to_mainstore','return_to_mainstore_curd')" {% if 'return_to_mainstore' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="return_to_mainstore">return_to_mainstore<label>
+                    </div><br><br>
+                     <!--item_return_to_supplier  -->
+                     <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="item_return_to_supplier" value="item_return_to_supplier" onclick="myFunction('item_return_to_supplier','item_return_to_supplier_curd')" {% if 'item_return_to_supplier' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="item_return_to_supplier">item_return_to_supplier<label>
+                    </div><br>
+                    <br>
+                    <!--purchase_indent  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="purchase_indent" value="purchase_indent" onclick="myFunction('purchase_indent','purchase_indent_curd')" {% if 'purchase_indent' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="purchase_indent">purchase_indent<label>
+                    </div><br><br>
+                    <!--purchase_indent_approval  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="purchase_indent_approval" value="purchase_indent_approval" onclick="myFunction('purchase_indent_approval','purchase_indent_approval_curd')" {% if 'purchase_indent_approval' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="purchase_indent_approval">purchase_indent_approval<label>
+                    </div><br>
+                    <div style="padding-left: 40px; padding-top:20px;" id="purchase_indent_approval_curd">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="approval_pi_view"
+                          value="approval_pi_view" {% if 'approval_pi_view' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="approval_pi_view">approval PI view<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="pending_pi"
+                          value="pending_pi" {% if 'pending_pi' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-success" for="pending_pi">pending PI<label>
+                      </div>
+                    </div><br>
+                    <!--make_po_for_pi  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="make_po_for_pi" value="make_po_for_pi" onclick="myFunction('make_po_for_pi','make_po_for_pi_curd')" {% if 'make_po_for_pi' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="make_po_for_pi">Make PO for PI<label>
+                    </div><br><br>
+                    <!--manual_stock_ajustment  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="manual_stock_ajustment" value="manual_stock_ajustment" onclick="myFunction('manual_stock_ajustment','manual_stock_ajustment_curd')" {% if 'manual_stock_ajustment' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="manual_stock_ajustment">Manual Stock Ajustment<label>
+                    </div><br><br>
+                     <!--department_consumption  -->
+                     <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="department_consumption" value="department_consumption" onclick="myFunction('department_consumption','department_consumption_curd')" {% if 'department_consumption' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="department_consumption">Department Consumption<label>
+                    </div><br><br>
+                    <!--material_indent_approval  -->
+                    <div class="form-check form-check-inline">
+                     <input class="form-check-input" type="checkbox" name="access" id="material_indent_approval" value="material_indent_approval" onclick="myFunction('material_indent_approval','material_indent_approval_curd')" {% if 'material_indent_approval' in record.screen_access %}checked{% endif %}>
+                     <label class="form-check-label btn btn-warning" for="material_indent_approval">material_indent_approval<label>
+                   </div><br><br>
+                   <!--item_issue_to_mainstore  -->
+                   <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="access" id="item_issue_to_mainstore" value="item_issue_to_mainstore" onclick="myFunction('item_issue_to_mainstore','item_issue_to_mainstore_curd')" {% if 'item_issue_to_mainstore' in record.screen_access %}checked{% endif %}>
+                    <label class="form-check-label btn btn-warning" for="item_issue_to_mainstore">item_issue_to_mainstore<label>
+                  </div><br><br>
+                  <!--item_return_to_CPC  -->
+                  <div class="form-check form-check-inline">
+                   <input class="form-check-input" type="checkbox" name="access" id="item_return_to_CPC" value="item_return_to_CPC" onclick="myFunction('item_return_to_CPC','item_return_to_CPC_curd')" {% if 'item_return_to_CPC' in record.screen_access %}checked{% endif %}>
+                   <label class="form-check-label btn btn-warning" for="item_return_to_CPC">item_return_to_CPC<label>
+                 </div><br><br>
+                     <!--transfer_indent  -->
+                     <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="transfer_indent" value="transfer_indent" onclick="myFunction('transfer_indent','transfer_indent_curd')" {% if 'transfer_indent' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="transfer_indent">transfer_indent<label>
+                    </div><br><br>
+                    <!--transfer_request_to_mainstore  -->
+                    <div class="form-check form-check-inline">
+                     <input class="form-check-input" type="checkbox" name="access" id="transfer_request_to_mainstore" value="transfer_request_to_mainstore" onclick="myFunction('transfer_request_to_mainstore','transfer_request_to_mainstore_curd')" {% if 'transfer_request_to_mainstore' in record.screen_access %}checked{% endif %}>
+                     <label class="form-check-label btn btn-warning" for="transfer_request_to_mainstore">transfer_request_to_mainstore<label>
+                   </div><br><br>
+                  </div><br>
+                  <!-- end porucument -->
+                  <!--pharamacy_sales  -->
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="access" id="pharamacy_sales" value="pharamacy_sales" onclick="myFunction('pharamacy_sales','pharamacy_sales_screen')" {% if 'pharamacy_sales' in record.screen_access %}checked{% endif %}>
+                    <label class="form-check-label btn btn-info" for="pharamacy_sales">pharamacy_sales<label>
+                  </div><br>
+                  <!--add_counter_sales  -->
+                  <div style="padding-left: 40px; padding-top:20px;" id="pharamacy_sales_screen">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="add_counter_sales" value="add_counter_sales" onclick="myFunction('add_counter_sales','add_counter_sales_curd')" {% if 'add_counter_sales' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="add_counter_sales">add_counter_sales<label>
+                    </div><br><br>
+                     <!--sales_return  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="sales_return" value="sales_return" onclick="myFunction('sales_return','sales_return_curd')" {% if 'sales_return' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="sales_return">sales_return<label>
+                    </div><br><br>
+                  </div><br>
+                   <!--pharamacy_report  -->
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="access" id="pharamacy_report" value="pharamacy_report" onclick="myFunction('pharamacy_report','pharamacy_report_screen')" {% if 'pharamacy_report' in record.screen_access %}checked{% endif %}>
+                    <label class="form-check-label btn btn-info" for="pharamacy_report">pharamacy_report<label>
+                  </div><br>
+                  <!--item_status_report  -->
+                  <!--<div style="padding-left: 40px; padding-top:20px;" id="pharamacy_report_screen">-->
+                  <!--  <div class="form-check form-check-inline">-->
+                  <!--    <input class="form-check-input" type="checkbox" name="access" id="item_status_report" value="item_status_report" {% if 'item_status_report' in record.screen_access %}checked{% endif %}>-->
+                  <!--    <label class="form-check-label btn btn-warning" for="item_status_report">item_status_report<label>-->
+                  <!--  </div>-->
+                     <!--item_status_with_particulars_report  -->
+                    <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="item_status_with_particulars_report" value="item_status_with_particulars_report" {% if 'item_status_with_particulars_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="item_status_with_particulars_report">item_status_with_particulars_report<label>
+                    </div>
+                     <!--po_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="po_report" value="po_report" {% if 'po_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="po_report">po_report<label>
+                    </div>
+                     <!--batch_wise_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="batch_wise_report" value="batch_wise_report" {% if 'batch_wise_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="batch_wise_report">batch_wise_report<label>
+                    </div>
+                     <!--po_supplier_wise_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="po_supplier_wise_report" value="po_supplier_wise_report" {% if 'po_supplier_wise_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="po_supplier_wise_report">po_supplier_wise_report<label>
+                    </div>
+                     <!--po_aging_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="po_aging_report" value="po_aging_report" {% if 'po_aging_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="po_aging_report">po_aging_report<label>
+                    </div>
+                     <!--po_status_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="po_status_report" value="po_status_report" {% if 'po_status_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="po_status_report">po_status_report<label>
+                    </div>
+                     <!--item_issuse_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="item_issuse_report" value="item_issuse_report" {% if 'item_issuse_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="item_issuse_report">item_issuse_report<label>
+                    </div>
+                     <!--item_return_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="item_return_report" value="item_return_report" {% if 'item_return_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="item_return_report">item_return_report<label>
+                    </div>
+                     <!--op_sales_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="op_sales_report" value="op_sales_report" {% if 'op_sales_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="op_sales_report">op_sales_report<label>
+                    </div>
+                    <!--pharmacysale_summary_report  -->
+                    <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="pharmacysale_summary_report" value="pharmacysale_summary_report" {% if 'pharmacysale_summary_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="pharmacysale_summary_report">pharmacysale_summary_report<label>
+                    </div>
+                    <!--pharmacysale_detail_report  -->
+                    <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="pharmacysale_detail_report" value="pharmacysale_detail_report" {% if 'pharmacysale_detail_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="pharmacysale_detail_report">pharmacysale_detail_report<label>
+                    </div>
+                    <!--stock_transfer_report  -->
+                    <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="stock_transfer_report" value="stock_transfer_report" {% if 'stock_transfer_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="stock_transfer_report">stock_transfer_report<label>
+                    </div>
+                     <!--op_sales_return_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="op_sales_return_report" value="op_sales_return_report" {% if 'op_sales_return_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="op_sales_return_report">op_sales_return_report<label>
+                    </div>
+                     <!--vendor_paymet_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="vendor_paymet_report" value="vendor_paymet_report" {% if 'vendor_paymet_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="vendor_paymet_report">vendor_paymet_report<label>
+                    </div>
+                     <!--expiry_item_list_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="expiry_item_list_report" value="expiry_item_list_report" {% if 'expiry_item_list_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="expiry_item_list_report">expiry_item_list_report<label>
+                    </div>
+                     <!--department_consumption_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="department_consumption_report" value="department_consumption_report" {% if 'department_consumption_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="department_consumption_report">department_consumption_report<label>
+                    </div>
+                    <!--grn_report  -->
+                    <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="grn_report" value="grn_report" {% if 'grn_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="grn_report">grn_report<label>
+                    </div>
+                    <!--stock_adjustement_report  -->
+                    <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="stock_adjustement_report" value="stock_adjustement_report" {% if 'stock_adjustement_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="stock_adjustement_report">stock_adjustement_report<label>
+                    </div>
+                     <!--stock_movement_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="stock_movement_report" value="stock_movement_report" {% if 'stock_movement_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="stock_movement_report">stock_movement_report<label>
+                    </div>
+                     <!--item_wise_purchase_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="item_wise_purchase_report" value="item_wise_purchase_report" {% if 'item_wise_purchase_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="item_wise_purchase_report">item_wise_purchase_report<label>
+                    </div>
+                     <!--detailed_item_status_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="detailed_item_status_report" value="detailed_item_status_report" {% if 'detailed_item_status_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-warning" for="detailed_item_status_report">detailed_item_status_report<label>
+                    </div>
+                  </div><br>
+                </div><br>
+                <!-- pharmacy end -->
+
+                <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="insurance_claim_module" value="insurance_claim_module" onclick="myFunction('insurance_claim_module','insurance_claim_module_screens')" {% if 'insurance_claim_module' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="insurance_claim_module">Insurance Claim</label>
+                    </div>
+                  </div><br>
+                    <!--checklist_master  -->
+                    <div id="insurance_claim_module_screens" style="padding-left: 40px; padding-top:20px; ">
+                      <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                        <input class="form-check-input" type="checkbox" name="access" id="checklist_master" value="checklist_master"  {% if 'checklist_master' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-info" for="checklist_master">checklist_master<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="insurance_claim" value="insurance_claim"  {% if 'insurance_claim' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-info" for="insurance_claim">insurance_claim<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="checklisted_bill" value="checklisted_bill" {% if 'checklisted_bill' in record.screen_access %}checked{% endif %} >
+                        <label class="form-check-label btn btn-info" for="checklisted_bill">checklisted_bill<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="acknowledged_claim" value="acknowledged_claim"  {% if 'acknowledged_claim' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-info" for="acknowledged_claim">acknowledged_claim<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="raising_queries_list" value="raising_queries_list" {% if 'raising_queries_list' in record.screen_access %}checked{% endif %} >
+                        <label class="form-check-label btn btn-info" for="raising_queries_list">raising_queries_list<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="settled_queries_list" value="settled_queries_list"  {% if 'settled_queries_list' in record.screen_access %}checked{% endif %}>
+                        <label class="form-check-label btn btn-info" for="settled_queries_list">settled_queries_list<label>
+                      </div>
+                    </div>
+
+
+                  <br>
+                  <!--  end  -->
+
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="lab_module" value="lab_module" onclick="myFunction('lab_module','lab_module_button')" {% if 'lab_module' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="lab_module">Lab Module</label>
+                    </div>
+                  </div><br>
+                  <div style="padding-left: 40px;" id="lab_module_button">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="pending_investigation"
+                        value="pending_investigation" {% if 'pending_investigation' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="pending_investigation">Pending
+                        Investigation<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="sample_collection"
+                        value="sample_collection" {% if 'sample_collection' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="sample_collection"> Sample collection<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="result_validation"
+                        value="result_validation" {% if 'result_validation' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="result_validation">Result validation <label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="department_lab_report"
+                        value="department_lab_report" {% if 'department_lab_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="department_lab_report">Department Report <label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="lab_report" value="lab_report" {% if 'lab_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="lab_report">Lab Report <label>
+                    </div><br>
+                  </div><br>
+
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="RIS" value="RIS" onclick="myFunction('RIS','RIS_button')" {% if 'RIS_button' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-primary" for="RIS">RIS</label>
+                    </div>
+                  </div><br>
+                  <div style="padding-left: 40px;" id="RIS_button">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="RIS_pending_investigation"
+                        value="RIS_pending_investigation" {% if 'RIS_pending_investigation' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="RIS_pending_investigation">RIS Pending
+                        Investigation<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="RIS_report"
+                        value="RIS_report" {% if 'RIS_report' in record.screen_access %}checked{% endif %}>
+                      <label class="form-check-label btn btn-info" for="RIS_report">RIS Report<label>
+                    </div><br><br>
+
+                  </div><br>
+
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="Report" value="Report"
+                    onclick="myFunction('Report','Report_button')" {% if 'Report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="Report">Report</label>
+                </div>
+
+              </div><br>
+              <div style="padding-left: 40px;" id="Report_button">
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="daily_billing_report"
+                    value="daily_billing_report" {% if 'daily_billing_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="daily_billing_report">daily_billing_report<label>
+                </div>
+                 <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="detail_revenue_report"
+                    value="detail_revenue_report" {% if 'detail_revenue_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="detail_revenue_report">detail_revenue_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="doctor_wise_revenue_report"
+                    value="doctor_wise_revenue_report" {% if 'doctor_wise_revenue_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="doctor_wise_revenue_report">
+                    doctor_wise_revenue_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="doctor_wise_detail_report"
+                    value="doctor_wise_detail_report" {% if 'doctor_wise_detail_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="doctor_wise_detail_report">
+                    doctor_wise_detail_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="department_wise_revenue_report"
+                    value="department_wise_revenue_report" {% if 'department_wise_revenue_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="department_wise_revenue_report">
+                    department_wise_revenue_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="collection_report"
+                    value="collection_report" {% if 'collection_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="collection_report">collection_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="outstanding_registration"
+                    value="outstanding_registration" {% if 'outstanding_registration' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="outstanding_registration">
+                    outstanding_registration<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="payer_report" value="payer_report" {% if 'payer_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="payer_report"> payer_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="date_wise_report"
+                    value="date_wise_report" {% if 'date_wise_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="date_wise_report"> date_wise_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="partially_fully"
+                    value="partially_fully" {% if 'partially_fully' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="partially_fully"> partially_fully<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="service_analysis_report"
+                    value="service_analysis_report" {% if 'service_analysis_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="service_analysis_report">service_analysis_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="doctor_accounting_report"
+                    value="doctor_accounting_report" {% if 'doctor_accounting_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="doctor_accounting_report">
+                    doctor_accounting_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="by_uhid_billing_details"
+                    value="by_uhid_billing_details" {% if 'by_uhid_billing_details' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="by_uhid_billing_details">
+                    by_uhid_billing_details<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="patient_registration_report"
+                    value="patient_registration_report" {% if 'patient_registration_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="patient_registration_report">
+                    patient_registration_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="patient_registration_summary_report"
+                    value="patient_registration_summary_report" {% if 'patient_registration_summary_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="patient_registration_summary_report">
+                    patient_registration_summary_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="appointment_report"
+                    value="appointment_report" {% if 'appointment_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="appointment_report"> appointment_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="patient_visit_report"
+                    value="patient_visit_report" {% if 'patient_visit_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="patient_visit_report"> patient_visit_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="consultant_report"
+                    value="consultant_report" {% if 'consultant_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="consultant_report">
+                    consultant_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="patient_admission_report"
+                    value="patient_admission_report" {% if 'patient_admission_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="patient_admission_report">
+                    patient_admission_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="bed_traansfer_report"
+                    value="bed_traansfer_report" {% if 'bed_traansfer_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="bed_traansfer_report">
+                    bed_traansfer_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="bed_occupancy_report"
+                    value="bed_occupancy_report" {% if 'bed_occupancy_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="bed_occupancy_report">
+                    bed_occupancy_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="bed_charge_slip"
+                    value="bed_charge_slip" {% if 'bed_charge_slip' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="bed_charge_slip">
+                    bed_charge_slip<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="bed_view"
+                    value="bed_view" {% if 'bed_view' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="bed_view">
+                    bed_view<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="detail_ebd_occupancy_report"
+                    value="detail_ebd_occupancy_report" {% if 'detail_ebd_occupancy_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="detail_ebd_occupancy_report">
+                    detail_ebd_occupancy_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="doctor_ability_report"
+                    value="doctor_ability_report" {% if 'doctor_ability_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="doctor_ability_report">
+                    doctor_ability_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="patient_feedback_report"
+                    value="patient_feedback_report" {% if 'patient_feedback_report' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-info" for="patient_feedback_report">
+                    patient_feedback_report<label>
+                </div>
+
+              </div><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="inventory" value="inventory" {% if 'inventory' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="inventory">Inventory</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="patient_feedback" value="patient_feedback" {% if 'patient_feedback' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="patient_feedback">Patient FeedBack</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="estimate_bill" value="estimate_bill" {% if 'estimate_bill' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="estimate_bill">Estimate Bill</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="medical_equipments" value="medical_equipments" {% if 'medical_equipments' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="medical_equipments">Medical Equipments</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="ipd_admin" value="ipd_admin" {% if 'ipd_admin' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="ipd_admin">IPD</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="ward_module" value="ward_module" {% if 'ward_module' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="ward_module">Ward Module</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="ipd_billing" value="ipd_billing" {% if 'ipd_billing' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="ipd_billing">IPD Billing</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="ot_module" value="ot_module" {% if 'ot_module' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="ot_module">OT Module</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="mrd_module" value="mrd_module" {% if 'mrd_module' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="mrd_module">MRD Module</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="diet_module" value="diet_module" {% if 'diet_module' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="diet_module">Diet Module</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="incident_module" value="incident_module" {% if 'incident_module' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="incident_module">	Incident Management</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="blood_bank" value="blood_bank" {% if 'blood_bank' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="blood_bank">	Bloood Bank</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="employee_details" value="employee_details" {% if 'employee_details' in record.screen_access %}checked{% endif %}>
+                  <label class="form-check-label btn btn-primary" for="employee_details">	HR Module</label>
+                </div>
+              </div><br><br>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<script src="{% static 'assets/js/user_access.js' %}"></script>
+
+<script>
+
+</script>
+{% endblock %}

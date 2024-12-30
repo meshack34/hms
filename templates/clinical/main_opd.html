@@ -1,0 +1,554 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+ <style>
+  #id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_doctor{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_discount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_unit{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_net_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_co_pay{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_patient_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_receive_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_company_name{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_patient_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+background-color:white;
+  border:2px solid white;
+  #id_receive_amount{
+
+  width:100%;
+  }
+
+  #id_view{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+
+.table_form input{
+  border:2px solid white;
+  width:100%;
+  border-bottom:1px solid #eee;
+}
+.service_table tr th{
+}
+.service_table tr td{
+}
+ </style>
+ <link
+  rel="stylesheet"
+  href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"
+/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+{% endblock  %}
+{% block body_block %}
+  <!-- content -->
+  <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00041">
+<input type="hidden" name="message_id" value="MSG00041">
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="page-header row">
+              <h3 class="pageheader-title col-sm-4"><b>Out-Patient Billing</b></h3>
+            <div class="col-sm-8 text-right">
+                <a href="/temp_records"><button class="btn btn-info" name="button" type="button">Open Bill</button></a>
+                {% if 'finalized_bill' in access.user_profile.screen_access or request.user.is_superuser %}
+                <a href="/closed_bill"><button class="btn btn-success" name="button" type="button">Finalized Bill</button></a>
+                {% endif %}
+                {% if 'closed_bill' in access.user_profile.screen_access or request.user.is_superuser %}
+                <a href="/finalized_bill"><button class="btn btn-primary" name="button" type="button">Closed Bill</button></a>
+                {% endif %}
+                {% if 'cancel_bill' in access.user_profile.screen_access or request.user.is_superuser %}
+              <a href="/cancel_bill"><button class="btn btn-danger" name="button" type="button">Cancel</button></a>
+              {% endif %}
+                {% if 'cancel_bill' in access.user_profile.screen_access or request.user.is_superuser %}
+              <a href="/list_cancel_bill"><button class="btn btn-secondary" name="button" type="button">List Of Cancel</button></a>
+              {% endif %}
+              <button class="btn btn-primary dropdown-toggle p-2 icon-size" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+              <div class="dropdown-menu">
+<!--                data-toggle="modal" data-target="#payment_mode_popup"-->
+                {% if corp_name == 'Cash' %}
+                <a class="dropdown-item" href="/opd_payment_mode" >Payment - Cash</a>
+                {% else %}
+                <a class="dropdown-item" href="/opd_payment_credit" >Payment - Credit</a>
+                {% endif %}
+<!--                <a class="dropdown-item" href="#">Another action</a>-->
+                <a class="dropdown-item" href="/opdbillrecipte">Patient Invoice</a>
+              </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal" id="payment_mode_popup" tabindex="-1" role="dialog" aria-labelledby="payment_mode_popup" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:80%;">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-white">
+                      <h5 class="modal-title" id="patient-registration-title">Payment Mode</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="Out-Patient_record">
+                      <form>
+                        <div class="row form_sec">
+                          <div class="col-md-12">
+                            <div class="today_visit" style="min-height: 300px;">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-save" aria-hidden="true"></i></button>
+                              </div>
+                              <form class="">
+                                <table class="table table-border ">
+                                  <tr style="background:#d1dae6;">
+                                    <th>Mode Type</th>
+                                    <th>Amount</th>
+                                    <th>Bank</th>
+                                    <th>Cheque/Card/DD No.</th>
+                                    <th>Expiry Date</th>
+                                    <th></th>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <div class="form-group">
+                                        <select name="cars">
+                                          <option value="Cash">Cash</option>
+                                          <option value="UPI">UPI</option>
+                                        </select>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <select name="cars" id="cars">
+                                          <option value="Bank">Bank</option>
+                                          <option value="UPI">UPI</option>
+                                        </select>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="butns">
+                                        <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                        <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </form>
+                            </div>
+                          </div>
+                        </div><!-- row -->
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form_sec">
+                              <form>
+                                <div class="input_filed d-flex align-items-center">
+                                  <label style="flex: 0 0 100px;" for="GCR">GCR No. <small>*</small></label>
+                                  <input type="text" class="form-control" placeholder="">
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div><!-- row -->
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="billing-form bg-white p-2 mt-2">
+           <div class="row" >
+            <div class="col-4" >
+               <form method="GET" class="row">
+                   <br><br>
+                  <div class="col-md-8">
+                    <label>UHID*</label><br>
+                    <input type="text" value="{{pay_m_uhid}}" name="uhid" required readonly class='form-control'>
+                  </div>
+<!--                  <div class="col-sm-1 p-0">-->
+<!--                    <button class="btn-primary border-0 p-2 icon-size" name="uhid_searching" type="submit" value="is_uhid"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>-->
+<!--                  </div>-->
+                   <div class="col-md-2">
+                    <a href="#" style="color:white;">
+                        <br>
+                    <button class="btn-primary border-0 p-2 icon-size" type="button"  name="search" class="input-group-text" >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </button>
+                     </a>
+                   </div>
+                   <div class="col-sm-1 p-0">
+                       <br>
+                    <button class="btn-primary border-0 p-2 icon-size" name="uhid_searching" type="submit" value="is_uhid"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                  </div>
+                </form>
+            </div>
+            <div class="col-8">
+              <form method="GET" class="row">
+          <div class="col-md-5">
+            <label>Select Visit No*</label>
+             <select style="width:100%;" name="visit_no" required  class='form-control'>
+               <option>{{pay_m_visit_id}}</option>
+<!--              {% for data in records %}-->
+<!--              <option value="{{data.id}}">{{data.visist_id}}</option>-->
+<!--              {% endfor %}-->
+            </select>
+          </div>
+          <div class="col-md-2"><br>
+            <button class="btn-primary border-0 p-2 icon-size" name="billing_search" type="submit" value="is_opd_billing"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+          </div>
+        </form>
+            </div>
+          </div>
+        <div class="p-2 border mt-2">
+          <div class="row">
+            <div class="col-sm-6">
+              <h5>{{patient_name}}</h5>
+              <p class="m-0">{{gender}} {{dob}} year ,  <strong>Mobile No.</strong>: {{mobile_number}}</p>
+            </div>
+            <div class="col-sm-3">
+              <p class="m-0"><strong> Payer</strong>: {{billing_name}}</p>
+            </div>
+              <div class="col-sm-3">
+              <p class="m-0"><strong>Corporate</strong>: {{corp_name}}</p>
+            </div>
+          </div>
+        </div>
+
+        <form class="form-inline row no-gutters pt-2 pb-2 alert-primary">
+          <div class="col-sm-1 p-0">
+            <label for="formGroupExampleInput">Activity</label>
+          </div>
+          <div class="col-sm-2">
+            <select class="form-control  w-100" name="card" value="">
+              <option>Discount</option>
+            </select>
+          </div>
+          <div class="col-sm-2 p-0">
+            <label for="formGroupExampleInput">Amount Type</label>
+          </div>
+          <div class="col-sm-2">
+            <select class="form-control  w-100" name="card" value="">
+              <option>select</option>
+              <option value="volvo">Percentage</option>
+              <option value="saab" selected>Amount</option>
+            </select>
+          </div>
+          <div class="col-sm-1 p-0">
+            <label for="formGroupExampleInput">Value</label>
+          </div>
+          <div class="col-sm-2">
+            <input class="form-control" type="value" name="value" placeholder="">
+          </div>
+          <div class="col-sm-2 text-right">
+                  <button class="btn-primary border-0 p-2 icon-size" name="save" type="submit" form="MyForm1"><i class="fa fa-save" aria-hidden="true"></i></button>
+<!--                  <button class="btn-primary border-0 p-2 icon-size" name="button" type="button"><i class="fas fa-paint-brush"></i></button>-->
+          </div>
+        </form>
+          <div class="container-fluid">
+            <form method="POST" id="MyForm1">
+              {% csrf_token %}
+                <table class="datatable table table-stripped" id="id_table">
+                  <tr style="background: #d1dae6;">
+                    <th style="width:30%">Services Name</th>
+                    <th>Rate</th>
+                    <th>Qty</th>
+                    <th>Discount</th>
+                    <th>Payable Amount</th>
+                    <th>TotalAmt.</th>
+                  </tr>
+                    <tr>
+                        <input type="hidden" name="uhid" value="{{pay_m_uhid}}">
+                        <input type="hidden" name="visit_id" value="{{pay_m_visit_id}}">
+                        <input type="hidden" name="corporate_id" value="{{corporate_names}}">
+                        <input type="hidden" name="billing_group_id" value="{{billing_group}}">
+    <!--                    <input type="hidden" name="ind_temp_bill_no" value="{{temp_bill_no}}">-->
+                    </tr>
+                  {% for data in records %}
+                    <tr>
+                        <td class="table_form"><input type="text" name="service" readonly value="{{data.service_name}}"></td>
+                        <td class="table_form"><input type="number" name="net_amount" class="rate" readonly value="{{data.rate|floatformat:0}}"></td>
+                        <td class="table_form"><input type="number" name="unit" class="quantity" value="{{data.unit}}" required></td>
+                        <td class="table_form"><input type="number" name="discount" class="discount" id="discounts" value="{{data.discount}}" required title="please enter number"></td>
+                        <td class="table_form"><input type="number" name="pay_amount" class="pay_amount" value="{{data.net_ammount|floatformat:0}}"  required></td>
+                        <td class="table_form"><input type="number" name="paid_amount" class="paid_amount" value="{{data.total_amount|floatformat:0}}" required></td>
+                        <td class="table_form"><input type="hidden" name="outstanding_amount" value="{{data.outstanding_amount|floatformat:0}}" required></td>
+                        <td class="table_form"><input type="hidden" name="" value="{{data.receive_amount|floatformat:0}}" required></td>
+                        <td class="table_form"  style="display:none;"><input type="hidden" name="update_status" value="{{data.status}}" required></td>
+                        <td class="table_form"  style="display:none;"><input type="hidden" name="temp_bill_no" value="{{data.temp_bill_no}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="hidden" name="package_profile_id" value="{{data.package_profile_id}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="hidden" name="package_profile_amt" value="{{data.package_profile_amt}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="hidden" name="service_category" value="{{data.service_category}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="hidden" name="service_sub_category" value="{{data.service_sub_category}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="hidden" name="order_id" value="{{data.order_id}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="hidden" name="Pr_Opd_sr_bill_no" value="{{data.Pr_Opd_sr_bill_no}}" required></td>
+                    </tr>
+                  {% endfor %}
+                     <tr>
+                         <td class="table_form">
+                            <select class="form-control" name="payment_mode">
+                                {% if billing_name == 'CASH' %}
+                                <option value="{{billing_name}}">{{billing_name}}</option>
+                                {% else %}
+                                <option value=""></option>
+                                {% endif %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr style="background-color:#eee;color:white!important;">
+                      <td></td>
+                      <td class="table_form"><input type="number" name="total_net_amt" id="rate_amt" value="{{rate_amt|floatformat:0}}" required readonly></td>
+                        <td class="table_form"><input type="text" name="" value="{{ttl_unit}}" id="total_qty" required readonly></td>
+                      <td class="table_form"><input type="text" name="total_disc" id="total_disc" class="total_disc" value="{{nt_disc|floatformat:0}}" required></td>
+                      <td class="table_form"><input type="text" name="total_payable_amt" id="total_payable_amt" value="{{nt_amt|floatformat:0}}" required readonly></td>
+                      <td class="table_form"><input type="text" name="total_paid_amt" id="total_paid_amt" value="{{ttl_amt|floatformat:0}}" required readonly></td>
+                      <td class="table_form"><input type="hidden" name="total_outstanding_amt" value="{{ttl_outstanding_amount|floatformat:0}}" readonly required></td>
+                  </tr>
+                    {% if main_table_records %}
+                         {% for record in main_table_records %}
+                  <tr style="background-color:#eee;color:white!important;">
+                    <td class="table_form"><input type="" name="" readonly value="{{record.service}}"></td>
+                    <td class="table_form"><input type="number" name="" readonly value="{{record.net_amount}}"required></td>
+                    <td class="table_form"><input type="number" name="" readonly value="{{record.discount}}" required></td>
+                    <td class="table_form"><input type="number" name="" readonly value="{{record.pay_amount}}"  required></td>
+                    <td class="table_form"><input type="number" name="" readonly value="{{record.paid_amount}}" required></td>
+                    <td class="table_form"><input type="hidden" name="" readonly value="{{record.outstanding_amount}}" required></td>
+                 </tr>
+                    {% endfor %}
+                {% endif %}
+                <tr>
+                    {% if billing_name != 'CASH' %}
+                  <td class="table_form"><input type="text" class="form-control" name="lou_no" placeholder="LOU No........." required></td>
+                  <td class="table_form"><input type="text" class="form-control" name="claim_no" placeholder="Claim No........."></td>
+                  <td class="table_form"><input type="number" class="form-control" step="0.01" name="insurance_amt" placeholder="insurance_amt........."></td>
+                    <td></td>
+                    <td class="table_form"><select class="form-control" name="auth_pesrson" id="auth" required>
+                        <option>Select Authorised</option>
+                        {% for user in users %}
+                        <option value="{{user.id}}">{{user.auth_name}}</option>
+                        {% endfor %}
+                    </select></td>
+                  <td class="table_form"><input type="text" class="form-control" name="remark" id="remarks" placeholder="Remark ...." required></td>
+                </tr>
+                {% else %}
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td class="table_form"><select class="form-control" name="auth_pesrson" id="auth" required >
+                      <option>Select Authorised</option>
+                      {% for user in users %}
+                      <option value="{{user.id}}">{{user.auth_name}}</option>
+                      {% endfor %}
+                    </select></td>
+                  <td class="table_form"><input type="text" class="form-control" name="remark" id="remarks" placeholder="Remark ...." required></td>
+                </tr>
+                    {% endif %}
+                </table>
+            </form>
+          </div>
+          <a href="/opd_billing"><button type="button" class="btn btn-primary">Back</button></a>
+
+                  <!-- calculation script -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(document).on('keyup', '#total_disc', function () {
+            var dico = this.value;
+            var payable_amt = $('#total_payable_amt').val();
+            var amount = payable_amt - dico;
+            // alert(qty);
+            $('#total_paid_amt').val(amount);
+        });
+    });
+</script>
+<script>
+  $(document).ready(function () {
+      $(document).on('keyup', '.discount', function () {
+          var dumy = this;
+          var discount = this.value;
+          var qty = $(dumy).closest('tr').find('.quantity').val();
+          var rate = $(dumy).closest('tr').find('.rate').val();
+          var bef_discount_amt = rate * qty;
+          var amount = ((rate * qty) - discount);
+<!--          var amount = (rate * qty) - discount_amt;-->
+          // alert(rate);
+          $(dumy).closest('tr').find('.paid_amount').val(parseInt(amount));
+          $(dumy).closest('tr').find('.pay_amount').val(parseInt(bef_discount_amt));
+          total_cal()
+      });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+      $(document).on('keyup', '.quantity', function () {
+          var dumy = this;
+          var qty = this.value;
+          var discount = $(dumy).closest('tr').find('.discount').val();
+          var rate = $(dumy).closest('tr').find('.rate').val();
+          var bef_discount_amt = rate * qty;
+          var amount = ((rate * qty) - discount);
+          alert(bef_discount_amt)
+          $(dumy).closest('tr').find('.paid_amount').val(parseInt(amount));
+          $(dumy).closest('tr').find('.pay_amount').val(parseInt(bef_discount_amt));
+          total_cal()
+      });
+  });
+</script>
+<script>
+function total_cal(){
+  var calculated_total_sum = 0;
+  var calculated_total_dis = 0;
+  var calculated_total_payableamt = 0;
+   $("#id_table .paid_amount").each(function () {
+     var get_textbox_value = $(this).val();
+     var qty = $(this).closest('tr').find('.quantity').val();
+     var rate = $(this).closest('tr').find('.rate').val();
+     if ($.isNumeric(get_textbox_value)) {
+        calculated_total_sum += parseFloat(get_textbox_value);
+        };
+        calculated_total_payableamt += parseInt(qty) * parseInt(rate);
+      });
+        $("#total_paid_amt").val(parseInt(calculated_total_sum));
+        $("#total_payable_amt").val(parseInt(calculated_total_payableamt));
+    $("#id_table .discount").each(function () {
+     var total_discount = $(this).val();
+     if ($.isNumeric(total_discount)) {
+        calculated_total_dis += parseFloat(total_discount);
+        };
+      });
+      $(".total_disc").val(parseInt(calculated_total_dis));
+}
+</script>
+<!--
+        var calculated_total_sum = 0;
+      var calculated_total_dis = 0;
+       $("#id_table .paid_amount").each(function () {
+         var get_textbox_value = $(this).val();
+         if ($.isNumeric(get_textbox_value)) {
+            calculated_total_sum += parseFloat(get_textbox_value);
+            };
+          });
+            $("#total_payable_amt").val(parseInt(calculated_total_sum));
+            $("#total_paid_amt").val(parseInt(calculated_total_sum));
+
+        $("#id_table .quantity").each(function () {
+         var total_discount = $(this).val();
+         if ($.isNumeric(total_discount)) {
+            calculated_total_dis += parseFloat(total_discount);
+            };
+          });
+          $("#total_qty").val(parseInt(calculated_total_dis));
+ -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  // Get the initial value of #total_disc
+  var totalDiscValue = $("#total_disc").val();
+  var individualDiscValue = $("#discounts").val();
+
+  // Function to show/hide elements based on the value
+  function toggleElements() {
+    if (totalDiscValue == 0 && individualDiscValue == 0 ) {
+      $('#auth').hide().removeAttr('required');
+      $('#remarks').hide().removeAttr('required');
+    } else {
+      $('#auth').show().attr('required', 'required');;
+      $('#remarks').show().attr('required', 'required');;
+    }
+  }
+
+  // Call the function initially
+  toggleElements();
+  // Listen for changes in the #total_disc input
+  $("#total_disc,  #discounts").on("input", function() {
+    totalDiscValue = $(this).val(); // Update the value
+    individualDiscValue = $("#discounts").val();// Update the value
+    toggleElements(); // Call the function to update visibility
+  });
+});
+</script>
+
+{% endblock  %}

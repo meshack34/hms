@@ -1,0 +1,243 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;" href="#">Corporate Master</a>
+      </div>
+  </nav>
+  <div class="container-fluid">
+      <div class="row clearfix">
+          <div class="card">
+                  <div class="header">
+          <div class="body">
+            <br><div class="icon-button-demo">
+              &nbsp;
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fas fa-plus" >Add</i></button>&nbsp;
+              <a href="edit_corporate_master" class="btn btn-info"> <i class="fas fa-edit" style="color:white;">Edit</i></a>&nbsp;
+                <button type="button"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;
+                <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+                <a href="/corporate_master" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+            </div><br>
+          </div>
+          </div>
+          </div>
+      </div>
+  </div>
+<div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+
+                        <thead>
+                            <tr><th>Corporate Name</th>
+                                <th>Office_Location_Name</th>
+                                <th>valid_Upto</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in corporate_master %}
+                          <tr>
+                              <td>{{data.corporate_Name}}</td>
+                              <td>{{data.Office_Location_Name}}</td>
+                              <td>{{data.valid_Upto}}</td>
+                              <td><a href="/editing_corporate_master/{{data.id}}" class="btn btn-primary">Edit</a></td>
+                          </tr>
+                          {% endfor %}
+                         </tbody>
+
+                </table>
+                </div>
+<!-- Add Modal -->
+
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+        <!-- Header -->
+        <div class="modal-header" style="background: skyblue;">
+            <h5 class="modal-title" id="exampleModalLabel" ><b>Corporate Master</b></h5>
+           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+            </button>
+            </div><br>
+         <!-- Main block -->
+         <div class="modal-body">
+            <div class="container-fluid">
+                <div class="body" style="border:0px solid red;">
+                    <div class="demo-masked-input">
+                      <form method="POST" action="corporate_master">
+                        {% csrf_token %}
+                        <div class="row clearfix">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0">
+                                          {{form.corporate_Name|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0">
+                                          {{form.valid_Upto|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0">
+                                          {{form.contact_No|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0">
+                                          {{form.email_ID|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0">
+                                          {{form.remark|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                              <div class="form-group">
+                                  <div class="form-line">
+                                    <div class="form-group col-md-12 mb-0"><br>
+                                        {{form.inactive|as_crispy_field}}
+                                    </div>
+                                  </div>
+                              </div>
+                            </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0">
+                                          {{form.corporate_ID|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- <div class="col-xs-10 col-sm-10 col-md-6 col-lg-6" style="background-color:rgb(233, 233, 233); padding-left: 80px;"><br> -->
+                        <div class="col" style="border-style:groove">
+                            <h3 style="color: red;">Address</h3>
+                        <div class="row clearfix">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0"><br>
+                                          {{form.Office_Location_Name|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0"><br>
+                                          {{form.Auth_Person|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                  <div class="form-group col-md-12 mb-0"><br>
+                                      {{form.designation|as_crispy_field}}
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0"><br>
+                                          {{form.address|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                  <div class="form-group col-md-12 mb-0"><br>
+                                      {{form.City|as_crispy_field}}
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0"><br>
+                                          {{form.PinCode|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0"><br>
+                                          {{form.phone_no|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0"><br>
+                                          {{form.fax|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <div class="form-group col-md-12 mb-0"><br>
+                                          {{form.email|as_crispy_field}}
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line"><br>
+                                      <br> <button type="submit" class="btn btn-warning" data-toggle="modal11" data-target=".bd-example-modal-xl"><i class="fas fa-plus" >Insert</i></button>&nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-sm-3">
+                            </div>
+                          </form>
+                          <!--===================  -->
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+</div>
+</div>
+</div>
+
+
+
+    {% endblock  %}

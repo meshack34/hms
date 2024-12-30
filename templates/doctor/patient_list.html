@@ -1,0 +1,75 @@
+{% extends 'doctor/base.html' %}
+{% load static %}
+{% block body_block %}
+
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-box mb-0">
+                        <h6 class="card-title text-bold"> Patient List</h6>
+    <div class="form-row">
+
+        <a href="doctor_appointment">
+            <button type="button" class="btn btn-info" style="float: center;" data-toggle="modal" data-target="#myModal" >Appointment </button>
+        </a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="index">
+                <button type="button" class="btn btn-danger" style="float: right;padding: left 100px; ;" data-toggle="modal" data-target="#myModal"  >Logout </button>
+        </a><br><br>
+
+    </div>
+        <div class="card">
+            <div class="body">
+                <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover save-stage dataTable"
+                    style="width:100%;">
+                        <thead>
+                            <tr><th bgcolor= "ORANGERED">Patient Id</th>
+                                <th bgcolor= "ORANGERED">Name </th>
+                                <th bgcolor= "ORANGERED">Address</th>
+                                <th bgcolor= "ORANGERED">Date Of Birth</th>
+                                <th bgcolor= "ORANGERED">Gender</th>
+                                <th bgcolor= "ORANGERED">Occupation</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>aaa</td>
+                                <td>13b Chennai-666</td>
+                                <td>06/01/1995</td>
+                                <td>Male</td>
+                                <td>Manager</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>baa</td>
+                                <td>43b Delhi-175</td>
+                                <td>16/11/1895</td>
+                                <td>FeMale</td>
+                                <td>Bussiness</td>
+                            </tr>
+                         </tbody>
+
+                </table>
+                </div>
+            </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+{% endblock  %}

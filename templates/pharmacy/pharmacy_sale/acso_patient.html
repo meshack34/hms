@@ -1,0 +1,1135 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+  .form-control {
+    border: 2px solid white;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid black;
+  }
+
+  #id_Date,
+  #id_s_no,
+  #id_po_no,
+  #id_vendor,
+  #id_tax,
+  #id_basic_amount,
+  #id_net_amount,
+  #item_name {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- Jquery UI for AutoComplete -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<!-- content -->
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+      <div>
+        <a href="/department_consump_search" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+        <b>Add Counter Sale Out-Patient </b>
+      </div>
+      <div class="">
+        <!-- <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a> -->
+        <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+        <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    
+          <a href="/bill_generate_search" class="dropdown-item btn-primary">View</a>
+
+          <a href="/prescription_list" class="dropdown-item btn-primary">Prescription</a>
+          
+          <a href="{% url 'ward_request' %}" class="dropdown-item btn-primary">Ward Request </a>
+          <!-- <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+          <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a> -->
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+          <div class="card">
+            <div class="header">
+              <div class="body">
+
+                <!-- Tab -->
+
+                <div class="nursing-assessment-tabs p-2 bg-white">
+                  <div role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs nav-justified nav-tabs-dropdown " role="tablist">
+                      <li role="presentation" class="w-50">
+                        <a href="#profile" aria-controls="home" class="btn-primary {{otc_active}}" role="tab" data-toggle="tab">OTC
+                          Patient</a>
+                      </li>
+                      <li role="presentation" class="w-50">
+                        <a class="btn-primary {{opd_active}}" href="#home" aria-controls="profile" role="tab" data-toggle="tab"> OPD
+                           Patient</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+
+                      <div role="tabpanel" class="tab-pane pt-2 {{otc_active}}" id="profile">
+                        <div class="row inner-tabs no-gutters ">
+                          <div class="form-row">
+                         
+                        <div class="col-md-6">
+                          {% for message in messages %}
+                            <div class="container-fluid p-0 " id="alert">
+                              <div class="alert {{ message.tags }} alert-dismissible bg-{{ message.tags }}" role="alert" >
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="True">&times;</span>
+                                </button>
+                                <b>{{ message }}</b>
+                              </div>
+                            </div>
+                            {% endfor %}
+                          </div>
+                          </div>
+                          <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4 ">
+                            <form class="" method="post">
+                              {% csrf_token %}
+                     
+                              <h4><b style="font-weight: bold;">OTC Patient</b></h4>
+                              <div class="form-row">
+                                <div class="form-group col-md-3 mb-0">
+                                  <label><b>Patient Name</b> </label>
+                                  <input type="text" name="patient_name1" id="patient_name1" class="form-control"
+                                    value="{% if patient_name1 %}{{patient_name1}}{% endif %}" required>
+                                </div>
+
+  
+                                <div class="form-group col-md-3 mb-0" style="padding-top: 8px;font-size: 15px;">
+                                  {% if consultant1 == 'Hospital Consultant' %}
+                                  <span> <input type="radio" name="consultant1" id="consultant"
+                                      value="Hospital Consultant" checked="checked"><b>&nbsp;Hospital Consultant</b> </span>
+                                  {% else %}
+                                  <span> <input type="radio" name="consultant1" id="consultant"
+                                      value="Hospital Consultant"><b>&nbsp;Hospital Consultant</b> </span>
+                                  {% endif %}
+                                  {% if consultant1 == 'Other Consultant' %}
+                                  <span><input type="radio" name="consultant1" id="consultant" value="Other Consultant"
+                                      checked="checked"><b>&nbsp;Other</b></span>
+                                  {% else %}
+                                  <span><input type="radio" name="consultant1" id="consultant"
+                                      value="Other Consultant"><b>&nbsp;Other</b></span>
+                                  {% endif %}
+                                  <input type="text" name="consultant_name1" class="form-control" value="{% if consultant_name1 %}{{consultant_name1}}{% endif %}">
+                                </div>
+
+                                <div class="form-group col-md-3 mb-0">
+                                  <label><b> Mobile No</b></label>
+                                  <input type="text" name="mob_no1" id="mob_no1" class="form-control" value="{% if mob_no1 %}{{mob_no1}}{% endif %}">
+                                </div>
+                                <div class="form-group col-md-3 mb-0">
+                                  <label><b>Age</b></label>
+                                  <input type="text" name="age1" id="age1" class="form-control" value="{% if age1 %}{{age1}}{% endif %}">
+                                </div>
+                                <div class="form-group col-md-3 mb-0">
+                                  <label><b>Gender</b> </label>
+                                  <input type="text" name="gender1" id="gender1" class="form-control" value="{% if gender1 %}{{gender1}}{% endif %}">
+                                </div>
+                                <div class="form-group col-md-3 mb-0 px-3">
+                                  <label for=""></label><br>
+                                <button type="submit" class="btn btn-success px-3" name="otc_saved" value="otc_saved"
+                                  id="add_purchase_order"> <i class="fas fa-save pr-2"></i>Save</button>
+                                </div>
+                                
+
+                              </div>
+                              <br>
+                              <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                                <!-- <a class="navbar-brand" href="#">Items</a> -->
+                                <a href="">
+                                  <button type="button" class="btn btn-light">Items</button>
+                                </a>
+                                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                  data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                  aria-expanded="false" aria-label="Toggle navigation">
+                                  <span class="navbar-toggler-icon"></span>
+                                </button>
+
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                  <ul class="navbar-nav mr-auto">
+                                    <li class="nav-item ">
+                                      <a class="nav-link" style="color: white;" href="#">Total Qty: 0 </a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" style="color: white;" href="#">Included Tax: 0</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                      <a class="nav-link" style="color: white;" href="#">No of Items: 0</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" style="color: white;" href="#">Total Taxable Amt: 0</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" style="color: white;" href="#">Roundoff : 0</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" style="color: white;" href="#">Net Amt: 0</a>
+                                    </li>
+                                  </ul>
+
+                                </div>
+                              </nav>
+                              <br>
+
+                              <table class="datatable table table-stripped auto-index">
+                                <thead>
+                                  <tr>
+                                    <th>Generic Name</th>
+                                    <th>Medicine Name</th>
+                                    <th>Batch</th>
+                                    <th>Expiry Date</th>
+                                     <th>Inhand-Qty</th>
+                                    <th>Qty</th>
+                                    <th>Rate</th>
+                                    <th>Dis%</th>
+                                    <th>Amount</th>
+                                    <th></th>
+
+                                  </tr>
+                                  <tr></tr>
+                                </thead>
+                                <tbody>
+                                  <tr class="clonetr" id="addrow">
+                                    <td><input name="generic1" id="generic1" list="generic_name1"
+                                      data-uhid-url="{% url 'searchitemname' %}" class="form-control"
+                                      style="width:100%">
+                                      <datalist id="generic_name1">
+                                        {% for data in generic_name %}
+                                        <option value="{{data.id}}.{{data.generic_name}}"></option>
+                                        {% endfor %}
+                                      </datalist>
+                                    </td>
+                                    <td id="sj1"><input name="item_id1" id="item_id1" list="item_name1"
+                                        data-uhid-url="{% url 'searchbatchno' %}" class="form-control"
+                                        style="width:100%"></td>
+                                    <td id="fh1" style="display:none;">
+                                          <select name="items1" id="items1" class="form-control" style="width:200px;">
+                                          <option value="">Select</option>
+                                        </select>&nbsp;
+                                        <input name="extra_item_id1" id="extra_item_id1" list="item_name1"
+                                        data-uhid-url="{% url 'searchbatchno' %}" class="form-control"
+                                        style="width:100%"></td>
+                                    <td>
+                                      <select name="batch1" id="batch_IDD1" class="form-control"
+                                        data-uhid-url="{% url 'add_count_sale' %}">
+                                        <option value="">Select</option>
+                                      </select>
+                                    </td>
+                                    <td><input type="text" name="expiry1" id="expiry1" class="form-control"></td>
+                                    <td><input type="text" name="inhand1" id="inhand1" class="form-control"></td>
+                                    <input type="hidden"  name="mrp1" id="mrp1" class="form-control">
+                                    <td><input type="text" name="qty1" id="qty1" class="form-control"></td>
+                                    <td><input type="text" name="rate1" id="rate1" class="form-control"><input type="hidden" name="hidden_rate1" id="hidden_rate1"></td>
+                                    <td><input type="text" name="discount1" id="discount1" class="form-control"></td>
+                                    <td><input type="hidden" name="before_disc_amount1" id="before_disc_amount1"><input
+                                        type="text" name="amount1" id="amount1" class="form-control"></td>
+                                    <td>
+                                      <div class="row">
+                                        <div class="col-md-3"><button type="submit"
+                                            style="background-color: rgb(4, 96, 41);" class="btn btn-primary"
+                                            name="otc_save_temp" value="otc_save_temp" id="save_temp"><i
+                                              class="fas fa-plus add_icon"></i></button>
+                                        </div>
+                                  </tr>
+                                  <tr>
+                                    <datalist id="item_name1">
+                                      {% for data in item_names%}
+                                      <option value="{{data.id}}.{{data.item_name}} {{data.unit}} {{data.item_subcategory}}"></option>
+                                      {% endfor %}
+                                    </datalist>
+
+                                  </tr>
+
+                                </tbody>
+                              </table>
+
+                              <hr><br>
+                              <div class="table-responsive">
+
+                                <table class="datatable table table-stripped auto-index">
+                                  <thead style="background-color: cornflowerblue;">
+                                    <tr>
+                                      <th>SI.No</th>
+                                      <th>Generic Name</th>
+                                      <th>Medicine Name</th>
+                                      <th>Batch</th>
+                                      <th>Expiry Date</th>
+                                      <!-- <th>MRP</th> -->
+                                      <th>Qty</th>
+                                      <th>Rate</th>
+                                      <!-- <th>before discount amount</th> -->
+                                      <th>Dis%</th>
+                                      <th>Amount</th>
+                                      <th>Delete</th>
+                                    </tr>
+                                  </thead>
+
+
+                                  <tbody style="background-color: white;" id="tbody_id_otc">
+                                    {% for data in countersale_temp_otc %}
+                                    <tr class="clonetr" id="addrow">
+                                      <td>{{forloop.counter}}</td>
+                                      <td>{{data.generic_id}}</td>
+                                      <td>{{data.item_id}}</td>
+                                      <td>{{data.batch_no}}</td>
+                                      <td>{{data.expiry_date}}</td>
+                                      <!-- <td>{{data.mrp}}</td> -->
+                                      <td>{{data.qty}}</td>
+                                      <td>{{data.rate}}</td>
+                                      <!-- <td>{{data.before_disc_amount}}</td> -->
+                                      <td>{{data.discount}}</td>
+                                      <td>{{data.amount}}</td>
+                                      <td><div class="col-md-3">
+                                        <input type="hidden" name="temp_id1" id="temp_id1" value="{{data.id}}">
+                                        <button type="button" style="background-color:rgb(231, 41, 41)" class="btn btn-danger delete_class_otc"><i class="fas fa-trash-alt"></i></button></div></td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td><span style="font-weight:bold;">Total Amt:</span></td>
+                                      <td><span style="font-weight:bold;" id="total_val1">{{total_amt}}</span></td>
+                                      <td></td>
+                                  </tr>
+
+                                  </tbody>
+
+
+                                </table>
+
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div role="tabpanel" class="tab-pane {{opd_active}}" id="home">
+                        <div class="row mt-2 no-gutters">
+                          <div class="form-row">
+                          
+                          <h4><b>OPD Patient</b></h4>
+              
+                        <div class="col-md-6">
+                          {% for message in messages %}
+                            <div class="container-fluid p-0 " id="alert">
+                              <div class="alert {{ message.tags }} alert-dismissible bg-{{ message.tags }}" role="alert" >
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="True">&times;</span>
+                                </button>
+                                <b>{{ message }}</b>
+                              </div>
+                            </div>
+                            {% endfor %}
+                          </div>
+                          </div>
+
+                          <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4">
+                            <form class="p-3" method="post">
+                              {% csrf_token %}
+                          
+                               
+                                
+                             
+                       
+                              <div class="form-row">
+                                <div class="form-group col-md-3 mb-0">
+                                  <label><b>Patient Name</b> </label>
+                                  <input type="text" name="patient_name" id="patient_name"
+                                    data-uhid-url="{% url 'patientregistration' %}" list="patientname"
+                                    class="form-control" value="{% if patient_name %}{{patient_name}}{% endif %}" required>
+                                </div>
+
+                                <datalist id="patientname">
+                                  {% for data in patient_registration %}
+                                  <option value="{{data.id}}.{{data.first_name}} {{data.middle_name}} {{data.last_name}}"></option>
+                                  {% endfor %}
+                                </datalist>
+                                <div class="form-group col-md-3 mb-0">
+                                  <label><b>UHID</b></label>
+                                  <input type="text" name="uhid" id="uhid" class="form-control"
+                                    value="{% if uhid %}{{uhid}}{% endif %}">
+                                  <input type="hidden" name="visit_id" id="visit_id" class="form-control"
+                                    value="{% if visit_id %}{{visit_id}}{% endif %}">
+                                </div>
+
+
+                                <div class="form-group col-md-3 mb-0" style="padding-top: 8px;font-size: 15px;">
+                                  {% if consultant == 'Hospital Consultant' %}
+                                  <span> <input type="radio" name="consultant" id="consultant"
+                                      value="Hospital Consultant" checked="checked"><b>Hospital Consultant</b> </span>
+                                  {% else %}
+                                  <span> <input type="radio" name="consultant" id="consultant"
+                                      value="Hospital Consultant"><b>Hospital Consultant</b> </span>
+                                  {% endif %}
+                                  {% if consultant == 'Other Consultant' %}
+                                  <span><input type="radio" name="consultant" id="consultant" value="Other Consultant"
+                                      checked="checked"><b>Other</b></span>
+                                  {% else %}
+                                  <span><input type="radio" name="consultant" id="consultant"
+                                      value="Other Consultant"><b>Other</b></span>
+                                  {% endif %}
+                                  <input type="text" name="consultant_name" id='consultant_name' class="form-control"
+                                    value="{% if consultant_name %}{{consultant_name}}{% endif %}">
+                                </div>
+
+                                <div class="form-group col-md-3 mb-0">
+                                  <label><b> Mobile No</b></label>
+                                  <input type="text" name="mob_no" id="mob_no" class="form-control"
+                                    value="{% if mob_no %}{{mob_no}}{% endif %}">
+                                </div>
+                                <div class="form-group col-md-3 mb-0">
+                                  <label><b>Age</b></label>
+                                  <input type="text" name="age" id="age" class="form-control"
+                                    value="{% if age %}{{age}}{% endif %}">
+                                </div>
+                                <div class="form-group col-md-3 mb-0">
+                                  <label><b>Gender</b> </label>
+                                  <input type="text" name="gender" id="gender" class="form-control"
+                                    value="{% if gender %}{{gender}}{% endif %}">
+                                </div>
+                                <div class="form-group col-md-3 mb-0">
+                                  <label><b>Department</b> </label>
+                                  <input type="text" name="department" id="department" class="form-control"
+                                  value="{% if department %}{{department}}{% endif %}">
+                                </div>
+                                <div class="form-group col-md-3 mb-0">
+                                  <label><b>Panel</b></label>
+                                  <select name="panel" id="panel" class="form-control" required>
+                                    <option value="{% if panel %}{{panel}}{% endif %}">{% if panel %}{{panel}}{% else %}Select{% endif %}</option>
+                                    <option>Cash</option>
+                                    <option>Insurence/Credit</option>
+                                  </select>
+                                </div>
+          
+                              </div>
+                             <br>
+                              <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                                <!-- <a class="navbar-brand" href="#">Items</a> -->
+                                <a href="">
+                                  <button type="button" class="btn btn-light">Items</button>
+                                </a>
+                                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                  data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                  aria-expanded="false" aria-label="Toggle navigation">
+                                  <span class="navbar-toggler-icon"></span>
+                                </button>
+
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                  <ul class="navbar-nav mr-auto">
+                                    <li class="nav-item ">
+                                      <a class="nav-link" style="color: white;" href="#">Total Qty: 0 </a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" style="color: white;" href="#">Included Tax: 0</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                      <a class="nav-link" style="color: white;" href="#">No of Items: 0</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" style="color: white;" href="#">Total Taxable Amt: 0</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" style="color: white;" href="#">Roundoff : 0</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" style="color: white;" href="#">Net Amt: 0</a>
+                                    </li>
+                                    <li>
+                                    
+                                <button type="submit" class="btn btn-success text-right" name="saved" value="saved"
+                                id="add_purchase_order" title="Save"> <i class="fas fa-save "></i></button>
+                                    </li>
+                                  </ul>
+
+                                </div>
+                              </nav>
+
+                              <br>
+                              <table class="datatable table table-stripped auto-index">
+                                <thead>
+                                  <tr><th>Generic Name</th>
+                                    <th>Medicine Name</th>
+                                    <th>Batch</th>
+                                    <th>Expiry Date</th>
+                                     <th>Inhand-Qty</th>
+                                    <th>Qty</th>
+                                    <th>Rate</th>
+                                    <th>Dis%</th>
+                                    <th>Amount</th>
+                                    <th></th>
+
+                                  </tr>
+                                  <tr></tr>
+                                </thead>
+                                <tbody>
+                                  <tr class="clonetr" id="addrow">
+                                    <td><input name="generic" id="generic" list="generic_name"
+                                      data-uhid-url="{% url 'searchitemname' %}" class="form-control"
+                                      style="width:100%">
+                                      <datalist id="generic_name">
+                                        {% for data in generic_name %}
+                                        <option value="{{data.id}}.{{data.generic_name}}"></option>
+                                        {% endfor %}
+                                      </datalist>
+
+                                    </td>
+                                    <td id="sj"><input name="item_id" id="item_id" list="item_name"
+                                        data-uhid-url="{% url 'searchbatchno' %}" class="form-control"
+                                        style="width:100%"></td>
+                                    <td id="fh" style="display:none;">
+                                      <select name="items" id="items" class="form-control" style="width:200px;">
+                                      <option value="">Select</option>
+                                    </select>&nbsp;
+                                    <input name="extra_item_id" id="extra_item_id" list="item_name"
+                                    data-uhid-url="{% url 'searchbatchno' %}" class="form-control"
+                                    style="width:100%"></td>
+
+                                    <td>
+                                      <select name="batch" id="batch_IDD" class="form-control"
+                                        data-uhid-url="{% url 'add_count_sale' %}">
+                                        <option value="">Select</option>
+                                      </select>
+                                    </td>
+                                    <td><input type="text" name="expiry" id="expiry" class="form-control"></td>
+                                    <td><input type="text" name="inhand" id="inhand" class="form-control"></td>
+                                    <input type="hidden"  name="mrp" id="mrp" class="form-control">
+                                    <td><input type="text" name="qty" id="qty" class="form-control"></td>
+                                    <td><input type="text" name="rate" id="rate" class="form-control"><input type="hidden" name="hidden_rate" id="hidden_rate"></td>
+                                    <td><input type="text" name="discount" id="discount" class="form-control"></td>
+                                    <td><input type="hidden" name="before_disc_amount" id="before_disc_amount"><input
+                                        type="text" name="amount" id="amount" class="form-control"></td>
+                                    <td>
+                                      <div class="row">
+                                        <div class="col-md-3"><button type="submit"
+                                            style="background-color: rgb(4, 96, 41);" class="btn btn-primary"
+                                            name="save_temp" value="save_temp" id="save_temp"><i
+                                              class="fas fa-plus add_icon"></i></button>
+                                        </div>
+                                  </tr>
+                                  <tr>
+                                    <datalist id="item_name">
+                                      {% for data in item_names%}
+                                      <option value="{{data.id}}.{{data.item_name}} {{data.unit}} {{data.item_subcategory}}"></option>
+                                      {% endfor %}
+                                    </datalist>
+
+                                  </tr>
+
+                                </tbody>
+                              </table>
+
+
+                              <hr><br>
+                              <div class="table-responsive">
+
+                                <table class="datatable table table-stripped auto-index" id="myTable">
+                                  <thead style="background-color: cornflowerblue;">
+                                    <tr>
+                                      <th>SI.No</th>
+                                      <th>Generic Name</th>
+                                      <th>Medicine Name</th>
+                                      <th>Batch</th>
+                                      <th>Expiry Date</th>
+                                      <!-- <th>MRP</th> -->
+                                      <th>Qty</th>
+                                      <th>Rate</th>
+                                      <!-- <th>before discount amount</th> -->
+                                      <th>Dis%</th>
+                                      <th>Amount</th>
+                                      <th>Delete</th>
+                                    </tr>
+                                  </thead>
+
+
+                                  <tbody style="background-color: white;"  id="tbody_id">
+                                    {% for data in CounterSale_Temp_1 %}
+                                    <tr class="clonetr">
+                                      <td>{{forloop.counter}}</td>
+                                      <td>{{data.generic_id}}</td>
+                                      <td>{{data.item_id}}</td>
+                                      <td>{{data.batch_no}}</td>
+                                      <td>{{data.expiry_date}}</td>
+                                      <!-- <td>{{data.mrp}}</td> -->
+                                      <td>{{data.qty}}</td>
+                                      <td>{{data.rate}}</td>
+                                      <!-- <td>{{data.before_disc_amount}}</td> -->
+                                      <td>{{data.discount}}</td>
+                                      <td>{{data.amount}}</td>
+                                      <td><div class="col-md-3">
+                                        <input type="hidden" name="temp_id" id="temp_id" value="{{data.id}}">
+                                        <button type="button" style="background-color:rgb(231, 41, 41)" class="btn btn-danger delete_class" ><i class="fas fa-trash-alt"></i></button></div></td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td><span style="font-weight:bold;">Total Amt:</span></td>
+                                      <td><span style="font-weight:bold;" id="total_val">{{total_amt}}</span></td>
+                                      <td></td>
+                                  </tr>
+
+                                  </tbody>
+
+
+                                </table>
+
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- onclick="Delete_temp('tbody_id','delete_class','{{data.id}}')" -->
+                      <!-- Tab Ends -->
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+          <script>
+            window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove();
+            });
+        }, 3000);
+        </script>
+        
+          <script type="text/javascript">
+            $(document).ready(function () {
+              $(document).on('click', '.delete_class_otc', function() {
+                var dumy=this;
+                var url = "{% url 'delete_pharmacy_otctemp' %}";
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                
+                var mob_no=$('#mob_no1').val();
+                var pk=$(dumy).closest('tr').find('#temp_id1').val();
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: {
+                        'pk': pk,
+                        'mob_no':mob_no,
+                    },
+                    headers:headers,
+                    success: function (data) {
+                        console.log(data);
+                        $('#total_val1').html(data);
+                        alert('deleted Successfully....!')
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        $('#total_val1').html(data);
+                        alert('deleted Successfully....!')
+                    }
+                });
+                $(dumy).closest('tr').remove();
+              });
+              $(document).on('click', '.delete_class', function() {
+                var dumy=this;
+                var url = "{% url 'delete_pharmacy_temp' %}";
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+      
+                var uhid=$('#uhid').val();
+                var visit_id=$('#visit_id').val();
+                var pk=$(dumy).closest('tr').find('#temp_id').val();
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: {
+                        'pk': pk,
+                        'uhid':uhid,
+                        'visit_id':visit_id
+                    },
+                    headers:headers,
+                    success: function (data) {
+                        console.log(data);
+                        $('#total_val').html(data);
+                        alert('deleted Successfully....!')
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        $('#total_val').html(data);
+                        alert('deleted Successfully....!')
+                    }
+                });
+                $(dumy).closest('tr').remove();
+
+              });
+
+              $(document).on('change', '#batch_IDD', function () {
+                var serial_batch = this.value;
+                if($('#item_id').val() == ''){
+                  var item_id = $('#items').val();
+                }
+                if($('#items').val() == ''){
+                  var item_id = $('#item_id').val();
+                }
+                if($('#items').val() == '' && $('#item_id').val() == '' ){
+                  var item_id = $('#extra_item_id').val();
+                }
+                const url = $("#batch_IDD").attr("data-uhid-url");
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    serial_batch: serial_batch,
+                    item_id: item_id,
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $('#expiry').val(data["expiry_date"]);
+                    $('#inhand').val(data["inhand"]);
+                    $('#rate').val(data["rate"]);
+                    $('#hidden_rate').val(data["rate"]);
+                    $('#mrp').val(data["mrp"]);
+                  },
+                  error: function (data1) {
+                    console.log(data1);
+                  }
+                });
+              });
+
+              $(document).on('change', '#batch_IDD1', function () {
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                var serial_batch = this.value;
+                if($('#item_id1').val() == ''){
+                  var item_id = $('#items1').val();
+                }
+                if($('#items1').val() == ''){
+                  var item_id = $('#item_id1').val();
+                }
+                if($('#items1').val() == '' && $('#item_id1').val() == '' ){
+                  var item_id = $('#extra_item_id1').val();
+                }
+                const url = $("#batch_IDD1").attr("data-uhid-url");
+                
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    serial_batch: serial_batch,
+                    item_id: item_id,
+
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $('#expiry1').val(data["expiry_date"]);
+                    $('#inhand1').val(data["inhand"]);
+                    $('#rate1').val(data["rate"]);
+                    $('#hidden_rate1').val(data["rate"]);
+                    $('#mrp1').val(data["mrp"]);
+                  },
+                  error: function (data1) {
+                    console.log(data1);
+                  }
+                });
+              });
+
+              $(document).on('keyup', '#patient_name', function () {
+                var patient = this.value;
+                const url = $("#patient_name").attr("data-uhid-url");
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    patient_name: patient,
+
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $('#uhid').val(data["uhid"]);
+                    $('#visit_id').val(data["visit_id"]);
+                    $('#mob_no').val(data["mobile"]);
+                    $('#age').val(data["age"]);
+                    $('#gender').val(data["gender"]);
+                    $('#patient_name').val(data["name"]);
+                    $('#department').val(data["department"]);
+                    $('#consultant_name').val(data["consultant_id"]);
+                  },
+                  error: function (data) {
+                    //alert(data)
+                    console.log(data);
+                  }
+                });
+              });
+              //search item name
+              $(document).on('keyup', '#generic', function () {
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                var generic = $('#generic').val();
+                const url = $("#generic").attr("data-uhid-url");
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    generic: generic,
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $("#items").html(data);
+                    let html_data = '<option value="">Select</option>';
+                    for (var i=0;i<data.length;i++){
+                      html_data += '<option value="' + data[i].item_id__id+'">' + data[i].item_id__id+'.'+data[i].item_id__item_name +'</option>';
+                    }
+                    $("#items").html(html_data);
+                    $("#sj").hide();
+                    $("#fh").show();
+                  },
+                });
+
+              });
+
+              $(document).on('keyup', '#generic1', function () {
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                var generic = $('#generic1').val();
+                const url = $("#generic1").attr("data-uhid-url");
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    generic: generic,
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $("#items1").html(data);
+                    let html_data = '<option value="">Select</option>';
+                    for (var i=0;i<data.length;i++){
+                      html_data += '<option value="' + data[i].item_id__id+'">' + data[i].item_id__id+'.'+data[i].item_id__item_name +'</option>';
+                    }
+                    $("#items1").html(html_data);
+                    $("#sj1").hide();
+                    $("#fh1").show();
+                  },
+                });
+
+              });
+
+              // search batchno with item
+              $(document).on('keyup', '#item_id', function () {
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                var item_id = $('#item_id').val();
+                const url = $("#item_id").attr("data-uhid-url");
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    item_id: item_id,
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $("#batch_IDD").html(data);
+                    let html_data = '<option value="">Select</option>';
+                    data.forEach(function (get_batch) {
+                      console.log(get_batch)
+                      html_data += `<option value="${get_batch.serial_batch}">${get_batch.serial_batch}</option>`
+                      // alert(html_data);
+                    });
+                    console.log(html_data);
+                    $("#batch_IDD").html(html_data);
+
+                  },
+
+                });
+              });
+
+              $(document).on('keyup', '#extra_item_id', function () {
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                var item_id = $('#extra_item_id').val();
+                const url = $("#extra_item_id").attr("data-uhid-url");
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    item_id: item_id,
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $("#batch_IDD").html(data);
+                    let html_data = '<option value="">Select</option>';
+                    data.forEach(function (get_batch) {
+                      console.log(get_batch)
+                      html_data += `<option value="${get_batch.serial_batch}">${get_batch.serial_batch}</option>`
+                      // alert(html_data);
+                    });
+                    console.log(html_data);
+                    $("#batch_IDD").html(html_data);
+
+                  },
+
+                });
+              });
+
+              $(document).on('change', '#items', function () {
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                var item_id = $('#items').val();
+                const url = "{% url 'searchbatchno' %}";
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    item_id: item_id,
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $("#batch_IDD").html(data);
+                    let html_data = '<option value="">Select</option>';
+                    data.forEach(function (get_batch) {
+                      console.log(get_batch)
+                      html_data += `<option value="${get_batch.serial_batch}">${get_batch.serial_batch}</option>`
+                      // alert(html_data);
+                    });
+                    console.log(html_data);
+                    $("#batch_IDD").html(html_data);
+
+                  },
+
+                });
+              });
+
+              $(document).on('keyup', '#item_id1', function () {
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                var item_id = $('#item_id1').val();
+                const url = $("#item_id").attr("data-uhid-url");
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    item_id: item_id,
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $("#batch_IDD1").html(data);
+                    let html_data = '<option value="">Select</option>';
+                    data.forEach(function (get_batch) {
+                      console.log(get_batch)
+                      html_data += `<option value="${get_batch.serial_batch}">${get_batch.serial_batch}</option>`
+                      // alert(html_data);
+                    });
+                    console.log(html_data);
+                    $("#batch_IDD1").html(html_data);
+
+                  },
+
+                });
+              });
+
+              $(document).on('keyup', '#extra_item_id1', function () {
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                var item_id = $('#extra_item_id1').val();
+                const url = $("#extra_item_id1").attr("data-uhid-url");
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    item_id: item_id,
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $("#batch_IDD1").html(data);
+                    let html_data = '<option value="">Select</option>';
+                    data.forEach(function (get_batch) {
+                      console.log(get_batch)
+                      html_data += `<option value="${get_batch.serial_batch}">${get_batch.serial_batch}</option>`
+                      // alert(html_data);
+                    });
+                    console.log(html_data);
+                    $("#batch_IDD1").html(html_data);
+
+                  },
+
+                });
+              });
+
+              $(document).on('change', '#items1', function () {
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                var item_id = $('#items1').val();
+                const url = "{% url 'searchbatchno' %}";
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    item_id: item_id,
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $("#batch_IDD1").html(data);
+                    let html_data = '<option value="">Select</option>';
+                    data.forEach(function (get_batch) {
+                      console.log(get_batch)
+                      html_data += `<option value="${get_batch.serial_batch}">${get_batch.serial_batch}</option>`
+                      // alert(html_data);
+                    });
+                    console.log(html_data);
+                    $("#batch_IDD1").html(html_data);
+
+                  },
+
+                });
+              });
+
+
+              $(document).on('keyup', '#qty', function () {
+                var qty = this.value;
+                var rate = $('#rate').val();
+                var amount = qty * rate;
+                var amount1 = Math.round(amount);
+                $('#amount').val(amount1);
+                $('#before_disc_amount').val(amount1);
+
+              });
+
+              $(document).on('keyup', '#qty1', function () {
+                var qty = this.value;
+                var rate = $('#rate1').val();
+                var amount = qty * rate;
+                var amount1 = Math.round(amount);
+                $('#amount1').val(amount1);
+                $('#before_disc_amount1').val(amount1);
+
+              });
+
+              $(document).on('keyup', '#rate', function () {
+                var rate = this.value;
+                var qty = $('#qty').val();
+                var hidden_rate = $('#hidden_rate').val();
+                if(qty){
+                  var amount = qty * rate;
+                }
+                else{
+                  alert("Please fill the Qty");
+                  var amount = $('#amount').val();
+                }
+                // if(hidden_rate>rate){
+                //   alert('Rate should not less than Selling Rate');
+                // }
+                var amount1 = Math.round(amount);
+                $('#amount').val(amount1);
+                $('#before_disc_amount').val(amount1);
+
+              });
+
+              $(document).on('keyup', '#rate1', function () {
+                var rate = this.value;
+                var qty = $('#qty1').val();
+                var hidden_rate = $('#hidden_rate1').val();
+                if(qty){
+                  var amount = qty * rate;
+                }
+                else{
+                  alert("Please fill the Qty");
+                  var amount = $('#amount1').val();
+                }
+                // if(hidden_rate>rate){
+                //   alert('Rate should not less than Selling Rate');
+                // }
+                var amount1 = Math.round(amount);
+
+                $('#amount1').val(amount1);
+                $('#before_disc_amount1').val(amount1);
+
+              });
+
+
+              $(document).on('keyup', '#discount', function () {
+                var discount = this.value;
+                var qty = $('#qty').val();
+                var rate = $('#rate').val();
+                var amount = qty * rate;
+                var amount1 = Math.round(amount);
+                var disc_amount = (amount1 * discount) / 100
+                var after_disc = amount1 - disc_amount
+                $('#amount').val(after_disc);
+
+              });
+
+              $(document).on('keyup', '#discount1', function () {
+                var discount = this.value;
+                var qty = $('#qty1').val();
+                var rate = $('#rate1').val();
+                var amount = qty * rate;
+                var amount1 = Math.round(amount);
+                var disc_amount = (amount1 * discount) / 100
+                var after_disc = amount1 - disc_amount
+                $('#amount1').val(after_disc);
+
+              });
+
+            });
+
+          </script>
+          <script src="jquery-3.6.0.min.js"></script>
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+          <script>
+            $(document).ready(function () {
+              $(document).on('click', '#forward_opd_billing', function () {
+                var dumy = this;
+                var values = "Forward to OPD";
+
+                var url = "{% url 'status_updatePSR' %}";
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' }
+
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    values: values,
+
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    alert(data);
+                    window.location.href = '{% url "counter_saleout_patient" %}';
+                  },
+                  error: function (data) {
+                    console.log(data);
+                  }
+                });
+              });
+            });
+          </script>
+          {% endblock %}

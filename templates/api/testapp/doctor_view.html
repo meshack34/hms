@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+  {% if success %}
+    <div class="container" align="center">
+      <h2>Successfully submited</h2>
+      <hr>
+      <strong>Do You Want To Add More Doctor Detail</strong>
+      <a href="doctor-view" class="btn btn-primary">Add More</a>
+      <br><br><br><br><br><br>
+    </div>
+  {% else %}
+    <form  method="POST" class="doctor_view_form" enctype="multipart/form-data">
+        <h2 align='center'>Doctor View</h2>
+      <strong>Go Back &nbsp;</strong><a href="/doctor_table">Go Back</a>
+      {% csrf_token %}
+      <div class="form-row">
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_name|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_belogns_to|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_fee|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_email_address|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_password|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_appointment|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_profile_image|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_phone_no|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_register_by|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_department|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-12 mb-0">
+              {{form.doctor_address|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_date_of_birth|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_status|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.registration_exparing_date|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_location|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_id|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_registration_no|as_crispy_field}}
+          </div>
+      </div>
+      <input type="submit" name="submit" value="Submit" class="btn btn-primary  btn-block">
+      <br>
+      <p>
+        <a class="btn btn-primary  btn-block" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+          View All Existing Doctor
+        </a>
+    </p>
+<div class="collapse" id="collapseExample">
+<div class="card1 card-body1">
+{% if records %}
+<table border="2" align="center" class="doctor_view">
+  <thead>
+    <th>Doctor Id</th>
+    <th>Doctor Name</th>
+    <th>Doctor Reg No.</th>
+    <th>Doctor Email Address</th>
+    <th>Doctor Phone Number</th>
+    <th>Doctor Profile Images</th>
+    <th>Doctor DOB</th>
+    <th>Doctor Fees</th>
+    <th>Doctor Department</th>
+    <th>Doctor Location</th>
+  </thead>
+    {% for data in records %}
+      <tr>
+        <td>{{ data.doctor_id}}</td>
+        <td>{{ data.doctor_name}}</td>
+        <td>{{ data.doctor_registration_no}}</td>
+        <td>{{ data.doctor_email_address}}</td>
+        <td>{{ data.doctor_phone_no}}</td>
+        <td>
+          <img src="{{ data.doctor_profile_image.url}}" alt="Not Profile Images" style="width:70px;height:70px;">
+        </td>
+        <td>{{ data.doctor_date_of_birth}}</td>
+        <td>{{ data.doctor_department}}</td>
+        <td>{{ data.doctor_fee}}</td>
+        <td>{{ data.doctor_location}}</td>
+      </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>There is no existing doctor list</p>
+{% endif %}
+</div>
+</div>
+
+      <strong>Go Back &nbsp;</strong><a href="/doctor_table">Go Back</a>
+    </form><br><br>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30;"><br>
+            <h2>Investigation Edit</h2><br>
+            <ul class="nav nav-pills">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Menu 1</a></li>
+                <li><a href="#">Menu 2</a></li>
+                <li><a href="#">Menu 3</a></li>
+              </ul>
+                <table class="datatable table table-stripped ">
+                    <thead>
+                        <tr style="background:#d1dae6;">
+                            <th>S.No</th>
+                            <th>UHID</th>
+                            <th>Admission Id</th>
+                            <th>service_name</th>
+                            <th>service_category</th>
+                            <th>unit</th>
+                            <th>datetime</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% for data in records %}
+                            <tr>
+                            <td>{{forloop.counter}}</td>
+                                <td>{{data.uhid}}</a></td>
+                                <td>{{data.admission_ID}}</td>
+                                <td>{{data.service_name}}</td>
+                                <td>{{data.service_category}}</td>
+                                <td>{{data.unit}}</td>
+                                <td>{{data.date_time}}</td>
+                                <td><button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter" id="edit_button">Edit</button></td>
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="padding: 20px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Billing</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="">Admission Id</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="ad_id" id="ad_id" class="form-control">
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="">UHID</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="uhid_id" id="uhid_id" class="form-control">
+                        </div>
+                    </div>
+            </div><br>
+            <div style="margin-left: 20%;">
+                <button type="submit" class="btn btn-primary" name="sum_bill" value="sum_bill">Summarize
+                    Bill</button>&nbsp;
+                <button type="submit" class="btn btn-primary" name="det_bill" value="det_bill">Detail Bill</button>
+            </div><br>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+        $(document).on('click', '#edit_button', function () {
+            var dumy = this;
+            var uhid = $(dumy).closest('tr').find('#uhid').val();
+            var ad_id = $(dumy).closest('tr').find('#admission_id').val();
+            var doctor = $(dumy).closest('tr').find('#primary_doctor').val();
+            $('#model_uhid').val(uhid);
+            $('#model_admission_id').val(ad_id);
+            $('#model_doctor').val(doctor);
+
+
+        });
+    });
+
+</script>
+
+{% endblock %}

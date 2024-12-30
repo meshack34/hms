@@ -1,0 +1,95 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+    <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;">Department Wise Revenue</a>
+      </div>
+    </nav>
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="card-box mb-0">
+          <div class="header">
+            <div class="body">
+                      <form method="POST">
+        {% csrf_token %}
+        <div class="row filter-row">
+            <div class="col-sm-8 col-md-2">
+                <div class="form-group form-focus mb-0">
+                    <label class="focus-label">From </label>
+                    <input type="datetime-local"  class="form-control" name="start_date">
+                </div>
+            </div>
+            <div class="col-sm-8 col-md-2">
+                <div class="form-group form-focus mb-0">
+                    <label class="focus-label">To</label>
+                    <input type="datetime-local"  class="form-control" name="end_date">
+                </div>
+            </div>
+<!--            <div class="col-sm-8 col-md-2">-->
+<!--                <div class="form-group form-focus mb-0">-->
+<!--                    <label class="focus-label">Department</label>-->
+<!--                    <select style="width:100%;" name="department">-->
+<!--                        <option></option>-->
+<!--                        {% for d in record %}-->
+<!--                          <option value="{{d.id}}">{{d.clinical_department}}</option>-->
+<!--                        {% endfor %}-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="col-sm-8 col-md-2" >
+              <input type="submit" class="form-control btn btn-info" value="Search">
+            </div>
+        </div>
+        </form>
+            <hr>
+                <div class="table-responsive">
+                    {% if department_records %}
+                <table class="datatable table table-stripped ">
+                        <thead>
+                            <tr>
+                                <th>Department</th>
+                                <th>Visist Id </th>
+                                <th>Visit Type</th>
+                                <th>Dr Name</th>
+                            </tr>
+                        </thead>
+<!--                        <tbody>-->
+<!--                          {% for data in filtering_records %}-->
+<!--                          <tr>-->
+<!--                            <td>{{data.clinical_department}}</td>-->
+<!--                            <td>{{data.visit_id}}</td>-->
+<!--                            <td>{{data.visit_type}}</td>-->
+<!--                            <td>{{data.visit_date_time|upper}}</td>-->
+<!--                            <td>{{data.description}}</td>-->
+<!--                            <td>{{data.nurse_doctor}}</td>-->
+<!--                          </tr>-->
+<!--                          {% endfor %}-->
+<!--                         </tbody>-->
+                    <tbody>
+                    {% for dat in department_records %}
+                    <tr>
+                        <td>{{dat.clinical_department}}</td>
+                        <td>{{dat.visit_id}}</td>
+                        <td>{{dat.visit_type}}</td>
+                        <td>{{dat.nurse_doctor}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                    {% endif %}
+                </div>
+
+    </div>
+    </div>
+</div>
+</div>
+  </div>
+</div>
+{% endblock %}
+

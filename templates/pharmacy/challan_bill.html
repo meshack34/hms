@@ -1,0 +1,316 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    #id_purchase_no,#id_vendor_name,#id_date,#id_document_type,#id_bill_date,#id_bill_number,#id_bill_amount,#id_discount,#id_remark,#id_store,#id_GST,{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+   
+    #id_message,#id_Total_CGST,#id_Total_Product_Amt,#id_Total_SGST,#id_Item_Disc,#id_Bill_Disc,#id_Total_IGST,#id_Total_GST,#id_Other_Adj_Amount,#id_Net_Amount{
+      border: 2px solid white;
+      width: 100%;
+      background-color: white;
+      border-bottom: 1px solid black;
+    }
+/* For text inside Border */
+    fieldset{
+           background-repeat:no-repeat;
+           background-position:center;
+           background-size:cover;
+            }
+        p#innerPara{padding:20px ;}
+        legend{width:200px;padding:10px 20px;}
+    </style>
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+   <div class="container-fluid">
+       <a class="navbar-brand" style="color: white;" href="#">Challan Bill</a>
+   </div>
+ </nav><br>
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+           <div class="card">
+                <div class="header">
+        <div class="body">
+               <br><div class="icon-button-demo">&nbsp;
+                   <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fas fa-plus" >Add</i></button>&nbsp;
+                   <button type="button"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;
+                   <button type="button" class="btn btn-primary"  onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+                   <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+                   <button type="button" class="btn btn-warning"><i class="fa fa-print" >Print</i></button>&nbsp;
+                   <button type="button" class="btn btn-warning"><i class="fa fa-search" >Purchase Order</i></button>&nbsp;
+                   <button type="button" class="btn btn-warning"><i class="fa fa-search" >Preview Challan</i></button>&nbsp;
+
+                   </div><br>
+        </div> 
+                </div>
+            </div>
+
+            <div class='container'>
+                <div class="col-lg-20">
+                  <fieldset class="border" >
+                    <legend class ='text-left' style="color: orange;"><b>Challan/Bill_Info</b></legend>
+                    <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                      <form method="POST">
+                        {% csrf_token %}
+                        <div class="row clearfix">
+                           <div class="col-md-2">
+                               {{form.purchase_no|as_crispy_field}}
+                           </div>
+                           <div class="col-md-2">
+                               {{form.vendor_name|as_crispy_field}}
+                           </div>
+                           <div class="col-md-2">
+                               {{form.date|as_crispy_field}}
+                           </div>
+                           <div class="col-md-2" >
+                            {{form.document_type|as_crispy_field}}
+                           </div>
+                           <div class="col-md-2">
+                            {{form.bill_date|as_crispy_field}}
+                           </div>
+                           <div class="col-md-2">
+                            {{form.bill_number|as_crispy_field}}
+                           </div>
+                           <div class="col-md-2">
+                            {{form.bill_amount|as_crispy_field}}
+                           </div>
+                           <div class="col-md-2">
+                            {{form.discount|as_crispy_field}}
+                           </div>
+                           <div class="col-md-0"><br>
+                            <button type="button" class="btn btn-warning"> <i class="fas fa-sync-alt" >Re-Calculate</i></button>&nbsp;
+                           </div>
+                            <div class="col-md-2">
+                           {{form.remark|as_crispy_field}}
+                           </div>
+                           <div class="col-md-2">
+                           {{form.store|as_crispy_field}}
+                           </div>
+                        </div>
+                      </form>
+                    </div>
+                    
+             
+             
+                   
+                               
+                  </fieldset>
+                </div>
+            </div>
+            
+            <div class='container'>
+              <div class="col-lg-16">
+                <fieldset class="border" >
+                  <legend class ='text-left' style="color: orange;"><b>Item Info</b></legend>
+                  <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                    <form method="POST">
+                      {% csrf_token %}
+                      <div class="form-row">
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.item_name|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.HSN_code|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.Packing|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.Batch_Number|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.MFG_Date|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.Expiry_Date|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.Paid_Qty|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.Free_Qty|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.MRP|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.Sale_level1|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.Sale_level2|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.Rate|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.Item_Disc|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.Disc_Amt|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.GST|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.GST_Amt|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.CGST|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.SGST|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.IGST|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.CGST_Amt|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.SGST_Amt|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.IGST_Amt|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-2 mb-0"><br><br>
+                          <label class="check_opt">IGST
+                            <input type="checkbox" name="IGST" >
+                            <span class="checkmark" ></span>
+                          </label>
+                          </div>
+                          <div class="form-group col-md-3 mb-0">
+                            {{form.Net_Rate|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{form.Total_Amount|as_crispy_field}}
+                        </div>
+                        
+                        <div class="form-group col-md-3 mb-0"><br><br>
+                          <button type="button" class="btn btn-warning"> <i class="fas fa-plus" >Insert</i></button>&nbsp;
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+       
+       
+                          <thead>
+                              <tr><th>Barcode</th>
+                                  <th>Item Name</th>
+                                  <th>Packing</th>
+                                  <th>HSN Code</th>
+                                  <th>Batch No</th>
+                                  <th>Expiry_Date</th>
+                                  <th>Paid Qty</th>
+       
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr data-toggle="modal1" data-target=".bd-example1-modal-xl">
+                                  <td>1rfg</td>
+                                  <td>Item</td>
+                                  <td>Name</td>
+                                  <td>Be1234</td>
+                                  <td>20</td>
+                                  <td>25/04/2022</td>
+                                  <td>15</td>
+                              </tr>
+                           </tbody>
+                  </table>
+                  </div>
+                </fieldset>
+              </div>
+          </div>
+          <!-- Ends -->
+      <!-- start      -->
+      <div class='container'>
+        <div class="col-lg-16">
+          <fieldset class="border" >
+            <legend class ='text-left' style="color: orange;"><b>Bill Summary</b></legend>
+            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+              <div class="row" >
+                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+                  <div class="card">
+                      <form method="POST">
+                {% csrf_token %}
+                   <div class="form-group col-md-10 mb-0">
+                       {{form.message|as_crispy_field}}
+                   </div>
+                   <div class="col-md-0"><br>
+                    <button type="button" class="btn btn-warning"> <i class="fas fa-edit" >Verify</i></button>&nbsp;
+                  </div>
+              </form>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                  <div class="card">
+                    <form method="POST">
+                      {% csrf_token %}
+                      <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                          {{form.Total_CGST|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                          {{form.Total_Product_Amt|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                          {{form.Total_Product_Amt|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                          {{form.Total_SGST|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                          {{form.Item_Disc|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                          {{form.Bill_Disc|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                          {{form.Total_IGST|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                          {{form.Total_GST|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                          {{form.Other_Adj_Amount|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                          {{form.Net_Amount|as_crispy_field}}
+                        </div>
+                      </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+          </fieldset>
+        </div>
+    </div>
+    
+      <!-- Ends -->
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+  {% endblock  %}

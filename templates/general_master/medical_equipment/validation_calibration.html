@@ -1,0 +1,257 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <button type="menu" style="font-family: monospace; width: 100%; text-align: left;"
+            class="btn btn-primary m-t-15 waves-effect"> <b>Calibration and Validation Details</b></button>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+                    <div class="card">
+                        <div class="header">
+                            <div class="body">
+                                <br>
+                                <div class="icon-button-demo">&nbsp;
+<!--                                    <button type="button" class="btn btn-warning"-->
+<!--                                       ><i class="fas fa-plus">Maintanence Deatils</i></button>&nbsp;-->
+<!--                                    <button type="button" class="btn btn-info"><a href="#"><i-->
+<!--                                                class="fas fa-edit" style="color:white;">Preventory Maintanence </i></a></button>&nbsp;-->
+<!--                                    <button type="button" class="btn btn-primary">-->
+<!--                                        <i class="fas fa-sync-alt">Validation And Calibration</i></button>&nbsp;-->
+                                    <button type="button" class="btn btn-success"><a href='/validation_calibration_pdf'><i
+                                                class="fas fa-file" style="color:white;">  Report Generate</i></a></button>&nbsp;
+                                    <button type="button" class="btn btn-info"><a href='/medical_equipment'><i
+                                                class="fas fa-arrow-left" style="color:white;"> Back</i></a></button>&nbsp;
+                                      <button type="button" class="btn btn-primary" onClick="window.location.reload();">
+                                        <i class="fas fa-sync-alt">Refresh</i></button>
+                                </div><br>
+                                <div class="col-lg-12 " style="background-color:white;"><br>
+                                    <div class="row clearfix">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <div class="form-group col-md-12 mb-0">
+                                                        <h3 style="text-align:center;"><label for="schedule_name">Item Name: <b>{{get_name|upper}}</b></label></h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 </div>
+                                <form method="POSt">
+                                    {% csrf_token %}
+                                    <div class="col-lg-12 " style="background-color:white;"><br>
+                                        <div class="row clearfix">
+<!--                                            <div class="col-sm-3">-->
+<!--                                                <div class="form-group">-->
+<!--                                                    <div class="form-line">-->
+<!--                                                        <div class="form-group col-md-12 mb-0">-->
+<!--                                                            <label for="schedule_name" style="padding-left: 20px;">Schedule Name</label>-->
+<!--                                                            <select class="form-control" name="schedule_name" id="schedule_name" readonly>-->
+<!--                                                                <option>{{sche.schedule_name}}</option>-->
+<!--                                                            </select>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+                                            <div class="col-sm-3">
+                                              <div class="form-group">
+                                                  <div class="form-line">
+                                                      <div class="form-group col-md-12 mb-0">
+                                                          <label for="item_sub_id" style="padding-left: 20px;">Item Sub Id</label>
+                                                          <input type="text"  class="form-control" id="item_sub_id" name="item_sub_id" value="{{sche.item_subcategory}}" readonly>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <div class="form-group col-md-12 mb-0">
+                                                            <label for="item_id" style="padding-left: 20px;">Item ID</label>
+                                                            <input type="text"  class="form-control" id="item_id" name="item_id" value="{{sche.item_category}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <div class="form-group col-md-12 mb-0">
+                                                            <label for="item_model_no" style="padding-left: 20px;">Item Model No.</label>
+                                                            <input type="text"  class="form-control" id="item_model_no" name="item_model_no" value="{{sche.hsn_item_code}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+<!--                                            <div class="col-sm-3">-->
+<!--                                                <div class="form-group">-->
+<!--                                                    <div class="form-line">-->
+<!--                                                        <div class="form-group col-md-12 mb-0">-->
+<!--                                                            <label for="due_date" style="padding-left: 20px;">Due Date </label>-->
+<!--                                                            <input type="text"  class="form-control" id="due_date" name="due_date" value="{{sche.due_date}}" readonly>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+                                        <hr>
+                                        <br>
+                                        <div class="col-lg-12 " style="background-color:rgb(233,233,233);"><br>
+                                            <p style="text-align-center"><b>Fill Calinration and Validation Data here </b></p>
+                                            <div class="row clearfix">
+                                                <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <div class="form-group col-md-12 mb-0">
+                                                            <label for="schedule_name" style="padding-left: 20px;">Schedule Name</label>
+                                                            <select class="form-control" name="schedule_name" id="schedule_name">
+                                                                <option>---- select ----</option>
+                                                                {% for da in get_schedule_data%}
+                                                                <option>{{da.schedule_name}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <div class="form-line">
+                                                            <div class="form-group col-md-12 mb-0">
+                                                                <label for="done_by" style="padding-left: 20px;">Done By</label>
+                                                                <input type="text"  class="form-control" id="done_by" name="done_by">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <div class="form-line">
+                                                            <div class="form-group col-md-12 mb-0">
+                                                                <label for="dispensive" style="padding-left: 20px;">Dispensive</label>
+                                                                <input type="text"  class="form-control" id="dispensive" name="dispensive">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <div class="form-line">
+                                                            <div class="form-group col-md-12 mb-0">
+                                                                <label for="date_time" style="padding-left: 20px;">Date/Time</label>
+                                                                <input type="datetime-local"  class="form-control" id="date_time" name="date_time">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <div class="form-line">
+                                                            <div class="form-group col-md-12 mb-0">
+                                                                <label for="validation_date" style="padding-left: 20px;">Validation Date</label>
+                                                                <input type="date"  class="form-control" id="validation_date" name="validation_date">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <div class="form-line">
+                                                            <div class="form-group col-md-12 mb-0">
+                                                                <label for="remark" style="padding-left: 20px;">Any Remark</label>
+                                                                <input type="text"  class="form-control" id="remark" name="remark">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <div class="form-line">
+                                                            <div class="form-group col-md-12 mb-0">
+                                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="datatable table table-stripped ">
+                                        <thead>
+                                            <tr>
+                                                <th>S.No.</th>
+                                                <th>Schedule Name</th>
+                                                <th>Item Sub ID</th>
+                                                <th>Item ID</th>
+                                                <th>Item Model No.</th>
+                                                <th>Done By</th>
+                                                <th>Dispensive</th>
+                                                <th>Done Date</th>
+                                                <th>Validation Date</th>
+                                                <th>Remark</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{{forloop.counter}}</td>
+                                                <td>{{data.schedule_name}}</td>
+                                                <td>{{data.item_sub_id}}</td>
+                                                <td>{{data.item_id}}</td>
+                                                <td>{{data.item_model_no}}</td>
+                                                <td>{{data.done_by}}</td>
+                                                <td>{{data.dispensive}}</td>
+                                                <td>{{data.date_time}}</td>
+                                                <td>{{data.validation_date}}</td>
+                                                <td>{{data.remark}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $(document).on('keyup', '#schedule_name', function () {
+        var schedule_name = $('#schedule_name').val();
+        const url = $("#created_at").attr("data-uhid-url");
+        var headers = {'X-CSRFToken': '{{ csrf_token }}' };
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {
+            schedule_name: schedule_name,
+            },
+            headers: headers,
+            dataType : 'json',
+            success: function(data){
+              $("#due_date").val(data.due_date);
+              $("#husband_name").val(data.husband_name);
+              $("#ivf_no").val(data.ivf_plan_id);
+              //$("#ivf_date").val(data.ivf_date);
+            },
+           error:function(data)
+            {
+                console.log(data);
+            }
+               });
+        });
+        });
+</script>
+{% endblock %}

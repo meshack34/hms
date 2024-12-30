@@ -1,0 +1,76 @@
+{% extends 'qms/base.html' %}
+{% load static %}
+{% block body_block %}
+   <!-- content -->
+   <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="card-box mb-0">
+       <button type="menu" style="font-family: monospace; width: 100%; text-align: left;" class="btn btn-primary m-t-15 waves-effect"> <b>Token_Creation</b></button>
+       <div class="container-fluid"><br>
+
+          <div class="row clearfix">
+              <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+                {% if 'create_token' in access.user_profile.screen_access or request.user.is_superuser %}
+                    <a href="token_creation2" class="btn btn-danger">Create New Token</a>
+
+                        {% endif %} 
+                  <div class="card">
+                    
+                      <div class="header">
+                          <div class="body">
+                            
+                  
+                  <div class="table-responsive">
+                    {% if 'view_token' in access.user_profile.screen_access or request.user.is_superuser %}
+                    <table class=" table table-stripped ">
+                          <thead style="background-color: rgb(209, 209, 244);">
+                              <tr>
+                                <!-- <th bgcolor= "#38ACEC" style="color:black  ">S.No.</th> -->
+                                  <th>Date</th>
+                                  <th>Doctor Id</th>
+                                  <th>Doctor Name</th>
+                                  <th>Speciality</th>
+                                  <th>Patient Id</th>
+                                  <th>Patient Name</th>
+                                  <th>Token No</th>
+                                  <th>Room No</th>
+                                  <th >Slip Generation</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            {% for data in tc %}
+                              <tr>
+                                  <!-- <td>{{data.id}}</td> -->
+                                  <td>{{data.Date}}</td>
+                                  <td>{{data.Doct_id}}</td>
+                                  <td>{{data.Doct_Name}}</td>
+                                  <td>{{data.speciality}}</td>
+                                  <td>{{data.Pt_Id}}</td>
+                                  <td>{{data.Pt_Name}}</td>
+                                  <td>{{data.Token_No}}</td>
+                                  <td>{{data.Room_No}}</td>
+                                  {% if 'token_get_slip' in access.user_profile.screen_access or request.user.is_superuser %}
+                                  <td><a href="token_slip_generation/{{data.id}}"><span class="btn btn-primary">Get Slip</span></a></td>
+                                  {% endif %}
+                              </tr>
+                              {% endfor %}
+                           </tbody>
+
+                  </table>
+                  {% endif %}
+                  
+              </div>
+          </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    {% endblock  %}

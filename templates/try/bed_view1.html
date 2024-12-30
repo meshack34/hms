@@ -1,0 +1,174 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- content -->
+<style>
+    .card {
+        margin: 0 auto;
+        /* Added */
+        float: none;
+        /* Added */
+        margin-bottom: 10px;
+        /* Added */
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px;">
+            <h3>Bed View</h3><br><br><br>
+            <form method="POST" id="form_id" data-cities-url="{% url 'bed_load' %}">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="inputEmail4">Ward Type</label>
+                        <select class="custom-select mr-sm-2" id="ward_name" name="ward_name">
+                            <option selected>Choose...</option>
+                            <option value="all">All</option>
+                            {% for data in ward_type %}
+                            <option value="{{data.ward_type}}">{{data.ward_type}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputPassword4">Ward Category</label>
+                        <select class="custom-select mr-sm-2" id="ward_cat" name="ward_cat">
+                            <option selected>Choose...</option>
+                            <!-- {% for data in ward_cat_records %}
+                            <option value="{{data.category_name}}">{{data.category_name}}</option>
+
+                            {% endfor %} -->
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6" style="padding-top: 25px;">
+                        <button type="submit" class="btn btn-primary"
+                            style="margin-left: 70%; width: 150px; height: 40px;">Search</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+       
+        {% if bed %}
+        <div class="card" style="width: 70%;padding: 15px ; border-radius: 30px;">
+            <div style="font-size: 15px;">
+                <span><i class="fa fa-bed" style="font-size:20px; color: green;"></i>&nbsp;&nbsp;Free
+                    Bed's</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><i class="fa fa-bed"
+                        style="font-size:20px; color: red;"></i>&nbsp;&nbsp;Occupied Bed's</span>
+            </div><br><br><br>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div class="form-row">
+                        {% for data in bed_number %}
+
+                        {% if data.status == "occupied" %}
+                        {% for a in loo %}
+                        {% if data.bed_no in a %}
+                            <div class="form-group col-md-3">
+                                
+                                <i class="fa fa-bed" style="font-size:60px; color: red;" ></i>
+                                <p style="font-size: 12px;"><span>{{a.0}}</span>      <span>{{a.3}} / {{a.1|make_list|first}}</span></p>
+                                <P  ><b>{{data.bed_no}}</b></P>
+                               
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        {% elif data.status == "Active" %}
+                        <div class="form-group col-md-3">
+                            <i class="fa fa-bed" style="font-size:60px; color: green;"></i>
+                            <P><b>{{data.bed_no}}</b></P>
+                        </div>
+                        {% else %}
+                        <div class="form-group col-md-3">
+                            <i class="fa fa-bed" style="font-size:60px; color: green;"></i>
+                            <P >  <b>{{data.bed_no}}</b></P>
+                        </div >
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        {% endif %}
+        {% if all_detils %}
+        <div class="card" style="width: 70%;padding: 15px;">
+            <div style="font-size: 15px;">
+                <span><i class="fa fa-bed" style="font-size:20px; color: green;"></i>&nbsp;&nbsp;Free
+                    Bed's</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><i class="fa fa-bed"
+                        style="font-size:20px; color: red;"></i>&nbsp;&nbsp;Occupied Bed's</span>
+            </div><br><br><br>
+        </div>
+
+                {% for detail,bed in all_detils %}
+                <div class="card" style="width: 70%;padding: 15px;  border-radius: 20px;">
+                    {% for data in detail %}
+                        {% if forloop.first %}
+                            <p>Ward Type : <b>{{data}}</b></p>
+                        {% endif %}
+                        {% if forloop.last %}
+                            <p>Ward Category : <b>{{data}}</b></p>
+                        {% endif %}
+                    {% endfor %} <br><br>
+                    {% for a in bed %}
+                    <div class="form-row">
+                        {% for data in a %}
+                        {% if data.status == "occupied" %}
+
+                        <div class="form-group col-md-3">
+                            <i class="fa fa-bed" style="font-size:60px ; color: red;" ></i>
+                            <P><b>{{data.bed_no}}</b></P>
+                        </div>
+                        {% elif data.status == "Active" %}
+                        <div class="form-group col-md-3">
+                            <i class="fa fa-bed" style="font-size:60px ; color: green;"></i>
+                            <P><b>{{data.bed_no}}</b></P>
+                        </div>
+                        {% else %}
+                        <div class="form-group col-md-3">
+                            <i class="fa fa-bed" style="font-size:60px ; color: green;"></i>
+                            <P><b>{{data.bed_no}}</b></P>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+  
+
+
+        {% endif %}
+
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $("#ward_name").change(function () {
+      const ward_type_id = $(this).val();
+      const url = $("#form_id").attr("data-cities-url");  
+  
+      $.ajax({             
+          url: url,   
+          data: {
+              'ward_type_id':ward_type_id 
+          },
+          success: function (data) { 
+              $("#ward_cat").html(data);  
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (cat) {
+              console.log(cat)
+                  html_data += `<option value="${cat.category_name}">${cat.category_name}</option>`
+              });
+              console.log(html_data);
+              $("#ward_cat").html(html_data);
+  
+  
+          }
+      });
+  
+  });
+  </script>
+
+{% endblock %}

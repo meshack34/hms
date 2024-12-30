@@ -1,0 +1,264 @@
+
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+    {% block head_block %}
+
+    {% endblock  %}
+{% block body_block %}
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+input{
+  font-size: 20px;
+  text-decoration: underline;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+  min-width: 200px;
+}
+textarea{
+  width: 200px;
+  font-size: 20px;
+  text-decoration: underline;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    text-decoration: underline;
+    color: black;
+}
+.vl {
+  border-left: 6px solid green;
+  height: 500px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top: 0;
+}
+input.dashed {
+  border-bottom: 3px dashed black;
+}
+textarea.form-control {
+  border-bottom: 3px dashed black;
+}
+</style>
+
+<!--This for payment receipt print function-->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+      <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>Patient Discharge Form</b>
+        </div>
+        <div class="">
+          <button type="submit" class="btn text-light" form="nurse_notes" value="Save"><i class="fas fa-save"></i></button>
+          <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item btn-primary" onclick="printDiv('hello')" value="Print" id="download-button " href="#">Print</a>
+            <a href="/OT/clinical_notes_records" class="dropdown-item btn-primary"> Records</a> 
+          </div>
+        </div>
+      </div>
+<div id="hello" >
+    <form method="post" id="nurse_notes">
+        {% csrf_token %}
+    <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100% padding: 30px;">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+        <tr>
+            
+                <div class="" >
+                    <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                    </center>
+                </div>
+            
+        </tr>
+    </table>
+		</td>
+	</tr>
+	    <tr >
+		    <td>
+                <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                    <tr>
+                        <td colspan="6" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;"><b>PATIENT DISCHARGE FORM</b></h3></td>
+                    </tr>
+                   <tr style="background-color: white;">
+                         <th style="background-color: white;">Facility</th>
+                        <td><input type="text" name="facility" class="dashed" style="width:200%" required></td>
+                        <th style="background-color: white;"></th>
+                        <td></td>
+                        <th style="background-color: white;">Date/Time</th>
+                        <td><input class="dashed" type="text" name="date_time" ></td>
+                   </tr>
+
+                    <tr style="background-color: white;">
+                        <th style="background-color: white;">Patient name</th>
+                        <td><input type="text" name="patient_name" class="dashed" ></td>
+                         <th style="background-color: white;">Age</th>
+                        <td><input  class="dashed" type="text" name="age"></td>
+                        <th style="background-color: white;">Gender</th>
+                        <td><input class="dashed" type="text" name="gender" ></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: white;">Date of Addmission</th>
+                        <td><input class="dashed" type="text" name="gender" ></td>
+                      <th style="background-color: white;"></th>
+                        <td></td>
+                        <th style="background-color: white;">Date of Dischrge</th>
+                        <td><input  class="dashed" type="text" name="stage"></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: white;">Discharge Diagnosis</th>
+                    </tr>
+                  <tr>
+                        <td><input class="dashed" type="text" name="histology" style="width:400%"></td>
+                  </tr>
+                  <tr>
+                        <td><input class="dashed" type="text" name="histology" style="width:400%"></td>
+                  </tr>
+                  <tr>
+                        <td><input class="dashed" type="text" name="histology" style="width:400%"></td>
+                    </tr>
+                  <tr>
+                        <td><input class="dashed" type="text" name="histology" style="width:400%"></td>
+                    </tr>
+                  <tr>
+                        <td><input class="dashed" type="text" name="histology" style="width:400%"></td>
+                    </tr>
+                  <tr>
+                        <td><input class="dashed" type="text" name="histology" style="width:400%"></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: white;">Procedures & Therapies </th>
+                        <td ><input  class="dashed" type="text" name="drugs" ></td>
+                    </tr>
+                      <tr>
+                        <th style="background-color: white;">Complications</th>
+                        <td><input  class="dashed" type="text" name="dose_m2" ></td>
+                    </tr>
+                      <tr>
+                        <th style="background-color: white;">Consultantions</th>
+                        <td><input  class="dashed" type="text" name="dose_m2" ></td>
+                    </tr>
+                    <tr>
+                      <th style="background-color: white;"><b>Partient History</b></th>
+                        <td><input class="dashed" type="text" name="notes" style="width:300%"></td>
+                    </tr>
+                    <tr>
+                        <td><input class="dashed" type="text" name="notes" style="width:414%"></td>
+                    </tr>
+                    <tr>
+                        <td><input class="dashed" type="text" name="notes" style="width:414%"></td>
+                    </tr>
+                   <tr>
+                      <th style="background-color: white;"><b>Lab</b></th>
+                        <td><input class="dashed" type="text" name="notes" style="width:300%"></td>
+                    </tr>
+                    <tr>
+                      <th style="background-color: white;"><b>Condition of Discharge</b></th>
+                        <td><input class="dashed" type="text" name="notes" style="width:300%"></td>
+                    </tr>
+                   <tr>
+                      <th style="background-color: white;">Dispositions</th>
+                        <td><input class="dashed" type="text" name="notes" style="width:300%"></td>
+                    </tr>
+                   <tr>
+                      <th style="background-color: white;">Discharge to</th>
+                        <td><input class="dashed" type="text" name="notes" style="width:300%"></td>
+                    </tr>
+                   <tr>
+                      <th style="background-color: white;">Diet</th>
+                        <td><input class="dashed" type="text" name="notes" style="width:300%"></td>
+                    </tr>
+                   <tr>
+                      <th style="background-color: white;">Activity</th>
+                        <td><input class="dashed" type="text" name="notes" style="width:300%"></td>
+                    </tr>
+                   <tr>
+                      <th style="background-color: white;">DME</th>
+                        <td><input class="dashed" type="text" name="notes" style="width:300%"></td>
+                    </tr> <tr>
+                      <th style="background-color: white;">Home Health Services</th>
+                        <td><input class="dashed" type="text" name="notes" style="width:300%"></td>
+                    </tr>
+                   <tr>
+                      <th style="background-color: white;"><b>Lab</b></th>
+                        <td><input class="dashed" type="text" name="notes" style="width:300%"></td>
+                    </tr>
+                    <tr>
+                      <th style="background-color: white;">F/U apts</th>
+                        <td><input class="dashed" type="text" name="notes" style="width:300%"></td>
+                    </tr>
+                    <tr>
+                      <th style="background-color: white;">Meds</th>
+                        <td><input class="dashed" type="text" name="notes" style="width:300%"></td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+    </div>
+
+
+<!--        <br><br><br><br>-->
+<!--            <div class="table-responsive">-->
+<!--              <table border="2"  class="datatable table table-stripped table-highlight">-->
+<!--                  <thead>-->
+<!--                <tr>-->
+<!--                  <th>P Name</th>-->
+<!--                  <th>Gender</th>-->
+<!--                  <th>Age</th>-->
+<!--                  <th>Action</th>-->
+<!--                </tr>-->
+<!--                  </thead>-->
+<!--                  <tbody>-->
+<!--                  {% for data in records1 %}-->
+<!--                    <tr>-->
+<!--                      <td>{{data.patient_name}}</td>-->
+<!--                      <td>{{data.gender}}</td>-->
+<!--                      <td>{{data.age}}</td>-->
+<!--                      <td><a href="/view_chemotherapy/{{data.id}}" class="btn btn-primary">Print</a></td>-->
+<!--                    </tr>-->
+<!--                  {% endfor %}-->
+<!--                  </tbody>-->
+<!--              </table>-->
+<!--              </div>-->
+<!--</div>-->
+
+
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+{% endblock %}
+
+

@@ -1,0 +1,78 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block%}
+<style>
+    .table>thead>tr>th {
+    white-space: nowrap;
+
+}
+.icon-button-demo{
+    white-space: nowrap;
+}
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+      <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/dashboard" class="text-light mr-2" title="Back"><i class="fa fa-arrow-circle-left"></i></a>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <div style="overflow:auto;" >
+            <table class="datatable table table-hover" id="tables">
+                <thead style="background-color: rgb(181, 181, 233);">
+                    <tr>
+                        <th>UHID</th>
+                        <th>IPD Bill No.</th>
+                        <th>AdmID</th>
+                        <th>Adm.Date</th>
+                        <th>Name</th>
+                        <th>Net. Amount</th>
+                        <th>Paid Amt</th>
+                        <th>Oustanding Amt</th>
+                        <th>Tariff</th>
+<!--                        <th>Bed No</th>-->
+<!--                        <th>Action</th>-->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{data.uhid}}</td>
+                        <td><a href="/ipd/print_bill_receipt/{{data.admission_ID}}/{{data.id}}">{{data.ipd_bill_no}}</a></td>
+                        <td>{{data.admission_ID}}</td>
+                        <td>{{data.created_at|date:'Y-m-d'}} {{data.created_at|time:'H:i'}}</td>
+                        <td>{{data.uhid.title}} {{data.uhid.first_name}} {{data.uhid.last_name}}</td>
+                        <td>{{data.net_amt}}</td>
+                        <td>{{data.paid_amt}}</td>
+                        <td>{{data.outstanding_amt}}</td>
+                        <td>{{data.tariff_name}}</td>
+<!--                        <td>{{data.bed_no}}</td>-->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+  <script>
+    function toggleVisibility() {
+      var demoElement = document.getElementById('filter_card');
+      if (demoElement.style.display === 'none' || demoElement.style.display === '') {
+        demoElement.style.display = 'block'; // Show the element
+      } else {
+        demoElement.style.display = 'none';  // Hide the element
+      }
+    }
+  </script>
+
+
+{% endblock %}

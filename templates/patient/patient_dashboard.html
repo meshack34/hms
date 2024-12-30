@@ -1,0 +1,94 @@
+{% extends 'patient/base.html' %}
+{% block body_block %}
+<!--Main Content-->
+        <div class="main_content"  style="background-image: linear-gradient(white,#9AD0EC);">
+            <br>
+            <h5>DASHBOARD</h5><br>
+
+            <div class="row">
+
+                <div class=" col-lg-3  col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;{{no_of_doctor}}</h4></span> <h2 class="text-right"><i class="fas fa-stethoscope pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Total Doctors</h5>
+                        </div>
+                     </div>
+                    </div><br>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;100</h4></span> <h2 class="text-right"><i class="fas fa-procedures pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Total Patient</h5>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;{{total_appointment}}</h4></span> <h2 class="text-right"><i class="fas fa-user-clock pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Total Appointment</h5>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;35</h4></span> <h2 class="text-right"><i class="far fa-clock pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Visit Appointment</h5>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;{{today_total_appointment_records}}</h4></span> <h2 class="text-right"><i class="fas fa-calendar-check pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Today Appointment</h5>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;45</h4></span> <h2 class="text-right"><i class="fas fa-clipboard-list pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Total Test</h5>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;25</h4></span> <h2 class="text-right"><i class="fas fa-clipboard-list pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Total Today Test</h5>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;25</h4></span> <h2 class="text-right"><i class="fas fa-user-tie pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Total Admin</h5>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+           </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+
+{% endblock %}

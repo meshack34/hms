@@ -1,0 +1,353 @@
+
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+    {% block head_block %}
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+
+.rectangle {
+        width: 200px;
+        height: 100px;
+        border: 2px solid black;
+    }
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+input{
+/* <!--  width: 200px;--> */
+  font-size: 20px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+  min-width: 200px;
+}
+textarea{
+  width: 200px;
+  font-size: 20px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+/* <!--  min-width: 200px;--> */
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    text-decoration: underline;
+    color: black;
+}
+.vl {
+  border-left: 6px solid green;
+  height: 500px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top: 0;
+}
+input.dashed {
+  border-bottom: 3px dashed black;
+}
+textarea.form-control {
+  border-bottom: 3px dashed black;
+}
+</style>
+{% endblock %}
+{% block body_block %}
+<!--This for payment receipt print function-->
+<div class="page-wrapper" style="background-color: hsl(0, 0%, 100%);">
+    <div class="content px-3 py-2" style="overflow-x: auto;">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Informed Concent Form </b>
+            </div>
+            <div class="">
+              <button type="submit" class="btn text-light" form="nurse_notes" name="save_button" value="Save"><i class="fas fa-save"></i></button>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                 
+                <a class="dropdown-item btn-primary" id="download-button " type="button" onclick="printDiv('hello')">Print</a>
+                <a href="/informed_consent_view" class="dropdown-item btn-primary"> Records</a>
+              </div>
+            </div>
+          </div>
+<div id="hello" >
+    <form method="post" id="nurse_notes">
+        {% csrf_token %}
+        <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+            <tr>
+      
+                    <div class="" >
+                        <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                        </center>
+                    </div>
+      
+            </tr>
+        </table>
+		</td>
+	</tr>
+	    <tr >
+		    <td style="border: 2px solid black;">
+                <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                    <tr>
+                        <td colspan="8" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;"><b>Informed Concent Form For:</b></h3></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" style="text-align:center;border-bottom: 1px solid #222;"><h4 style="margin: 0;">Intervention, Invasive, Diagnosis and Therapeutic Administration of sedation or Anasthesia Administration of Therapy and/or Other Procedures</h4></td>
+                    </tr>
+                    <tr>
+                        <td colspan="8"><h4 style="margin: 0;"><u> <b>A. Procedure</b></u></h4></td>
+                    </tr>
+                    <tr>
+                        <td colspan="8"><h4 style="margin: 0;"> If there is anything do you understand about the procedure, or if you want more information you should consult the doctor. </h4></td>
+                    </tr>
+                    <tr>
+                        <td colspan="8"><h4 style="margin: 0;"><u> <b>B. Statement-Patient</b></u></h4></td>
+                    </tr>
+                    <tr>
+                        <td colspan="8"><h4 style="margin: 0;">I. A doctor will explain the proposed procedure and what the alternative are, if any. You can ask questions and seek further information. You can decline
+                            the intervention or note specified restrictions on your care.
+                         </h4></td>
+                    </tr>
+                    <tr>
+                        <td colspan="8"><h4 style="margin: 0;">II. The benefits and risk of the procedure will be explained to you, as will the possible efforts and side efforts of the procedure.
+                         </h4></td>
+                    </tr>
+                    <tr>
+                        <td colspan="8"><h4 style="margin: 0;">Exceptions to surgery or anaesthesia or therapy,</h4></td> 
+                    </tr>
+                    <tr>
+                        <td colspan="12"><h4 style="margin: 0;"><ul>
+                            &nbsp;<li>I consent to the performance of the abover named operation or procedure/therapy and of such additional operations or procedures as may be
+                                considered to be necessary or desirable in the judgement of the doctors.</li><br>
+                            <li>I consent to administration of contrast media and understand the adverse effects that it may be exposed to.</li><br>
+                            <li>I consent to the disposal be authorities of this medical facility of any tissues or part, which may be removed at the time of operation. </li><br>
+                            <li>I understand that as a patient that the procedure may be performed by any competent member of the medical staff.</li>
+                           
+                          </ul></td>
+                    </tr>
+                    <tr>
+                        <td colspan="8"><h4 style="margin: 0;"><u> <b>C. Consent note (by doctor)</b></u></h4></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: hsl(0, 0%, 100%);">Date:</th>
+                        <td><input  class="dashed" type="text" name="date" required></td>
+                        <th style="background-color: hsl(0, 0%, 100%);" required>Time</th>
+                        <td><input  class="dashed" type="text" name="time" ></td>
+                    </tr>
+           
+                    <tr style="border-top: 2px solid black; border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">1. Patient's Mental state condition at time consent was given</th>
+                        <td><input class="dashed" type="text" name="mental_state" style="width: 250%;" required></td>
+                    </tr>
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">2. Doctor Performing procedure</th>
+                        <td><input class="dashed" type="text" name="doctor_performing" style="width: 250%;" required></td>
+                    </tr>
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">3. Brief description of proposed procedure</th>
+                        <td><input class="dashed" type="text" name="description" style="width: 250%;" required></td>
+                    </tr>
+                    
+                    <tr style="border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">4. I have explained to the patient/guardian/parent.</th>
+                        <td><input class="dashed" type="text" name="explain_parent_patient" style="width: 250%;" required></td>
+                    </tr>
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">&nbsp; &nbsp;&nbsp;&nbsp; a) The procedure, its intended benefit as follows:</th>
+                        <td><input class="dashed" type="text" name="intened_benefits" style="width: 250%;" required></td>
+                    </tr>
+
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <td><input class="dashed" type="text" name="intened_benefits" style="width: 450%;"></td>
+                    </tr>
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <td><input class="dashed" type="text" name="intened_benefits" style="width: 450%;"></td>
+                    </tr>
+
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">&nbsp; &nbsp;&nbsp;&nbsp;b) Serious or Frequent occuring risks and potential complications</th>
+                        <td><input class="dashed" type="text" name="serious_risk" style="width: 250%;" required></td>
+                    </tr>
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <td><input class="dashed" type="text" name="serious_risk" style="width: 450%;"></td>
+                    </tr>
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <td><input class="dashed" type="text" name="serious_risk" style="width: 450%;"></td>
+                    </tr>
+
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">&nbsp; &nbsp;&nbsp;&nbsp; c) Any extra procedures that may become necessary during the procedure, such as :</th>
+                        <td><input class="dashed" type="text" name="extra_procedure" style="width: 250%;" required></td>
+                    </tr>
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <td><input class="dashed" type="text" name="extra_procedure" style="width: 450%;"></td>
+                    </tr>
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <td><input class="dashed" type="text" name="extra_procedure" style="width:450%;"></td>
+                    </tr>
+                    <tr style="border-bottom: 2px solid; border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">5. The risk and benefits of available alternative treatment has also been discussed</th>
+                        <td><input class="dashed" type="text" name="alternative_treatment" style="width: 250%;" required></td>
+                    </tr>
+                    <tr>
+                        <td colspan="8"><h4 style="margin: 0;"><u> <b>E. Consent note (by doctor)</b></u></h4></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: hsl(0, 0%, 100%);" >Date:</th>
+                        <td><input  class="dashed" type="date" name="date2" required></td>
+                        <th style="background-color: hsl(0, 0%, 100%);" >Time</th>
+                        <td><input  class="dashed" type="text" name="time2" required></td>
+                    </tr>
+                    <tr style=" background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2"><h4>1. Patient's Mental state at time consent was given. </h4> </th>
+                        <td><input class="dashed" type="text" name="mental_state2" style="width: 250%;" required></td>
+                    </tr>
+                    <tr style="background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2"><h4> 2. Healthcare Professional administering/Sedation</h4></th>
+                        <td><input class="dashed" type="text" name="administering_sedation" style="width: 250%;" required></td>
+                    </tr>
+                    <tr style=" background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="3"><h4> 3. This Procedure will be carried out under the following Mode of Anaesthesia</h4></th>
+                      
+                    </tr>
+                    <tr>
+                        <td><h4 style="margin: 0;">
+                            GENERAL</h4><input type="checkbox" style="height: 30px; " name="mode_of_anasthesia" value="general" required>
+                          </td>
+                          <td colspan="2"><h4 style="margin: 0;">
+                            REGIONAL ANASTHESIA</h4><input type="checkbox" style="height: 30px;" name="mode_of_anasthesia" value="regional anasthesia"> </td>
+                          <td ><h4 style="margin: 0;">
+                            LOCAL ANASTHESIA</h4><input type="checkbox" style="height: 30px; " name="mode_of_anasthesia" value="local anasthesia"> </td>
+                            <td colspan="2"><h4 style="margin: 0;">
+                                SEDATION</h4><input type="checkbox" style="height: 30px; " name="mode_of_anasthesia" value="sedation"> </td> 
+                    </tr>
+                    
+
+                  <tr>
+                      <th style="background-color: hsl(0, 0%, 100%);" colspan="12" > 4. I, Doctor <input class="dashed" type="text" name="doctor_name" style="width: 60%;" required> ,have explained to the <br><br> patient/guardian/parent,serious or frequent occuring risks<input class="dashed" type="text" name="dr_explain_procedure" style="width: 56%;" required></th>
+                      
+                        
+                    </tr>
+                    <tr>
+                        <td><input class="dashed" type="text" name="dr_explain_procedure" style="width: 450%;" ></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="12" >5. Benefits of mode of anasthesia <input class="dashed" type="text" name="benefites_mode_anasthesia" style="width: 72%;" required> </th>
+                        
+                          
+                      </tr>
+                      <tr>
+                        <td><input class="dashed" type="text" name="benefites_mode_anasthesia" style="width: 450%;" ></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="12" >6. Alternatives<input class="dashed" type="text" name="alternative" style="width: 84%;"> </th> 
+                      </tr>
+                      <tr>
+                        <td><input class="dashed" type="text" name="alternative" style="width: 450%;" ></td>
+                    </tr>
+                
+                  <tr>
+                      <th colspan="8" style="background-color: hsl(0, 0%, 100%);">7. Patient was given the oppotunity to as questions?</th>
+                    </tr>
+                    <tr>
+                        <th style="background-color: hsl(0, 0%, 100%);"><h4 style="margin: 0; padding-left: 100px;">
+                            YES</h4></th>
+                        <td><input type="checkbox" style="height: 30px;" name="patient_qstn" value="Yes" required>
+                          </td>
+                          <th style="background-color: hsl(0, 0%, 100%);"><h4 style="margin: 0;">
+                            NO</h4></th>
+                          <td ><input type="checkbox" style="height: 30px;" name="patient_qstn" value="No"> </td>
+                          
+                    </tr>
+                    <tr>
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="12" >If no, Explain<input class="dashed" type="text" name="patient_explain" style="width: 87%;"> </th> 
+                      </tr>
+                      <tr>
+                        <td><input class="dashed" type="text" name="patient_explain" style="width: 415%;" ></td>
+                    </tr>
+
+                  <tr>
+                      <th colspan="8" style="background-color: hsl(0, 0%, 100%);">VI. I confirm that I have examined the patient and ecplained the mode of anaesthesia proposed (general/regional/sedation) and such appropriate options as are available including benefits and associated risks, if any to the patient in terms which to my judgement are suited to the understanding of the patient and/ or to one of the parents or guardians of the patient.</th>
+                    </tr>
+                 
+                    <tr>
+                        <td><input type="text" class="dashed" name="name_of_doctor" required><br><h4><center> NAME OF DOCTOR</center></h4></td>
+                        <td><input type="text" class="dashed" name="doctor_signature" required><br><h4><center>SIGNATURE</center> </h4></td>
+                        <td><input type="text" class="dashed" name="date3" required><br><h4><center>DATE</center></h4></td>
+                        <td><input type="text" class="dashed" name="time3" required><br><h4><center>TIME</center> </h4></td>
+                          
+                    </tr>
+                    <tr>
+                        <th colspan="8" style="background-color: hsl(0, 0%, 100%);"> VII. a) PATIENT(Acceptance of Treatment).<br>
+                            I understand the nature of proposed procedure (s), accompanying risks and expected results,as described above and thereby give consent to the procedure except the following:<input class="dashed" type="text" name="patient_accept_procedure" style="width: 90%;" ></th>
+                      </tr>
+                      <tr>
+                        <td><input class="dashed" type="text" name="patient_accept_procedure" style="width: 415%;" ></td>
+                    </tr>
+                    <tr>
+                    
+                        <td><input type="text" class="dashed" name="patient_signature" required><br><h4><center>SIGNATURE</center> </h4></td>
+                        <td><input type="text" class="dashed" name="date4" required><br><h4><center>DATE</center></h4></td>
+                        <td><input type="text" class="dashed" name="time4" required><br><h4><center>TIME</center> </h4></td>
+                        <td colspan="2"><div class="rectangle" style="padding-left: 250px;"></div><h4>(Thumb print-if required )</h4></td>
+                          
+                    </tr>
+                    <tr>
+                        <th colspan="8" style="background-color: hsl(0, 0%, 100%);"> b) I understand the nature of proposed procedure (s), accompanying risks and expected results, as described above but REFUSE to consent to the procedure.<input class="dashed" type="text" name="patient_upderstand_procedure" style="width: 90%;" ></th>
+                      </tr>
+                      <tr>
+                        <td><input class="dashed" type="text" name="patient_upderstand_procedure" style="width: 415%;" ></td>
+                    </tr>
+                    <tr>
+                    
+                        <td><input type="text" class="dashed" name="signature_self" required><br><h4><center>SIGNATURE(self)</center> </h4></td>
+                        <td><input type="text" class="dashed" name="date5" required><br><h4><center>DATE</center></h4></td>
+                        <td><input type="text" class="dashed" name="time5" required><br><h4><center>TIME</center> </h4></td>
+                          
+                    </tr>
+                
+                    <tr>
+                    
+                        <td><input type="text" class="dashed" name="signature_guardian"><br><h4><center>SIGNATURE(parent/guardian)</center> </h4></td>
+                        <td><input type="date" class="dashed" name="date6" placeholder=""><br><h4><center>DATE</center></h4></td>
+                        <td><input type="text" class="dashed" name="time6"><br><h4><center>TIME</center> </h4></td>
+                        <td colspan="2"><div class="rectangle" style="padding-left: 250px;"></div><h4>(Thumb print-if required )</h4></td>
+
+                          
+                    </tr>
+                        
+                </table>
+            </td>
+        </tr>
+    </table>
+</form>
+
+</div>
+    </div>
+  </div>
+
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+{% endblock %}
+
+

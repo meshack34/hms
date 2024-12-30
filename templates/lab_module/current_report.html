@@ -1,0 +1,65 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px; overflow: auto;">
+            <h2><img src="{% static 'images/lab_test.png' %}" alt="" style="width: 50px;">  <b>Lab Report</b></h2><br><br>
+            <div>
+             <div class="table-responsive">
+                <table class="datatable table table-stripped ">
+                  <thead>
+                    <tr>
+                      <th scope="col">S.No</th>
+                        <th scope="col">Unid</th>
+                      <th scope="col">P Id</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Age / Sex</th>
+                      <th scope="col">Date & Time</th>
+                      <th scope="col">  Report</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                        {% if records_cl %}
+                        {% for data in records_cl %}
+                      {% ifchanged data.PTID %}
+                      <tr>
+                          <td >{{forloop.counter}}</td>
+                          <td><input type="text" id="id" class='f orm-comtrol' style="border: none; text-align:center;" value="{{data.uhid}}" readonly></td>
+                          <td><input type="text" id="id" class='f orm-comtrol' style="border: none; text-align:center;" value="{{data.PTID}}" readonly></td>
+                          <td><input type="text" id="id" class='f orm-comtrol' style="border: none; text-align:center;" value="{{data.first_name}} {%if data.middle_name %}{{data.middle_name}}{% endif %} {{data.last_name}}" readonly></td>
+                          <td><input type="text" id="id" class='form-comtrol' style="border: none; text-align:center;" value="{{data.pat_gender|first}} / {{data.pat_age}}" readonly></td>
+                          <td><input type="text" id="id" class='form-comtrol' style="border: none; text-align:center;" value="{{data.date_time}}" readonly></td>
+                          <td id="pop_up"><a href="/final_lab_report_clinical/{{data.PTID}}"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" >Report</button></a></td>
+                        </tr>
+                      {% endifchanged %}
+                      {% endfor %}
+                        {% else %}
+                  <tr>
+                      <td><h2 style="text-align:center;color:Red;">Report Not Generated</h2></td>
+                  </tr>
+                  {% endif %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function myFunction() {
+      var txt;
+      if (confirm("Press a button!")) {
+        txt = "You pressed OK!";
+      } else {
+        txt = "You pressed Cancel!";
+      }
+      document.getElementById("demo").innerHTML = txt;
+    }
+    </script>
+{% endblock %}

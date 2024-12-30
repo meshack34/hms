@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<div class="hero">
+    <div class="outer" >
+  <div class="container" align="center1">
+    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+    <form  method="POST" class="doctor_view_form">
+      <h2 align='center'>Patient </h2><hr>
+      {% csrf_token %}
+      <!-- {{form | crispy}} -->
+      <div class="form-row">
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_id|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_email_address|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_password|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_first_name|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_last_name|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_date_of_birth|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_gender|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_address|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_phone_number|as_crispy_field}}
+          </div>
+
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_maritial_status|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_added_on|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_verification_code|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.email_verify|as_crispy_field}}
+          </div>
+
+      </div>
+      <input type="submit" name="submit" value="Submit" class="btn btn-primary  btn-block">
+      <strong>Go To Previous Page&nbsp;</strong><a href="doctor-view">Doctor View</a>
+    </form><br><br>
+    </div>
+    </div>
+    </div>
+    </div>
+    
+{% endblock %}

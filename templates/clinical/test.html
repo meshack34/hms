@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+</head>
+<body>
+<div class="row">
+       <div class="col-12">
+        <h2>Add Record</h2>
+         <form id="insertvideo" method="POST" >
+              <input autocomplete="false" name="hidden" type="text" style="display:none;">
+
+          <input type="button" class="btn btn-success addButton col-3 offset-1" value="Add"/>
+          <input type="submit" class="btn btn-success submit_btn col-3 offset-1" value="SetService" name="multiple_submit" id="submit">
+
+
+
+          <br><br>
+         <table id="addrow" width="100%" border="2">
+          <tr>
+          <th style="border-bottom:1px solid black;">Service Name</th>
+          <th>&nbsp;Rate&nbsp;&nbsp;&nbsp;</th>
+          <th>Discount</th>
+          <th>Unit</th>
+          <th>NetAmount</th>
+          <th>OutstdAmt</th>
+          <th>TotalAmt</th>
+          <th>ReceiveAmt</th>
+          <th>Action</th>
+         </tr>
+          <tr class="clonetr" >
+            <td class="table_form"  style="width:10em!important;">
+              <div id="autocomplete" class="autocomplete">
+            <input class="autocomplete-input" type="text" name="service_name" value="" style="background-color:white!important;height:1em;"/>
+            <ul class="autocomplete-result-list" style="color:black;" ></ul>
+         </div>
+
+            </td>
+              <td class="table_form" style="width:50%!important;border:1px solid white;border-bottom:1px solid black;">
+              <div id="autocomplete" class="autocomplete" style="width:50%!important;">
+                <input class="autocomplete-input" type="text" name="service_name" value="" style="background-color:white!important;height:1em;"/>
+                <ul class="autocomplete-result-list" style="color:black;" ></ul>
+              </div>
+            </td>
+                <td><input type="text" id="name" name="name[]" class="form-control" required value="{{intell_search_ser_charges}}"></td>
+                <td><input type="text"  id="email" name="amount[]" class="form-control" autocomplete="off"></td>
+                <td><input type="text"  id="pass" name="discount[]" class="form-control" autocomplete="off"></td>
+                <td><input type="text"  id="pass" name="unit[]" class="form-control" autocomplete="off"></td>
+                <td><input type="text"  id="pass" name="net_amount[]" class="form-control" autocomplete="off"></td>
+                <td><input type="text"  id="pass" name="outstanding_amount[]" class="form-control" autocomplete="off"></td>
+                <td><input type="text"  id="pass" name="total_amount[]" class="form-control" autocomplete="off"></td>
+                <td><input type="text"  id="pass" name="receive_amount[]" class="form-control" autocomplete="off"></td>
+                <td><input type="button" class="btn btn-danger deleteButton" value="delete"/></td>
+          </tr>
+         </table>
+         </form>
+       </div>
+     </div>
+
+<script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+
+         <script>
+             new Autocomplete('#autocomplete', {
+                 search : input =>{
+                     console.log(input)
+                     const url =`/search?service_name=${input}`
+                     return new Promise(resolve =>{
+                         fetch(url)
+                         .then(response => response.json())
+                         .then(data =>{
+                             console.log(data)
+                             resolve(data.data)
+                         })
+                     })
+                 },
+                 onSubmit : result =>{
+                     console.log(result)
+                     window.open(`/opd_billing/?search=${result}`,'_self')
+                 }
+             })
+         </script>
+<!--Editible table and add and remove row -->
+
+<script>
+    var arrHead = new Array();  // array for header.
+    arrHead = ['', 'Employee Name', 'Designation', 'Age'];
+
+    // first create TABLE structure with the headers.
+    function createTable() {
+        var empTable = document.createElement('table');
+        empTable.setAttribute('id', 'empTable'); // table id.
+
+        var tr = empTable.insertRow(-1);
+        for (var h = 0; h < arrHead.length; h++) {
+            var th = document.createElement('th'); // create table headers
+            th.innerHTML = arrHead[h];
+            tr.appendChild(th);
+        }
+
+        var div = document.getElementById('cont');
+        div.appendChild(empTable);  // add the TABLE to the container.
+    }
+
+    // now, add a new to the TABLE.
+    function addRow() {
+        var empTab = document.getElementById('empTable');
+
+        var rowCnt = empTab.rows.length;   // table row count.
+        var tr = empTab.insertRow(rowCnt); // the table row.
+        tr = empTab.insertRow(rowCnt);
+
+        for (var c = 0; c < arrHead.length; c++) {
+            var td = document.createElement('td'); // table definition.
+            td = tr.insertCell(c);
+
+            if (c == 0) {      // the first column.
+                // add a button in every new row in the first column.
+                var button = document.createElement('input');
+
+                // set input attributes.
+                button.setAttribute('type', 'button');
+                button.setAttribute('value', 'Remove');
+
+                // add button's 'onclick' event.
+                button.setAttribute('onclick', 'removeRow(this)');
+
+                td.appendChild(button);
+            }
+            else {
+                // 2nd, 3rd and 4th column, will have textbox.
+                var ele = document.createElement('input');
+                ele.setAttribute('type', 'text');
+                ele.setAttribute('value', '');
+
+                td.appendChild(ele);
+            }
+        }
+    }
+
+    // delete TABLE row function.
+    function removeRow(oButton) {
+        var empTab = document.getElementById('empTable');
+        empTab.deleteRow(oButton.parentNode.parentNode.rowIndex); // button -> td -> tr.
+    }
+
+    // function to extract and submit table data.
+    function submit() {
+        var myTab = document.getElementById('empTable');
+        var arrValues = new Array();
+
+        // loop through each row of the table.
+        for (row = 1; row < myTab.rows.length - 1; row++) {
+            // loop through each cell in a row.
+            for (c = 0; c < myTab.rows[row].cells.length; c++) {
+                var element = myTab.rows.item(row).cells[c];
+                if (element.childNodes[0].getAttribute('type') == 'text') {
+                    arrValues.push("'" + element.childNodes[0].value + "'");
+                }
+            }
+        }
+
+        // The final output.
+        l=document.getElementById('output').innerHTML = arrValues;
+        alert(l)
+        //console.log (arrValues);   // you can see the array values in your browsers console window. Thanks :-)
+    }
+</script>
+
+<!-- Adding Multiple data -->
+
+<script type="text/javascript">
+     $(function(){
+    $(".addButton").click(function(){
+        $('.clonetr:last').clone(true).appendTo("#addrow");
+    });
+
+    $(".deleteButton").click(function(){
+        if($('.deleteButton').length > 1){
+
+           $(this).closest("tr").remove();
+        }
+
+    });
+});
+
+</script>
+       <script type="text/javascript">
+        $(document).on('click','.delete',function(){
+
+            var id = $(this).attr('uid');
+
+            $('#user_id').val(id);
+
+            $('#modal_popup').modal({backdrop: 'static', keyboard: true, show: true});
+        });
+
+        function call()
+        {
+            alert("You has been deleted Successfully");
+        }
+
+    </script>
+<script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+
+         <script>
+             new Autocomplete('#autocomplete', {
+                 search : input =>{
+                     console.log(input)
+                     const url =`/search?service_name=${input}`
+                     return new Promise(resolve =>{
+                         fetch(url)
+                         .then(response => response.json())
+                         .then(data =>{
+                             console.log(data)
+                             resolve(data.data)
+                         })
+                     })
+                 },
+                 onSubmit : result =>{
+                     console.log(result)
+                     window.open(`/opd_billing/?search=${result}`,'_self')
+                 }
+             })
+         </script>
+<!--Editible table and add and remove row -->
+<!--Script for removing services Start  -->
+<script>
+     var url="/temp_service_removing";
+    function delete_pack(id)
+    {
+
+      var r=confirm("SURE,You Want To Remove This Service")
+        if (r==true)
+          window.location = url+"/"+id;
+        else
+          return false;
+
+    }
+  </script>
+
+<!--Script for removing services Ends -->
+<!--Scripts for confirm Save  START-->
+<script>
+    function confirmSave(){
+    alert('Really You Want To Add All These Services..')
+    }
+</script>
+<</body>
+</html>

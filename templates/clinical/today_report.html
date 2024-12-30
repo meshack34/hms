@@ -1,0 +1,395 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+
+{% block head_block %}
+<style>
+    .form-control {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Total Collection Report</b>
+            </div>
+            <div class="">
+              <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+                <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+                
+              </div>
+            </div>
+          </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" id="filter_card"><br>
+                    <div class="form-row">
+                        <div class="form-group col-md-2 mb-0">
+                            <label style="font-weight: bold;" >From Date<b style="color: red;">*</b> </label>
+                            <input type='datetime-local' name='b_start_date' id='b_start_date' style="background-color: white;" class='form-control' >
+                        </div>
+
+                        <div class="form-group col-md-2 mb-0">
+                            <label style="font-weight: bold">To Date<b style="color: red;">*</b></label>
+                            <input type='datetime-local' name='b_end_date' style="background-color: white;" id='b_end_date' class='form-control' >
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                            <label>Payment Mode</label>
+                            <select name="mode_type" class="form-control"  style="background-color: white;" id="mode_type">
+                                <option value="">----Select----</option>
+                                <option value="cash">Cash</option>
+                                <option value="debit_credit_card">Debit/Credit Card</option>
+                                <option value="m_pesa">M-pesa</option>
+                                <option value="bank">Bank</option>
+                                <option value="eft">EFT</option>
+                                <option value="cheque">Cheque</option>
+                            </select>                                            </div>
+                        <div class="form-group col-md-3 mb-0">
+                            <label style="font-weight: bold">User<b style="color: red;">*</b></label>
+                            <select name="users" class="form-control" style="background-color: white;" >
+                                <option value="">----Select----</option>
+                                {% for data in users %}
+                                <option value="{{data.login_id.id}}">{{data.f_name}} {{data.middle_name}} {{data.last_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-sm-0"><br>
+                            <button type="submit" class="btn btn-warning w-100 mt-2" name="search_btn"
+                                value="Search"><i class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                        </div>
+
+                    </div>
+                    <br>
+                </div>
+            </form>
+                         
+            {% if records %}
+            <div id="hello">
+                <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                    <tr>
+                        <div class="" >
+                            <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                            </center>
+                        </div>
+                    </tr>
+                </table>
+
+                <style>
+                    table, th, td {
+                        border: 1px solid black;
+                        border-collapse: collapse;
+
+                    }
+                    #button2{
+                    font-size: larger;
+                    padding: 10px;
+                    border: none;
+                    border-radius: 5px;
+                }
+                    </style>
+                    <center><h3> Total Collection Report From <input type="datetime-local" style="border: 1px solid transparent;" value="{{bill_start_date}}"> To <input style="border: 1px solid transparent;"  type="datetime-local" value="{{bill_end_date}}"> </h3></center>
+                    <div class="table-responsive">
+                <table class="table table-bordered" style="border-style: solid;font-size:x-small;" align="center">
+                    <thead>
+
+                        <tr>
+                            <th scope="col"><b>SI.No</b></th>
+                            <th scope="col"><b>UHID</b></th>
+                            <th scope="col">Visit ID</th>
+                            <th scope="col">Bill No</th>
+                            <th scope="col">Date/Time</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">OP Net Amt</th>
+                            <th scope="col">OP Disc</th>
+                            <th scope="col">OP Paid Amt</th>
+                            <th scope="col">Modes</th>
+                            <th scope="col">Collected By</th>
+                        </tr>
+                    </thead>
+
+                        <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <td scope="row" style="padding-left: 15px;padding-right: 15px;">{{forloop.counter}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.uhid}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.visit_id}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.bill_id}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.date_time}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.f_name}} {{record.m_name}} {{record.l_name}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.dept}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.net_amount|floatformat:2|intcomma}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.disc|floatformat:2|intcomma}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.paid_amount|floatformat:2|intcomma}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.mode_type|upper}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.created_by.first_name}}</td>
+
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                                <td colspan="2"><b style="font-weight: bold;">Total Amount</b></td>
+                                <td><b style="font-weight: bold;">{{opd_tot_amt|floatformat:2|intcomma}}</b></td>
+                                <td><b style="font-weight: bold;">0</b></td>
+                                <td><b style="font-weight: bold;">{{opd_paid_amt|floatformat:2|intcomma}}</b></td>
+                                <td colspan="2"></td>
+                            </tr>
+                        <tr>
+                            <td colspan="11" style="text-align:center; font-weight: bold;"><b>Pharmacy Bill Details</b></td>
+                            </tr>
+                        {% regroup pharmacy_records by uhid as record1 %}
+                        {% for group in record1 %}
+                        <tr>
+                            <td colspan="1"><b style="font-weight: bold;">{{group.grouper}}</b></td>
+                        </tr>
+                        {% for record in group.list %}
+                        <tr>
+                            <td scope="row" style="padding-left: 15px;padding-right: 15px;">{{forloop.counter}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.uhid}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.visit_id}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.Op_sales_no}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.sales_date}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.patient_name}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.dept}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.total_taxable_amount|floatformat:2|intcomma}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">0</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.paid_amount|floatformat:2|intcomma}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.type|upper}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{record.created_by.first_name}}</td>
+
+                        </tr>
+                        {% endfor %}
+                        {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                                <td colspan="2"><b style="font-weight: bold;">Pharmacy Total Amount</b></td>
+                                <td><b style="font-weight: bold;">{{sub_tot_amt|floatformat:2|intcomma}}</b></td>
+                                <td><b style="font-weight: bold;">0</b></td>
+                                <td><b style="font-weight: bold;">{{sub_paid_amt|floatformat:2|intcomma}}</b></td>
+                                <td colspan="2"></td>
+                            </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"><b style="font-weight: bold;">Grand Total Amount</b></td>
+                            <td><b style="font-weight: bold;">{{ttl_net|floatformat:2|intcomma}}</b></td>
+                            <td><b style="font-weight: bold;">0</b></td>
+                            <td><b style="font-weight: bold;">{{paid_amt|floatformat:2|intcomma}}</b></td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="10" style="text-align:center; font-weight: bold;"><b>Payments Details</b></td>
+                        </tr>
+                        {% if total_paments %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><b>Cash</b></td>
+                            <td></td>
+                            <td><b>{{amt_cash|floatformat:2|intcomma}}</b></td>
+                            <td></td>
+                        </tr>
+                                                                    <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><b>Debit/Credit Card</b></td>
+                            <td></td>
+                            <td><b>{{amt_debit|floatformat:2|intcomma}}</b></td>
+                            <td></td>
+                        </tr>
+                                                                    <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><b>M-Pesa</b></td>
+                            <td></td>
+                            <td><b>{{amt_m_pesa|floatformat:2|intcomma}}</b></td>
+                            <td></td>
+                        </tr>
+                                                                    <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><b>Bank</b></td>
+                            <td></td>
+                            <td><b>{{amt_bank|floatformat:2|intcomma}}</b></td>
+                            <td></td>
+                        </tr>
+                                                                    <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><b>EFT</b></td>
+                            <td></td>
+                            <td><b>{{amt_eft|floatformat:2|intcomma}}</b></td>
+                            <td></td>
+                        </tr>                                            <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><b>Cheque</b></td>
+                            <td><b></b></td>
+                            <td><b>{{amt_cheque|floatformat:2|intcomma}}</b></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><b style="font-weight: bold;">Total</b></td>
+                            <td><b></b></td>
+                            <td><b style="font-weight: bold;">{{total_paments|floatformat:2|intcomma}}</b></td>
+                            <td></td>
+                        </tr>
+                        {% elif mode_wise_total_paments %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><b style="font-weight: bold;">{{mode_type|upper}}</b></td>
+                            <td></td>
+                            <td><b style="font-weight: bold;">{{mode_wise_total_paments|floatformat:2|intcomma}}</b></td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                </div>
+                <div class="col-sm-6 col-md-4" class="card">
+                    <canvas id="myChart" width="10" height="50" class="card"></canvas>
+                </div>
+
+            </div>
+            {% endif %}
+
+    </div>
+</div>
+
+<script>
+    function toggleVisibility() {
+      var demoElement = document.getElementById('filter_card');
+      
+      if (demoElement.style.display === 'none') {
+        demoElement.style.display = 'block'; // Show the element
+      } else {
+        demoElement.style.display = 'none';  // Hide the element
+      }
+    }
+  </script>
+<script src="../assets/js/app.js"></script>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+
+<!-- Export csv -->
+
+<script>
+    function htmlToCSV(html, filename) {
+        var data = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText);
+            }
+
+            data.push(row.join(","));
+        }
+
+        downloadCSVFile(data.join("\n"), filename);
+    }</script>
+<script>
+    function downloadCSVFile(csv, filename) {
+        var csv_file, download_link;
+
+        csv_file = new Blob([csv], { type: "text/csv" });
+
+        download_link = document.createElement("a");
+
+        download_link.download = filename;
+
+        download_link.href = window.URL.createObjectURL(csv_file);
+
+        download_link.style.display = "none";
+
+        document.body.appendChild(download_link);
+
+        download_link.click();
+    }</script>
+
+<script>document.getElementById("download-button").addEventListener("click", function () {
+        var html = document.querySelector("table").outerHTML;
+        htmlToCSV(html, "itemwise_purchase.csv");
+    });</script>
+
+{% endblock %}

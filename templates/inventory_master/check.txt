@@ -1,0 +1,384 @@
+ # Inventory Master
+def item_category_master(request):
+    form=ItemCategoryMasterForm()
+    item_category_master=ItemCategoryMaster.objects.all()
+    if request.method=='POST':
+        form=ItemCategoryMasterForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request,'inventory_master/item_category_master.html',{'form':form,'item_category_master':item_category_master})
+
+# Item Category master
+def item_category_master(request):
+    form=ItemCategoryMasterForm()
+    item_category_master=ItemCategoryMaster.objects.all()
+    if request.method=='POST':
+        form=ItemCategoryMasterForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request,'inventory_master/item_category_master.html',{'form':form,'item_category_master':item_category_master})
+def edit_item_category_master(request):
+    form=ItemCategoryMasterForm()
+    item_category_master=ItemCategoryMaster.objects.all()
+    if request.method=='POST':
+        form=ItemCategoryMasterForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request,'inventory_master/edit_item_category_master.html',{'form':form,'item_category_master':item_category_master})
+def editing_item_category_master(request,id):
+    item_category_master=ItemCategoryMaster.objects.get(id=id)    
+    form=ItemCategoryMasterForm(instance=item_category_master)
+    if request.method=='POST':
+        form=ItemCategoryMasterForm(request.POST,instance=item_category_master)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/edit_item_category_master')
+    return render(request,'inventory_master/editing_item_category_master.html',{'form':form,'item_category_master':item_category_master})
+def deleting_item_category_master(request,id):
+    item_category_master=ItemCategoryMaster.objects.get(id=id)
+    item_category_master.delete()
+    return HttpResponseRedirect('/item_category_master')  
+# Ends Item Category Master
+# Item Belongs To Master
+# Item Category master
+def belongs_to_master(request):
+    form=ItemBelongsToMasterForm()
+    belongs_to_master=ItemBelongsToMaster.objects.all()
+    if request.method=='POST':
+        form=ItemBelongsToMasterForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request,'inventory_master/belongs_to_master.html',{'form':form,'belongs_to_master':belongs_to_master})
+def edit_belongs_to_master(request):
+    form=ItemBelongsToMasterForm()
+    belongs_to_master=ItemBelongsToMaster.objects.all()
+    if request.method=='POST':
+        form=ItemBelongsToMasterForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request,'inventory_master/edit_belongs_to_master.html',{'form':form,'belongs_to_master':belongs_to_master})
+def editing_belongs_to_master(request,id):
+    belongs_to_master=ItemBelongsToMaster.objects.get(id=id)    
+    form=ItemBelongsToMasterForm(instance=belongs_to_master)
+    if request.method=='POST':
+        form=ItemBelongsToMasterForm(request.POST,instance=belongs_to_master)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/edit_belongs_to_master')
+    return render(request,'inventory_master/editing_belongs_to_master.html',{'form':form,'belongs_to_master':belongs_to_master})
+def deleting_belongs_to_master(request,id):
+    belongs_to_master=ItemBelongsToMaster.objects.get(id=id)
+    belongs_to_master.delete()
+    return HttpResponseRedirect('/belongs_to_master')  
+# Packaging Master Start
+def packaging_master(request):
+    form=PackagigMasterForm()
+    packaging_master=PackagigMaster.objects.all()
+    if request.method=='POST':
+        form=PackagigMasterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/packaging_master')
+    return render(request,'inventory_master/packaging_master.html',{'form':form,'packaging_master':packaging_master})
+def edit_packaging_master(request):
+    form=PackagigMasterForm()
+    packaging_master=PackagigMaster.objects.all()
+    if request.method=='POST':
+        form=PackagigMasterForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request,'inventory_master/edit_packaging_master.html',{'form':form,'packaging_master':packaging_master})
+def editing_packaging_master(request,id):
+    packaging_master=PackagigMaster.objects.get(id=id)
+    form=PackagigMasterForm(instance=packaging_master)
+    if request.method=='POST':
+        form=PackagigMasterForm(request.POST,instance=packaging_master)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/edit_packaging_master')
+    return render(request,'inventory_master/editing_packaging_master.html',{'form':form,'packaging_master':packaging_master})
+def deleting_packaging_master(request,id):
+    packaging_master=PackagigMaster.objects.get(id=id)
+    packaging_master.delete()
+    return HttpResponseRedirect('/packaging_master')
+
+# Ends Packaging Master
+# Start Item Unit Master
+def item_unit_master(request):
+    form=ItemUnitMasterForm()
+    item_unit_master=ItemUnitMaster.objects.all()
+    if request.method=='POST':
+        form=ItemUnitMasterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/item_unit_master')
+    return render(request,'inventory_master/item_unit_master.html',{'form':form,'item_unit_master':item_unit_master})
+def edit_item_unit_master(request):
+    form=ItemUnitMasterForm()
+    item_unit_master=ItemUnitMaster.objects.all()
+    if request.method=='POST':
+        form=ItemUnitMasterForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request,'inventory_master/edit_item_unit_master.html',{'form':form,'item_unit_master':item_unit_master})
+def editing_item_unit_master(request,id):
+    item_unit_master=ItemUnitMaster.objects.get(id=id)
+    form=ItemUnitMasterForm(instance=item_unit_master)
+    if request.method=='POST':
+        form=ItemUnitMasterForm(request.POST,instance=item_unit_master)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/edit_item_unit_master')
+    return render(request,'inventory_master/editing_item_unit_master.html',{'form':form,'item_unit_master':item_unit_master})
+def deleting_item_unit_master(request,id):
+    item_unit_master=ItemUnitMaster.objects.get(id=id)
+    item_unit_master.delete()
+    return HttpResponseRedirect('/item_unit_master')    
+    
+    # Ends Item Unit Master
+
+# Start Item Manufacturer
+def item_manufacturer(request):
+    form=ItemManufacturerForm()
+    item_manufacturer=ItemManufacturer.objects.all()
+    if request.method=='POST':
+        form=ItemManufacturerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/item_manufacturer')
+    return render(request,'inventory_master/item_manufacturer.html',{'form':form,'item_manufacturer':item_manufacturer})
+def edit_item_manufacturer(request):
+    form=ItemManufacturerForm()
+    item_manufacturer=ItemManufacturer.objects.all()
+    if request.method=='POST':
+        form=ItemManufacturerForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request,'inventory_master/edit_item_manufacturer.html',{'form':form,'item_manufacturer':item_manufacturer})
+def editing_item_manufacturer(request,id):
+    item_manufacturer=ItemManufacturer.objects.get(id=id)
+    form=ItemManufacturerForm(instance=item_manufacturer)
+    if request.method=='POST':
+        form=ItemManufacturerForm(request.POST,instance=item_manufacturer)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/edit_item_manufacturer')
+    return render(request,'inventory_master/editing_item_manufacturer.html',{'form':form,'item_manufacturer':item_manufacturer})
+def deleting_item_manufacturer(request,id):
+    item_manufacturer=ItemManufacturer.objects.get(id=id)
+    item_manufacturer.delete()
+    return HttpResponseRedirect('/item_manufacturer')   
+    # Item Master
+def item_master(request):
+    form=ItemMasterForm()
+    # form1=ItemManufactForm()
+    item_manufact=ItemManufact.objects.all()
+    supplier=ItemSupplier.objects.all()
+    if request.method=='POST':
+        manufacture=request.POST.get('manufacture')
+        supplier=request.POST.get('supplier')
+        if manufacture=='Manufacture':
+            print('This is manu')
+            manufacture=request.POST.get('manufacturers')
+            data=ManufactureTempTable(
+                manufacture=manufacture
+            )
+            data.save()
+            return HttpResponseRedirect('/item_master')
+        else:
+            form=ItemManufacturerForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/item_master')
+    manu_temp=ManufactureTempTable.objects.all()
+    context={
+        'form':form,'item_manufact':item_manufact,'manu_temp':manu_temp,
+    }
+    return render(request,'inventory_master/item_master.html',context)
+# start Store Master 
+def store_master(request):
+    form=StoreMasterForm()
+    store_master=StoreMaster.objects.all()
+    if request.method=='POST':
+        form=StoreMasterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/store_master')
+    return render(request,'inventory_master/store_master.html',{'form':form,'store_master':store_master})
+def edit_store_master(request):
+    form=StoreMasterForm()
+    store_master=StoreMaster.objects.all()
+    if request.method=='POST':
+        form=StoreMasterForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request,'inventory_master/edit_store_master.html',{'form':form,'store_master':store_master})
+def editing_store_master(request,id):
+    store_master=StoreMaster.objects.get(id=id)
+    form=StoreMasterForm(instance=store_master)
+    if request.method=='POST':
+        form=StoreMasterForm(request.POST,instance=store_master)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/edit_store_master')
+    return render(request,'inventory_master/editing_store_master.html',{'form':form,'store_master':store_master})
+def deleting_store_master(request,id):
+    store_master=StoreMaster.objects.get(id=id)
+    store_master.delete()
+    return HttpResponseRedirect('/store_master')
+
+# Ends Store Master
+# Start Vendor Master
+def vendor_master(request):
+    form=VendorMasterrForm()
+    vendor_master=VendorMasterr.objects.all()
+    if request.method=='POST':
+        form=VendorMasterrForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/vendor_master')
+    return render(request,'inventory_master/vendor_master.html',{'form':form,'vendor_master':vendor_master})
+def edit_vendor_master(request):
+    form=VendorMasterrForm()
+    vendor_master=VendorMasterr.objects.all()
+    if request.method=='POST':
+        form=VendorMasterrForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request,'inventory_master/edit_vendor_master.html',{'form':form,'vendor_master':vendor_master})
+def editing_vendor_master(request,id):
+    vendor_master=VendorMasterr.objects.get(id=id)
+    form=VendorMasterrForm(instance=vendor_master)
+    if request.method=='POST':
+        form=VendorMasterrForm(request.POST,instance=vendor_master)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/edit_vendor_master')
+    return render(request,'inventory_master/editing_vendor_master.html',{'form':form,'vendor_master':vendor_master})
+def deleting_vendor_master(request,id):
+    vendor_master=VendorMasterr.objects.get(id=id)
+    vendor_master.delete()
+    return HttpResponseRedirect('/vendor_master')
+# End Vendor Master
+# Start Store Nursing Counter Mapping
+def store_nursing_counter_mapping(request):
+    form=StoreNursingCounterForm()
+    store_nursing_counter_mapping=StoreNursingCounter.objects.all()
+    if request.method=='POST':
+        form=StoreNursingCounterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/store_nursing_counter_mapping')
+    return render(request,'inventory_master/store_nursing_counter_mapping.html',{'form':form,'store_nursing_counter_mapping':store_nursing_counter_mapping})
+def edit_store_nursing_counter_mapping(request):
+    form=StoreNursingCounterForm()
+    store_nursing_counter_mapping=StoreNursingCounter.objects.all()
+    if request.method=='POST':
+        form=StoreNursingCounterForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request,'inventory_master/edit_store_nursing_counter_mapping.html',{'form':form,'store_nursing_counter_mapping':store_nursing_counter_mapping})
+def editing_store_nursing_counter_mapping(request,id):
+    store_nursing_counter_mapping=StoreNursingCounter.objects.get(id=id)
+    form=StoreNursingCounterForm(instance=store_nursing_counter_mapping)
+    if request.method=='POST':
+        form=StoreNursingCounterForm(request.POST,instance=store_nursing_counter_mapping)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/edit_store_nursing_counter_mapping')
+    return render(request,'inventory_master/editing_store_nursing_counter_mapping.html',{'form':form,'store_nursing_counter_mapping':store_nursing_counter_mapping})
+def deleting_store_nursing_counter_mapping(request,id):
+    store_nursing_counter_mapping=StoreNursingCounter.objects.get(id=id)
+    store_nursing_counter_mapping.delete()
+    return HttpResponseRedirect('/store_nursing_counter_mapping')
+
+
+# End Store Nursing Counter Mapping
+# Start Item Location Master
+def item_location_master(request):
+    form=ItemLocationForm()
+    item_location_master=ItemLocation.objects.all()
+    if request.method=='POST':
+        form=ItemLocationForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return HttpResponseRedirect('/item_location_master')
+    return render(request,'inventory_master/item_location_master.html',{'form':form,'item_location_master':item_location_master})
+def edit_item_location_master(request):
+    form=ItemLocationForm()
+    item_location_master=ItemLocation.objects.all()
+    if request.method=='POST':
+        form=ItemLocationForm(request.POST)
+        if form.is_valid():
+           form.save()
+    return render(request,'inventory_master/edit_item_location_master.html',{'form':form,'item_location_master':item_location_master})
+def editing_item_location_master(request,id):
+    item_location_master=ItemLocation.objects.get(id=id)
+    form=ItemLocationForm(instance=item_location_master)
+    if request.method=='POST':
+        form=ItemLocationForm(request.POST,instance=item_location_master)
+        if form.is_valid():
+           form.save()
+           return HttpResponseRedirect('/edit_item_location_master')
+    return render(request,'inventory_master/editing_item_location_master.html',{'form':form,'item_location_master':item_location_master})
+def deleting_item_location_master(request,id):
+    item_location_master=ItemLocation.objects.get(id=id)
+    item_location_master.delete()
+    return HttpResponseRedirect('/item_location_master')
+# Ends Item Location Master
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+urls
+# Inventory
+    path('item_category_master',views.item_category_master),
+    path('belongs_to_master',views.belongs_to_master),
+    path('item_master',views.item_master),
+    path('packaging_master',views.packaging_master),
+    path('item_unit_master',views.item_unit_master),
+    path('item_manufacturer',views.item_manufacturer),
+    path('store_master',views.store_master),
+    path('vendor_master',views.vendor_master),
+    path('store_nursing_counter_mapping',views.store_nursing_counter_mapping),
+    path('item_location_master',views.item_location_master),
+    path('edit_item_category_master',views.edit_item_category_master),
+    path('editing_item_category_master/<int:id>',views.editing_item_category_master),
+    path('deleting_item_category_master/<int:id>',views.deleting_item_category_master),
+    path('edit_belongs_to_master',views.edit_belongs_to_master),
+    path('editing_belongs_to_master/<int:id>',views.editing_belongs_to_master),
+    path('deleting_belongs_to_master/<int:id>',views.deleting_belongs_to_master), 
+    path('edit_packaging_master',views.edit_packaging_master),
+    path('editing_packaging_master/<int:id>',views.editing_packaging_master),
+    path('deleting_packaging_master/<int:id>',views.deleting_packaging_master),
+    path('edit_item_unit_master',views.edit_item_unit_master),
+    path('editing_item_unit_master/<int:id>',views.editing_item_unit_master),
+    path('deleting_item_unit_master/<int:id>',views.deleting_item_unit_master),
+    path('edit_item_manufacturer',views.edit_item_manufacturer),
+    path('editing_item_manufacturer/<int:id>',views.editing_item_manufacturer),
+    path('deleting_item_manufacturer/<int:id>',views.deleting_item_manufacturer),
+    path('edit_store_master',views.edit_store_master),
+    path('editing_store_master/<int:id>',views.editing_store_master),
+    path('deleting_store_master/<int:id>',views.deleting_store_master),
+    path('edit_vendor_master',views.edit_vendor_master),
+    path('editing_vendor_master/<int:id>',views.editing_vendor_master),
+    path('deleting_vendor_master/<int:id>',views.deleting_vendor_master),
+    path('edit_store_nursing_counter_mapping',views.edit_store_nursing_counter_mapping),
+    path('editing_store_nursing_counter_mapping/<int:id>',views.editing_store_nursing_counter_mapping),
+    path('deleting_store_nursing_counter_mapping/<int:id>',views.deleting_store_nursing_counter_mapping),
+    path('edit_item_location_master',views.edit_item_location_master),
+    path('editing_item_location_master/<int:id>',views.editing_item_location_master),
+    path('deleting_item_location_master/<int:id>',views.deleting_item_location_master),

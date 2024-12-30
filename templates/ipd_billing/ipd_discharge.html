@@ -1,0 +1,377 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script src="{% static 'js/country-states.js' %}"></script>
+<style>
+    .own_form {
+        border: 0px solid red;
+
+    }
+    .own_form_class div input,
+    select {
+        border: 2px solid white;
+        background-color: white;
+        border-bottom: 2px solid #eee;
+        width: 100%;
+    }
+</style>
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2" >
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>IPD Billing</b>
+            </div>
+            <div class="">
+              <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" class="text-light px-1" onClick="window.location.reload();" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" onclick="codespeedy()" href="#">PDF</a>
+                <a class="dropdown-item" id="download-button" href="#">CSV</a>
+              </div>
+            </div>
+          </div>
+          <div class="nursing-assessment-tabs p-2 bg-white">
+            <div role="tabpanel">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs nav-justified nav-tabs-dropdown " role="tablist">
+                <li role="presentation" class="w-50">
+                <a href="#profile" aria-controls="home" class=" btn-primary" role="tab" data-toggle="tab">Admitted Patient Details</a>
+                </li>
+                <li role="presentation" class="w-50"><a class="btn-primary active" href="#home" aria-controls="profile" role="tab" data-toggle="tab"> Discharged Patient Details</a></li>
+            </ul>
+
+
+                <!-- Tab panes -->
+                <div class="tab-content px-2 py-1">
+                    <div role="tabpanel" class="tab-pane pt-2 active" id="profile">
+                         
+                                <div style="margin-left: 70%;">
+                                    <i style="font-size:15px; background-color: rgb(245, 194, 170);"
+                                        class="fa">&#xf097;</i>&nbsp; Discharged&nbsp;&nbsp;
+                                    <i style="font-size:15px; background-color:skyblue; color:skyblue;"
+                                        class="fa">&#xf097;</i>&nbsp; Discharge Intimated
+                                
+                                </div>
+                                <table class="datatable table table-stripped table-bordered" id="tbl_exporttable_to_xls">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Name</th>
+                                            <th>Uhid</th>
+                                            <th>Admission ID</th>
+                                            <th>Admission Datetime</th>
+                                            <th>Age / sex </th>
+                                            <th>Primary Doctor </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="overflow: auto;">
+                                        {% for data,data1 in records %}
+                                        {% if data.status == "discharge" %}
+                                        <tr style="background-color: rgb(235, 250, 255); color: white;">
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <td data-toggle="modal" data-target=".bd-example-modal-xl"
+                                                    id="dropdownMenuButton1">{{forloop.counter}}</td>
+
+                                                <td data-toggle="modal" data-target=".bd-example-modal-xl"
+                                                    id="dropdownMenuButton1">{{data1.first_name}} {{data1.middle_name}}
+                                                    {{data1.last_name}}</td>
+                                                <td data-toggle="modal" data-target=".bd-example-modal-xl"
+                                                    id="dropdownMenuButton1"><a href="#">{{data.uhid|slice:"4:"}}</a><input type="hidden" id="uhid"
+                                                        value="{{data.uhid}}" readonly></td>  
+                                                <td data-toggle="modal" data-target=".bd-example-modal-xl"
+                                                    id="dropdownMenuButton1">{{data.admission_ID|slice:"3:"}}<input type="hidden" id="admission_id"
+                                                        value="{{data.admission_ID}}"
+                                                         readonly></td>
+                                                <td data-toggle="modal" data-target=".bd-example-modal-xl"
+                                                    id="dropdownMenuButton1">{{data.admission_datetime}}<input type="hidden" id="admission_date"
+                                                        value="{{data.admission_datetime}}"
+                                                         readonly></td>
+                                                <td data-toggle="modal" data-target=".bd-example-modal-xl"
+                                                    id="dropdownMenuButton1">{{data1.age}} / {{data1.gender|make_list|first }}<input type="hidden" id="age"
+                                                        value="{{data1.age}} / {{data1.gender|make_list|first }}"
+                                                         readonly></td>
+                                                <td data-toggle="modal" data-target=".bd-example-modal-xl"
+                                                    id="dropdownMenuButton1">{{data.primary_doctor}}<input type="hidden" id="primary_doctor"
+                                                        value="{{data.primary_doctor}}"
+                                                         readonly></td>
+
+                                            </div>
+
+                                        </tr>
+                                        {% elif data.status == "discharged" %}
+                                        <tr style="background-color: rgb(255, 228, 216);">
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton" >{{forloop.counter}}</td>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton" >{{data1.first_name}} {{data1.middle_name}} {{data1.last_name}}</td>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton" ><a href="#">{{data.uhid|slice:"4:"}}</a><input type="hidden" name="uhid" id="uhid"  value="{{data.uhid}}"></td>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton" >{{data.admission_ID|slice:"3:"}}<input type="hidden" name="admmission" id="admmission" 
+                                                value="{{data.admission_ID}}"></td>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton" >
+                                                {{data.admission_datetime}}</td>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton" >{{data1.age}} / {{data1.gender|make_list|first }}
+                                            </td>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton" >Dr.
+                                                {{data.primary_doctor}}</td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton">{{forloop.counter}}</td>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton">{{data1.first_name}} {{data1.middle_name}}
+                                                {{data1.last_name}}</td>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton"><a href="#">{{data.uhid|slice:"4:"}}</a><input type="hidden" name="uhid" id="uhid" style="border: none;"
+                                                value="{{data.uhid}}"></td>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton">{{data.admission_ID|slice:"3:"}}<input type="hidden" name="admmission" id="admmission" style="border: none;"
+                                                value="{{data.admission_ID}}"></td>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton">{{data.admission_datetime}}</td>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton">{{data1.age}} / {{data1.gender|make_list|first}}</td>
+                                            <td data-toggle="modal" data-target="#exampleModalCenter"
+                                                id="dropdownMenuButton">Dr. {{data.primary_doctor}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>                     
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane own_form" id="home">
+                        <table class="datatable table table-stripped table-bordered" id="tbl_exporttable_to_xls"
+                            style="overflow: auto;">
+                            <thead>
+                                <tr class="text-nowrap">
+                                    <th>S.No</th>
+                                    <th>Name</th>
+                                    <th>Uhid</th>
+                                    <th>Admission ID</th>
+                                    <th>Discahrge Datetime</th>
+                                    <th>Age / sex </th>
+                                    <th>Primary Doctor </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for data,data1,data2 in records1 %}
+                                <tr>
+                                    <td style="text-align: center;" data-toggle="modal"
+                                        data-target="#exampleModalCenter" id="dropdownMenuButton">{{forloop.counter}}
+                                    </td>
+                                    <td data-toggle="modal" data-target="#exampleModalCenter" id="dropdownMenuButton" class="text-nowrap">
+                                        {{data1.first_name}} {{data1.middle_name}} {{data1.last_name}}</td>
+                                    <td data-toggle="modal" data-target="#exampleModalCenter" id="dropdownMenuButton"><a href="#">{{data.uhid|slice:"4:"}}</a>
+                                        <input type="hidden" name="uhid" id="uhid" style="border: none;"
+                                            value="{{data.uhid}}">
+                                    </td>
+                                    <td data-toggle="modal" data-target="#exampleModalCenter" id="dropdownMenuButton">
+                                        <input type="text" name="admmission" id="admmission" style="border: none;"
+                                            value="{{data.admission_ID}}">
+                                    </td>
+                                    <td data-toggle="modal" data-target="#exampleModalCenter" id="dropdownMenuButton">
+                                        {{data2.discharge_datetime}}</td>
+                                    <td data-toggle="modal" data-target="#exampleModalCenter" id="dropdownMenuButton">
+                                        {{data1.age}} / {{data1.gender|make_list|first }}</td>
+                                    <td data-toggle="modal" data-target="#exampleModalCenter" id="dropdownMenuButton">
+                                        Dr. {{data.primary_doctor}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add Modal -->
+
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel"><b>Discharge</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body" style="border:0px solid red;">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <form method="POST">
+                                    <div>
+                                        <button type="submit" class="btn btn-success" name="discharge_btn" value="discharge_btn"> <i
+                                                class="fas fa-save">&nbsp;Save</i></button>
+                                        <button type="submit" class="btn btn-primary" name="sum_bill"
+                                            value="sum_bill">Summarize
+                                            Bill</button>&nbsp;
+                                        <button type="submit" class="btn btn-primary" name="det_bill"
+                                            value="det_bill">Detail Bill</button>
+                                    </div><br><br>
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="">uhid</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" id="model_uhid" name="model_uhid">
+                                        </div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="">Admission id</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" id="model_admission_id"
+                                                name="model_admission_id">
+                                        </div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="">Primary doctor</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" id="model_doctor"
+                                                name="model_doctor">
+                                        </div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="">status</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select name="model_status" id="model_status" class="form-control">
+                                                <option value="----">------</option>
+                                                <option value="LAMA">LAMA</option>
+                                                <option value="DAMA">DAMA</option>
+                                                <option value="expired">Expired</option>
+                                                <option value="Normal">Normal</option>
+                                            </select>
+                                        </div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="">Discahrge Date&Time</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="datetime-local" name="discharge_datetime"
+                                                id="discharge_datetime" class="form-control"
+                                                value="{{ date_field|date:'Y-m-d' }}T{{date_field|time:'H:i'}}">
+                                        </div>
+                                    </div><br>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="padding: 20px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Billing</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="">Admission Id</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="ad_id" id="ad_id" class="form-control">
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="">UHID</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="uhid_id" id="uhid_id" class="form-control">
+                        </div>
+                    </div>
+            </div><br>
+            <div style="margin-left: 20%;">
+                <button type="submit" class="btn btn-primary" name="sum_bill" value="sum_bill">Summarize
+                    Bill</button>&nbsp;
+                <button type="submit" class="btn btn-primary" name="det_bill" value="det_bill">Detail Bill</button>
+            </div><br>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $(document).on('click', '#dropdownMenuButton', function () {
+            var dumy = this;
+            var uhid = $(dumy).closest('tr').find('#admmission').val();
+            var ad_id = $(dumy).closest('tr').find('#uhid').val();
+            // var doctor = $(dumy).closest('tr').find('#primary_doctor').val();
+
+            $('#ad_id').val(uhid);
+            $('#uhid_id').val(ad_id);
+            $('#model_doctor').val(doctor);
+
+
+        });
+    });
+
+</script>
+<script>
+
+    function ExportToExcel(type, fn, dl) {
+        var elt = document.getElementById('tbl_exporttable_to_xls');
+        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+        return dl ?
+            XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+            XLSX.writeFile(wb, fn || ('IpdBilling.' + (type || 'xlsx')));
+    }
+
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $(document).on('click', '#dropdownMenuButton1', function () {
+            var dumy = this;
+            var uhid = $(dumy).closest('tr').find('#uhid').val();
+            var ad_id = $(dumy).closest('tr').find('#admission_id').val();
+            var doctor = $(dumy).closest('tr').find('#primary_doctor').val();
+
+            $('#model_uhid').val(uhid);
+            $('#model_admission_id').val(ad_id);
+            $('#model_doctor').val(doctor);
+
+
+
+        });
+    });
+
+</script>
+
+{% endblock %}

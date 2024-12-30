@@ -1,0 +1,123 @@
+{% extends 'qms/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+    * {
+font-size: 12px;
+font-family: 'Times New Roman';
+}
+body{
+max-width: max-content;
+margin: auto;
+width: 2%
+margin: 5% 10% 15% 40%;
+padding: 50px;
+
+}
+
+.centered {
+text-align: center;
+align-content: center;
+}
+
+.ticket {
+width: 155px;
+max-width: 155px;
+}
+
+img {
+max-width: inherit;
+width: inherit;
+}
+
+@media print {
+.hidden-print,
+.hidden-print * {
+display: none !important;
+}
+}
+.col-sm-8{
+
+  width:100%;
+}
+.form_decor div input{
+border:none;
+border-bottom:2px solid black;
+margin-bottom:2em;
+}
+.form_decor div b{
+margin-bottom:2em;
+}
+</style>
+{% endblock  %}
+{% block body_block %}
+   <!-- content -->
+   <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<div class="container"  >
+<div class="card" style="background-color:rgba(251, 253, 253, 0.966);">
+    <div class="card-body" >
+        <div id='hello'>
+        <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;"
+                                                width="100%">
+
+                                                <tr>
+                                                    <td>
+                                                        <div class="">
+                                                            <center>
+                                                                <h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}"
+                                                                        alt="logo Image"
+                                                                        style="width:300px;height:100px;"></h2>
+                                                            </center>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+        <form style="padding: 40px;" class="form_decor">
+            <div class="col-sm-8">
+                <b>Token No</b><br>
+                <input type="text" value="{{tc.Token_No}}" readonly>
+            </div>
+            <div class="col-sm-8">
+                <b>Patient Id  </b><br>
+                  <input type="text" value="{{tc.Pt_Id}}" readonly>
+            </div>
+            <div class="col-sm-8">
+                <b>Patient Name  </b><br>
+                    <input type="text" value="{{tc.Pt_Name}}" readonly>
+            </div>
+            <div class="col-sm-8">
+                <b>Doctor Name</b><br>
+                <input type="text" value="{{tc.Doct_Name}}" readonly>
+            </div>
+            <div class="col-sm-8">
+                <b>Room No  </b><br>
+                <input type="text" value="{{tc.Room_No}}" readonly>
+            </div><br><br>
+            </div>
+        <a href="/token_creation"><button type="button"class="btn btn-primary"><i class="fas fa-save">&nbsp;&nbsp;Cancel</i></button>&nbsp;&nbsp;</a>
+        <button type="button"class="btn btn-info" onclick="codespeedy()"><i class="fas fa-print" >&nbsp;Print</i></button>
+       </form>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock  %}
+{% block script_block %}
+<script type="text/javascript">
+
+   function codespeedy(){
+     var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+   }
+ </script>
+{% endblock %}

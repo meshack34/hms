@@ -1,0 +1,157 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+    #id_from_date,
+    #id_to_date,
+    #id_store {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Purchase Order</b>
+            </div>
+            <div class="">
+              <!-- <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a> -->
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+                <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+                
+              </div>
+            </div>
+          </div>
+
+        <form method="post" id="form">
+            {% csrf_token %}
+        <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"><br>                               
+                <div class="form-row pb-3">
+                    <div class="form-group col-md-3 mb-0">
+                        <label style="font-weight:bold"> <b> PO No*</b></label>
+                        <input type="text" name="po_no" class="form-control">
+                    </div>
+
+                    <div class=" col-md-3"><br>
+                        <button type="submit" class="btn btn-warning w-100 mt-2" name="submit_btn" value="submit_btn"><i
+                            class="fa fa-search pr-2"></i>Search</button></a>
+                    </div>
+                </div>
+        </div>
+        </form>
+        {% if po_parent %}
+        <div id="hello">
+            <table class="table table-bordered" style="border-style: solid;" align="center">
+                <thead>
+                    <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">PO No</th>
+                        <th scope="col">Date Time</th>
+                        <th scope="col">vendor Name </th>
+                        <th scope="col">Net Amount</th>
+                        <th scope="col">Basic Amount</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Preview</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in po_parent %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td scope="row" style="padding-left: 15px;padding-right: 15px;">{{data.PO_id}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{data.PO_datetime}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{data.vendar_id}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{data.net_amount}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{data.basic_amt}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;"><a class="btn btn-primary" href="/view_po_details/{{data.PO_id}}"><i class="fa fa-hand-pointer" name="approve_view" value="approve_view" aria-hidden="true"></i></a>&nbsp;
+                            {% if 'purchase_order_delete' in access.user_profile.screen_access or request.user.is_superuser %}
+                            <input type="hidden" name="delete_id" id="delete_id" value="{{data.id}}">
+                            <button type="submit" style="background-color:rgb(231, 41, 41)" class="btn btn-danger" name="delete_po" value="delete_po"><i class="fas fa-trash-alt"></i></button>
+                            {% endif %}
+                        </td>
+                            <td style="padding-left: 15px;padding-right: 15px;"><a class="btn btn-warning" href="/purchaseorder_preview/{{data.PO_id}}"><i class="fa fa-print pr-2"></i></a></td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+                               
+    </div>
+    {% endif %}
+</div>
+
+
+<!-- Custom JS -->
+<script src="../assets/js/app.js"></script>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+  var print_area = window.open();
+  print_area.document.write(print_div.innerHTML);
+  print_area.document.close();
+  print_area.focus();
+  print_area.print();
+  print_area.close();
+  // This is the code print a particular div element
+    }
+  </script>
+
+<!-- Export csv -->
+
+<script>
+    function htmlToCSV(html, filename) {
+        var data = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText);
+            }
+
+            data.push(row.join(","));
+        }
+
+        downloadCSVFile(data.join("\n"), filename);
+    }</script>
+<script>
+    function downloadCSVFile(csv, filename) {
+        var csv_file, download_link;
+
+        csv_file = new Blob([csv], { type: "text/csv" });
+
+        download_link = document.createElement("a");
+
+        download_link.download = filename;
+
+        download_link.href = window.URL.createObjectURL(csv_file);
+
+        download_link.style.display = "none";
+
+        document.body.appendChild(download_link);
+
+        download_link.click();
+    }</script>
+
+<script>document.getElementById("download-button").addEventListener("click", function () {
+        var html = document.querySelector("table").outerHTML;
+        htmlToCSV(html, "Purchase Order Report.csv");
+    });</script>
+                        {% endblock %}

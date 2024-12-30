@@ -1,0 +1,200 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30;">
+            <h2>Bed Charge Slip</h2>
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+                        <div class="card">
+                            <div class="header">
+                                <div class="body">
+                                    <br>
+                                    <div class="icon-button-demo">&nbsp;
+                                        <button type="button" class="btn btn-warning" data-toggle="modal"
+                                            data-target=".bd-example-modal-xl"><i class="fas fa-plus">Add</i></button>&nbsp;
+                                        <a href="/bed_charge_slip_details_edit/{{uhid}}" class="btn btn-info"> <i class="fas fa-edit"
+                                                style="color:white;">Edit</i></a>&nbsp;
+                                      
+                                        <button type="button" class="btn btn-primary" onClick="window.location.reload();">
+                                            <i class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                                        <a href="/bed_charge_slip" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+    
+                                    </div><br>
+                                    <div class="table-responsive">
+                                        <table class="datatable table table-stripped ">
+    
+                                            <thead>
+                                                <tr style="background:#d1dae6;">
+                                                    <th>S.No</th>
+                                                    <th>UHID</th>
+                                                    <th>ward_type</th>
+                                                    <th>ward_cat</th>
+                                                    <th>bed_no</th>
+                                                    <th>bed_charge</th>
+                                                    <th>datetime</th>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                   {% for data in records %}
+                                                   <tr>
+                                                    <td>{{forloop.counter}}</td>
+                                                     <td>{{data.uhid}}</a></td>
+                                                     <td>{{data.ward_type}}</td>
+                                                     <td>{{data.ward_cat}}</td>
+                                                     <td>{{data.bed_no}}</td>
+                                                     <td>{{data.bed_charge}}</td>
+                                                     <td>{{data.datetime}}</td>
+                                                   </tr>
+                                                   {% endfor %}
+                                            </tbody>
+    
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <!-- Add Modal -->
+
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel"><b>Bed Charge slip</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body" style="border:0px solid red;">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <form method="POST" id="form_id" data-cities-url="{% url 'charge_slip_load' %}">
+                                    {% csrf_token %}
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                            <label for="">Ward Type</label>
+                                            <select class="custom-select mr-sm-2" id="ward_name" name="ward_name" required>
+                                                <option selected>Choose...</option>
+                                                {% for data in ward_type_records %}
+                                            <option value="{{data.ward_type}}">{{data.ward_type}}</option>
+                                            {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            <label for="">Ward Category</label>
+                                            <select class="custom-select mr-sm-2" id="ward_cat" name="ward_cat" required>
+                                                <option selected>Choose...</option>
+                                                 {% for data in ward_cat_records %}
+                                                <option value="{{data.category_name}}">{{data.category_name}}</option>
+
+                                                {% endfor %}
+                                            </select>
+                                        </div><br>
+                                    </div><br><br>
+                                    <div class="row">
+                                        <div class="form-group col-md-3 mb-0">
+                                            <label for="">Bed Number</label>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            <select class="custom-select mr-sm-2" id="id_to_bed_no" name="id_to_bed_no" required>
+                                                <option selected>Choose...</option>
+                                                
+                                            </select>
+                                        </div>
+                                    </div><br><br>
+                                    <div class="row">
+                                        <div class="form-group col-md-3 mb-0">
+                                            <label for="">Bed Charge</label>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            <input type="number" class="form-control" name="charge_slip" id="charge_slip" required>
+                                        </div>
+                                    </div><br><br>
+                                    <div class="row">
+                                        <div class="form-group col-md-3 mb-0">
+                                            <label for="">Date</label>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            <input type="datetime-local" class="form-control" name="date_time" id="date_time" value="{{date_time}}" required>
+                                        </div>
+                                    </div>
+                                        <br><br>
+                                    <button type="submit" class="btn btn-success"> <i
+                                            class="fas fa-save">&nbsp;Save</i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $("#ward_name").change(function () {
+      const ward_type_id = $(this).val();
+      const url = $("#form_id").attr("data-cities-url");  
+  
+      $.ajax({             
+          url: url,   
+          data: {
+              'ward_type_id':ward_type_id 
+          },
+          success: function (data) { 
+              $("#ward_cat").html(data);  
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (cat) {
+              console.log(cat)
+                  html_data += `<option value="${cat.category_name}">${cat.category_name}</option>`
+              });
+              console.log(html_data);
+              $("#ward_cat").html(html_data);
+  
+  
+          }
+      });
+  
+  });
+  </script>
+  <script>
+    $("#ward_cat").change(function () {
+        const ward_cat_id = $(this).val();
+        const ward_type_id = $("#ward_name").val(); 
+        const url = $("#form_id").attr("data-cities-url");  
+    
+        $.ajax({             
+            url: url,   
+            data: {
+                'ward_type_id':ward_type_id,
+                'ward_cat_id':ward_cat_id 
+            },
+            success: function (data) { 
+                $("#id_to_bed_no").html(data);  
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (bed_no) {
+                console.log(bed_no)
+                    html_data += `<option value="${bed_no.bed_no}">${bed_no.bed_no}</option>`
+                });
+                console.log(html_data);
+                $("#id_to_bed_no").html(html_data);
+    
+    
+            }
+        });
+    
+    });
+    </script>
+{% endblock %}

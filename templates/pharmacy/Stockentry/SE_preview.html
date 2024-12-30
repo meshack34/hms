@@ -1,0 +1,340 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block body_block %}
+    <!-- content -->
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="main-wrapper" style="padding-top:50px;padding-left:60px;">
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="row clearfix">
+                            <div class="col-lg-11 col-md-12 col-sm-8 col-xs-8">
+                                <div class="card">
+                                    <div class="header" id="hello">
+                                        <style>
+
+                                            body,
+                                            .card {
+                                                font-size: 5px !important;
+                                            }
+                                            #table1 {
+                                                border: 0.5px solid black;
+                                                border-collapse: collapse;
+                                            }
+                                            #table1 th {
+                                                border: 0.5px solid black;
+                                                border-collapse: collapse;
+                                            }
+                                            #table1, #table2{
+                                                border-spacing: 0px;
+
+                                            }
+                                            #table2{
+
+                                                border: 0.5px solid black;
+                                                border-collapse: collapse;
+                                            }
+                                            table td,
+                            				table th {
+                            					font-size: 12px !important;
+                            					/*padding: 10px;*/
+                            					/*text-align: left;*/
+                            				}
+                                        </style>
+
+                                        <div id="pat" class="container">
+
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td>
+                                                        <div class="">
+                                                            <center>
+                                                                <img src="{% static 'assets/images/nephromed_logo.jpg' %}"
+                                                                        alt="logo Image"
+                                                                        style="width:300px;height:80px;">
+                                                            </center>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 0px;"><hr style="padding: 0px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" style="text-align: center;">
+                                                        2ND FLOOR, WILLIAMSON HOUSE, 4th NGONG AVENUE, UPPERHILL NAIROBI
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="5" style="text-align: center;">
+                                                        TEL.. +254 737 787878 / +254 792 787878
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" style="text-align: center;">
+                                                        EMAIL:procurement@nephromed.co.ke website:www.nephromed.co.ke
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><br></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" style="text-align: center;">
+                                                        <h2>INVOICE</h2>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <table style="width: 100%;" id="table2">
+                                                            <tr>
+                                                                <td rowspan="2" style="border: solid 1px black;"><b>vendor Name : </b> &nbsp;&nbsp;{{vendor_name}}
+                                                                </td>
+                                                                <td style="border: solid 1px black;"><b> Purchase Date :</b>&nbsp;&nbsp; {{PO_date}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border: solid 1px black;"> <b>Delivery Date :</b>&nbsp;&nbsp;{{GRN_date}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border: solid 1px black;"><b>Call : </b>&nbsp;&nbsp;+1-908-567-0987</td>
+                                                                <td style="border: solid 1px black;"> <b>E-mail : </b>&nbsp;&nbsp;info@clientdomain.com</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2" style="border: solid 1px black;">
+                                                                    <b>Payment Status :</b>&nbsp;&nbsp; {{payment_status}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><br></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <table style="width: 100%;" id="table1">
+                                                            <tr>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    SI.No</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    GRN_id</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    GRN_datetime</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    PO_id</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    Item Name</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    Serial Batch</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    Expiry date</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                        PO Qty</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                            Received Qty</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    rate</th>
+                                                                    <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                        Amount</th>
+                                                            <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                Tax</th>
+                                                            </tr>
+                                                            {% for data in stock_entry_child %}
+                                                            <tr>
+
+                                                                <td style="background-color:white; border: solid 1px black;border-collapse: collapse;text-align: center;">
+                                                                    {{forloop.counter}}</td>
+                                                                <td style="background-color:white; border: solid 1px black;border-collapse: collapse;text-align: center;">
+                                                                    {{data.GRN_id}}</td>
+                                                                <td style="background-color:white; border: solid 1px black;border-collapse: collapse;text-align: center;">
+                                                                    {{data.GRN_datetime}}</td>
+                                                                <td style="background-color:white; border: solid 1px black;border-collapse: collapse;text-align: center;">
+                                                                    {{data.PO_id}}</td>
+                                                                <td style="background-color:white; border: solid 1px black;border-collapse: collapse;text-align: center;">
+                                                                    {{data.item_id}}</td>
+                                                                <td style="background-color:white; border: solid 1px black;border-collapse: collapse;text-align: center;">
+                                                                    {{data.serial_batch}}</td>
+                                                                <td style="background-color:white; border: solid 1px black;border-collapse: collapse;text-align: center;">
+                                                                    {{data.expiry_date}}</td>
+                                                                <td style="background-color:white; border: solid 1px black;border-collapse: collapse;text-align: center;">
+                                                                    {{data.item_qty}}</td>
+                                                                <td style="background-color:white; border: solid 1px black;border-collapse: collapse;text-align: center;">
+                                                                    {{data.physical_qty}}</td>
+                                                                <td style="background-color:white; border: solid 1px black;border-collapse: collapse;text-align: center;">
+                                                                    {{data.rate}}</td>
+                                                                <td style="background-color:white; border: solid 1px black;border-collapse: collapse;text-align: center;">
+                                                                    {{data.amount}}</td>
+                                                                <td style="background-color:white; border: solid 1px black;border-collapse: collapse;text-align: center;">
+                                                                    {{data.tax_amount}}</td>
+
+
+                                                            </tr>
+                                                            {% endfor %}
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td colspan="12" style="border: solid 1px black;border-collapse: collapse;text-align: center;font-weight:bold "><h6>Basic Amount:  {{total_amount|floatformat:2|intcomma}}</h6>
+                                                                    </td>
+
+                                                            </tr>
+
+
+
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="5" style="text-align: left;">
+                                                        <br>
+                                                        <h6 style="color: red;">IMPORTANT</h6>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" style="text-align: left;">
+                                                        This is an electronic generated invoice so doesn't
+                                                        require any signature.
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" style="text-align: left;">
+                                                        Please read all terms and polices on www.yourdomaon.com
+                                                                for returns, replacement and other issues.
+                                                    </td>
+                                                </tr>
+
+
+
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                        <div class="row pad-top-botm" align="center">
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <hr>
+                                                <button class="btn btn-primary btn-lg" onclick="codespeedy()">
+                                                    &nbsp;&nbsp;&nbsp;&nbsp; PDF
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;</button>
+
+
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript">
+
+            function codespeedy() {
+                var print_div = document.getElementById("hello");
+                var print_area = window.open();
+                print_area.document.write(print_div.innerHTML);
+                print_area.document.close();
+                print_area.focus();
+                print_area.print();
+                print_area.close();
+                // This is the code print a particular div element
+            }
+        </script>
+        <script type="text/javascript">
+
+            function sendmail() {
+                var doc = new jsPDF();
+
+                // get the HTML element
+                var element = document.getElementById('hello');
+
+                // get the div content as HTML
+                var html = element.innerHTML;
+
+                // remove any inline styles
+                html = html.replace(/(<[^>]+) style=".*?"/gi, '$1');
+
+                // add the HTML content to the PDF
+                doc.fromHTML(html);
+
+                // store the PDF as a variable
+                var pdfOutput = doc.output();
+
+                console.log("pdfOutput", pdfOutput);
+            }
+        </script>
+        <script>
+
+            // pdf preview
+
+            function printData() {
+                var mypage = document.getElementById("hello");
+                opening = window.open("");
+                opening.document.write(mypage.outerHTML);
+                opening.print();
+                opening.close();
+            }
+
+
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                $('#mail').on('change', function () {
+                    // var form_data = new FormData($('form')[0]);
+                    var file = this.files[0];
+                    var formData = new FormData();
+                    formData.append('file', file);
+                    url = $("#mail").attr("data-cities-url");
+                    var headers = { 'X-CSRFToken': '{{ csrf_token }}' }
+                    // alert(url)
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: headers,
+                        success: function (data) {
+
+                            alert('Mail send successfully!');
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                            alert('An error occurred while uploading the file.');
+                        }
+                    });
+
+
+                });
+            });
+        </script>
+{% endblock %}

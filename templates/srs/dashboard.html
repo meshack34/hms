@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Preadmin - Bootstrap Admin Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/favicon.ico' %}">
+
+    <!-- Font Family -->
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}" >
+
+    <!-- Calendar CSS -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar/fullcalendar.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/calendar.css' %}">
+
+    <!-- Datatable-->
+    <link rel="stylesheet" href="{% static 'assets/css/dataTables.bootstrap4.min.css' %}">
+
+    <!-- Select 2-->
+    <link rel="stylesheet" href="{% static 'assets/css/select2.min.css' %}">
+
+    <!-- Datetime Picker-->
+    <link rel="stylesheet" href="{% static 'assets/plugins/datetimepicker/css/tempusdominus-bootstrap-4.min.css' %}">
+
+    <!--custom styles-->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+    <!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+       <!-- Header -->
+        <div class="header-menu">
+            <div class="header-left">
+                <a href="" class="logo">
+                    <img src="{% static 'assets/images/Logo_Hospital.png' %}" width="35" height="35" alt="">
+                    <span>PreAdmin</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <div class="menubar">
+                <a id="toggle_btn" href="javascript:void(0);"><i class="fas fa-bars"></i></a>
+            </div>
+            <!-- /Mobile Menu Toggle -->
+
+            <!-- Search-->
+            <div class="searchbar">
+                <form class="form-inline my-1 w-25 float-left">
+                    <input class="form-control mr-sm-2 search-input search_icon" type="search" placeholder="Search..." >
+                </form>
+            </div>
+            <!--/ Search-->
+
+            <a id="mobile_btn" class="mobile_btn float-left" href="#sidebar"><i class="fa fa-bars"></i></a>
+
+            <!-- Header Right Menu -->
+            <ul class="nav user-menu float-right">
+                <li class="nav-item dropdown d-none d-sm-block">
+                    <a href="javascript:void(0);" id="open_msg_box" class="hasnotifications nav-link"><i class="far fa-paper-plane"></i> <span class="badge badge-pill bg-danger float-right">8</span></a>
+                </li>
+
+                <!-- /Notifications -->
+                <li class="nav-item dropdown d-none d-sm-block">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="far fa-bell"></i> <span class="badge badge-pill bg-danger float-right">3</span></a>
+                    <div class="dropdown-menu notifications">
+                        <div class="topnav-dropdown-header">
+                            <span>Notifications</span>
+                        </div>
+                        <div class="drop-scroll">
+                            <ul class="notification-list">
+                                <li class="notification-message">
+                                    <a href="./activities">
+                                        <div class="media">
+											<span class="avatar">
+												<img alt="John Doe" src="{% static 'assets/images/user.jpg' %}" class="img-fluid">
+											</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
+												<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+											</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities">
+                                        <div class="media">
+											<span class="avatar">V</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title">Appointment booking with payment gateway</span></p>
+												<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
+											</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities">
+                                        <div class="media">
+											<span class="avatar">L</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title">Doctor available module</span></p>
+												<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
+											</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities">
+                                        <div class="media">
+											<span class="avatar">G</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title">Patient and Doctor video conferencing</span></p>
+												<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
+											</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities">
+                                        <div class="media">
+											<span class="avatar">V</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title">Private chat module</span></p>
+												<p class="noti-time"><span class="notification-time">2 days ago</span></p>
+											</div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="topnav-dropdown-footer">
+                            <a href="activities">View all Notifications</a>
+                        </div>
+                    </div>
+                </li>
+                <!-- /Notifications -->
+
+                <li class="nav-item dropdown has-arrow">
+                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                        <span>Jones Ferdinand</span>&nbsp;
+                        <span class="user-img">
+							<img class="rounded-circle" src="{% static 'assets/images/user.jpg' %}" width="24" alt="Admin">
+							<span class="status online"></span>
+						</span>
+                    </a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="profile">My Profile</a>
+						<a class="dropdown-item" href="edit-profile">Edit Profile</a>
+						<a class="dropdown-item" href="settings">Settings</a>
+						<a class="dropdown-item" href="login">Logout</a>
+					</div>
+                </li>
+            </ul>
+            <!--/ Header Right Menu -->
+
+            <!-- User Menu -->
+            <div class="dropdown mobile-user-menu float-right">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="profile">My Profile</a>
+                    <a class="dropdown-item" href="edit-profile">Edit Profile</a>
+                    <a class="dropdown-item" href="settings">Settings</a>
+                    <a class="dropdown-item" href="login">Logout</a>
+                </div>
+            </div>
+            <!--/ User Menu -->
+        </div>
+        <!-- /Header -->
+
+        <!--sidebar-->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="menu-title">Main</li>
+                        <li class="active">
+                            <a href="/srs/dashboard"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+                        </li>
+						            <li>
+                            <a href="/srs/patient_registration"><i class="fa fa-user-md"></i> <span>Patient Registration</span></a>
+                        </li>
+                        <li class="submenu">
+                            <a href="/srs/patients"><i class="fa fa-wheelchair"></i> <span>Clinical Managements</span><span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+								<li  ><a href="/srs/nursing_assessment">Nursing Assessment</a></li>
+								<li><a href="/srs/opd_billing">OPD Billing</a></li>
+								<li ><a href="/srs/patient_visit">Patient Visit</a></li>
+								<li><a href="/srs/visit_dashboard">Visit Dashboard</a></li>
+								<li><a href="/srs/opd_reception_view">OPD Reception View</a></li>
+							</ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="/srs/appointments"><i class="far fa-calendar-alt"></i> <span>Emergency</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+								<li><a href="/srs/employees">Employees List</a></li>
+								<li><a href="/srs/leaves">Leaves</a></li>
+							</ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="/srs/schedule"><i class="far fa-calendar-check"></i> <span>Procedure Room</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+								<li><a href="/srs/employees">Employees List</a></li>
+								<li><a href="/srs/leaves">Leaves</a></li>
+							</ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="departments"><i class="far fa-building"></i> <span>Operation Theatre</span><span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+								<li><a href="employees">Employees List</a></li>
+								<li><a href="leaves">Leaves</a></li>
+							</ul>
+                        </li>
+						<li class="submenu">
+							<a href="#"><i class="fa fa-user"></i> <span> In-Patient Management </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="employees">Employees List</a></li>
+								<li><a href="leaves">Leaves</a></li>
+							</ul>
+						</li>
+						<li class="submenu">
+							<a href="#"><i class="far fa-money-bill-alt"></i> <span> Nurse Station </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="invoices">Invoices</a></li>
+								<li><a href="payments">Payments</a></li>
+								<li><a href="expenses">Expenses</a></li>
+								<li><a href="taxes">Taxes</a></li>
+								<li><a href="provident-fund">Provident Fund</a></li>
+							</ul>
+						</li>
+						<li class="submenu">
+							<a href="#"><i class="fa fa-book"></i> <span> Mental Health </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="salary"> Employee Salary </a></li>
+								<li><a href="salary-view"> Payslip </a></li>
+							</ul>
+						</li>
+                        <li>
+                            <a href="chat"><i class="fa fa-comments"></i> <span>Antenatal Care</span> <span class="badge badge-pill bg-primary float-right">5</span></a>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-video"></i> <span> Accounts And Revenue</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="voice-call">Voice Call</a></li>
+                                <li><a href="video-call">Video Call</a></li>
+                                <li><a href="incoming-call">Incoming Call</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-envelope"></i> <span> Insurance And E-Claim</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="compose">Compose Mail</a></li>
+                                <li><a href="inbox">Inbox</a></li>
+                                <li><a href="mail-view">Mail View</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="far fa-comment-dots"></i> <span> Phlebotomy</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="blog">Blog</a></li>
+                                <li><a href="blog-details">Blog View</a></li>
+                                <li><a href="add-blog">Add Blog</a></li>
+                                <li><a href="edit-blog">Edit Blog</a></li>
+                            </ul>
+                        </li>
+						<li>
+							<a href="assets"><i class="fa fa-cube"></i> <span>Laboratory</span></a>
+						</li>
+						<li>
+							<a href="activities"><i class="far fa-bell"></i> <span>Blood Bank</span></a>
+						</li>
+						<li class="submenu">
+							<a href="#"><i class="far fa-flag"></i> <span> Radiology </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="expense-reports"> Expense Report </a></li>
+								<li><a href="invoice-reports"> Invoice Report </a></li>
+							</ul>
+						</li>
+                        <li>
+                            <a href="settings"><i class="fa fa-cog"></i> <span>Linen And Laundry</span></a>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-laptop"></i> <span> Discharge Summary</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="uikit">UI Kit</a></li>
+                                <li><a href="typography">Typography</a></li>
+                                <li><a href="tabs">Tabs</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="widgets"><i class="fa fa-th"></i> <span>Mortuary Management</span></a>
+                        </li>
+						<li class="submenu">
+							<a href="#"><i class="fas fa-boxes"></i> <span>Feedback Management</span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="sweetalerts">Sweet Alerts</a></li>
+								<li><a href="tooltip">Tooltip</a></li>
+
+							</ul>
+						</li>
+						<li class="submenu">
+							<a href="#"><i class="fas fa-chart-area"></i> <span> Inventory </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="chart-apex">Apex Charts</a></li>
+								<li><a href="chart-js">Chart Js</a></li>
+								<li><a href="chart-morris">Morris Charts</a></li>
+								<li><a href="chart-flot">Flot Charts</a></li>
+								<li><a href="chart-peity">Peity Charts</a></li>
+								<li><a href="chart-c3">C3 Charts</a></li>
+							</ul>
+						</li>
+						<li class="submenu">
+							<a href="#"><i class="fab fa-buffer"></i> <span> MRD </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="icon-fontawesome">Fontawesome Icons</a></li>
+								<li><a href="icon-feather">Feather Icons</a></li>
+								<li><a href="icon-ionic">Ionic Icons</a></li>
+								<li><a href="icon-material">Material Icons</a></li>
+								<li><a href="icon-pe7">Pe7 Icons</a></li>
+								<li><a href="icon-simpleline">Simpleline Icons</a></li>
+								<li><a href="icon-themify">Themify Icons</a></li>
+								<li><a href="icon-weather">Weather Icons</a></li>
+								<li><a href="icon-typicon">Typicon Icons</a></li>
+								<li><a href="icon-flag">Flag Icons</a></li>
+							</ul>
+						</li>
+						<li class="submenu">
+                            <a href="#"><i class="fa fa-edit"></i> <span> MIS REPORTS</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="form-basic-inputs">Basic Inputs</a></li>
+                                <li><a href="form-input-groups">Input Groups</a></li>
+                                <li><a href="form-horizontal">Horizontal Form</a></li>
+                                <li><a href="form-vertical">Vertical Form</a></li>
+								<li><a href="form-mask">Form Mask </a></li>
+								<li><a href="form-validation">Form Validation </a></li>
+								<li><a href="form-select2">Form Select2 </a></li>
+								<li><a href="form-fileupload">File Upload </a></li>
+							</ul>
+						</li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-table"></i> <span> Inventory Setup</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="tables-basic">Basic Tables</a></li>
+                                <li><a href="tables-datatables">Data Table</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="calendar"><i class="far fa-calendar-alt"></i> Custom Template</a>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-columns"></i> <span>System Control</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="login"> Login </a></li>
+                                <li><a href="register"> Register </a></li>
+
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-columns"></i> <span>Security And Audit</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="login"> Login </a></li>
+                                <li><a href="register"> Register </a></li>
+
+                            </ul>
+                        </li>
+                       <br><br><br><br><br>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--/sidebar-->
+
+        <!-- content -->
+        <div class="page-wrapper">
+            <div class="content">
+<!-- Main Dashboard -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="container-fluid dashboard-content ">
+                                <div class="row">
+                                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="page-header">
+                                      <h3 class="pageheader-title"><strong>OPD Dashboard </strong></h3>
+                                      <hr>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="ecommerce-widget">
+
+                                  <div class="box-outer">
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-1.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Patient Registration</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                       <img src="{% static 'assets/images/interface/dashboard/iocn-2.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Clinical Managements</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-3.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Emergency </h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                         <img src="{% static 'assets/images/interface/dashboard/iocn-4.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Procedure room</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                         <img src="{% static 'assets/images/interface/dashboard/iocn-5.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Operation Theatre</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box  text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-6.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Inpatient Management</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-7.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Nurse Station</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box  text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-8.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Mental Health </h5>
+                                      </div>
+                                    </div>
+                                    <div class="box  text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-9.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Antenaal Care </h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-10.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Accounts And Revenue</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-11.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Insurance and Eclaim</h5>
+                                      </div>
+                                    </div>
+
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-12.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Phlebotomy </h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-13.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Laboratory</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-14.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Blood Bank</h5>
+                                      </div>
+                                    </div>
+
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboardimages/iocn-15.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Radiology</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-16.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Linen and Laundry</h5>
+                                      </div>
+                                    </div>
+
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-17.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Discharge Summary</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-18.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Mortuary Management</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-19.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Feedback Management</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-20.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Inventory</h5>
+                                      </div>
+                                    </div>
+
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-21.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">MRD</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-22.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Mis Reports</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-23.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Inventory Setup</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-24.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Custom Template</h5>
+                                      </div>
+                                    </div>
+
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-25.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">System Control</h5>
+                                      </div>
+                                    </div>
+
+                                    <div class="box text-center">
+                                      <div class="card_icon">
+                                        <img src="{% static 'assets/images/interface/dashboard/iocn-26.png' %}" alt=""/>
+                                      </div>
+                                      <div class="card-body">
+                                        <h5 class="text-muted">Security and Audit</h5>
+                                      </div>
+                                    </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/ Latest Patients-->
+            </div>
+
+            <!-- Notifications -->
+            <div class="notification-box">
+                <div class="msg-sidebar notifications msg-noti">
+                    <div class="topnav-dropdown-header">
+                        <span>Messages</span>
+                    </div>
+                    <div class="drop-scroll msg-list-scroll">
+                        <ul class="list-box">
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">R</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Richard Miles </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item new-message">
+                                        <div class="list-left">
+                                            <span class="avatar">J</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">John Doe</span>
+                                            <span class="message-time">1 Aug</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">T</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author"> Tarah Shropshire </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">M</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Mike Litorus</span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">C</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author"> Catherine Manseau </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">D</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author"> Domenic Houston </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">B</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author"> Buster Wigton </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">R</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author"> Rolland Webber </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">C</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author"> Claire Mapes </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">M</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Melita Faucher</span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">J</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Jeffery Lalor</span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">L</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Loren Gatlin</span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">T</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Tarah Shropshire</span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="topnav-dropdown-footer">
+                        <a href="chat">See all messages</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Notifications -->
+        </div>
+        <!--/ content -->
+    </div>
+
+    <!--scripts-->
+    <!-- jQuery -->
+    <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+
+    <!-- Bootstrap Core JS -->
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Slimscroll JS -->
+    <script src="{% static 'assets/js/jquery.slimscroll.js' %}"></script>
+
+    <!-- Select2 JS -->
+    <script src="{% static 'assets/js/select2.min.js' %}"></script>
+    <script src="{% static 'assets/js/moment.min.js' %}"></script>
+
+    <!-- Datetime picker JS -->
+    <script src="{% static 'assets/plugins/datetimepicker/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+
+    <!-- Calender JS -->
+    <script src="{% static 'assets/js/calendar.min.js' %}"></script>
+
+    <!-- Apex chart JS -->
+    <script src="{% static 'assets/js/apex.js' %}"></script>
+
+    <!-- Custom JS -->
+    <script src="{% static 'assets/js/app.js' %}"></script>
+
+	<script>
+
+        /*Donut Pie chart*/
+         var options = {
+          series: [44, 55],
+          chart: {
+          width: 280,
+          type: 'donut',
+
+        },
+
+
+        colors: ['#1DBFC1', '#8EE2E3'],
+        dataLabels: {
+          enabled: false
+        },
+
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              show: false
+            }
+          }
+        }],
+        legend: {
+          position: 'right',
+          offsetY: 0,
+          height: 230,
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+
+
+        function appendData() {
+        var arr = chart.w.globals.series.slice()
+        arr.push(Math.floor(Math.random() * (100 - 1 + 1)) + 1)
+        return arr;
+      }
+
+      function removeData() {
+        var arr = chart.w.globals.series.slice()
+        arr.pop()
+        return arr;
+      }
+
+      function randomize() {
+        return chart.w.globals.series.map(function() {
+            return Math.floor(Math.random() * (100 - 1 + 1)) + 1
+        })
+      }
+
+      function reset() {
+        return options.series
+      }
+
+    </script>
+
+    <script>
+
+        /*Stastistics chart*/
+        var options = {
+          series: [{
+          data: [
+            [1327359600000,30.95],
+            [1327446000000,31.34],
+            [1327532400000,31.18],
+            [1327618800000,31.05],
+            [1327878000000,31.00],
+            [1327964400000,30.95],
+            [1328050800000,31.24],
+            [1328137200000,31.29],
+            [1328223600000,31.85],
+            [1328482800000,31.86],
+            [1328569200000,32.28],
+            [1328655600000,32.10],
+            [1328742000000,32.65],
+            [1328828400000,32.21],
+            [1329087600000,32.35],
+            [1329174000000,32.44],
+            [1329260400000,32.46],
+            [1329346800000,32.86],
+            [1329433200000,32.75],
+            [1329778800000,32.54],
+            [1329865200000,32.33],
+            [1329951600000,32.97],
+            [1330038000000,33.41],
+            [1330297200000,33.27],
+            [1330383600000,33.27],
+            [1330470000000,32.89],
+            [1330556400000,33.10],
+            [1330642800000,33.73],
+            [1330902000000,33.22],
+            [1330988400000,31.99],
+            [1331074800000,32.41],
+            [1331161200000,33.05],
+            [1331247600000,33.64],
+            [1331506800000,33.56],
+            [1331593200000,34.22],
+            [1331679600000,33.77],
+            [1331766000000,34.17],
+            [1331852400000,33.82],
+            [1332111600000,34.51],
+            [1332198000000,33.16],
+            [1332284400000,33.56],
+            [1332370800000,33.71]
+
+          ]
+        }],
+          chart: {
+          id: 'area-datetime',
+          type: 'area',
+          height: 350,
+          zoom: {
+            autoScaleYaxis: true
+          }
+        },
+        colors: ['#1DBFC1', '#8EE2E3'],
+        annotations: {
+          yaxis: [{
+            y: 30,
+            borderColor: '#999',
+            label: {
+              show: true,
+              text: 'Support',
+              style: {
+                color: "#fff",
+                background: '#00E396'
+              }
+            }
+          }],
+          xaxis: [{
+            x: new Date('14 Nov 2012').getTime(),
+            borderColor: '#999',
+            yAxisIndex: 0,
+            label: {
+              show: true,
+              text: 'Rally',
+              style: {
+                color: "#fff",
+                background: '#775DD0'
+              }
+            }
+          }]
+        },
+        dataLabels: {
+          enabled: false
+        },
+        markers: {
+          size: 0,
+          style: 'hollow',
+        },
+        xaxis: {
+          type: 'datetime',
+          min: new Date('01 Mar 2012').getTime(),
+          tickAmount: 6,
+        },
+        tooltip: {
+          x: {
+            format: 'dd MMM yyyy'
+          }
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shadeIntensity: 1,
+            opacityFrom: 0.7,
+            opacityTo: 0.9,
+            stops: [0, 100]
+          }
+        },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart-timeline"), options);
+        chart.render();
+
+
+        var resetCssClasses = function(activeEl) {
+        var els = document.querySelectorAll('button')
+        Array.prototype.forEach.call(els, function(el) {
+          el.classList.remove('active')
+        })
+
+        activeEl.target.classList.add('active')
+      }
+
+    </script>
+
+    <script>
+
+        /*bar chart*/
+        var options = {
+          series: [{
+          name: 'Inflation',
+          data: [ 2.2, 1.3, 2.4, 0.8]
+        }],
+          chart: {
+          height: 400,
+          type: 'bar',
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 0,
+            dataLabels: {
+              position: 'top', // top, center, bottom
+            },
+          }
+        },
+
+        dataLabels: {
+          enabled: false,
+          formatter: function (val) {
+            return val + "%";
+          },
+          offsetY: -20,
+          style: {
+            fontSize: '12px',
+
+          }
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+            colorFrom: '#fff',
+            colorTo: '#fff',
+            stops: [0, 100],
+            opacityFrom: .7,
+            opacityTo: .3,
+            shade: 'light', type: "vertical", shadeIntensity: 1,
+
+            }
+        },
+
+        grid: {
+            xaxis: {
+                lines: {
+                    show: false
+                }
+            },
+            yaxis: {
+                lines: {
+                    show: false
+                }
+            }
+        },
+        dataLabels: {
+            enabled: true,
+          },
+
+        xaxis: {
+
+          categories: [],
+          position: 'top',
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false
+          },
+
+          tooltip: {
+            enabled: true,
+          }
+        },
+        yaxis: {
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false,
+          },
+          labels: {
+            show: false,
+            formatter: function (val) {
+              return val + "%";
+            }
+          }
+
+        },
+        title: {
+          text: '',
+          floating: false,
+          offsetY: 330,
+          align: 'center',
+          style: {
+            color: '#444'
+          }
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#bar_chart"), options);
+        chart.render();
+
+    </script>
+
+     <script>
+      var config =
+        `function selectDate(date) {
+          $('.calendar-wrapper').updateCalendarOptions({
+            date: date
+          });
+        }
+
+        var defaultConfig = {
+          weekDayLength: 1,
+          date: new Date(),
+          onClickDate: selectDate,
+          showYearDropdown: true,
+          startOnMonday: true,
+        };
+
+        $('.calendar-wrapper').calendar(defaultConfig);`;
+              eval(config);
+    </script>
+</body>
+
+</html>

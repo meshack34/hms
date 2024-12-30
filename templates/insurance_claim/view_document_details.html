@@ -1,0 +1,69 @@
+{% extends 'insurance_claim/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+    .form-control{
+      border: 2px solid white;
+      width: 100%;
+      background-color: white;
+      border-bottom: 1px solid white;
+    }
+    </style>
+{% endblock  %}
+{% block body_block %}
+
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <button type="menu" style="font-family: monospace; width: 100%; text-align: left;" class="btn btn-primary m-t-15 waves-effect"> <b>Document Details</b></button>
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+           <div class="card">
+               <div class="header">
+       <div class="body">
+        <div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;
+            <!-- <div class="col-md-0">
+                <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+            </div> -->
+            <div class="col-md-0">
+                <a href="{% url 'checklisted_bill' %}" class="btn btn-primary"><i class="fa fa-arrow-circle-left">&nbsp;Back</i></a>
+            </div>
+
+        </div><br>
+
+           <div class="table-responsive">
+             <table class="datatable table table-stripped ">
+
+                   <thead>
+                       <tr><th>S.No.</th>
+                           <th>Bill No</th>
+                           <th>CheckList NO</th>
+                           <th>CheckList Date</th>
+                           <th>Document Name</th>
+                        </tr>
+                   </thead>
+                   <tbody>
+                    {% for data in document_details %}
+                   <tr>
+                       <td>{{ forloop.counter }}</td>
+                       <td>{{bill_no}}</td>
+                       <td>{{data.checklist_no}}</td>
+                       <td>{{data.checklist_date}}</td>
+                       <td>{{data.document_name}}</td>
+                   </tr>
+                   {% endfor %}
+
+                    </tbody>
+
+           </table>
+           </div>
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock  %}

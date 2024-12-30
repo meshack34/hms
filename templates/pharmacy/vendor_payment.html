@@ -1,0 +1,213 @@
+
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+<style>
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    </style>
+
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+<div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>Vendor Payment</b>
+        </div>
+        <div class="">
+            <button type="submit"class="btn" name="save_all" value="save_all" form="saveall"> <i class="fas fa-save" style="color: white;" ></i></button>
+          <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1"  title="Filter"><i class="fa fa-filter"></i></a>
+          <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <!-- <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+            <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a> -->
+            
+          </div>
+        </div>
+      </div>
+
+           <div class="table-responsive">
+            <form method="post" id="saveall" data-cities-url="{% url 'meterial_intent_JS' %}">
+                {% csrf_token %}
+             <table class= "datatable table table-bordered table-stripped">
+                   <thead class="text-nowrap">
+                       <tr><th>S No</th>
+                        <th>Location</th>
+                           <th>Vendor</th>
+                           <th>Payment Mode</th>
+                           <th>Payment Terms</th>
+                           <th>Invoice No</th>
+                           <th>PO No</th>
+                           <th>PO Date</th>
+                           <th>GRN No</th>
+                           <th>GRN Date</th>
+                           <th>GRN Amount</th>
+                           <th>Payable Amount</th>
+                           <th>OutStanding Amount</th>
+                           <th>Paid Amount</th>
+                           <th>Pay</th>
+                       </tr>
+                   </thead>
+
+                    {% csrf_token %}
+                   <tbody>
+                    {% for data1,data2,data3 in stock_entry_parent2%}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td><input type="hidden" name="location_id" id="location_id" value="{{data1.location_id_id}}">
+                            <input type="hidden" name="po_location" id="po_location" value="{{data1.po_location_id}}">{{data1.po_location}}</td>
+                        <td><input type="hidden" name="vendor_id" id="vendorid" value="{{data1.vendar_id_id}}">{{data2}}
+                            <input type="hidden" name="department_id" id="department_id" value="{{data1.department_id}}">
+                            <input type="hidden" name="store_id" id="store_id" value="{{data1.store_id_id}}">
+                            </td>
+                        <td>{{data1.vendar_id.payment_mode}}</td>
+                        <td>{{data1.vendar_id.payment_terms}}</td>
+                        <td><input type="hidden" name="invoice_no" id="invoice_no" value="{{data1.invoice_no}}">{{data1.invoice_no}}</td>
+                        <td><input type="hidden" name="po_id" id="po_id" value="{{data1.PO_id}}">{{data1.PO_id}}</td>
+                        <td><input type="hidden" name="po_date" id="po_date" value="{{data1.PO_datetime}}">{{data1.PO_datetime}}</td>
+                        <td><input type="hidden" name="grn_id" id="grn_id" value="{{data1.GRN_id}}">{{data1.GRN_id}}</td>
+                        <td><input type="hidden" name="grn_date" id="grn_date" value="{{data1.GRN_datetime}}">{{data1.GRN_datetime}}</td>
+                        <td><input type="hidden" name="net_amt" id="net_amt" value="{{data1.GRN_amount}}"><center>{{data1.GRN_amount}}</center></td>
+                        <td><input type="hidden" name="payable_amt" id="payable_amt" class="form-control" value="{{data1.GRN_amount}}"><center>{{data1.GRN_amount}}</center></td>
+                        <td><input type="text" name="outstand_amt" id="outstand_amt" class="form-control" readonly value="{{data3}}"></td>
+                        <td><input type="text" name="paid_amt1" id="paid_amt" class="form-control"></td>
+                        <td><button type="button" class="btn btn-primary" name="vendor_payment" id="vendor_payment"  onclick="vendor()"><i class="fa fa-save"></i></button></td>
+
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+
+           </table>
+           </form>
+           </div>
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+ <!-- Filter Start model -->
+
+ <div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel1"><b>Search</b></h5>
+            </div>
+            <!-- Main block -->
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"><br>
+                        <!-- <form method="post" > -->
+                         {% csrf_token %}
+                          <div class="form-row">
+                           <div class="form-group col-md-6 mb-0">
+                             <label><b>From Date*</b> </label>
+                             <input type="date" name="from_date" id="from_date" class="form-control" required>
+                             </div>
+                             <div class="form-group col-md-6 mb-0">
+                             <label><b> To Date*</b></label>
+                             <input type="date" name="to_date" id="to_date" class="form-control" required>
+                             </div>
+                             <div class="form-group col-md-6 mb-0">
+                                 <label><b>Vendor</b></label>
+                                 <select name="vendor_id" id="vendor_id" class="form-control">
+                                     <option>select</option>
+                                     {% for data in vendarmaster_2%}
+                                     <option value="{{data.vendor_name}}">{{data.vendor_name}}</option>
+                                     {% endfor %}
+     
+                                 </select>
+                             </div>
+                             <div class=" col-md-2"><br>
+                                 <button type="submit" name="search_po" value="search_po" class="btn btn-warning w-100 mt-2"><i
+                                     class="fa fa-search pr-2"></i>Search</button>
+                               </div>
+                      </div>
+     
+                        <!-- </form> -->
+                     </div><br>                     
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- end model -->
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+    $(document).on('click', '#vendor_payment', function () {
+        var dumy = this;
+        var vendor_id = $(dumy).closest('tr').find('#vendorid').val();
+      var invoice_no = $(dumy).closest('tr').find('#invoice_no').val();
+      var po_id = $(dumy).closest('tr').find('#po_id').val();
+      var po_date = $(dumy).closest('tr').find('#po_date').val();
+      var grn_id = $(dumy).closest('tr').find('#grn_id').val();
+      var grn_date = $(dumy).closest('tr').find('#grn_date').val();
+      var net_amt = $(dumy).closest('tr').find('#net_amt').val();
+      var payable_amt = $(dumy).closest('tr').find('#payable_amt').val();
+      var paid_amt = $(dumy).closest('tr').find('#paid_amt').val();
+      var department_id = $(dumy).closest('tr').find('#department_id').val();
+      var store_id = $(dumy).closest('tr').find('#store_id').val();
+      var location_id = $(dumy).closest('tr').find('#location_id').val();
+      var po_location = $(dumy).closest('tr').find('#po_location').val();
+      var url="{% url 'vendorpaymentjs' %}";
+      var headers = {'X-CSRFToken': '{{ csrf_token }}' }
+
+      $.ajax({
+              url:url,
+              type: "post",
+              data: {
+                vendor_id :vendor_id,
+                invoice_no:invoice_no,
+                po_id :po_id,
+                po_date :po_date,
+                grn_id :grn_id,
+                grn_date :grn_date,
+                net_amt :net_amt,
+                payable_amt :payable_amt,
+                paid_amt :paid_amt,
+                location_id:location_id,
+                store_id:store_id,
+                department_id:department_id,
+                po_location:po_location,
+              },
+              headers:headers,
+              dataType : 'json',
+              success: function(data){
+                alert(data);
+                window.location.href = "{% url 'vendor_payment' %}";
+              },
+              error:function(data)
+              {
+                  console.log(data);
+              }
+            });
+    });
+    });
+</script>
+
+
+
+
+<!-- amount paid -->
+<script>
+function paid() {
+  alert("Paid");
+}
+</script>
+{% endblock %}

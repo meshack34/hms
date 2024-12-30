@@ -1,0 +1,79 @@
+{% extends 'admin1/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<!--Main Content-->
+
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="container">
+        <div class="new_appointment_style">
+          <div class="row clearfix">
+              <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <div class="container">
+                  <!--Page Start-->
+                  <div class="col-xs-10 col-sm-10 col-md-6 col-lg-6">
+                      <div class="header">
+                          <div class="card container" style="padding-left: 130px;">
+                            <h4> <i class="fas fa-map-marker-alt"></i>&nbsp; &nbsp;&nbsp; &nbsp;{{doctor_details.doctor_location}}</h4>
+                             <h4><i class="fas fa-notes-medical"></i>&nbsp; &nbsp;&nbsp; &nbsp;In-Hospital Consultation</h4>
+                               <h4><i class="far fa-calendar-alt"></i>&nbsp; &nbsp;&nbsp; &nbsp;{{appointment_date}}</h4>
+                              <h4><i class="fas fa-wallet"></i>&nbsp; &nbsp;&nbsp; &nbsp;Rs.700</h4><br>
+                              <table>
+                                  <tr>
+                                    <td><img src="media/{{doctor_details.doctor_profile_image}}" alt="..." style="width:64px;height:64px;"></td>
+                                    <td>
+                                      Dr.{{doctor_details.doctor_name}}<br>
+                                      <strong>Senior Consultant</strong>
+                                    </td>
+                                  </tr>
+                                </table>
+
+                          </div>
+                      </div>
+                  </div><br><br>
+                  <div class="container1" align="center1">
+                      <div class="jumbotron1 own_form">
+                        {% if slots %}
+                        <form  method="POST" action="successfully-booked">
+                          {% csrf_token %}
+                          {{doctor}}
+                          {{location}}
+                          <h2>Welcome,<span style="color:#24a0ed;">&nbsp; &nbsp;{{first_name}} {{middle_name}} {{last_name}}</span></h2>
+                          <p>Please click on slot</p>
+                          <hr>
+                          {{form.doctor_time_slot}}
+                          <div class="row">
+                            {% for time_slots in slots%}
+                            <div class="col-lg-2 col-md-3 col-sm-3  schedule-design" style="border:1px solid #eee;box-shadow:1px 2px 3px 3px #86C6F4;border-radius:1em;">
+                              <input type="radio" class="btn btn-light" name="time_slots_id" value="{{time_slots.time_slot_id}}" required>&nbsp;&nbsp;{{time_slots.time_slot_start_time}}-{{time_slots.time_slot_end_time}}
+                            </div>
+                            {% endfor %}
+                          </div><br>
+                          <input type="submit" name="next" value="Go Next" class="btn btn-primary btn-block">
+                          <a href="/choose-doctor" class="btn btn-info btn-block" > <i class="fa fa-arrow-circle-left">&nbsp; Go Back</i></a>
+                        </form>
+                        {% else %}
+                          <h3>No Schedule Are Availabale For Your Choose Date</h3>
+                          <a href="/">Back</a>
+                        {% endif %}
+                      </div>
+                    <br>
+                  </div>
+                </div>
+                </div>
+              </div>
+          </div>
+        </div>
+  </div>
+</div>
+{% endblock %}
+{% block script_block %}
+<!-- javacripts -->
+<script src="{% static 'js/app.min.js' %}"></script>
+<script src="{% static 'js/table.min.js' %}"></script>
+<!-- Custom Js -->
+<script src="{% static 'js/admin.js' %}"></script>
+<script src="{% static 'js/tables/jquery-datatable.js' %}"></script>
+{% endblock  %}

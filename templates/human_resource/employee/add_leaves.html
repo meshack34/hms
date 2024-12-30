@@ -1,0 +1,152 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h4 class="page-title">Add Leave</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card mb-0">
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="focus-label">Employee Name</label>
+                                        <input type="text" class="form-control floating" list="text_editors" name="emp_name" id="emp_name">
+                                        <datalist id="text_editors">
+                                            {% for data in employee_name %}
+                                            <option value="{{data.id}}.{{data.first_name}}{{data.last_name}}"></option>
+                                            {% endfor %}
+                                        </datalist>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="focus-label">Department</label>
+                                        <select class="select floating" name="dept_id" id="dept_id">
+                                            <option value="">-</option>
+                                            {% for data in dept_detail %}
+                                            <option value="{{data.id}}">{{data.department_name}}</option>
+                                           {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                </div>
+                            <div class="form-group">
+                                <label>Leave Type <span class="text-danger">*</span></label>
+                                <select class="select" name="leave_type">
+                                    <option>Select</option>
+                                   {% for data in leave_type %}
+                                   <option value="{{data.id}}">{{data.leave_type}}</option>
+                                   {% endfor %}
+                                </select>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>From <span class="text-danger">*</span></label>
+                                        <div>
+                                            <input type="date" name="from_date" id="from_date" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>To <span class="text-danger">*</span></label>
+                                        <div>
+                                            <input type="date" name="to_date" id="to_date" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <label></label>
+                                <button type="button" class="btn btn-primary" id="calculate"><i class="fa fa-plus"></i></button>
+                            </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Number of days <span class="text-danger">*</span></label>
+                                        <input class="form-control" readonly="" type="number" id="result" name="result">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Remaining Leaves <span class="text-danger">*</span></label>
+                                        <input class="form-control" readonly="" value="20" type="text" id="remain_days" name="remain_days">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Leave Reason <span class="text-danger">*</span></label>
+                                <textarea rows="4" cols="5" class="form-control" name="reason"></textarea>
+                            </div>
+                            <div class="m-t-20 text-center">
+                                <button class="btn btn-primary submit-btn">Send Leave Request</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(document).on('keyup', '#emp_name', function () {
+            var emp_name = $('#emp_name').val();
+            var headers = {'X-CSRFToken': '{{ csrf_token }}' };
+
+            $.ajax({
+                url: "{% url 'get_remaining_days' %}",
+                type: "GET",
+                data: {
+                emp_name: emp_name,
+                },
+                headers: headers,
+                dataType : 'json',
+                success: function(data){
+                $("#remain_days").val(data.remain_days);
+                
+            },
+            error:function(data)
+                {
+                    console.log(data);
+                }
+                });
+        });
+
+        $(document).on('click', '#calculate', function () {
+        var fromdate = $("#from_date").val();
+        var todate = $("#to_date").val();
+    
+        if ((fromdate == "") || (todate == "")) {
+            $("#result").html("Please enter two dates");
+            return false
+        }
+    
+        var dt1 = new Date(fromdate);
+        var dt2 = new Date(todate);
+    
+        var time_difference = dt2.getTime() - dt1.getTime();
+        var result = (time_difference / (1000 * 60 * 60 * 24))+1;
+        
+        var output = "Total number of days between dates - " + result;
+        $("#result").val(result);
+        });
+    });
+</script>
+
+    {% endblock %}

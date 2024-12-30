@@ -1,0 +1,260 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+
+  /* .form-control {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  } */
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+  <div class="content">
+    <button type="menu" style="font-family: monospace; width: 100%; text-align: left;"
+      class="btn btn-primary m-t-15 waves-effect"> <b>Stock Transfer to MainStore(Without Indent)</b></button>
+
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+          <div class="card">
+            <div class="header">
+              <div class="body">
+
+                <br>
+                <div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button type="submit" class="btn btn-success" name="save_btn" form="saveform" value="save_btn"> <i
+                      class="fas fa-save">&nbsp;Save</i></button>&nbsp;
+                  <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+                      class="fas fa-sync-alt">&nbsp;Refresh</i></button>&nbsp;
+                  <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">&nbsp;Exit</i></a>&nbsp;
+                  <a href="" class="btn btn-primary"> <i class="fas fa-sync-alt">&nbsp;Back</i></a>
+                </div><br>
+
+                <form method="post">
+                  {% csrf_token %}
+
+                  <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+                      <thead>
+                        <tr>
+
+                          <th>Item_Name</th>
+                          <th>Barcode</th>
+                          <th>Batch No</th>
+                          <th>Expiry Date</th>
+                          <th>Issue Qty</th>
+                          <th>Avail Qty</th>
+                          <th>Rate</th>
+                          <th>Amount</th>
+                          <th>Remark</th>
+                          <th>Action</th>
+                        </tr>
+
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><input name="item_id" id="item_id" list="item_name"
+                                data-uhid-url="{% url 'searchbatchno_mainstore' %}" class="form-control"
+                                style="width:100%"></td>
+                          <td><input type="text" name="barcode" id="barcodewithoutintent" class="form-control"></td>
+                          <td>
+                            <select name="serial_batch" id="serial_batchwithoutintent" class="form-control"
+                              data-uhid-url="{% url 'without_JQ' %}">
+                              <option value="">Select</option>
+                            </select>
+                          </td>
+
+                          <td><input type="date" name="expiry_date" id="expiry_datewithoutintent" class="form-control"></td>
+                          <td><input type="text" name="issued_qty" id="issued_qtywithoutintent" class="form-control"></td>
+                          <td><input type="text" name="available_qty" id="available_qtywithoutintent" class="form-control" readonly>
+                          </td>
+                          <td><input type="text" name="rate" id="ratewithoutintent" class="form-control" readonly></td>
+                          <td><input type="text" name="amount" id="amountwithoutintent" class="form-control"></td>
+                          <td><input type="text" name="remark" id="remarkwithoutintent" class="form-control"></td>
+                          <td><button type="submit" class="btn btn-warning width" name="add_btn" value="add_btn"
+                              style="margin-right: 5px;margin-bottom: 5px;">+Add</button></td>
+                        </tr>
+                        <datalist id='item_name'>
+                          {% for data in item_detail %}
+                          <option value="{{data.id}}.{{data.item_name}}"></option>
+                          {% endfor %}
+                        </datalist>
+                      </tbody>
+                    </table>
+                  </div>
+                </form> <br><br>
+                <form method="post" id="saveform">
+                  {% csrf_token %}
+
+                  <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                    <div class="form-row">
+                      <!-- <div class="form-group col-md-3 mb-0">
+                        <label><b>Issuing Store*</b></label>
+                        <input type='text' class='form-control' name="issuing_store_name1" id="issuing_store_name1"
+                         value='{{mainstore.store_name}}' readonly>
+                          <input type='hidden' class='form-control' name="issuing_store_name" id="issuing_store_name"
+                          value='{{mainstore.id}}' readonly>
+                      </div> -->
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b>Receiving Store*</b> </label>
+                        <select name="receiving_store" id="receiving_store" class="form-control">
+                          <option value="">Select</option>
+                          {% for data in store_master%}
+                          <option value="{{data.id}}">{{data.store_name}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <!-- <div class="form-group col-md-3 mb-0">
+                        <label><b>Department</b></label>
+                        <select name="department" id="department8" class="form-control">
+                          <option>Select</option>
+                          {% for data in dept_detail %}
+                          <option value="{{data.id}}">{{data.service_department}}</option>
+                          {% endfor %}
+                        </select>
+                        </div> -->
+
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b>Approved By*</b></label>
+                        <input type="text" name="approved_by" id="approved_by" class="form-control">
+                      </div>
+
+
+                    </div>
+                  </div><br>
+
+                  <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+                      <thead>
+                        <tr>
+                          <th>S.No</th>
+                          <th>Item_Name</th>
+                          <th>Barcode</th>
+                          <th>Batch No</th>
+                          <th>Expiry Date</th>
+                          <th>Issue Qty</th>
+                          <th>Avail Qty</th>
+                          <th>Rate</th>
+                          <th>Amount</th>
+                          <th>Remark</th>
+                        </tr>
+                      </thead>
+                      {% for data in item_issue_temp%}
+                      <tbody>
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td><input type="hidden" name="item_id1" id="item_id1" value="">{{data.item_id}}</td>
+
+                          <td><input type="hidden" name="barcode1" id="barcode1">{{data.barcode}}</td>
+                          <td><input type="hidden" name="serial_batch1" id="serial_batch1">{{data.batch_no}}</td>
+                          <td><input type="hidden" name="expiry_date1" id="expiry_date1" value="">{{data.expiry_date}}
+                          </td>
+                          <td><input type="hidden" name="issued_qty1" id="issued_qty1" value="">{{data.issued_qty}}</td>
+                          <td><input type="hidden" name="available_qty1" id="available_qty1"
+                              value="">{{data.available_qty}}</td>
+                          <td><input type="hidden" name="rate1" id="rate1" value="">{{data.rate}}</td>
+                          <td><input type="hidden" name="amount1" id="amount1" value="">{{data.amount}}</td>
+                          <td><input type="hidden" name="remark1" id="remark1" value="">{{data.remark}}</td>
+                        </tr>
+
+                      </tbody>
+                      {% endfor %}
+                    </table>
+                  </div>
+              </div>
+              </form>
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $(document).on('change', '#serial_batchwithoutintent', function () {
+                var serial_batch = this.value;
+                var item_id = $('#item_id').val();
+                const url = $("#serial_batchwithoutintent").attr("data-uhid-url");
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    serial_batch: serial_batch,
+                    item_id: item_id,
+
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $('#expiry_datewithoutintent').val(data["expiry_date"]);
+                    $('#ratewithoutintent').val(data["rate"]);
+                    $('#available_qtywithoutintent').val(data['available_qty']);
+
+                  },
+                  error: function (data1) {
+                    console.log(data1);
+                  }
+                });
+              });
+
+       // search batchno with item
+       $(document).on('keyup', '#item_id', function () {
+                var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                var item_id = $('#item_id').val();
+                const url = $("#item_id").attr("data-uhid-url");
+
+                $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                    item_id: item_id,
+                  },
+                  headers: headers,
+                  dataType: 'json',
+                  success: function (data) {
+                    $("#serial_batchwithoutintent").html(data);
+                    let html_data = '<option value="">Select</option>';
+                    data.forEach(function (get_batch) {
+                    //   console.log(get_batch)
+                      html_data += `<option value="${get_batch.batch_no}">${get_batch.batch_no}</option>`
+                      // alert(html_data);
+                    });
+                    // console.log(html_data);
+                    $("#serial_batchwithoutintent").html(html_data);
+
+                  },
+
+                });
+              });
+
+   $(document).on('keyup', '#issued_qtywithoutintent', function () {
+        var dumy = this;
+        var issue_qty = this.value;
+        var rate = $(dumy).closest('tr').find('#ratewithoutintent').val();
+        var amount = issue_qty * rate;
+        $(dumy).closest('tr').find('#amountwithoutintent').val(amount);
+      });
+
+    });
+</script>
+
+
+
+{% endblock %}

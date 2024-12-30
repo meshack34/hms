@@ -1,0 +1,473 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+
+  .form-control{
+      border: 2px solid white;
+      width: 100%;
+      background-color: white;
+      border-bottom: 1px solid black;
+    }
+    #id_Date,#id_s_no,#id_po_no,#id_vendor,#id_tax,#id_basic_amount,#id_net_amount,#item_name
+    {
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    </style>
+    {% endblock  %}
+    {% block body_block %}
+<!-- Jquery UI for AutoComplete -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+   <div class="container-fluid">
+       <a class="navbar-brand" style="color: white;" href="#">Add Counter Sale Out-Patient </a>
+   </div>
+ </nav><br>
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+           <div class="card">
+               <div class="header">
+       <div class="body">
+         <form class="p-3" method="post" id="POcalculate">
+          {% csrf_token %}
+        <div class="icon-button-demo">
+          
+          <button type="submit" class="btn btn-success" name="saved" value="saved" id="add_purchase_order"> <i class="fas fa-save pr-2" ></i>Save</button>
+          <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i class="fas fa-sync-alt pr-2" ></i>Refresh</button>
+          <a href="" class="btn btn-danger"> <i class="fas fa-times-circle pr-2"></i>Exit</a>
+          <a href="/add_counter_saleout_patient_preview" class="btn btn-warning"><i class="fa fa-print pr-2" ></i>Bill Generated</a>
+          <button class="btn btn-warning" id="statusupdate"><i class="fa fa-print pr-2" ></i>Forward to OPD</button>
+      </div>
+
+              <br>
+              <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <!-- <a class="navbar-brand" href="#">Items</a> -->
+            <a href="">
+               <button type="button" class="btn btn-light">Items</button>
+            </a>  
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item ">
+                      <a class="nav-link" style="color: white;" href="#">Total Qty: 0 </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" style="color: white;" href="#">Included Tax: 0</a>
+                    </li>
+                   
+                    <li class="nav-item">
+                      <a class="nav-link" style="color: white;" href="#">No of Items: 0</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" style="color: white;" href="#">Total Taxable Amt: 0</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" style="color: white;" href="#">Roundoff : 0</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" style="color: white;" href="#">Net Amt: 0</a>
+                    </li>
+                  </ul>
+                 
+                </div>
+              </nav>
+
+    <table class="datatable table table-stripped auto-index">
+                   <thead>
+                       <tr>
+                        <th>Item_Name</th>
+                        <th>Batch</th>
+                        <th>Expiry</th>
+                        <!-- <th>MRP</th> -->
+                        <th>Qty</th>
+                        <th>Rate</th>
+                        <th>Dis%</th>
+                        <th>Amount</th>
+                           <th></th>
+
+                       </tr>
+                       <tr></tr>
+                   </thead>
+                   <tbody>
+                    <tr class="clonetr" id="addrow">
+                        <td><input name="item_id" id="item_id" list="item_name" data-uhid-url="{% url 'searchbatchno' %}" class="form-control" style="width:100%"></td>
+                        <td>
+                          <select name="batch" id="batch_IDD" class="form-control" data-uhid-url="{% url 'add_count_sale' %}">
+                            <option value="">Select</option>
+                          </select>
+                        </td>
+                         <td><input type="text" name="expiry" id="expiry" class="form-control"></td>
+                        <!-- <td><input  name="mrp" id="mrp" class="form-control"></td> -->
+                        <td><input type="text" name="qty" id="qty" class="form-control"></td>
+                        <td><input type="text" name="rate" id="rate" class="form-control"></td>
+                        <td><input type="text" name="discount" id="discount" class="form-control"></td>
+                        <td><input type="hidden" name="before_disc_amount" id="before_disc_amount"><input type="text" name="amount" id="amount" class="form-control"></td>
+                        <td><div class="row"><div class="col-md-3"><button type="submit" style="background-color: rgb(4, 96, 41);" class="btn btn-primary" name="save_temp" value="save_temp" id="save_temp"><i class="fas fa-plus add_icon"></i></button>
+                       </div>
+                    </tr>
+                    <tr>
+                     <datalist id="item_name">
+                         {% for data in item_names%}
+                         <option value="{{data.id}}.{{data.item_name}}"></option>
+                         {% endfor %}
+                     </datalist>
+
+                    </tr>
+                    
+                 </tbody>
+           </table>
+           
+         <hr>
+         <br>
+
+         <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(223, 223, 223);"><br>
+            <div class="form-row">
+              <div class="form-group col-md-3 mb-0">
+                <label><b>Name</b> </label>
+                <input type="text" name="patient_name" id="patient_name" data-uhid-url="{% url 'patientregistration' %}" list="patientname" class="form-control" >
+              </div>
+
+              <datalist id="patientname">
+                  {% for data in patient_registration %}
+                  <option value="{{data.id}}.{{data.first_name}} {{data.middle_name}} {{data.last_name}}"></option>
+                  {% endfor %}
+              </datalist>
+               <div class="form-group col-md-3 mb-0">
+                 <label><b>UHID</b></label>
+                 <input type="text" name="uhid" id="uhid" class="form-control">
+               </div>
+               
+            
+               <div class="form-group col-md-3 mb-0" style="padding-top: 8px;font-size: 15px;">
+                <span> <input type="radio" name="consultant" id="consultant" value="Hospital Consultant" ><b>Hospital Consultant</b> </span>
+                <span><input type="radio" name="consultant" id="consultant" value="Other Consultant"><b>Other Consultant</b></span>
+                <input type="text" name="consultant_name" class="form-control">
+               </div>
+             
+                 <div class="form-group col-md-3 mb-0">
+                   <label><b> Mobile No</b></label>
+                   <input type="text" name="mob_no" id="mob_no" class="form-control">
+                   </div>
+                   <div class="form-group col-md-3 mb-0">
+                   <label><b>Age</b></label>
+                   <input type="text" name="age" id="age" class="form-control">
+                   </div>
+                   <div class="form-group col-md-3 mb-0">
+                   <label><b>Gender</b> </label>
+                   <input type="text" name="gender" id="gender" class="form-control">
+                   </div>
+               <div class="form-group col-md-3 mb-0">
+                 <label><b>Panel</b></label>
+                 <select name="panel" id="panel" class="form-control">
+                   <option>Select</option>
+                   <option>Credit</option>
+                   <option>Insurence</option>
+                   <option>Debit</option>
+                 </select>
+                 </div>
+                 <div class="form-group col-md-3 mb-0">
+                 <label><b>Payment Mode</b> </label>
+                 <select name="type" id="type" class="form-control">
+                   <option>Select</option>
+                   <option>Cash</option>
+                   <option>Credit</option>
+                   <option>Debit</option>
+                   <option>Insurence</option>
+                 </select>
+                 </div>
+                 <div class="form-group col-md-3 mb-0">
+                   <label><b> OPD No</b></label>
+                   <input type="text" name="opd_no" id="opd_no" class="form-control">
+                   </div>
+                 <!-- <div class="form-group col-md-2 mb-0" style="padding-top: 30px;font-size: 20px;">
+                <span><input type="radio" name="patient_type" id="patient_type" value="IPD">IPD</span>
+                <span><input type="radio" name="patient_type" id="patient_type" value="OPD">OPD</span>
+               </div> -->
+                  
+
+     </div> 
+     <hr>
+         <div class="table-responsive">
+          
+    <table class="datatable table table-stripped auto-index">
+                   <thead style="background-color: cornflowerblue;">
+                       <tr>
+                        <th>SI.No</th>
+                        <th>OP_sale_ID</th>
+                        <th>Batch</th>
+                        <th>Expiry</th>
+                        <th>MRP</th>
+                        <th>Qty</th>
+                        <th>Rate</th>
+                        <th>before discount amount</th>
+                        <th>Dis%</th>
+                        <th>Amount</th>
+                        <!-- <th></th> -->
+                       </tr>
+                   </thead>
+
+                   {% for data in CounterSale_Temp_1 %}
+                   <tbody style="background-color: white;">
+                       <tr class="clonetr" id="addrow">
+                            <td>{{forloop.counter}}</td>
+                           <td>{{data.Op_sales_no}}</td>
+                           <td>{{data.batch_no}}</td>
+                           <td>{{data.expiry_date}}</td>
+                           <td>{{data.mrp}}</td>
+                           <td>{{data.qty}}</td>
+                           <td>{{data.rate}}</td>
+                           <td>{{data.before_disc_amount}}</td>
+                           <td>{{data.discount}}</td>
+                           <td>{{data.amount}}</td>
+                           <td></div>&nbsp;&nbsp;
+                            <!-- <div class="col-md-3"><button type="reset" style="background-color:rgb(231, 41, 41)" class="btn btn-danger" id="delete" ><i class="fas fa-trash-alt"></i></button></div></td> -->
+ 
+                       </tr>
+                    </tbody>
+                    {% endfor %}
+                          
+           </table>
+           
+         </div>
+
+
+         </form>
+           </div>
+        
+  </div>
+</form>
+
+<!-- Tab -->
+<div class="nursing-assessment-tabs p-2 bg-white">
+  <div role="tabpanel">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs nav-justified nav-tabs-dropdown " role="tablist">
+      <li role="presentation" class="w-50">
+        <a href="#profile" aria-controls="home" class=" btn-primary" role="tab" data-toggle="tab">APPROVED MI ({{count_approved}})</a>
+      </li>
+      <li role="presentation" class="w-50"><a class="btn-primary active" href="#home" aria-controls="profile" role="tab" data-toggle="tab"> PENDING MI ({{count_pending}})</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+      <div role="tabpanel" class="tab-pane pt-2" id="profile">
+        <div class="row inner-tabs no-gutters ">
+          
+          <h3>APPROVED MI</h3>
+          <div class="table-responsive">
+  <table class="datatable table table-stripped ">
+
+
+                 <thead>
+                     <tr><th>S.No</th>
+                         <th>MI NO</th>
+                         <th>Date Time</th>
+                         <th>Substore Name</th>
+                         <th>Department </th>
+                         <th>View</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                   
+                  </tbody>
+         </table>
+         </div>
+    
+        </div>
+      </div>
+
+      <div role="tabpanel" class="tab-pane active" id="home">
+        <div class="row mt-2 no-gutters">
+          <h3>PENDING MI </h3>
+          <div class="table-responsive">
+  <table class="datatable table table-stripped ">
+
+<thead>
+                     <tr><th>S.No</th>
+                         <th>PI No</th>
+                         <th>Date Time</th>
+                         <th>Substore Name</th>
+                         <th>Department</th>
+                         <th>View</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                   
+                  </tbody>
+         </table>
+         </div>
+    
+        </div>
+      </div>
+    </div>
+<!-- Tab Ends -->
+      
+</div>
+</div>
+
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+
+  $(document).on('change', '#batch_IDD', function () {
+        var headers = {'X-CSRFToken': '{{ csrf_token }}' }; 
+        var serial_batch = this.value;
+        var item_id = $('#item_id').val();
+        const url = $("#batch_IDD").attr("data-uhid-url");
+        $.ajax({
+                url:url,
+                type:"post",
+                data:{
+                   serial_batch: serial_batch,
+                   item_id: item_id,
+                       
+                 },
+                headers:headers,
+                dataType: 'json',
+                success:function(data)
+                {
+                    $('#expiry').val(data["expiry_date"]);
+                    $('#rate').val(data["rate"]);
+
+                },
+                error:function(data1)
+                {
+                    console.log(data1);
+                }
+            });
+      });
+
+    $(document).on('keyup', '#patient_name', function () {
+        
+        var headers = {'X-CSRFToken': '{{ csrf_token }}' }; 
+        var patient = this.value;
+        const url = $("#patient_name").attr("data-uhid-url");
+        $.ajax({
+                url:url,
+                type:"post",
+                data:{
+                    patient_name : patient,
+                       
+                 },
+                headers:headers,
+                dataType: 'json',
+                success:function(data)
+                {
+                    $('#uhid').val(data["uhid"]);
+                    $('#mob_no').val(data["mobile"]);
+                    $('#age').val(data["age"]);
+                    $('#gender').val(data["gender"]);
+                    $('#patient_name').val(data["name"]);
+
+
+                },
+                error:function(data1)
+                {
+                    console.log(data1);
+                }
+            });
+      });
+      // search batchno with item
+      $(document).on('keyup', '#item_id', function () {
+        var headers = {'X-CSRFToken': '{{ csrf_token }}' }; 
+        var item_id = $('#item_id').val();
+        const url = $("#item_id").attr("data-uhid-url");
+        $.ajax({
+                url:url,
+                type:"post",
+                data:{
+                   item_id: item_id,       
+                 },
+                headers:headers,
+                dataType: 'json',
+                success:function(data)
+                {
+                    $("#batch_IDD").html(data);
+                    let html_data = '<option value="">Select</option>';
+                    data.forEach(function (get_batch) {
+                    console.log(get_batch)
+                        html_data += `<option value="${get_batch.serial_batch}">${get_batch.serial_batch}</option>`
+                        // alert(html_data);
+                    });
+                    console.log(html_data);
+                    $("#batch_IDD").html(html_data);
+
+                },
+                
+            });
+      });
+
+    
+    $(document).on('keyup', '#qty', function () {
+        var qty = this.value;
+        var rate = $('#rate').val();
+        var amount1 = qty * rate;
+        $('#amount').val(amount1); 
+        $('#before_disc_amount').val(amount1);      
+
+    });
+
+    $(document).on('keyup', '#discount', function () {
+        var discount = this.value;
+        var qty = $('#qty').val();
+        var rate = $('#rate').val();
+        var amount1 = qty * rate;
+        var disc_amount =  (amount1 * discount)/100
+        var after_disc = amount1 - disc_amount
+        $('#amount').val(after_disc);
+
+    });
+
+});     
+
+</script>
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+    $(document).on('click', '#statusupdate', function () {
+        var dumy = this;
+		  var values="Forward to OPD"
+      var url="{% url 'status_updatePSR' %}";
+      var headers = {'X-CSRFToken': '{{ csrf_token }}' }
+
+      $.ajax({
+              url:url,
+              type: "post",
+              data: {
+				        values:values
+              },
+              headers:headers,
+              dataType : 'json',
+              success: function(data){
+              },
+              error:function(data)
+              {
+                  console.log(data);
+              }
+            });
+    });
+    });
+</script>
+
+
+
+{% endblock %}
+
+

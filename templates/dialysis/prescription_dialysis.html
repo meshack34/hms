@@ -1,0 +1,876 @@
+
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+    <div class="container" style="border: 1px solid rgb(121, 118, 118);padding: 10px;" id="hello">
+        <h3 style="text-align: center;"> <b>Add Dialysis Prescription Details</b></h3>
+        <br>
+        <form method="post" id="prescription_dial">
+            {% csrf_token %}
+            <div class="col-md-12">
+                <h5><b>Patient Details</b></h5>
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                    <div class="col-md-4">
+                        <label>MR NO: <b>{{uhid_pat_new}}</b></label>
+                        <input type="hidden" class="form-control"name="uhid" value="{{records.uhid}}">
+                    </div>
+                    <div class="col-md-4">
+                        <label>Name: <b>{{pat_name_new| upper}}</b></label>
+    <!--                    <input type="text" class="form-control">-->
+                    </div>
+                    <div class="col-md-4">
+                        <label> AGE/GENDER: <b>{{pat_age_new}}Y/{{pat_sex_new| upper}}</b></label>
+    <!--                    <input type="text" class="form-control">-->
+                    </div>
+                    <div class="col-md-4">
+                        <label>CONTACT NO: <b>{{pat_con_no_new}}</b></label>
+    <!--                    <input type="text" class="form-control">-->
+                    </div>
+                </div>
+                <br><div class="col-12">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <div class="form-line">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label for="Doctor">Doctor: </label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                                        <select name="dr_nameid" class="form-control" id="doctor" required>
+                                            <option selected disabled="true">--select--</option>
+                                            {% for doct in doctor_list %}
+                                            <option value="{{doct.doctor_id}}">{{doct.doctor_name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label for="Prescription">Prescription Date: </label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                                        <input type="date" name="prescription_date" id="Prescription" class="form-control" required>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label for="Status"> Status : </label>
+                                        <select name="status" class="form-control" id="Status">
+                                            <option>Active</option>
+                                            <option>In Active</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Start Date: </label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                                        <input type="date" name="s_date" class="form-control" required>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>End Date: </label>
+                                        <input type="date" name="e_date" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Dry Weight </label>
+                                        <input type="text" name="dry_weight" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Dry Weight Date:</label>
+                                        <input type="date" name="dry_date" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Diagnosis:</label>
+                                        <input type="text" name="Diagnosis" class="form-control">
+                                    </div>
+
+                                    <div class="form-group col-md-4 mb-">
+<!--                                        <label>Create Schedule</label>-->
+                                        <input type="button" class="btn btn-success" value="Create Schedule" data-toggle="modal" data-target=".createschedule">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Day1:</label>
+                                        <select name="day1" class="form-control">
+                                            <option selected disabled="true">--select--</option>
+                                            <option>Mon</option>
+                                            <option>Tue</option>
+                                            <option>Wed</option>
+                                            <option>Thur</option>
+                                            <option>Fri</option>
+                                            <option>Sat</option>
+                                            <option>Sun</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Shift1:</label>
+                                        <select name="shift1" class="form-control">
+                                            <option selected disabled="true">--select--</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Duration (Hour):</label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                                        <select name="Duration" class="form-control" required>
+                                            <option selected disabled="true">--select--</option>
+                                            <option>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Day2:</label>
+                                        <select name="day2" class="form-control">
+                                            <option selected disabled="true">--select--</option>
+                                            <option>Mon</option>
+                                            <option>Tue</option>
+                                            <option>Wed</option>
+                                            <option>Thur</option>
+                                            <option>Fri</option>
+                                            <option>Sat</option>
+                                            <option>Sun</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Shift2:</label>
+                                        <select name="shift2" class="form-control">
+                                            <option selected disabled="true">--select--</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                  <div class="form-group col-md-4 mb-0">
+                                      <label>Weekly Frequency:</label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                                      <select name="Weekly" class="form-control" required>
+                                        <option selected disabled="true">--select--</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                      </select>
+                                  </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Day3:</label>
+                                        <select name="day3" class="form-control">
+                                            <option selected disabled="true">--select--</option>
+                                            <option>Mon</option>
+                                            <option>Tue</option>
+                                            <option>Wed</option>
+                                            <option>Thur</option>
+                                            <option>Fri</option>
+                                            <option>Sat</option>
+                                            <option>Sun</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Shift3:</label>
+                                        <select name="shift3" class="form-control">
+                                            <option selected disabled="true">--select--</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Dialysis Membrane:</label>
+                                        <select name="dialysis_membrane" class="form-control">
+                                            <option selected disabled="true">--select--</option>
+                                            <option>Hemo Dialysis Membrane</option>
+                                            <option>Polyester Polymer Membrane</option>
+                                        </select>
+                                    </div>
+                                     <div class="form-group col-md-4 mb-0">
+                                        <label>Day4:</label>
+                                        <select name="day4" class="form-control">
+                                            <option selected disabled="true">--select--</option>
+                                            <option>Mon</option>
+                                            <option>Tue</option>
+                                            <option>Wed</option>
+                                            <option>Thur</option>
+                                            <option>Fri</option>
+                                            <option>Sat</option>
+                                            <option>Sun</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Shift4:</label>
+                                        <select name="shift4" class="form-control">
+                                            <option selected disabled="true">--select--</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden">
+                                    </div>
+                                     <div class="form-group col-md-4 mb-0">
+                                        <label>Day5:</label>
+                                        <select name="day5" class="form-control">
+                                            <option selected disabled="true">--select--</option>
+                                            <option>Mon</option>
+                                            <option>Tue</option>
+                                            <option>Wed</option>
+                                            <option>Thur</option>
+                                            <option>Fri</option>
+                                            <option>Sat</option>
+                                            <option>Sun</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Shift5:</label>
+                                        <select name="shift5" class="form-control">
+                                            <option selected disabled="true">--select--</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Dialysis Type:</label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                                        <select name="Dialysis_type" class="form-control" id="dialysis_type" required>
+                                            <option selected disabled="true">--select--</option>
+                                            {% for dialy_type in dialysate_type %}
+                                            <option value="{{dialy_type.id}}">{{dialy_type.dialysis_type}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Dialyzer:</label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                                        <select name="Dialyzer" class="form-control" required>
+                                            <option selected disabled="true">--select--</option>
+                                            {% for dialyz in dialyzer_type %}
+                                            <option value="{{dialyz.id}}">{{dialyz.dialyzer}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Dialysate Tem (C):</label>
+                                        <input type="text" name="Dialysate_temp" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>K+ (mEq/L)</label>
+                                        <input type="text" name="k_pluse" id="potassium" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Ca+ (mEq/L):</label>
+                                        <input type="text" name="ca_pluse" id="calcium" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Mg+ (mEq/L):</label>
+                                        <input type="text" name="mg_pluse" id="magnessium" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Glucose:</label>
+                                        <input type="text" name="glucose" id="glocose" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Target BVP:</label>
+                                        <input type="text" name="Target" class="form-control">
+                                    </div>
+
+                                    <table class="datatable table table-stripped">
+                                        <thead>
+                                        <tr>
+                                            <th>Temporary Access</th>
+                                            <th>Access Site</th>
+                                            <th>Date Of Intiation</th>
+                                            <th>Date Of Removal</th>
+                                            <th>Doctor Name</th>
+                                            <th>Hospital Name</th>
+                                            <th>Last Change Reason</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for temp in temporary_dat %}
+                                        <tr>
+
+                                            <td><input id="temp_id" value="{{temp.id}}" hidden>{{temp.temp_aces}}</td>
+                                            <td>{{temp.access_site}}</td>
+                                            <td>{{temp.date_initiation}}</td>
+                                            <td>{{temp.date_removal}}</td>
+                                            <td>{{temp.doctor_name}}</td>
+                                            <td>{{temp.hospital_name}}</td>
+                                            <td>{{temp.remark}}</td>
+                                            <td><button type="button" id="delete_btn" class="btn btn-danger"> <i class="fa fa-trash" aria-hidden="true"></i></button></td>
+                                        {% endfor %}
+                                        </tr>
+                                            <tr>
+                                            <td colspan="8" style="align:right;"><button type="button" class="btn btn-success" data-toggle="modal" data-target=".temporary_access"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <br>
+                                    <table class="datatable table table-stripped">
+                                        <thead>
+                                        <tr>
+                                            <th>Permanent Access</th>
+                                            <th>Access Site</th>
+                                            <th>Date Of Intiation</th>
+                                            <th>Date Of Removal</th>
+                                            <th>Doctor Name</th>
+                                            <th>Hospital Name</th>
+                                            <th>Last Change Reason</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for pre in permanent_dat %}
+                                        <tr>
+                                            <td><input id="perm_id" value="{{pre.id}}" hidden>{{pre.prim_aces}}</td>
+                                            <td>{{pre.access_site}}</td>
+                                            <td>{{pre.date_initiation}}</td>
+                                            <td>{{pre.date_failure}}</td>
+                                            <td>{{pre.doctor_name}}</td>
+                                            <td>{{pre.hospital_name}}</td>
+                                            <td>{{pre.remark}}</td>
+                                            <td><button type="button" id="permdelete_btn" class="btn btn-danger"> <i class="fa fa-trash" aria-hidden="true"></i></button></td>
+                                        {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td><button type="button" class="btn btn-success" data-toggle="modal" data-target=".permanent_access"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label for="Doctor">Dialysate Flow (ml/min): </label>
+                                        <input type="text" name="dialysis_flow" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label for="Prescription1" ></label>
+                                        <input type="hidden" name="" id="Prescription1" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label for="Profile:"> Profile1: : </label>
+                                        <input type="text" name="Profile1" id="Profile:" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Blood Flow (ml/min):</label>
+                                        <input type="text" name="blood_flow" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label> </label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Profile:</label>
+                                        <input type="text" name="Profile2" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Bicarb (mEq/L):</label>
+                                        <input type="text" name="Bicarb" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label> </label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Profile3:</label>
+                                        <input type="text" name="Profile3" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Na+ (mEq/L):</label>
+                                        <input type="text" name="na_id" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Profile4:</label>
+                                        <input type="text" name="Profile5" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>UF Rate</label>
+                                        <input type="text" name="uf_rate" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>UFR Profile:</label>
+                                        <input type="text" name="ufr_profile" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden">
+                                    </div>
+                                  <div class="form-group col-md-4 mb-0">
+                                      <label>Heparin Type:</label>
+                                      <select name="heparine_type" class="form-control">
+                                        <option selected disabled="true">--select--</option>
+                                          {% for heparin in heparin_Type %}
+                                        <option value="{{heparin.id}}">{{heparin.heparine_name}}</option>
+                                          {% endfor %}
+                                      </select>
+                                  </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Initial Dose:</label>
+                                        <input type="text" name="initial_dose" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Interim Dose:</label>
+                                        <input type="text" name="interim_dose" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Total Heparin Bolus:</label>
+                                        <input type="text" name="total_heparin" class="form-control">
+                                    </div>
+                                     <div class="form-group col-md-4 mb-0">
+                                        <label>Hourly (w/hr):</label>
+                                        <input type="text" name="hourly" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Cutoff time (min):</label>
+                                        <input type="text" name="cutoff_time" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Heparin Profile:</label>
+                                        <input type="text" name="heparin_profile" class="form-control" >
+                                    </div>
+                                     <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Comments:</label>
+                                        <textarea  name="Comment" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden"  name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Entered by:<br><br>Inactivated by:<br><br>Inactivated Date:</label>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Notes(Appears in Pre):</label>
+                                        <textarea name="Notes" class="form-control"></textarea>
+                                    </div>
+                                 </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <button type="submit"class="btn btn-success" name="main_form" value="MAIN_FORM" form="prescription_dial">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" style="color-red;">Cancel</button>
+            </form>
+        </div>
+    </div>
+<!-- Add Modal -->
+<div class="modal fade temporary_access" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel1"><b>Intra Dialysis</b></h5>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <div class="form-line">
+                                              <form  method="POST" id="pop_up_pre1">
+                                                {% csrf_token %}
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="Time">Temporary Access: </label>
+                                                        <select name="temp_ac" id="Time" class="form-control">
+                                                            <option selected disabled="disabled" >--Select--</option>
+                                                            <option>Temporary i/j catheter</option>
+                                                            <option>Fistula</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="BP">Date of Initiation </label>
+                                                        <input type="date" name="date_of_initiation" id="BP" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="bp_time">Doctor</label>
+                                                        <select name="dr_name" id="bp_time" class="form-control">
+                                                            <option selected disabled="true">--Select--</option>
+                                                           {% for doct in doctor_list %}
+                                                            <option value="{{doct.doctor_id}}">{{doct.doctor_name}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Access Site </label>
+                                                        <select name="access_type" class="form-control">
+                                                            <option selected disabled="true">--Select--</option>
+                                                            {% for access_temp in access_type %}
+                                                            <option value="{{access_temp.id}}">{{access_temp.access_site}}</option>
+                                                            {% endfor %}
+                                                        </select>
+
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Date Of Removal: </label>
+                                                        <input type="date" name="date_of_removal" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Remark: </label>
+                                                        <textarea name="Remark" class="form-control"></textarea>
+                                                    </div>
+                                                    <div class="form-group col-md-8 mb-0">
+                                                        <label>Hospital Name:</label>
+                                                        <input type="text" name="hospital_name" class="form-control">
+                                                    </div>
+                                                </div>
+                                                  <button type="submit"class="btn btn-success" name="temp_access" value="TEMP_ACCESS"> <i class="fas fa-save" >&nbsp;Save</i></button>
+                                                  <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" style="color-red;">Cancel</button>
+                                              </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add Modal -->
+<div class="modal fade permanent_access" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel2"><b>Premanent Access</b></h5>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <div class="form-line">
+                                              <form  method="POST" id="Permanent">
+                                                {% csrf_token %}
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="Time">Permanent Access: </label>
+                                                        <select name="per_access" id="Time" class="form-control">
+                                                            <option selected disabled="true">--Select--</option>
+                                                            {% for dat in permanent_access_master%}
+                                                            <option value="{{dat.id}}" >{{dat.name}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="BP">Date of Initiation </label>
+                                                        <input type="date" name="date_of_initiation" id="BP" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="bp_time">Doctor</label>
+                                                        <select name="dr_name" id="bp_time" class="form-control">
+                                                            <option selected disabled="true">--Select--</option>
+                                                            {% for doct in doctor_list %}
+                                                            <option value="{{doct.doctor_id}}">{{doct.doctor_name}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Access Site </label>
+                                                        <select name="access_type" class="form-control">
+                                                            <option selected disabled="true">--Select--</option>
+                                                            {% for access in access_type %}
+                                                            <option value="{{access.id}}">{{access.access_site}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Date Of Failure: </label>
+                                                        <input type="date" name="date_of_removal" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Remark: </label>
+                                                        <textarea name="Remark" class="form-control"></textarea>
+                                                    </div>
+                                                    <div class="form-group col-md-8 mb-0">
+                                                        <label>Hospital Name:</label>
+                                                        <input type="text" name="hospital_name" class="form-control">
+                                                    </div>
+                                                </div>
+                                                  <button type="submit"class="btn btn-success" name="Permanent_access" value="Permanent_Access" form="Permanent"> <i class="fas fa-save" >&nbsp;Save</i></button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" style="color-red;">Cancel</button>
+                                              </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FOR CREATE SCHEDULE -->
+    <!-- Add Modal -->
+<div class="modal fade createschedule" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel3"><b>CREATE SCHEDULE</b></h5>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <div class="form-line">
+                                              <form  method="POST" id="schedule">
+                                                {% csrf_token %}
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6 mb-0">
+                                                        <label for="Time">Department: </label>
+                                                        <select name="department" id="Time" class="form-control">
+                                                            <option selected disabled="true">--Select--</option>
+                                                            {% for dat in dept_list %}
+                                                            <option value="{{dat.id}}" >{{dat.clinical_department}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6 mb-0">
+                                                        <label for="bp_time">Sub Department</label>
+                                                        <select name="sub_dept" id="bp_time" class="form-control">
+                                                            <option selected disabled="true">--Select--</option>
+                                                            {% for doct in type_list %}
+                                                            <option value="{{doct.id}}">{{doct.visit_type}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <table class="table" id="schedule_table">
+                                                        <tr>
+                                                            <button type="button" onclick="add_more()" class="plusign btn btn-primary btn-sm" style="float: left;"><i
+                                                                class="fa fa-plus"> </i>Add</button>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                 <div class="form-group col-md-12 mb-0">
+                                                                    <label>Schedule Date</label>
+                                                                    <input type="date" name="shifting_date" id="shifting_date" class="form-control">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-group col-md-12 mb-0">
+                                                                    <label>shift: </label>
+                                                                    <select name="shift" id="shift" class="form-control">
+                                                                        <option selected disabled="true">--Select--</option>
+                                                                        {% for doct in shift_list %}
+                                                                        <option value="{{doct.id}}">{{doct.shift_name}}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                  <button type="submit"class="btn btn-success" name="create_schedule" value="Create_Schedule" form="schedule"> <i class="fas fa-save" >&nbsp;Save</i></button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" style="color-red;">Cancel</button>
+                                              </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $(document).on('click', '#delete_btn', function () {
+    var dummy = this;
+
+        var id = $(dummy).closest('tr').find('#temp_id').val();
+        var headers = {'X-CSRFToken': '{{ csrf_token }}' };
+        const url = "{% url 'temp_access_delete' %}";
+
+        $.ajax({
+                url:url,
+                type:"post",
+                data:{
+                  id:id,
+                 },
+                dataType: 'json',
+                headers:headers,
+                success:function(data)
+                {
+                    alert(data);
+                    window.location.href='{% url 'prescription_dialysis' pk %}'
+                },
+                error:function(data)
+                {
+                    console.log(data);
+                }
+            });
+      });
+});
+</script>
+    <script type="text/javascript">
+$(document).ready(function () {
+    $(document).on('click', '#permdelete_btn', function () {
+    var dummy = this;
+
+        var id = $(dummy).closest('tr').find('#perm_id').val();
+        var headers = {'X-CSRFToken': '{{ csrf_token }}' };
+        const url = "{% url 'perm_access_delete' %}";
+
+        $.ajax({
+                url:url,
+                type:"post",
+                data:{
+                  id:id,
+                 },
+                dataType: 'json',
+                headers:headers,
+                success:function(data)
+                {
+                    alert(data);
+                    window.location.href='{% url 'prescription_dialysis' pk %}'
+                },
+                error:function(data)
+                {
+                    console.log(data);
+                }
+            });
+      });
+});
+</script>
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+<!--</body>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+  $( document ).ready(function() {
+      $("#dialysis_type").on('change', function () {
+          var el = $(this);
+          if (el.val() === "3") {
+              $("#potassium").val('2');
+              $("#calcium").val('2');
+              $("#magnessium").val('1');
+              $("#glocose").val('2');
+          }
+          else{
+            $("#potassium").val('');
+              $("#calcium").val('');
+              $("#magnessium").val('');
+              $("#glocose").val('');
+          }
+      });
+  });
+  </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--     FOR SEARCHABLE DROP DOWN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+           $(document).ready(function ()
+            {
+                $('#doctor').select2();
+            });
+    </script>
+
+<!--    for add one by one for -->
+      <script>
+function add_more() {
+var table = document.getElementById("schedule_table");
+var table_len = (table.rows.length);
+var id = parseInt(table_len);
+var row = table.insertRow(table_len).outerHTML = "<tr id='row" + id + "'><td> <label>Schedule Date</label> <input type='date' name='shifting_date' id='shifting_date' class='form-control'></div></td><td> <div class='form-group col-md-12 mb-0'>  <label>shift: </label> <select name='shift' id='shift' class='form-control'> <option selected disabled='true'>--Select--</option> {% for doct in shift_list %} <option value='{{doct.id}}'>{{doct.shift_name}}</option> {% endfor %} </select> </div> </td><td><button type='button' onclick='delete_row(" + id + ")' class='closebtn btn btn-danger btn-sm'>X</button></td></tr>";
+}
+
+function delete_row(id) {
+var table = document.getElementById("schedule_table");
+var rowCount = table.rows.length;
+$("#row" + id).html("");
+//table.deleteRow(id);
+}
+  </script>
+{% endblock %}

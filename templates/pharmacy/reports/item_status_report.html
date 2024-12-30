@@ -1,0 +1,138 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+    #id_from_date,
+    #id_to_date,
+    #id_store {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="color: white;" href="#">Item Status Report</a>
+            </div>
+        </nav><br>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                    <div class="card">
+                        <div class="header">
+                            <div class="body">
+                                <br>
+                                <div class="col-lg-12 col-md-12 col-sm-4 nursing-assessment-tabs p-2 bg-ass" style="background-color:rgb(233, 233, 233);"><br>
+                                    
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <div class="form-row">
+                                            <div class="form-group col-md-3 mb-0 ">
+                                                <label style="font-weight:bold"><b>From Date*</b> </label>
+                                                <input type="date" name="from_date" id="from_date" class="form-control">
+                                            </div>
+                                            <div class="form-group col-md-3 mb-0">
+                                                <label style="font-weight:bold"><b>To Date*</b></label>
+                                                <input type="date" name="to_date" id="to_date" class="form-control">
+                                            </div>
+                                            <div class="form-group col-md-3 mb-0">
+                                                <label style="font-weight:bold"><b>Department</b></label>
+                                                
+                                                <select name="department" id="department" class="form-control">
+                                                    <option>Select</option>
+                                                    {% for data in dept%}
+                                                    <option value="{{data.id}}">{{data.service_department}}</option>
+                                                    {% endfor %}
+                                                  </select>
+                                            </div>
+
+                                            
+                                            <div class="form-group col-md-0 mb-0"><br>
+                                                <button type="submit" name="Submit_btn" value="submit_btn"  class="btn btn-warning mt-2"><i
+                                                        class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                                            </div>
+                                            
+                                        </div>
+                                        <br>
+
+                                    </form>
+                                </div>
+                                <!-- Tab -->
+                                <div class="nursing-assessment-tabs p-4 bg-white">
+                                    <div role="tabpanel">
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+
+
+                                            <div role="tabpanel" class="tab-pane active" id="home">
+                                                <div class="row mt-2 no-gutters">
+                                                    <div class="table-responsive">
+                                                        <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                                                            <tr>
+                                                              <td>
+                                                                <div class="" >
+                                                                  <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:100px;"></h2></center>
+                                                                  
+                                                                </div>
+                                                              </td>
+                                                            </tr>
+                                                          </table>
+                                                        <table class="datatable table table-stripped">
+                                                            <thead style="background-color: rgb(196, 196, 247);">
+                                                                <tr>
+                                                                    <th>Item Name</th>
+                                                                    <th>Date</th>                          
+                                                                    <th>Particular</th>
+                                                                    <th>Opening Balance</th>
+                                                                    <th>transaction Qty</th>
+                                                                    <th>Closing Balance</th>
+                                                                </tr>
+                                         
+                                                            </thead>
+                                                            <tbody>
+                                                               
+                                                             {% for data in items_name%}
+                                                             <tr>
+                                                               <input type="hidden"  name="item_id" id="item_id" value="{{data}}">
+                                                                 <td colspan="7"><span style="font-weight:bold">{{data}}</span></td>
+                                                             </tr>
+                                                               {% for data1 in itemstatus_report_temp3%}
+                                                               {% if data1.item == data %}
+                                                              
+                                                                <tr>    
+                                                                    <td></td>
+                                                                    <td>{{data1.date}}</td>
+                                                                    <td>{{data1.particular}}</td>
+                                                                    <td>{{data1.opening_balance}}</td>
+                                                                    <td>{{data1.transaction}}</td>
+                                                                    <td>{{data1.closing_qty}}</td> 
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                               
+                                                                <tr></tr>
+                                                                
+                                                        
+                                                                
+                                                                {% endfor %}
+                                                             </tbody>
+                                                    </table>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Tab Ends -->
+
+                                    </div>
+                                </div>
+                                {% endblock %}

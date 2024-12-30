@@ -1,0 +1,138 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Employee</h4>
+            </div>
+            <div class="col-sm-8 col-9 text-right m-b-20">
+                <a href="{% url 'add_employee' %}" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Employee</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                <div class="row filter-row">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus mb-0">
+                            <label class="focus-label">Employee Name</label>
+                            <input type="text" class="form-control" name="emp_name" id="emp_name" list="employee_id">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus mb-0">
+                            <label class="focus-label">Department</label>
+                            <select class="select floating" name="deparment" id="deparment">
+                                <option value="">Select</option>
+                                {% for data in depart_detail %}
+                                <option value="{{data.id}}">{{data.department_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <datalist id="employee_id">
+                        {% for data in employee %}
+                        <option value="{{data.id}}.{{data.first_name}}{{data.last_name}}"></option>
+                        {% endfor %}
+                    </datalist>
+                    <div class="col-sm-6 col-md-3">
+                        <button type="submit" class="btn btn-success btn-block">Search</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped table-bordered dt-responsive nowrap w-100  datatable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:30%;">Name</th>
+                                        <th>Employee ID</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Join Date</th>
+                                        <th>Role</th>
+                                        <th class="text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in emp_detail %}
+                                    <tr>
+                                        <td>
+                                            <!-- <img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle" alt="Img">  -->
+                                            <h2>{{data.first_name}} {{data.last_name}}</h2>
+                                        </td>
+                                        <td>{{data.employee_id}}</td>
+                                        <td style="width:30%;">{{data.email_id}}</td>
+                                        <td>{{data.mobile_no}}</td>
+                                        <td>{{data.joining_date}}</td>
+                                        <td>
+                                            <span class="custom-badge status-green">{{data.department_id}}</span>
+                                        </td>
+                                        <td class="text-right">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" href="{% url 'edit_employee' data.id %}"><i class="fas fa-pen m-r-5"></i> Edit</a>
+                                                    <input type="hidden" name="temp_id" id="temp_id" value="{{data.id}}">
+                                                    <button type="button" class="dropdown-item delete_class" ><i class="far fa-trash-alt m-r-5"></i> Delete</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                   {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</div>
+<!--/ content-->
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+      $(document).on('click', '.delete_class', function() {
+        var dumy=this;
+        var url = "{% url 'delete_employee' %}";
+        var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+        
+        var pk=$(dumy).closest('tr').find('#temp_id').val();
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: {
+                'pk': pk,
+            },
+            headers:headers,
+            success: function (data) {
+                console.log(data);
+                alert('Successfully DeActivate Employee....!')
+            },
+            error: function (data) {
+                console.log(data);
+                alert('Successfully DeActivate Employee....!')
+            }
+        });
+        $(dumy).closest('tr').remove();
+      });
+    });
+    </script>
+
+{% endblock %}

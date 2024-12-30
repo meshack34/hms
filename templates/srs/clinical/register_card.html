@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+<style type="text/css">
+body{
+	background: #333;
+	font-family: arial;
+}
+.register_card p {
+    margin: 0 0 4px;
+    font-size: 14px;
+}
+@media print {
+	body{
+		background: #333;
+	}
+	.register_card p {
+    margin: 0 0 4px;
+    font-size: 14px;
+}
+
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+
+<div id="hello">
+    <a href="./patient_registration">
+    <button type="button">Back</button>
+    </a>
+<table style="width: 100%;max-width: 480px;margin: 0 auto;background: #fff;padding: 16px;">
+	<tr>
+		<td colspan="2" style="text-align: center;font-size: 16px;padding-bottom: 16px;">Registration OPD Card</td>
+	</tr>
+	<tr>
+		<td style="vertical-align: top;">
+			<img src="../images/avatar.png " alt="User Image" width="90%">
+		</td>
+		<td style="vertical-align: top; padding-left: 15px;">
+			<div class="register_card">
+				<p>
+					<span>Name:</span><br>
+					<strong>MR. Good Luck</strong>
+				</p>
+				<p>
+					<span>Reg. No:</span><br>
+					<strong>116</strong>
+				</p>
+				<p>
+					<span>Birth Date:</span><br>
+					<strong>11/07/1996</strong>
+				</p>
+				<p>
+					<span>Gender:</span><br>
+					<strong>MALE</strong>
+				</p>
+				<p>
+					<span>Contact No.</span><br>
+					<strong>9009900909</strong>
+				</p>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="barcode" style="padding-top: 20px; text-align:center;">
+			<img src="../images/barcode-history.jpeg" width="180px">
+		</td>
+	</tr>
+</table>
+</div><br>
+
+<button type="button"  onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;">Print</button>
+
+
+<script type="text/javascript">
+        
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+</body>
+</html>

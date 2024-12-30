@@ -1,0 +1,292 @@
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+{% block body_block %}
+ <!-- content -->
+<html>
+<body>
+
+ <div class="page-wrapper">
+   <div id="Report">
+    <div class="content">
+<!-- Main Dashboard -->
+<div class="col-12">
+<div class="card container-fluid">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 " >
+        <div class="page-header row align-items-center">
+          <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+          <tr style="border-bottom:2px solid #eee; ">
+              <td>
+                  <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                      <tr>
+                          <td>
+                              <div class="" >
+                                  <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                                </center>
+                              </div>
+                          </td>
+                      </tr>
+                  </table>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse; width=100%">
+                      <tr>
+                          <td colspan="12" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;">Patient Report</h3></td>
+                      </tr>
+                </table>
+              </td>
+          </tr>
+          </table>
+        </div>
+      </div>
+          <table class="table table-border">
+            <tr>
+              <th style="text-align:center;" colspan="12"><b>Patient Details</b></th>
+            </tr>
+            <tr style="background: #c0daf1;">
+              <th>UHID.</th>
+              <th>Visit No.</th>
+              <th>Visit Date.</th>
+              <th>Patient Name</th>
+              <th>Age</th>
+              <th>Gender</th>
+            </tr>
+            {% for dat in pat_details %}
+            <tr>
+              <td>{{dat.uhid}}</td>
+              <td>{{dat.visit_id}}</td>
+              <td>{{dat.visit_date_time}}</td>
+              <td>{{dat.pat_name}}</td>
+              <td>{{dat.pat_age}}</td>
+              <td>{{dat.pat_sex}}</td>
+            </tr>
+            {% endfor %}
+          </table>
+          {% if pat_details %}
+          <table class="table table-border">
+            <tr>
+              <th style="text-align:center;" colspan="12"><b>Vitals Details</b></th>
+            </tr>
+            <tr style="background: #c0daf1;">
+              <th>SBP</th>
+              <th>DBP</th>
+              <th>Temp</th>
+              <th>Weight</th>
+              <th>Height</th>
+              <th>BMI</th>
+              <th>RR</th>
+              <th>HR</th>
+              <th>Urine OP</th>
+              <th>BS(F)</th>
+              <th>BS(R)</th>
+              <th>SP02</th>
+            </tr>
+            {% for data in ci_records %}
+              <tr>
+              <td>{{data.sys_bp}}</td>
+              <td>{{data.dia_bp}}</td>
+              <td>{{data.temp}}</td>
+              <td>{{data.weight}}</td>
+              <td>{{data.height}}</td>
+              <td>{{data.bmi}}</td>
+              <td>{{data.resp_rate}}</td>
+              <td>{{data.heart_rate}}</td>
+              <td>{{data.urine_output}}</td>
+              <td>{{data.blood_sugar_f}}</td>
+              <td>{{data.blood_sugar_r}}</td>
+              <td>{{data.spo2}}</td>
+            </tr>
+            {% endfor %}
+          </table>
+          <table class="table table-border">
+            <tr>
+              <th style="text-align:center;" colspan="9"><b>Medicine & Prescription Details</b></th>
+            </tr>
+               <tr style="background: #c0daf1;">
+                 <th>Medication</th>
+                 <th>Dosage</th>
+                 <th>Frequency</th>
+                 <th>Food Relation</th>
+                 <th>Route</th>
+                 <th>Prescribe Date</th>
+                 <th>End Date</th>
+                 <th>Visite Date</th>
+               </tr>
+            {% if records_medicine %}
+               {% for data in records_medicine %}
+               <tr>
+                 <td>{{data.medicine}}</td>
+                 <td>{{data.dosage}}</td>
+                 <td>{{data.frequency}}</td>
+                 <td>{{data.food_relations}}</td>
+                 <td>{{data.route}}</td>
+                 <td>{{data.prescribe_date}}</td>
+                 <td>{{data.end_date}}</td>
+                 <td>{{data.end_date}}</td>
+               </tr>
+               {% endfor %}
+            {% else %}
+            <tr>
+              <td style="text-align:center;" colspan="9">No Records Found</td>
+            </tr>
+            {% endif %}
+          </table>
+             <table class="table table-border">
+            <tr>
+              <th style="text-align:center;" colspan="9"><b>Investigation / Procedure Details</b></th>
+            </tr>
+           <tr style="background: #c0daf1;">
+             <th style="font-size: 11px;">Investigation / Procedure</th>
+             <th style="font-size: 11px;">Result Status</th>
+             <th style="font-size: 11px;">Stat</th>
+             <th style="font-size: 11px;">OT Required</th>
+           </tr>
+               {% if invest_and_proce_records %}
+           {% for data in invest_and_proce_records %}
+                <tr>
+                  <td>{{data.investigation_and_procedure}}</td>
+                  <td>{{data.result_status}}</td>
+                  <td>{{data.status}}</td>
+                  <td>{{data.ot_required}}</td>
+               </tr>
+           {% endfor %}
+               {% else %}
+              <tr>
+                <td style="text-align:center;" colspan="9">No Records Found</td>
+              </tr>
+              {% endif %}
+         </table>
+         <table class="table table-border">
+           <tr>
+              <th style="text-align:center;" colspan="9"><b>Diagnosis Details</b></th>
+            </tr>
+            <tr style="background: #c0daf1;">
+                <th>Diagnosis</th>
+                <th>D GRD </th>
+              </tr>
+           {% if diagnosis_records %}
+              {% for diag in diagnosis_records %}
+              <tr >
+                <td>{{ diag.diagnosis }}</td>
+                <td>{{ diag.D_GRG_Code }}</td>
+              </tr>
+           {% endfor %}
+              {% else %}
+              <tr>
+                <td style="text-align:center;" colspan="9">No Records Found</td>
+              </tr>
+              {% endif %}
+         </table>
+          <table  class="table table-border">
+            <tr>
+               <th style="text-align:center;" colspan="9">Presenting Complaint Details</th>
+             </tr>
+             <tr style="background: #c0daf1;">
+                <th>SN.No</th>
+                <th>Presenting Complaint</th>
+                <th>Initial Complaint</th>
+                <th>Visit Date</th>
+              </tr>
+            {% if complaints %}
+             {% for data in complaints %}
+             <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{data.presenting_comp}}</td>
+                <td>{{data.initial_comp}}</td>
+                <td>{{data.visit_date}}</td>
+              </tr>
+             {% endfor %}
+            {% else %}
+              <tr>
+                <td style="text-align:center;" colspan="9">No Records Found</td>
+              </tr>
+            {% endif %}
+           </table>
+            <table  class="table table-border">
+            <tr>
+               <th style="text-align:center;" colspan="9">History & Examination</th>
+             </tr>
+              <tr style="background: #c0daf1;">
+              <th>General Examination</th>
+              <th>Cardiovascular</th>
+              <th>Respiration</th>
+              <th>Past Medical/Surgical</th>
+              <th>Musculoskeletal</th>
+              <th>Family History</th>
+              <th>Paediatric History</th>
+              <th>Gynaec/ Obstetric History</th>
+              <th>Vaginal Examination </th>
+            </tr>
+           {%if history_diagnosis%}
+            {% for data in history_diagnosis %}
+            <tr>
+              <td>{{data.general_examination}}</td>
+              <td>{{data.Cardiovascular}}</td>
+              <td>{{data.Respiration}}</td>
+              <td>{{data.Past_Medical_Surgical}}</td>
+              <td>{{data.Musculoskeletal}}</td>
+              <td>{{data.Family_History}}</td>
+              <td>{{data.Paediatric_History}}</td>
+              <td>{{data.Gynaec_Obstetric_History}}</td>
+              <td>{{data.Vaginal_Examination}}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td style="text-align:center;" colspan="9">No Records Found</td>
+            </tr>
+            {% endif %}
+            </table>
+              <table class="table table-border">
+                <tr>
+              <th style="text-align:center;" colspan="9">Advice Details</th>
+            </tr>
+             <tr style="background: #c0daf1;">
+               <th>Advice</th>
+               <th>Folloe up to</th>
+               <th>Follow Check</th>
+             </tr>
+                {% if advice %}
+             {% for data in advice %}
+             <tr>
+               <td>{{data.advice}}</td>
+               <td>{{data.follow_up_date}}</td>
+               <td>{{data.follow_check_box}}</td>
+             </tr>
+             {% endfor %}
+                {% else %}
+            <tr>
+              <td style="text-align:center;" colspan="9">No Records Found</td>
+            </tr>
+            {% endif %}
+           </table>
+            {% else %}
+            <tr>
+              <td style="text-align:center;" colspan="9">No Records Found</td>
+            </tr>
+            {% endif %}
+          </table>
+          <div class="space" style="min-height: 200px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+ <center> <button type="button" class="btn btn-primary" onclick="printDiv('Report')" value="Get Invoice">Get Report</button>
+     <a href="/list_cl_patient"><button type="button" class="btn btn-danger">Back</button></a>
+ </center>
+    </div>
+
+<!--	<div style="text-align:center;"><input type="button" onclick="printDiv('Report')" value="Get Invoice" /></div>-->
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+     document.body.innerHTML = printContents;
+     window.print();
+     document.body.innerHTML = originalContents;
+}
+  </script>
+{% endblock  %}
+</body>
+</html>

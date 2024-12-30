@@ -1,0 +1,51 @@
+{% extends 'qms/base.html' %}
+{% load static %}
+{% block body_block %}
+{% load crispy_forms_tags %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <!-- Main Dashboard -->
+        <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+              <button type="menu" style="font-family: monospace; width: 100%; text-align: left;" class="btn btn-primary m-t-15 waves-effect"> <b>Centralied Admin View</b></button>
+              <div class="container-fluid">
+                <div class="table-responsive">
+                  <table class="datatable table table-stripped table-bordered">
+
+                    <thead>
+                      <tr style="background-color: rgb(206, 206, 249);">
+                        <th>Date</th>
+                        <th>Room No</th>
+                        <th>Doctor Name</th>
+                        <th>Token Issued</th>
+                        <th>Current In</th>
+                        <th >Next Waiting</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for data in cav %}
+                      <tr>
+                        <td>{{data.Date}}</td>
+                        <td>{{data.Room_No}}</td>
+                        <td>{{data.Doct_Name}}</td>
+                        <td>{{data.Token_No}}</td>
+                        <td>{{data.Pt_Id}}</td>
+                        <td>{{data.Pt_Id|add:'1'}}</td>
+                        <td>{% if data.status == "Missed Patient" %}<span class="custom-badge status-red">Missed Patient</span>
+                            {% elif data.status == "Patient Out" %}<span class="custom-badge status-green">Patient Out</span>
+                            {% elif data.status == "Waiting" %}<span class="custom-badge status-blue" style="background-color: rgb(255, 255, 112);">Waiting</span>
+                            {% elif data.status == "Inside" %}<span class="custom-badge status-green">Inside</span>
+                            {% endif %}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+
+                  </table>
+                </div>
+
+              </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

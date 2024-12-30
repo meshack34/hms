@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% block body_block %}
+<br>
+<div class="hero">
+  <div class="outer" >
+<div class="container"  align="center1">
+    <!--Page Start-->
+  <div class="col-xs-10 col-sm-10 col-md-6 col-lg-6">
+    <div class="center" style="background-color: white; ">
+      <div class="header">
+          <div class="card">
+            <h4> <i class="fas fa-map-marker-alt"></i>&nbsp; &nbsp;&nbsp; &nbsp;{{doctor_location}}</h4>
+             <h4><i class="fas fa-notes-medical"></i>&nbsp; &nbsp;&nbsp; &nbsp;In-Hospital Consultation</h4>
+               <h4><i class="far fa-calendar-alt"></i>&nbsp; &nbsp;&nbsp; &nbsp;{{doctor_appointment}}</h4>
+              <h4><i class="fas fa-wallet"></i>&nbsp; &nbsp;&nbsp; &nbsp;Rs.{{doctor_fee}}</h4><br>
+              <table>
+                  <tr>
+                    <td><img src="media/{{doctor_profile_image}}" alt="..." style="width:64px;height:64px;"></td>
+                    <td>
+                      Dr.{{doctor_name}}<br>
+                      <strong>Senior Consultant</strong>
+                    </td>
+                  </tr>
+                </table>
+
+          </div>
+      </div>
+  <br><br>
+  <div class="container1" align="center1">
+      <div class="jumbotron own_form">
+        {% if records %}
+        <form  method="POST"  action="appointment_detail">
+          {% csrf_token %}
+          {{doctor}}
+          {{location}}
+          <h2>Welcome,<span style="color:#24a0ed;">{{first_name}} {{middle_name}} {{last_name}}</span></h2>
+          <p>Please click on slot</p>
+          <hr>
+          {{form.doctor_time_slot}}
+          <div class="row">
+            {% for time_slots in records%}
+            <div class="col-lg-2 col-md-3 col-sm-3  schedule-design" style="border:1px solid #eee;box-shadow:1px 2px 3px 3px #86C6F4;border-radius:1em;">
+              <input type="radio" class="btn btn-light" name="time_slots_id" value="{{time_slots.time_slot_id}}" required>&nbsp;&nbsp;{{time_slots.time_slot_start_time}}-{{time_slots.time_slot_end_time}}
+            </div>
+            {% endfor %}
+          </div><br>
+          <input type="submit" name="next" value="Go Next" class="btn btn-primary btn-block">
+        </form>
+        {% else %}
+          <h3>No Schedule Are Availabale For Your Choose Date</h3>
+          <a href="/">Back</a>
+        {% endif %}
+      </div>
+    <br>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+{% endblock %}

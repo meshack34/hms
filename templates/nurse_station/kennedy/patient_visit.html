@@ -1,0 +1,1108 @@
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+  .own_form_class div input,select{
+  border:2px solid rgb(190, 189, 189);
+  border-bottom:2px solid #181616;
+  }
+  .form-control{
+    border:2px solid rgb(190, 189, 189);
+    border-bottom:2px solid #181616;
+  }
+</style>
+{% endblock  %}
+{% block body_block %}
+   <!-- content -->
+   <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00043">
+<input type="hidden" name="message_id" value="MSG00043">
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 lightgreen_bg" style="padding: 5px;">
+        <div class="page-header row align-items-center">
+          <h4 class="pageheader-title col-sm-4 text-white"><b>Clinical Management</b></h4>
+          <div class="col-sm-8 text-right d-flex align-items-center justify-content-end">
+            <ul class="d-flex align-items-center font-weight-bold m-0" style="font-size: 14px; list-style: none;color: #367186">
+              <li class="px-2">UHID <span style="color: #4b343f">{{uhid}}</span></li>
+              <li class="px-2">Name: <span style="color: #4b343f">{{ patient_name | upper}}</span></li>
+              <li class="px-2">Age/Gender: <span style="color: #4b343f">{{dob}}Year/{{gender}}</span></li>
+              <li class="px-2"><i class="fa fa-user" aria-hidden="true"></i></li>
+<!--              <li><button type="button" class="btn border border-primary rounded-circle" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="width: 30px;height: 30px;padding: 0;"><i class="fa fa-info" aria-hidden="true"></i></button></li>-->
+            </ul>
+          </div><!-- col-sm-8 -->
+        </div>
+      </div>
+     {% for message in messages %}
+        <div class="container-fluid p-0">
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="True">&times;</span>
+            </button>
+            {{ message }}
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+ <script type="text/javascript">
+   $(document).ready(function() {
+    $(".sum").val("0");
+    $(".key").val("");
+
+    function calc() {
+
+        var $num1 = ($.trim($(".num1").val()) != "" && !isNaN($(".num1").val())) ? parseInt($(".num1").val()) : 0;
+        console.log($num1);
+        var $num2 = ($.trim($(".num2").val()) != "" && !isNaN($(".num2").val())) ? parseInt($(".num2").val()) : 0;
+        console.log($num2);
+        var $num3 = $num2/100
+        $(".sum").val(Math.ceil(($num1 )/($num3 * $num3)));
+    }
+    $(".key").keyup(function() {
+        calc();
+    });
+});
+</script>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="bg-white p-2 mt-2">
+          <div class="tab_options">
+            <!-- Nav pills -->
+              <div id="vital" class="tab-pane m-0 active">
+                <ul class="visit-tabs nav nav-tabs alert-secondary d-flex align-items-center" role="tablist ">
+                  <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#tabs-1" role="tab">Allergies/Immunization</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link p-2 uppercase active " data-toggle="tab" href="#tabs-2" role="tab">Vital Sign</a>
+                  </li>
+                    <li class="nav-item">
+                    <a class="nav-link p-2 uppercase  " data-toggle="tab" href="#medical" role="tab">Medical Record</a>
+                  </li>
+                </ul><!-- Tab panes -->
+                <div class="tab-content">
+                  <div class="tab-pane pt-2" id="tabs-1" role="tabpanel">
+                    <h5><b> Allergies / Immunization</b></h5>
+                    <hr>
+                    <div id="accordion" role="tablist">
+                      <div class="card mb-3">
+                        <div class="card-header" role="tab" id="headingOne">
+                          <h5 class="mb-0">
+                            <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#018bbc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                              Allergies
+                            </a>
+                          </h5>
+                        </div>
+
+                        <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" style="">
+                          <form name="allergy_form" method="post" id="allergy_form" class="card-body">
+                            {% csrf_token %}
+                            <input type="hidden" name="allergy" id="allergy" value="allergy">
+                              <div class="row">
+                              <div class="col-md-4">
+                                <div class="form-group row mb-0">
+                                  <label class="col-sm-4 col-form-label"><b>Allergy type</b> </label>
+                                  <div class="col-sm-8">
+                                    <select name="type" class="type" id="id_type" class="form-control">
+                                      <option value="" selected>---------</option>
+                                    
+                                      <option value="Drug">Drug</option>
+                                    
+                                      <option value="Food">Food</option>
+                                    
+                                      <option value="Insect">Insect</option>
+                                    
+                                      <option value="Latex">Latex</option>
+                                    
+                                      <option value="Mold">Mold</option>
+                                    
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="form-group row mb-0">
+                                  <label  class="col-sm-4 col-form-label"><b>Allergen</b> </label>
+                                  <div class="col-sm-8">
+                                    <select name="allergen" class="allergen" id="id_allergen" class="form-control">
+                                        <option value="" selected>---------</option>
+                                      
+                                        <option value="Drug">Drug</option>
+                                      
+                                        <option value="Food">Food</option>
+                                      
+                                        <option value="Insect">Insect</option>
+                                      
+                                        <option value="Latex">Latex</option>
+                                    
+                                    </select>
+                                 </div>
+                               </div>
+                             </div>
+
+                             <div class="col-md-5">
+                              <div class="form-group row mb-0">
+                                <label class="col-sm-3 col-form-label"><b>Reaction</b> </label>
+                                <div class="col-sm-7">
+                                  <input type="text" name="reaction" class="reaction" id="id_reaction" class="form-control">
+                               </div>
+                               <div class="col-md-2">
+                                <button type="submit" form="allergy_form" class="btn-primary btn icon-size"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+
+                      <table class="table-border table">
+                        <tr style="background: #d1dae6;">
+                          <th>Sr</th>
+                          <th>Allergy type</th>
+                          <th>Allergy</th>
+                          <th>Reaction</th>
+                        </tr>
+                        <tr>
+                         {%if allergies %}
+                         {% for allergy in allergies %}
+                            <td>{{forloop.counter}}</td>
+                            <td>{{allergy.type}}</td>
+                            <td>{{allergy.allergen}}</td>
+                            <td>{{allergy.reaction}}</td>
+                            {% endfor %}
+                            {% else %}
+                            <td colspan="4">No record found</td>
+                            {% endif %}
+                        </tr>
+                      </table>
+
+                    </div>
+                  </div>
+                  <div class="card">
+                    <div class="card-header" role="tab" id="headingTwo">
+                      <h5 class="mb-0">
+                        <a class="" data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#018bbc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Immunization
+                       </a>
+                     </h5>
+                   </div>
+                   <div id="collapseTwo" class="collapse show" role="tabpanel" aria-labelledby="headingTwo" style="">
+                    <div class="card-body">
+                      <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                          <div class="col-md-5">
+                            <div class="form-group row mb-0">
+                              <label  class="col-sm-4 col-form-label"><b>Immunization</b> </label>
+                              <div class="col-sm-8">
+                                <input type="text" name="immunization" class="form-control" placeholder="">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-5">
+                            <div class="form-group row mb-0">
+                              <label for="inputEmail3" class="col-sm-4 col-form-label"><b>Given Date</b> </label>
+                              <div class="col-sm-8">
+                               <input type="date" name="date" class="form-control" placeholder="">
+                             </div>
+                           </div>
+                         </div>
+                         <div class="col-md-2 text-right">
+                          <button class="btn-primary btn icon-size"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                     <table class="table-border table">
+                        <tr style="background: #d1dae6;">
+                          <th>Sr</th>
+                          <th>Immunization</th>
+                          <th>Date</th>
+                        </tr>
+                        <tr>
+                          <td colspan="3"></td>
+                        </tr>
+                      </table>
+                </div>
+              </div>
+            </div>
+
+          </div><div class="tab-pane active" id="tabs-2" role="tabpanel">
+            <div class="row no-gutters p-2">
+              <div class="col-md-6">
+                  <h3><b>Vital signs</b></h3>
+              </div>
+              <div class="col-md-6">
+                <div class="btns d-flex align-items-center justify-content-end">
+<!--                  <label class="check_opt ">release-->
+<!--                    <input type="checkbox" checked="checked">-->
+<!--                    <span class="checkmark"></span>-->
+<!--                  </label>-->
+                  <button class="btn-primary ml-1 border-0 p-2 icon-size" name="button" type="submit" form="MyVitalForm"><i class="fa fa-save" aria-hidden="true"></i></button>
+<!--                  <button class="btn-primary ml-1 bo rder-0 p-2 icon-size" name="button" type="button"><i class="fas fa-paint-brush"></i></button>-->
+                </div>
+              </div>
+            </div>
+              <hr>
+            <form method="POST" id="MyVitalForm" class="own_form_class">
+              {% csrf_token %}
+                <input type="hidden" name="vital_sign" id="vital_sign" value="vital">
+              <div class="form-group row mb-2">
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="systolic" class="col-sm-5  col-form-label"><b>Systolic B.P</b> </label>
+                    <div class="col-sm-7">
+<!--                      <input type="email" class="form-control" id="systolic" placeholder="  ">-->
+                      {{form.sys_bp}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="diastolic" class="col-sm-5  col-form-label"><b>Diastolic B.P</b> </label>
+                    <div class="col-sm-7">
+<!--                      <input type="email" class="form-control" id="diastolic" placeholder="">-->
+                      {{form.dia_bp}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="temperature" class="col-sm-5  col-form-label"><b> Temperature (oC)</b></label>
+                    <div class="col-sm-7">
+<!--                      <input type="email" class="form-control" id="temperature" placeholder="">-->
+                      {{form.temp}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row mb-2">
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="weight" class="col-sm-5  col-form-label"><b> Weight (Kg)</b></label>
+                    <div class="col-sm-7">
+<!--                      <input type="email" class="form-control" id="weight" placeholder="">-->
+                      {{form.weight}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="height" class="col-sm-5 col-form-label"><b> Height (cm)</b></label>
+                    <div class="col-sm-7">
+<!--                      <input type="email" class="form-control" id="height" placeholder="">-->
+                      {{form.height}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="BMI (Kg/M2)" class="col-sm-5 col-form-label"><b>BMI (Kg/M2)</b> </label>
+                    <div class="col-sm-7">
+<!--                      <input type="email" class="form-control" id="BMI" placeholder="Email">-->
+                      {{form.bmi}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row mb-2">
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="respiratory" class="col-sm-5  col-form-label"><b> Respiratory rate (/Min)</b></label>
+                    <div class="col-sm-7">
+<!--                      <input type="email" class="form-control" id="respiratory" placeholder="">-->
+                      {{form.resp_rate}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="heart-rate" class="col-sm-5 col-form-label"><b>Heart rate (BPM)</b> </label>
+                    <div class="col-sm-7">
+<!--                      <input type="email" class="form-control" id="heart-rate" placeholder="">-->
+                      {{form.heart_rate}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="urine-output" class="col-sm-5 col-form-label"><b>Urine Output</b> </label>
+                    <div class="col-sm-7">
+<!--                      <input type="email" class="form-control" id="urine-output" placeholder="">-->
+                      {{form.urine_output}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row mb-2">
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="blood-sugar" class="col-sm-5 col-form-label"><b>Blood Sugar (F)</b> </label>
+                    <div class="col-sm-7">
+<!--                      <input type="email" class="form-control" id="inputEmail3" placeholder="">-->
+                      {{form.blood_sugar_f}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="blood-sugar" class="col-sm-5 col-form-label"><b>Blood Sugar (R)</b> </label>
+                    <div class="col-sm-7">
+<!--                      <input type="email" class="form-control" id="blood-sugar" placeholder="">-->
+                      {{form.blood_sugar_r}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="SPO2" class="col-sm-5 col-form-label"><b>SPO2</b> </label>
+                    <div class="col-sm-7">
+<!--                      <input type="email" class="form-control" id="SPO2" placeholder="">-->
+                      {{form.spo2}}
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+
+              <div class="form-group row mb-2">
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="blood-sugar" class="col-sm-5 col-form-label"><b>AVPU</b> </label>
+                    <div class="col-sm-7">
+
+                      <select name="avpu" id="id_avpu" class="form-control">
+                        <option value="" selected>---------</option>
+                      
+                        <option value="A">A</option>
+                      
+                        <option value="V">V</option>
+                      
+                        <option value="P">P</option>
+                      
+                        <option value="U">U</option>
+                      
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="blood-sugar" class="col-sm-5 col-form-label"><b>GCS</b> </label>
+                    <div class="col-sm-7">
+               
+                      {{form.gcs}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="SPO2" class="col-sm-5 col-form-label"><b>Comment..</b> </label>
+                    <div class="col-sm-7">
+
+                      <textarea name="comments" cols="50" rows="4" id="id_comments" class="form-control">
+                      </textarea>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </form>
+
+            <h5><b>Current Vitals</b> </h5>
+            <hr>
+            <table class="table mt-2 table-border">
+              <tr style="background: #d1dae6;">
+                <th>sno</th>
+                <th>Visit Id</th>
+                <th>Bill Id</th>
+<!--                <th>Date Time</th>-->
+                <th>SBP</th>
+                <th>DBP</th>
+                <th>Temp</th>
+                <th>RR</th>
+                <th>HR</th>
+                <th>Urine OP</th>
+                <th>BS(F)</th>
+                <th>BS(R)</th>
+                <th>SP02</th>
+                <th>AVPU</th>
+                <th>GCS</th>
+              </tr>
+                {% if records %}
+              {% for data in records %}
+                <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{data.visit_id}}</td>
+                <td>{{data.bill_id}}</td>
+                <td>{{data.sys_bp}}</td>
+                <td>{{data.dia_bp}}</td>
+                <td>{{data.temp}}</td>
+                <td>{{data.resp_rate}}</td>
+                <td>{{data.heart_rate}}</td>
+                <td>{{data.urine_output}}</td>
+                <td>{{data.blood_sugar_f}}</td>
+                <td>{{data.blood_sugar_r}}</td>
+                <td>{{data.spo2}}</td>
+                <td>{{data.avpu}}</td>
+             
+                <td>{{data.gcs}}</td>
+              </tr>
+              {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="14" style="text-align: center">No records found</td>
+                </tr>
+                {% endif %}
+            </table>
+          </div>
+<!--    <div class="tab-pane active" id="tabs-2" role="tabpanel">-->
+        <div id="medical" class="tab-pane fade" role="tabpanel"><br>
+                  <div class="col-md-12">
+                      <div class="row">
+                          <div class="col-md-6" style="text-align: left;">
+                               <h3 >Medical Records</h3>
+                          </div>
+                           <div class="col-md-6" style="text-align: right;">
+                               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_emr_record">Add New Record</button>
+                          </div>
+                      </div>
+                  </div>
+                  <div>
+                      <table class="table ">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">UHID</th>
+                          <th scope="col">Visit ID</th>
+                          <th scope="col">Visit Type</th>
+                          <th scope="col">Visit Date</th>
+                          <th scope="col">Patient Name</th>
+                          <th scope="col">Medical Records</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% if emr_records %}
+                        {% for emr_record in emr_records %}
+                        <tr>
+                          <th scope="row">{{ forloop.counter }}</th>
+                          <td>{{ emr_record.uhid }}</td>
+                          <td>{{ emr_record.visit_id }}</td>
+                          <td>{{ emr_record.record_type }}</td>
+                          <td>{{ emr_record.visit_date }}</td>
+                          <td>{{ emr_record.patient_name }}</td>
+                          <td>
+                              {%for record_type in emr_record.emrinfo_record.all%}
+                            <li>{{record_type.medical_record_type}} - <a href="{{ record_type.medical_record_file.url }}" target="_blank">View File</a></li>
+                              {%endfor%}
+                          </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                          <td colspan="5">No Records Found</td>
+                        </tr>
+                        {% endif %}
+                      </tbody>
+                      </table>
+                  </div>
+              </div>
+            </div>
+                </div>
+
+<!--                    <div class="tab-pane active" id="tabs-3" role="tabpanel">-->
+<!--            <div class="row no-gutters p-2">-->
+<!--              <div class="col-md-6">-->
+<!--                  <h3><b>Triage Information</b> </h3>-->
+<!--              </div>-->
+<!--              <div class="col-md-6">-->
+<!--                <div class="btns d-flex align-items-center justify-content-end">-->
+<!--                  <button class="btn-primary ml-1 border-0 p-2 icon-size" name="button" type="submit" form="TriageForm"><i class="fa fa-save" aria-hidden="true"></i></button>-->
+<!--                  <button form="PrintPDF" class="btn-primary ml-1 border-0 p-2 icon-size" type="submit" ><i class="fas fa-print"></i></button>-->
+<!--                <form id="PrintPDF" method="POST">-->
+<!--                     {% csrf_token %}-->
+<!--                    <input type="hidden" name="print_pdf" value="print_pdf">-->
+<!--                </form>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--              <hr>-->
+<!--            <form method="POST" id="TriageForm" class="own_form_class">-->
+<!--              {% csrf_token %}-->
+<!--                <input type="hidden" name="triage" id="triage" value="triage">-->
+<!--              <div class="form-group row mb-2">-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label class="col-sm-5  col-form-label">Social Status</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <input type="email" class="form-control" id="systolic" placeholder="  ">&ndash;&gt;-->
+<!--                      {{triage_info_form.social_status}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5  col-form-label">Tobacco</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <input type="email" class="form-control" id="diastolic" placeholder="">&ndash;&gt;-->
+<!--                      {{triage_info_form.tobacco}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5  col-form-label">Tobacco Frequency</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <input type="email" class="form-control" id="temperature" placeholder="">&ndash;&gt;-->
+<!--                      {{triage_info_form.tobacco_frequency}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--              <div class="form-group row mb-2">-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label class="col-sm-5  col-form-label">Alcohol</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <input type="email" class="form-control" id="weight" placeholder="">&ndash;&gt;-->
+<!--                       {{triage_info_form.alcohol}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">Alcohol Frequency</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <input type="email" class="form-control" id="height" placeholder="">&ndash;&gt;-->
+<!--                      {{triage_info_form.alcohol_frequency}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label class="col-sm-5 col-form-label">OU</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <input type="email" class="form-control" id="BMI" placeholder="Email">&ndash;&gt;-->
+<!--                      {{triage_info_form.OU}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--              <div class="form-group row mb-2">-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5  col-form-label">OU_corrected</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <input type="email" class="form-control" id="respiratory" placeholder="">&ndash;&gt;-->
+<!--                      {{triage_info_form.OU_corrected}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label class="col-sm-5 col-form-label">OS</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <input type="email" class="form-control" id="heart-rate" placeholder="">&ndash;&gt;-->
+<!--                     {{triage_info_form.OS_corrected}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">Urine Output</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <input type="email" class="form-control" id="urine-output" placeholder="">&ndash;&gt;-->
+<!--                      {{triage_info_form.urine_output}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--              <div class="form-group row mb-2">-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">OD</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <input type="email" class="form-control" id="inputEmail3" placeholder="">&ndash;&gt;-->
+<!--                      {{triage_info_form.OD_corrected}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">heart disease</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <input type="email" class="form-control" id="blood-sugar" placeholder="">&ndash;&gt;-->
+<!--                     {{triage_info_form.heart_disease}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">Diabetes</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <input type="email" class="form-control" id="SPO2" placeholder="">&ndash;&gt;-->
+<!--                     {{triage_info_form.diabetes}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="form-group row mb-2">-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label class="col-sm-5 col-form-label">Cancer</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                   {{triage_info_form.cancer}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">Other family Disease</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                     {{triage_info_form.other_family_disease}}-->
+<!--                    </div>-->
+
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">Alert</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                      {{triage_info_form.alert}}-->
+<!--                    </div>-->
+
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4 ">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">Awake</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                      {{triage_info_form.awake}}-->
+<!--                    </div>-->
+
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">Unresponsive</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.unresponsive}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--                 <div class="form-group row mb-2">-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label class="col-sm-5 col-form-label">Response to Pain</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                   {{triage_info_form.response_to_pain}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">color pink</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                     {{triage_info_form.color_pink}}-->
+<!--                    </div>-->
+
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">color palle</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                      {{triage_info_form.color_palle}}-->
+<!--                    </div>-->
+
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4 ">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">color cyanosis</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                      {{triage_info_form.color_cyanosis}}-->
+<!--                    </div>-->
+
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">skin warm</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.skin_warm}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                 <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">skin cold</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.skin_cold}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                      <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">skin hot</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.skin_hot}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                      <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label">skin dry</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.skin_dry}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                        <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> past HTN</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.past_HTN}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                     <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> past heart disease</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.past_heart_disease}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                      <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> past diabetes</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.past_diabetes}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                     <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> past cancer</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.past_cancer}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                      <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> past HIV</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.past_HIV}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                      <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> past TB</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.past_TB}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                     <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> past other disease</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.past_other_disease}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                      <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> past surgery gall bladder</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.past_surgery_gall_bladder}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                     <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> past surgery appendix</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.past_surgery_appendix}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                      <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> past surgery hernia</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.past_surgery_hernia}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                     <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> past surgery other</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.past_surgery_other}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                     <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> Bleeding</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.bleeding}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                     <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> skin intact</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.skin_intact}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                      <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> skin other</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.skin_other}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                     <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> shortness of breath</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.shortness_of_breath}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                      <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> Coughing</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.Coughing}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                      <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> vital_bp</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.vital_bp}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                     <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> vital_pulse</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.vital_pulse}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                       <div class="col-md-4">-->
+<!--                  <div class="form-group row m-0 no-gutters">-->
+<!--                    <label  class="col-sm-5 col-form-label"> vital_temp</label>-->
+<!--                    <div class="col-sm-7">-->
+<!--&lt;!&ndash;                      <select class="box form-control ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>-&#45;&#45;Select-&#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                      </select>&ndash;&gt;-->
+<!--                       {{triage_info_form.vital_temp}}-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+
+
+
+
+
+
+<!--                 </div>-->
+<!--            </form>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--        </div>-->
+<!--      </div>-->
+      <div id="medication" class="tab-pane fade"><br>
+        <h3>Menu 2</h3>
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+      </div>
+      <div id="prescription" class="container tab-pane fade"><br>
+        <h3>Menu 2</h3>
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+      </div>
+    </div>
+  </div>
+    </div>
+</div>
+</div>
+    </div>
+
+       <!-- Modal Upload EMR record -->
+<div class="modal fade" id="add_emr_record" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Add New Record</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <form id="emr_record" method="post" enctype="multipart/form-data">
+           {% csrf_token %}
+           <input type="hidden" name="emr_record_id" value="emr_record_id">
+        <div class="form-group">
+            <label>Patient Category</label>
+            {{emr_info_form.record_type}}
+        </div>
+        <div class="form-group">
+            <label>Visit ID</label>
+           {% if admission_info %}
+               <select name="admission_id">
+                   {% for admission in admission_info %}
+                       <option value="{{admission.visit_id}}">{{admission.visit_id}}</option>
+                   {% endfor %}
+               </select>
+               {% endif %}
+        </div>
+           <div class="form-group">
+            <label>Visit ID</label>
+           {% if admission_info %}
+               <select name="admission_id">
+                   {% for admission in admission_info %}
+                       <option value="{{admission.visit_id}}">{{admission.visit_id}}</option>
+                   {% endfor %}
+               </select>
+               {% endif %}
+        </div>
+           <div class="form-group">
+            <label>Medical Record</label>
+            {{emr_info_records_form.medical_record_type}}
+        </div>
+        <div class="form-group">
+            <label>Upload EMR Record</label>
+            {{emr_info_records_form.medical_record_file}}
+        </div>
+       </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" form="emr_record" class="btn btn-primary">Save Record</button>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
+
+{% endblock  %}

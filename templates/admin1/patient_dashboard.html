@@ -1,0 +1,249 @@
+{% extends 'admin1/base.html' %}
+{% block body_block %}
+<!--Main Content-->
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="card-box mb-0">
+        <h6 class="card-title text-bold">DASHBOARD</h6><br>
+            <script>
+                function ShowAndHide() {
+                    var x=document.getElementById('SectionName');
+                    if(x.style.display == 'none') {
+                        x.style.display = 'block';
+                    }else{
+                        x.style.display='none';
+                    }
+                }
+            </script>
+
+            <div class="row">
+
+                <div class=" col-lg-3  col-sm-6">
+         <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <!-- <button onclick="ShowAndHide()">            -->
+
+                            <span><h4 style="color: #f94001;">&nbsp;{{no_of_doctor}}</h4></span> <h2 class="text-right"><i class="fas fa-stethoscope pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Total Doctors</h5>
+
+
+                        </div>
+                     </div>
+                    </div><br>
+                </div>
+
+
+
+
+
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <!-- <button onclick="ShowAndHide()">            -->
+
+                            <span><h4 style="color: #f94001;">&nbsp;{{patient_count}}</h4></span> <h2 class="text-right"><i class="fas fa-procedures pull-left" style="background-color: white;"></i>&nbsp;</h2>
+                            <h5>&nbsp;Total Patient</h5>
+
+                        </div>
+                     </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #eed3ca;">&nbsp;{{total_appointment}}</h4></span> <h2 class="text-right"><i class="fas fa-user-clock pull-left" style="font-size:60px;color:rgb(250, 254, 255);"></i>&nbsp;</h2>
+                            <h5>&nbsp;Total Appointment</h5>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;35</h4></span> <h2 class="text-right"><i class="far fa-clock pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Visit Appointment</h5>
+                        </div>
+                     </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;{{today_total_appointment_records}}</h4></span> <h2 class="text-right"><i class="fas fa-calendar-check pull-left"></i>&nbsp;</h2>
+                            <h5>&nbsp;Today Appointment</h5>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;45</h4></span> <h2 class="text-right"><i class="fas fa-clipboard-list pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Total Test</h5>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;25</h4></span> <h2 class="text-right"><i class="fas fa-clipboard-list pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Total Today Test</h5>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card">
+                     <div class="info-box7 l-bg-green order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h4 style="color: #f94001;">&nbsp;25</h4></span> <h2 class="text-right"><i class="fas fa-user-tie pull-left"></i>&nbsp;</h2>
+                            <h5 >&nbsp;Total Admin</h5>
+                        </div>
+                     </div>
+                    </div>
+                </div>
+           </div><br><br>
+    </div>
+    </div>
+    <DIV ID="SectionName" style="display: none;">
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <div class="card">
+                    <div class="header">
+                      <div class="body">
+                         <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover save-stage dataTable"
+                              style="width:100%;">
+                                <thead>
+                                   <tr><th>S.no</th>
+                                   <th>Doctor Name</th>
+                                   <th>Department</th>
+                                   <th>Email ID</th>
+                                   <th>Mobile no.</th>
+                                   <th>Status</th>
+                                  </tr>
+                                </thead>
+                <tbody>
+                    <tr>
+                        {% for i in var4 %}
+                        <td>{{i.id}}</td>
+                        <td>{{i.dname}}</td>
+                        <td>{{i.dept}}</td>
+                        <td>{{i.dmail}}</td>
+                        <td>{{i.dmobile}}</td>
+                        <td><button type="button" class="btn btn-success">{{i.dstatus}}</button></td>
+                    </tr>
+                        {% endfor %}
+
+                </tbody>
+                </table>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</DIV>
+
+<DIV ID="SectionName1" style="display: none;">
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <div class="card">
+                    <div class="header">
+
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+                        <thead>
+                            <tr><th>S.no</th>
+                                <th> Name</th>
+                                <th>Email ID</th>
+                                <th>Mobile no.</th>
+                                <th>last Visit</th>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% for i in var2 %}
+                                <td>{{i.id}}</td>
+                                <td>{{i.pname}}</td>
+                                <td>{{i.pemail}}</td>
+                                <td>{{i.pmobile}}</td>
+                                <td>{{i.plvisit}}</td>
+                                <td>
+                                    <div class="content">
+                                    <button class="btn"><i class="fa fa-user" style="font-size: 24px;color:green"></i></button>
+                                    <button class="btn">
+                                        <a href="patient_table_edit/{{i.id}}">
+                                            <i class="fa fa-edit" style="font-size: 24px;color:blue"></i>
+                                        </a>
+                                    </button>
+                                    <button class="btn">
+                                        <a href="patient_table_delete/{{i.id}}">
+                                            <i class="fa fa-trash" style="font-size: 24px;color:red"></i>
+                                        </a>
+                                    </button>
+                                    </a></div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                         </tbody>
+
+                </table>
+                </div>
+            </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</DIV>
+</div>
+</div>
+
+
+
+
+
+
+    <script>
+        function ShowRadioButtonDiv(idBaseName,NumberOfButtons) {
+          for(x=1;x<=NumberOfButtons;x++){
+            CheckThisButton = idBaseName + x;
+            ThisDiv = idBaseName + x + 'Div';
+            if
+            (document.getElementById(CheckThisButton).checked)
+            {
+              document.getElementById(ThisDiv).style.display = "block";
+            }
+            else {
+              document.getElementById(ThisDiv).style.display = "none";
+            }
+          }
+          return false;
+          }
+
+      </script>
+
+       {% endblock %}

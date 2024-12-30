@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>dashbord</title>
+    <!-- Favicon-->
+    <!--  Core Css -->
+    <link rel="stylesheet" href="{% static 'css/StyleOld.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <!-- Favicon-->
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    {% block head_block %}
+
+    {% endblock %}
+
+  </head>
+  <body  style="background-image: linear-gradient(white,#9AD0EC);">
+    <!--Side Nav Bar-->
+    <div class="wrapper" >
+    <div class="sidebar"  style="background-image: linear-gradient(white,#1572A1);">
+        <ul>
+            <li><a href="/admin-dashboard"><i class="fas fa-home" style="color: orangered;"></i>&nbsp;Dashboard</a></li>  <br>
+            <li><a href="/admin_list_table"><i class="fas fa-user" style="color: orangered;"></i>&nbsp;Admin</a></li><br>
+            <li><a href="/patient_table"><i class="fas fa-procedures" style="color: orangered;"></i>&nbsp;Patient</a></li><br>
+            <li><a href="/doctor_table"><i class="fas fa-stethoscope" style="color: orangered;"></i>&nbsp;Doctor</a></li><br>
+            <li><a href="/appointment_table"><i class="fas fa-user-clock" style="color: orangered;"></i>&nbsp;Appointment</a></li><br>
+            <li><a href="/reports"><i class="fas fa-user-clock" style="color: orangered;"></i>&nbsp;Reports</a></li><br>
+            <li><a href="#"><i class="fas fa-clipboard-list" style="color: orangered;"></i>&nbsp;Test</a></li><br>
+        </ul>
+    </div>
+
+    <!--Side Nav Bar Ends-->
+{% block body_block %}
+
+{% endblock %}
+<!-- javacripts -->
+
+<script src="{% static 'js/app.min.js' %}"></script>
+<script src="{% static 'js/table.min.js' %}"></script>
+<!-- Custom Js -->
+<script src="{% static 'js/admin.js' %}"></script>
+<script src="{% static 'js/tables/jquery-datatable.js' %}"></script>
+        <script>
+     $(document).ready(function(){
+         document.getElementById("toggle_btn").click()
+       });
+     </script>
+{% block script_block %}
+{% endblock %}
+  </body>
+</html>

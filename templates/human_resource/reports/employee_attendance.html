@@ -1,0 +1,131 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Attendance Report</h4>
+            </div>
+          
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                <div class="row filter-row">
+                    <div class="col-sm-6 col-md-3">
+                            <label>Month</label>
+                            <input type="month" class="form-control" name="month">
+                           
+                    </div>
+                   
+                    
+                    <div class="col-sm-6 col-md-3">
+                        <label></label>
+                        <button type="submit" class="btn btn-success btn-block"> Search </button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="datatable table table-stripped ">
+                                <thead>
+                                    <tr>
+                                        <th>Employee Name</th>
+                                        <th>1</th>
+                                        <th>2</th>
+                                        <th>3</th>
+                                        <th>4</th>
+                                        <th>5</th>
+                                        <th>6</th>
+                                        <th>7</th>
+                                        <th>8</th>
+                                        <th>9</th>
+                                        <th>10</th>
+                                        <th>11</th>
+                                        <th>12</th>
+                                        <th>13</th>
+                                        <th>14</th>
+                                        <th>15</th>
+                                        <th>16</th>
+                                        <th>17</th>
+                                        <th>18</th>
+                                        <th>19</th>
+                                        <th>20</th>
+                                        <th>21</th>
+                                        <th>22</th>
+                                        <th>23</th>
+                                        <th>24</th>
+                                        <th>25</th>
+                                        <th>26</th>
+                                        <th>27</th>
+                                        <th>28</th>
+                                        <th>29</th>
+                                        <th>30</th>
+                                        <th>31</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        <td>{{attend_detail.first_name}}{{attend_detail.last_name}}</td>
+                                        <td>{% if data.0 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.0 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.0 == "null" %} {% endif %} </td>
+                                        <td>{% if data.1 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.1 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.1 == "null" %} {% endif %} </td>
+                                        <td>{% if data.2 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.2 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.2 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.3 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.3 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.3 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.4 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.4 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.4 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.5 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.5 == "0" %} <i class="fas fa-times text-danger"></i></i>{% elif data.5 == "null" %}---{% endif %} </td>
+                                        <td>{% if data.6 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.6 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.6 == "null" %} {% endif %} 
+                                                <!-- <div class="half-day"><span class="first-off"></span> <span class="first-off"><i class="fas fa-times text-danger"></i></span></div> -->
+                                        </td>
+                                        <td>{% if data.7 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.7 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.7 == "null" %} {% endif %} </td>
+                                        <td>{% if data.8 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.8 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.8 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.9 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.9 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.9 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.10 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.10 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.10 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.11 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.11 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.11 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.12 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.12 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.12 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.13 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.13 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.13 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.14 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.14 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.14 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.15 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.15 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.15 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.16 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.16 == "0" %} <i class="fas fa-times text-danger"></i></i>{% elif data.16 == "null" %} {% endif %} </td>
+                                        <td>{% if data.17 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.17 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.17 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.18 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.18 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.18 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.19 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.19 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.19 == "null" %} {% endif %}  </td>
+                                        <td>
+                                            <!-- <div class="half-day"><span class="first-off"><i class="fas fa-times text-danger"></i></span> <span class="first-off"></span></div> -->
+                                                {% if data.20 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.20 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.20 == "null" %} {% endif %}  
+                                        </td>
+                                        <td>{% if data.21 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.21 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.21 == "null" %} {% endif %} </td>
+                                        <td>{% if data.22 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.22 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.22 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.23 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.23 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.23 == "null" %} {% endif %} </td>
+                                        <td>{% if data.24 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.24 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.24 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.25 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.25 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.25 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.26 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.26 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.26 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.27 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.27 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.27 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.28 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.28 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.28 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.29 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.29 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.29 == "null" %} {% endif %}  </td>
+                                        <td>{% if data.30 == '1' %}<i class="fa fa-check text-success"></i>{% elif data.30 == "0" %} <i class="fas fa-times text-danger"></i>{% elif data.30 == "null" %} {% endif %}  </td>
+                                      </tr>
+                                </tbody>
+                            </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</div>
+<!--/ content-->
+
+{% endblock %}

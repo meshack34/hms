@@ -1,0 +1,188 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+  <div class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="page-header row" style="background-color:#25a5be">
+            <h5 class="pageheader-title col-sm-4" style="color:white;margin-top:auto;margin-bottom:auto;">Pharmacy Sale Payment
+            </h5>
+            <div class="col-sm-8 text-right">
+              <button class="border-0 p-2 icon-size" style="background-color:#25a5be;margin-right:1em;color:white;"
+                form="MyForm" name="button" type="submit">
+                <i class="fa fa-save fa-2x"></i>
+              </button>
+              <a href="/add_counter_saleout_patient" style="background-color:#25a5be;color:red;">
+                <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div><br>
+
+      <!-- Main Dashboard -->
+
+      <!-- Main Dashboard -->
+      <form method="POST" id="MyForm" >
+        {% csrf_token %}
+        <div>
+          <!-- <input type="hidden" name="pay_m_visit_id" value="{{pay_m_visit_id}}" id="pay_m_visit_id">
+          <input type="hidden" name="pay_m_uhid" value="{{pay_m_uhid}}" id="pay_m_uhid"> -->
+          <input type="hidden" name="sale_no" value="{{PSCounterSale_Parent.Op_sales_no}}" id="sale_no">
+        </div>
+        
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <label>Payment Mode</label>
+            <select name="mode_type" class="form-control" id="mode_type">
+              <option value="">----Select----</option>
+              <option value="cash">Cash</option>
+              <option value="debit_credit_card">Debit/Credit Card</option>
+              <option value="m_pesa">M-pesa</option>
+              <option value="all">All</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label>Payable Amount:</label>
+            <input type="text" name="bill_amt" class="form-control" value="{{PSCounterSale_Parent.total_taxable_amount}}">
+          </div>
+        </div><br>
+       <!-- cash  -->
+          <div class="row" id="cash1" style="display: none; " >
+            <div class="col-md-2">
+              <h4>Cash</h4>
+            </div>
+            <div class="col-md-3">
+              <label>Paid by:</label>
+              <input type="text" name="cash_paid_by" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Pay amount:</label>
+              <input type="text" name="cash_pay_amount" class="form-control">
+            </div>
+          </div>
+          <!-- m-pesa -->
+          <div class="row" id="m_pesa" style="display: none;">
+            <div class="col-md-2">
+              <h4>M-pesa</h4>
+            </div>
+            <div class="col-md-3">
+              <label>Paid by:</label>
+              <input type="text" name="mpesa_paid_by" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Ref number:</label>
+              <input type="text" name="mpesa_ref_no" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Card holder name:</label>
+              <input type="text" name="mpesa_card_holder_name" class="form-control">
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-3">
+              <label> Moblie number:</label>
+              <input type="text" name="mpesa_mobile_no" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Pay amount:</label>
+              <input type="text" name="mpesa_pay_amount" class="form-control">
+            </div>
+          </div>
+
+          <div class="row" id="credit_card" style="display: none;">
+            <div class="col-md-2">
+              <h4>Debit/Credit Card</h4>
+            </div>
+            <div class="col-md-3 mb-3" id="card_no">
+              <label>Ref no:</label>
+              <input type="text" name="card_ref_no" class="form-control">
+
+            </div>
+            <div class="col-md-3 mb-3" id="card_no">
+              <label>Bank no:</label>
+              <input type="text" name="card_bank_no" class="form-control">
+            </div>
+            <div class="col-md-3 mb-3" id="card_no">
+              <label>paid by:</label>
+              <input type="text" name="card_paid_by" class="form-control">
+
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-3">
+              <label>Pay amount:</label>
+              <input type="text" name="card_pay_amount" class="form-control">
+            </div>
+          </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $(function() {
+    $("#mode_type").change(function() {
+      var result = $('option:selected', this).val()
+      if( result == 'cash' ){
+        $("#cash1").show();
+        $("#credit_card").hide();
+        $("#m_pesa").hide();
+        $("#bank1").hide();
+        $("#eft").hide();
+        $("#cheque").hide();
+      }else if (result == 'debit_credit_card'){
+        $("#cash1").hide();
+        $("#credit_card").show();
+        $("#m_pesa").hide();
+        $("#bank1").hide();
+        $("#eft").hide();
+        $("#cheque").hide();
+      }else if (result == 'm_pesa'){
+        $("#cash1").hide();
+        $("#credit_card").hide();
+        $("#m_pesa").show();
+        $("#bank1").hide();
+        $("#eft").hide();
+        $("#cheque").hide();
+      }else if (result == 'bank'){
+        $("#cash1").hide();
+        $("#credit_card").hide();
+        $("#m_pesa").hide();
+        $("#bank1").show();
+        $("#eft").hide();
+        $("#cheque").hide();
+      }else if (result == 'eft'){
+        $("#cash1").hide();
+        $("#credit_card").hide();
+        $("#m_pesa").hide();
+        $("#bank1").hide();
+        $("#eft").show();
+        $("#cheque").hide();
+      }else if (result == 'cheque'){
+        $("#cash1").hide();
+        $("#credit_card").hide();
+        $("#m_pesa").hide();
+        $("#bank1").hide();
+        $("#eft").hide();
+        $("#cheque").show();
+      }else if (result == 'all'){
+        $("#cash1").show();
+        $("#credit_card").show();
+        $("#m_pesa").show();
+        $("#bank1").show();
+        $("#eft").show();
+        $("#cheque").show();
+      }
+    });
+});
+</script>
+{% endblock %}

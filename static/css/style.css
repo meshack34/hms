@@ -1,0 +1,119 @@
+:root {
+  --nav-icon-width: 70px;
+  --nav-border-width: 14px;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.page-container {
+  height: inherit;
+  display: flex;
+}
+
+.main {
+  height: flex;
+  padding: 0;
+  padding-left: var(--nav-border-width);
+  overflow-y: auto;
+}
+
+.nav {
+  width: 310px;
+  height: auto;
+  position: relative;
+  background-color: rgb(14, 72, 92);
+  transition: width 0.2s;
+  flex-shrink: 0;
+  overflow-y: auto;
+
+}
+
+
+.nav--collapsed {
+  width: var(--nav-icon-width);
+  padding-right: 85px;
+}
+
+.nav--collapsed .nav__label {
+  display: none;
+}
+
+.nav__link {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  padding-inline-end: 100%;
+
+
+}
+
+.nav__link:hover {
+  background-color:rgb(8, 112, 153);
+  color: #fff;
+  padding-inline-end: 100%;
+
+}
+
+.nav__icon-container {
+  width: var(--nav-icon-width);
+  height: var(--nav-icon-width);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav__label {
+  white-space: nowrap;
+}
+
+.nav__border {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: var(--nav-border-width);
+  height: inherit;
+  background-color: #dddddd;
+  transition: background-color 0.2s;
+  cursor: ew-resize;
+}
+.navv{
+  cursor:pointer;
+
+}
+
+.nav__border:hover {
+  background-color: #cccccc;
+}
+
+
+.col-sm-2 select{
+  border: 2px solid rgb(218, 208, 208);
+  width:100%;
+  margin: 10px;
+  padding: 10px;
+
+}
+.col-sm-3 select{
+  border: 2px solid rgb(218, 208, 208);
+  width:100%;
+  margin: 5px;
+  padding: 8px;
+
+}
+.btn{
+  background-color: dodgerblue;
+  border: none;
+  color: white;
+  padding: 2px 2px;
+  font-size: 16px;
+  cursor: pointer;
+}
+

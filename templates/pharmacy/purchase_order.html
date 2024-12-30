@@ -1,0 +1,503 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+  .form-control {
+    border: 2px solid white;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid black;
+  }
+
+  #id_Date,
+  #id_s_no,
+  #id_po_no,
+  #id_vendor,
+  #id_tax,
+  #id_basic_amount,
+  #id_net_amount,
+  #item_name {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- Jquery UI for AutoComplete -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<!-- content -->
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+      <div>
+        <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+        <b>Purchase Order</b>
+      </div>
+      <div class="">
+        <button type="submit" name="saved" form="POcalculate" class="btn text-light" value="saved" id="add_purchase_order" title="Save"><i class="fas fa-save"></i></button>
+  
+        <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+        <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a href="/view_po_edit" class="dropdown-item btn-primary" >View</a>
+          <a href="/PO_preview" class="dropdown-item btn-primary" >PO Preview</a>
+          <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+          <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+          
+        </div>
+      </div>
+    </div>
+
+                <form  method="post" id="POcalculate">
+                  {% csrf_token %}
+                  <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"><br>
+                  <div class="form-row">
+
+                    <div class="form-group col-md-2 mb-0">
+                      <label><b>Vendor</b></label>
+                      <select name="vendor_id" id="vendor_id" class="form-control" required>
+                        <option value="{% if vendor_ids %}{{vendor_ids}} {% else %} '' {% endif %}">{% if vendor_name %}{{vendor_name.vendor_name}} {% else %} Select {% endif %}</option>
+                        {% for data in vendar %}
+                        <option value="{{data.id}}">{{data.vendor_name}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      <label><b>Department</b></label>
+                      <select name="department" id="department" class="form-control" required>
+                        <option value="{% if department_ids %}{{department_ids}}{% else %}''{% endif %}">{% if department_name %}{{department_name.service_department}}{% else %} Select {% endif %}</option>
+                        {% for data in dept_detail %}
+                        <option value="{{data.id}}">{{data.service_department}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      <label><b>Location</b></label>
+                      <select name="po_location" id="po_location" class="form-control">
+                        <option value="{% if location_id %}{{location_id}}{% else %}''{% endif %}">{% if location_name %}{{location_name.location_name}}{% else %} Select {% endif %}</option>
+                        {% for data in location_detail %}
+                        <option value="{{data.id}}">{{data.location_name}}</option>
+                        {% endfor %}
+                      </select>
+                      <input type="hidden" name="location" id="location" class="form-control" value="{{store_detail.location_id_id}}">
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      <label><b>Store</b></label>
+                      <input type="text" name="store_name" id="store_name" class="form-control" value="{{store_detail.store_name}}">
+                      <input type="hidden" name="store_id" id="store_id" class="form-control" value="{{store_detail.id}}">
+                    <input type="hidden" name="random_no" id="random_no" class="form-control" value="{% if randoms %} {{randoms}} {% endif %}">
+                      </div>
+                    <div class="form-group col-md-2 mb-0">
+                      <label><b> Basic Amount</b></label>
+                      <input type="text" name="basic_amount" id="basic_amount" value="{{basic_amount}}"
+                        class="form-control">
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      <label><b>Net Amount</b></label>
+                      <input type="text" name="net_amount" id="net_amount" value="{{netamount}}" class="form-control">
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      <label><b>Deliver Date</b></label>
+                      <input type="date" name="deliver_date" id="deliver_date" value="{{deliver_date}}" class="form-control">
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      <label><b>Purpose</b></label>
+                      <input type="text" name="purpose" id="purpose" value="{{purpose}}" class="form-control">
+                    </div>
+                  </div><br>
+</div>
+                  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <!-- <a class="navbar-brand" href="#">Items</a> -->
+                    <a href="">
+                      <button type="button" class="btn btn-light">Items</button>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                      data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                      aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav mr-auto">
+                        <li class="nav-item ">
+                          <a class="nav-link" style="color: white;" href="#">Details </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" style="color: white;" href="#">Discount: 0</a>
+                        </li>
+
+                        <li class="nav-item">
+                          <a class="nav-link disabled" style="color: white;" href="#">CGST :0</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link disabled" style="color: white;" href="#">SGST :0</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link disabled" style="color: white;" href="#">IGST :0</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link disabled" style="color: white;" href="#">Total GST :0</a>
+                        </li>
+                      </ul>
+
+                    </div>
+                  </nav>
+                  <div class="table-responsive">
+                    <table class="datatable table table-stripped auto-index">
+                      <thead>
+                        <tr>
+                          <th>Item_Name</th>
+                          <th>Unit</th>
+                          <th>Qty</th>
+                          <th>Rate</th>
+                          <th>Selling Rate</th>
+                          <th>Free Qty</th>
+                          <th>Stock Qty</th>
+                       
+                          <th>Dis%</th>
+                          <th>Dis Amt</th>
+                          <th>Amount</th>
+                          <th>Tax Details</th>
+                          <th></th>
+    
+
+                        </tr>
+                        <tr></tr>
+                      </thead>
+                      <tbody>
+
+                        <tr class="clonetr" id="addrow">
+
+                          <td><input type="text" name="item_name" id="item_name" data-uhid-url="{% url 'calculate' %}"
+                              list="item" class="form-control"></td>
+                          <td><input type="text" name="unit1" id="unit1" class="form-control"><input type="hidden"
+                              name="unit_id" id="unit_id" class="form-control"></td>
+                          <td><input type="text" name="qty" id="qty" class="form-control"></td>
+                          <td><input type="text" name="rate" id="rate" class="form-control"></td>
+                          <td><input type="text" name="selling_rate" id="selling_rate" class="form-control"></td>
+                          <td><input type="text" name="free_qty" id="free_qty" class="form-control"></td>
+                          <td><input type="text" name="stock_qty" id="stock_qty" class="form-control"></td>
+                          <!--<td><input type="text" name="schema" id="schema" class="form-control"></td>-->
+                          <td><input type="text" name="discount" id="discount" class="form-control"></td>
+                          <td><input type="text" name="discount_amt" id="discount_amt" class="form-control"></td>
+                          <td><input type="text" name="amount" id="amount" class="form-control">
+                          <input type="hidden" class="form-control" name="hidden_amt1[]" id="hidden_amt1"></td>
+                          <td><input type="text" name="tax_details" id="tax_details" class="form-control"></td>
+                          <td><button class="btn btn-primary" type="submit" name="add_button" id="save_temp"
+                              value="save_temp" id="save_temp">+Add</button></td>
+                          <!-- <td><a href="javascript:;" class="btn btn-primary deleteButton">-</a></td> -->
+                        </tr>
+                        <datalist id='item'>
+                          {% for data in item %}
+                          <option value="{{data.id}}.{{data.item_name}} {{data.unit}} {{data.item_subcategory}}"></option>
+                          {% endfor %}
+                        </datalist>
+                        <tr></tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+
+                  <br><br>
+                    <div class="table-responsive">
+                      {% if temp_saved == temp_saved %}
+                      <table class="datatable table table-stripped auto-index">
+                        <thead>
+                          <tr>
+                            <th>S.No</th>
+                            <th>Item_Name</th>
+                            <th>Qty</th>
+                            <th>Unit</th>
+                            <th>Free Qty</th>
+                            <th>Stock Qty</th>
+                            <th>Rate</th>
+                            <!--<th>Schema%</th>-->
+                            <th>Dis%</th>
+                            <th>Dis Amt</th>
+                            <th>Amount</th>
+                            <th>Tax Details</th>
+                          </tr>
+                        </thead>
+                        {% for data in po_temp %}
+                        <tbody style="background-color: white;">
+
+
+                          <tr class="clonetr" id="addrow">
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.item_ID}}</td>
+                            <td><input type="hidden" name="qty[]" id="qty" value="{{data.quantity}}">{{data.quantity}}
+                            </td>
+                            <td><input type="hidden" name="unit[]" id="unit" value="{{data.unit}}">{{data.unit}}</td>
+                            <td><input type="hidden" name="free_qty[]" id="free_qty"
+                                value="{{data.free_qty}}">{{data.free_qty}}</td>
+                            <td><input type="hidden" name="stock_qty[]" id="stock_qty1"
+                                value="{{data.stock_qty}}">{{data.stock_qty}}</td>
+                            <td><input type="hidden" name="rate[]" id="rate" value="{{data.rate}}">{{data.rate}}</td>
+                            <!--<td><input type="hidden" name="schema[]" id="schema1"-->
+                            <!--    value="{{data.schema}}">{{data.schema}}</td>-->
+                            <td><input type="hidden" name="discount[]" id="discount1"
+                                value="{{data.discount}}">{{data.discount}}%</td>
+                            <td><input type="hidden" name="discount_amt[]" id="discount_amt1"
+                                value="{{data.discount_amt}}">{{data.discount_amt}}</td>
+                            <td><input type="hidden" name="amount[]" id="amount1"
+                                value="{{data.amount}}">{{data.amount}}</td>
+                            <td><input type="hidden" name="tax_details[]" id="tax_details1"
+                                value="{{data.tax_details}}">{{data.tax_details}}</td>
+
+
+                          </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% endif %}
+                      </table>
+
+                    </div>
+
+
+                </form>
+              </div>
+
+            </div>
+            </form>
+
+            <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+            <script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+            <script type="text/javascript">
+              $(document).ready(function () {
+                $(document).on('keyup', '#item_name', function () {
+                  var Item_namea = this.value;
+                  var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                  const url = $("#item_name").attr("data-uhid-url");
+                  const url1 = "{% url 'get_stock_details' %}";
+
+
+                  $.ajax({
+                    url: url,
+                    type: "post",
+                    data: {
+                      Item_name1: Item_namea,
+                    },
+                    dataType: 'json',
+                    headers: headers,
+                    success: function (data) {
+                      $('#unit1').val(data["unit_id"]);
+                      $('#unit_id').val(data["unit_id"]);
+                      $('#tax_details').val(data["tax"]);
+                      var item_id = data["item_id"];
+
+                      $.ajax({
+                        url: url1,
+                        type: "post",
+                        data: {
+                          item_id: item_id,
+                        },
+                        dataType: 'json',
+                        headers: headers,
+                        success: function (data) {
+                          $('#stock_qty').val(data["total_qty"]);
+                          $('#rate').val(data["rate"]);
+                        },
+                        error: function (data) {
+                          console.log(data);
+                        }
+                      });
+
+                    },
+                    error: function (data) {
+                      console.log(data);
+                    }
+                  });
+
+
+                });
+              });
+            </script>
+
+            <!--<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>-->
+            <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>-->
+
+            <script>
+              $(document).ready(function () {
+
+                $(document).on('keyup', '#qty', function () {
+                  var qty = this.value;
+                  var rate = $('#rate').val();
+                  var tax = $('#tax_details').val();
+
+                  if (rate == 0 && tax == 0){
+                    var amount1 = 0;
+                    var amt = 0;
+                  }
+                  else if(rate != 0 && tax != 0){
+                    var amt = qty * rate;
+                    var amt1 = (amt * tax) / 100;
+                    var amount1 = amt + amt1;
+                  }
+                  else if(rate != 0 && tax == 0){
+                    var amount1 = qty * rate;
+                    var amt = qty * rate;
+                  }
+                  else if(rate == 0 && tax != 0){
+                    var amount1 = 0;
+                    var amt = 0;
+                  }
+                  var amtt = amount1.toFixed(2);
+                  var amt1 = amt.toFixed(2);
+                  $('#amount').val(amtt);
+                  $('#hidden_amt1').val(amt1);
+
+                });
+
+                $(document).on('keyup', '#rate', function () {
+                  var rate = this.value;
+                  var qty = $('#qty').val();
+                  var tax = $('#tax_details').val();
+                  if(tax == 0){
+                    var amount1 = qty * rate;
+                    var amt = qty * rate;
+                  }
+                  else{
+                    var amt = qty * rate;
+                    var amt1 = (amt * tax) / 100;
+                    var amount1 = amt + amt1;
+                  }
+
+                    var amttt = amount1.toFixed(2);
+                    var amtt = amt.toFixed(2);
+                  $('#amount').val(amttt);
+                  $('#hidden_amt1').val(amtt);
+                });
+
+                // $(document).on('keyup', '#schema', function () {
+                //   var qty = $('#qty').val();
+                //   var rate = $('#rate').val();
+                //   var schema = $('#schema').val();
+                //   var hidden_amt = $('#hidden_amt1').val();
+                //   var discount = $('#discount').val();
+                //   var tax = $('#tax_details').val();
+                //   var r_amt = qty * rate
+                //   var schema_cal = (r_amt * schema) / 100;
+                //   if(tax == '' && discount == ''){
+                //     var amount1 = hidden_amt - schema_cal;
+                //   }
+                //   else if(tax != '' && discount != ''){
+                //     var tax_amount = (r_amt * tax) / 100;
+                //     var tax_amt = (hidden_amt) + (tax_amount);
+                //     var discount1 = r_amt * discount;
+                //     var discount_amount = parseInt(parseFloat(discount1 / 100));
+                //     var disc_amt = tax_amt - discount_amount;
+                //     alert(tax_amt);
+                //     var amount1 = disc_amt - schema_cal;
+                //     alert(amount1);
+                //   }
+                //   else if(discount != ''){
+                //     var discount1 = r_amt * discount;
+                //     var discount_amount = parseInt(parseFloat(discount1 / 100));
+                //     var disc_amt = hidden_amt - discount_amount;
+                //     var amount1 = disc_amt - schema_cal;
+                //   }
+                //   else if(tax != ''){
+                //     var tax_amount = (r_amt * tax) / 100;
+                //     var tax_amt = hidden_amt + tax_amount;
+                //     var amount1 = tax_amt - schema_cal;
+                //   }
+
+                //   $('#amount').val(amount1);
+                // });
+
+                $(document).on('keyup', '#discount', function () {
+                  var hidden_amt = $('#hidden_amt1').val();
+                  var discount = $('#discount').val();
+                  var schema = $('#schema').val();
+                  var qty = $('#qty').val();
+                  var rate = $('#rate').val();
+                  var tax = $('#tax_details').val();
+                  var discount1 = qty * rate * discount
+                  var discount_amount = (discount1 / 100);
+                  if(tax == ''){
+                    var amount1 = hidden_amt - discount_amount;
+                  }
+                //   else if(schema != '' && tax != ''){
+                //     var s_amount = qty * rate
+                //     var schema_cal = (s_amount * schema) / 100;
+                //     var s_amount1 = hidden_amt - schema_cal;
+
+                //     var tax_amount = (s_amount * tax) / 100;
+                //     var tax_amt = s_amount1 + tax_amount;
+
+                //     var amount1 = tax_amt - discount_amount;
+                //   }
+                //   else if(schema != ''){
+                //     var s_amount = qty * rate
+                //     var schema_cal = (s_amount * schema) / 100;
+                //     var s_amount1 = hidden_amt - schema_cal;
+                //     var amount1 = s_amount1 - discount_amount;
+                //   }
+                  else if(tax != ''){
+                    var amount = qty * rate;
+                    var tax_amount = (amount * tax) / 100;
+                    var tax_amt = (hidden_amt) + (tax_amount);
+                    var amount1 = tax_amt - discount_amount;
+                  }
+                  var amount3 = (amount1);
+                  var amount2 = (amount3);
+                    amt = amount2.toFixed(2);
+                    diss_amt = discount_amount.toFixed(2);
+                  $('#discount_amt').val(diss_amt);
+                  $('#amount').val(amt);
+
+                });
+
+                $(document).on('keyup', '#tax_details', function () {
+                  var tax = $('#tax_details').val();
+                  var qty = $('#qty').val();
+                  var hidden_amt = $('#hidden_amt1').val();
+                  var rate = $('#rate').val();
+                  var schema = $('#schema').val();
+                  var discount = $('#discount').val();
+                  var amount = qty * rate;
+                  var tax_amount = (amount * tax) / 100;
+                  if(discount == ''){
+                    var tax_detail = parseInt(hidden_amt) + parseInt(tax_amount);
+                  }
+                //   else if(schema != '' && discount != ''){
+                //     var s_amount = qty * rate
+                //     var schema_cal = (s_amount * schema) / 100;
+                //     var s_amount1 = hidden_amt - schema_cal;
+                //     var discount1 = qty * rate * discount
+                //     var discount_amount = parseInt(parseFloat(discount1 / 100));
+                //     var dis_amt = s_amount1 - discount_amount;
+                //     var tax_detail = parseInt(dis_amt) + parseInt(tax_amount);
+                //   }
+                //   else if(schema != ''){
+                //     var s_amount = qty * rate
+                //     var schema_cal = (s_amount * schema) / 100;
+                //     var s_amount1 = hidden_amt - schema_cal;
+                //     var tax_detail = parseInt(s_amount1) + parseInt(tax_amount);
+                //   }
+                  else if(discount != ''){
+                    var discount1 = qty * rate * discount
+                    var discount_amount = (discount1 / 100);
+                    var dis_amt = hidden_amt - discount_amount;
+                    var tax_detail = parseInt(dis_amt) + parseInt(tax_amount);
+                  }
+                  amt = tax_detail.toFixed(2);
+                  $('#amount').val(amt);
+
+                });
+
+
+
+              });
+            </script>
+
+
+
+            {% endblock %}

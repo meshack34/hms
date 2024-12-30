@@ -1,0 +1,219 @@
+
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+    {% block head_block %}
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+input{
+  font-size: 20px;
+
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+  min-width: 200px;
+}
+textarea{
+  width: 200px;
+  font-size: 20px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    text-decoration: underline;
+    color: black;
+}
+.vl {
+  border-left: 6px solid green;
+  height: 500px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top: 0;
+}
+input.dashed {
+  border-bottom: 3px dashed black;
+}
+textarea.form-control {
+  border-bottom: 3px dashed black;
+}
+
+</style>
+
+<!--This for payment receipt print function-->
+<div class="page-wrapper bg-white " style="overflow-x:scroll;">
+<div class="content px-3 py-2">
+  <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+    <div>
+      <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+      <b>Oncology Department Case Summary </b>
+    </div>
+    <div class="">
+      <button type="submit" class="btn text-light" form="nurse_notes" value="Save"><i class="fas fa-save"></i></button>
+      <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+      <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item btn-primary" onclick="printDiv('hello')" value="Print" id="download-button " href="#">Print</a>
+        <a href="/OT/clinical_notes_records" class="dropdown-item btn-primary"> Records</a> 
+      </div>
+    </div>
+  </div>
+<div  id="hello">
+    <form method="post" id="nurse_notes">
+        {% csrf_token %}
+    <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100% padding: 20px;">
+        <tr>
+          <td>
+            <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+              <tr>
+                  
+                      <div class="" >
+                          <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                          </center>
+                      </div>
+                  
+              </tr>
+          </table>
+          </td>
+        </tr>
+	      <tr>
+		      <td>
+              <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse; padding: 10px;" width="100%" >
+                    <tr>
+                        <td colspan="8" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;"><b>ONCOLOGY DEPARTMENT CASE SUMMERY</b></h3></td>
+                    </tr>
+                    <tr style="background-color: white;">
+                        <th style="background-color: white;">PATIENT NAME</th>
+                        <td><input type="text" name="patient_name" value="{{dt.patient_name}}" class="dashed" required></td>
+                         <th style="background-color: white;">AGE</th>
+                        <td><input  class="dashed" type="text" name="age" value="{{dt.age}}" ></td>
+                        <th style="background-color: white;">HOPS. NO</th>
+                        <td><input class="dashed" type="text" name="hosp_no" value="{{dt.hosp_no}}" ></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: white;">TEL .NO</th>
+                        <td><input class="dashed" type="text" name="tel_no" value="{{dt.tel_no}}"></td>
+                        <th style="background-color: white;">ADDRESS</th>
+                        <td><input  class="dashed" type="text" name="address" value="{{dt.address}}"></td>
+                        <th style="background-color: white;">D.O.A.</th>
+                        <td><input  class="dashed" type="text" name="d_o_a" value="{{dt.d_o_a}}"></td>
+                        <th style="background-color: white;">D.O.D.</th>
+                        <td><input  class="dashed" type="text" name="d_o_d" value="{{dt.d_o_d}}"></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: white;">CONSULTANT</th>
+                        <td><input  class="dashed" type="text" name="consultant" value="{{dt.consultant}}"></td>
+                        <th style="background-color: white;">DEPARTMENT</th>
+                        <td><input  class="dashed" type="text" name="dept" value="{{dt.dept}}"></td>
+                    </tr>
+                  <tr>
+                      <th style="background-color: white;">MEDICAL HISTORY</th>
+                      <td><input class="dashed" type="text" name="medical_history" value="{{dt.medical_history}}" style="width:400%"> </td>
+                  </tr>
+                  <tr>
+                      <th style="background-color: white;">PHYSICAL FINDINGS</th>
+                        <td><input class="dashed" type="text" name="physi_find" value="{{dt.physi_find}}" style="width:400%"></td>
+                  </tr>
+                  <tr>
+                      <th style="background-color: white;">INVESTIGATION</th>
+                        <td><input class="dashed" type="text" name="investigation" value="{{dt.investigation}}" style="width:400%"></td>
+                    </tr>
+                  <tr>
+                      <th style="background-color: white;">MANGEMENT</th>
+                        <td><input class="dashed" type="text" name="management" value="{{dt.management}}" style="width:400%"></td>
+                    </tr>
+                  <tr>
+                      <th style="background-color: white;">TREATMENT AFTER DISCHARGE</th>
+                        <td><input class="dashed" type="text" name="treat_discharge" value="{{dt.treat_discharge}}" style="width:400%"></td>
+                    </tr>
+                  <tr>
+                      <th style="background-color: white;">RECOMMENDATION/DISCHARGE INSTRUCTIONS</th>
+                        <td><input class="dashed" type="text" name="recommendation" value="{{dt.recommendation}}" style="width:400%"></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: white;">FOLLOW UP </th>
+                        <td ><input  class="dashed" type="text" name="follow_up" value="{{dt.follow_up}}" style="width:400%"></td>
+                    </tr>
+                      <tr>
+                        <th style="background-color: white;">DAY</th>
+                        <td><input  class="dashed" type="text" name="day" value="{{dt.day}}" ></td>
+                          <th style="background-color: white;">DATE</th>
+                        <td><input  class="dashed" type="date" name="date" value="{{dt.date}}"></td>
+                          <th style="background-color: white;">TIME</th>
+                        <td><input  class="dashed" type="time" name="time" value="{{dt.time}}" ></td>
+                    </tr>
+                      <tr>
+                        <th style="background-color: white;">NAME/SIGNATURE OF DISCHARGE DOCTOR</th>
+                        <td><input  class="dashed" type="text" name="name_sign" value="{{dt.name_sign}}" style="width:400%"></td>
+                    </tr>
+                        <tr>
+                        <th style="background-color: white;">DOCTOR NOTES</th>
+                        </tr>
+                    <tr>
+                        <th style="background-color: white;"></th>
+                            <td><textarea  class="dashed" name="doctor_notes" rows="2" cols="50" style="width:400%">{{dt.doctor_notes}}</textarea></td>
+                    </tr>
+                    <tr>
+              </table>
+            </td>
+        </tr>
+  </table>
+        
+    </form>
+</div>
+        <!-- {% if record %}
+                <table class="datatable table table-stripped table-highlight">
+            <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Patient Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Print</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for data in record %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{data.patient_name}}</td>
+                <td>{{data.date}}</td>
+                <td>{{data.time}}</td>
+                <td><a href="/print_case_summery/{{data.id}}">Print</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %} -->
+    </div>
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+{% endblock %}
+
+

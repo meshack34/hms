@@ -1,0 +1,287 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+    /*#indent_no,#issuing_store,#receiving_store,#datetime,#approved_by,#priority{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    #barcode,#item_name,#batch_serial,#expiry_date,#available_qty,#issue_qty,#remarks{
+      border: 2px solid white;
+      width: 100%;
+      background-color: white;
+      border-bottom: 1px solid black;
+    }*/
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    </style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;" href="#">Returned Item Details</a>
+      </div>
+      </nav>
+    <div class="container-fluid">
+      <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+              <div class="card">
+                  <div class="header">
+          <div class="body">
+            <form method="post">
+              {% csrf_token %}
+            <br><div class="row clearfix">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-warning" name="insert_btn" value="insert_btn" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fas fa-plus" >Insert</i></button>&nbsp;
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#make_return_item_list"> <i class="fas fa-save" >Save</i></button>&nbsp;
+            <button type="button" class="btn btn-primary"  onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+            <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>&nbsp;
+            <a href="" class="btn btn-primary"> <i class="fas fa-sync-alt" >Back</i></a>&nbsp;
+        </div><br>
+        <div class="table-responsive">
+    <table class="datatable table table-stripped ">
+                   <thead>
+                       <tr>
+                           <th>Item Name</th>
+                           <th>Batch No</th>
+                           <th>Expiry Date</th>
+                           <th>Return Qty</th>
+                           <th>Rate</th>
+                           <th>Amount</th>
+                       </tr>
+
+                   </thead>
+                   <tbody>
+
+
+
+                       {% for data1,data2,data3,data4 in amount_qty %}
+
+
+                        <tr>
+                          <input type="hidden"  name="item_id" id="item_id" value="{{data4}}">
+                            <td colspan="7"><span style="font-weight:bold">{{data3}}</span></td>
+                        </tr>
+                          {% for data1 in item_return_child %}
+                          {% if data1.item_id_id == data4 %}
+
+                          <tr>
+                              <td>{{forloop.counter}}</td>
+                              <td>{{data1.batch_no}}</td>
+                              <td>{{data1.expiry_date}}</td>
+                              <td>{{data1.return_qty}}</td>
+                              <td>{{data1.rate}}</td>
+                              <td>{{data1.amount}}</td>
+                          </tr>
+                          {% endif %}
+
+                          {% endfor %}
+                          <tr></tr>
+
+
+                       <tr></tr>
+
+                       <tr>
+                         <td></td>
+                         <td></td>
+                         <td><input type="hidden" name="total_qty" id="total_qty" value="{{data3}}"><span style="color: rgb(7, 6, 6); font-weight:bold">Total Qty :</span></td>
+                         <td><span style="font-weight:bold">{{data1}}</span></td>
+                         <td><input type="hidden" name="total_amt" id="total_amt" value="{{data4}}"><span style="color: rgb(7, 6, 6); font-weight:bold">Total Amt :</span></td>
+                         <td><span style="font-weight:bold">{{data2}}</span></td>
+                       </tr>
+
+                       {% endfor %}
+
+
+                    </tbody>
+
+
+
+
+
+
+           </table>
+           </div>
+        </form>
+
+<div class="modal fade" id="make_return_item_list" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl">
+ <div class="modal-content">
+     <!-- Header -->
+     <div class="modal-header" style="background: skyblue;">
+         <h5 class="modal-title" id="make_return_item_list" ><b> Item List For Make Return</b></h5>
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+         </button>
+         </div><br>
+      <!-- Main block -->
+      <div class="modal-body">
+         <div class="container-fluid">
+             <div class="body">
+                 <div class="demo-masked-input">
+                     <div class="row clearfix">
+                       <div class="col-12">
+                           <div class="form-group">
+                               <div class="form-line">
+                          <form method="post">
+                            {% csrf_token %}
+
+                            <button type="submit" class="btn btn-primary" name="Make_Return" value="Make_Return"> <i class="fas fa-save" >Make Return</i></button>&nbsp;
+                            <br><br>
+                            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                            <div class="form-row">
+                            <div class="form-group col-md-3 mb-0">
+                          <label>Vendor Name</label>
+                          <select name="vendor_id" id="vendor_id" class="form-control">
+                            <option>select</option>
+                            {% for data in vendor_master%}
+                            <option value="{{data.id}}">{{data.vendor_name}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          <label>Reason</label>
+                          <input type="text" name="reason" id="reason" class="form-control">
+                        </div>
+                      </div>
+                    </div><br><br>
+
+            <div class="table-responsive">
+              <table class="datatable table table-stripped ">
+                   <thead>
+                       <tr><th>S.No</th>
+                           <th>Item Name</th>
+                           <th>Batch No</th>
+                           <th>Expiry Date</th>
+                           <th>Return Qty</th>
+                           <th>Return Amt</th>
+                       </tr>
+                   </thead>
+                   {% for data1,data2,data3 in makeitem_return_temp2%}
+                   <tbody>
+
+                       <tr>
+                           <td>{{forloop.counter}}</td>
+                           <td><input type="hidden" name="item_id3" id="item_id" value="{{data1.item_id_id}}">{{data1.item_id}}</td>
+                           <td><input type="hidden" name="batch_no3" id="batch_no" value="{{data3}}">{{data3}}</td>
+                           <td><input type="hidden" name="expiry_date3" id="expiry_date" value="{{data2}}">{{data2}}</td>
+                           <td><input type="hidden" name="return_qty3" id="return_qty" value="{{data1.total_qty}}">{{data1.total_qty}}</td>
+                           <td><input type="hidden" name="return_amt3" id="return_amt" value="{{data1.total_amt}}">{{data1.total_amt}}</td>
+                       </tr>
+
+                       <tr></tr>
+                       {% endfor %}
+                       <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td><span style="font-weight:bold"><b style="color: red;">Total Qty : </b>{{total_qty11}} </span></td>
+                          <td><span style="font-weight:bold"><b style="color: red;">Total Amt : </b>{{total_amt11}}</span></td>
+                          </tr>
+                    </tbody>
+
+           </table>
+           </div>
+         </form>
+                             </div>
+                           </div>
+                       </div>
+                     </div>
+                         <!-- Footer -->
+                     <!-- <div class="modal-footer">
+                         <hr style="border: 10%; color: aqua;"><br>
+                    <button type="button"class="btn btn-success" > <i class="fas fa-save" >&nbsp;Save</i></button>
+                         </div> -->
+                     </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+  </div>
+
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+  function save_item_return()
+  {
+    var batch_no = $('#batch_no').val();
+    var item_id = $('#item_id').val();
+    var expiry_date = $('#expiry_date').val();
+    var store_id = $('#store_id').val();
+    var return_qty = $('#return_qty').val();
+    var reason = $('#reason').val();
+    var rate = $('#rate').val();
+    var amount = $('#amount').val();
+    var receiving_store_id = $('#receiving_store_id').val();
+
+    $.ajax({
+            url:"",
+            type: "post",
+            data: {
+            batch_no: batch_no,
+            item_id: item_id,
+            expiry_date: expiry_date,
+            store_id: store_id,
+            return_qty: return_qty,
+            reason: reason,
+            amount: amount,
+            rate: rate,
+            receiving_store_id: receiving_store_id,
+            _token: ''
+            },
+            dataType : 'json',
+            success: function(data){
+              alert(data);
+                window.location.href = "";
+            },
+            error:function(data)
+            {
+                console.log(data);
+            }
+          });
+
+
+  }
+</script>
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+
+$(document).on('keyup', '#return_qty', function () {
+      var dumy = this;
+        var qty = this.value;
+        var rate = $('#rate').val();
+        var amount = qty * rate;
+        $(dumy).closest('tr').find('#amount').val(amount);
+
+      });
+
+
+});
+</script>
+{% endblock %}

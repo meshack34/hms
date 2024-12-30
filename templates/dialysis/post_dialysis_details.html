@@ -1,0 +1,432 @@
+
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+
+<div class="page-wrapper bg-white" xmlns="http://www.w3.org/1999/html">
+    <div class="content px-3 py-2">
+    <div class="container-fluid" style="border: 1px solid rgb(121, 118, 118);padding: 10px;" id="hello">
+        <h5 style="text-align: center;"> Post Dialysis Detail</h5>
+        <br>
+        <div class="col-md-12">
+            {% if 'post_dialysis_save' in access.user_profile.screen_access or request.user.is_superuser %}
+        <form method="post" id="main">
+            {% csrf_token %}
+            <h5><b>Patient Details</b></h5>
+            <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                <div class="col-md-4">
+                    <label>MR NO: <b>{{uhid_pat}}</b></label>
+<!--                    <input type="text" class="form-control" name="uhid">-->
+                </div>
+                <div class="col-md-4">
+                    <label>NAME: <b>{{pat_name| upper}}</b></label>
+<!--                    <input type="text" class="form-control">-->
+                </div>
+                <div class="col-md-4">
+                    <label> AGE/GENDER: <b>{{pat_age}}y/{{pat_sex}}</b></label>
+<!--                    <input type="text" class="form-control">-->
+                </div>
+                <div class="col-md-4">
+                    <label>CONTACT NO: <b>{{pat_con_no}}</b></label>
+<!--                    <input type="text" class="form-control">-->
+                </div>
+            </div>
+            <br>
+            <h5><b>Session Details</b></h5>
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                    <div class="col-md-4">
+                        <label>Status</label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                        <select class="form-control" name="status" required>
+                            <option selected disabled="true">---select---</option>
+                            {% for sat in status %}
+                            <option>{{sat.status}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Closing Attendent:</label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                        <select class="form-control" name="closing_attendent" required>
+                            <option selected disabled="true">---select---</option>
+                            {% for close in closing %}
+                            <option>{{close.closing_attendent}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Completion Status:</label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                        <select class="form-control" name="completion_status" required>
+                            <option selected disabled="true">---select---</option>
+                            {% for comp in completion_sataus %}
+                            <option>{{comp.completion_Status}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>End Time:</label>
+                        <input type="datetime-local" class="form-control"name="end_time">
+                    </div>
+                    <div class="col-md-8">
+                        <label> Duration:</label>
+                        <input type="text" class="form-control"  name="duration">
+                    </div>
+                    <div class="col-md-4">
+                        <label> Next Dialysis Date:</label>
+                        <input type="date" class="form-control" name="next_day_dialysis">
+                    </div>
+                     <div class="col-md-8">
+                        <label> Shift :</label>
+                        <select class="form-control" name="shift">
+                            <option selected disabled="true">---select---</option>
+                            {% for shift in shift %}
+                            <option>{{shift.shift_name}}</option>
+                            {% endfor %}
+                        </select>
+                     </div>
+                </div>
+            <br>
+                <h5><b>Patient Condition</b></h5>
+                <div class="col-md-12">
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                <div class="col-md-2">
+                    <label>BP Sitting:</label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                    <input type="text" class="form-control" name="bp_sitting_max" required>
+                </div>
+                <div class="col-md-2">
+                    <label>.</label>
+                    <input type="text" class="form-control" name="bp_sitting_min" required>
+                </div>
+                <div class="col-md-2">
+                    <label>BP Standing:</label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                    <input type="text" class="form-control"  name="bp_standing_max" required>
+                </div>
+                <div class="col-md-2">
+                    <label>.</label>
+                    <input type="text" class="form-control" name="bp_standing_min" required>
+                </div>
+                <div class="col-md-4">
+                    <label>Respiration:</label>
+                    <input type="text" class="form-control" name="respiration">
+                </div>
+                <div class="col-md-4">
+                    <label>Pulse sitting :</label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                    <input type="text" class="form-control" name="pulse_sitting" required>
+                </div>
+                <div class="col-md-4">
+                    <label> Pulse Standing: </label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                    <input type="text" class="form-control" name="pulse_standing" required>
+                </div>
+                 <div class="col-md-4">
+                    <label> Tempreture (F): </label>
+                    <input type="text" class="form-control" value="" name="tempreture">
+                </div>
+                <div class="col-md-4">
+                    <label> Measured wt: </label>
+                    <input type="text" class="form-control" value="" name="measured_wt">
+                </div>
+                <div class="col-md-4">
+                    <label> Wheelchair wt: </label>
+                    <input type="text" class="form-control" value="" name="wheelchair_wt">
+                </div>
+                <div class="col-md-4">
+                    <label> Prosthetic Wt: </label>
+                    <input type="text" class="form-control" value="" name="prosthetic_wt">
+                </div>
+                <div class="col-md-4">
+                    <label>Condition/Assessment: </label>
+                    <textarea type="text" class="form-control" value="" placeholder="Stable" name="condition_assessment"></textarea>
+                </div>
+                  <div class="col-md-4">
+                    <label> Prolonged Bleeding at punctured sites: </label>
+                      <select class="form-control" name="prolonged_bleeding_at_punctured_sites">
+                          <option selected disabled="true">---select---</option>
+                          <option>Yes </option>
+                          <option>No </option>
+                      </select>
+                </div>
+                </div>
+                    </div>
+                    <br>
+                     <h5><b>Dialysis Details</b></h5>
+                    <div class="col-md-12">
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                <div class="col-md-4">
+                    <label>Weight lost</label>
+                    <input type="text" class="form-control" value="" name="weight_lost">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Fluid Removed:</label>
+                    <input type="text" class="form-control" value="" name="fluid_removed">
+                </div>
+                <div class="col-md-4">
+                    <label>UF Rate</label>
+                    <input type="text" class="form-control" value="" name="uf_rate">
+                </div>
+                <div class="col-md-4">
+                    <label>Heparin Left:</label>
+                    <input type="text" class="form-control" name="heparin_Left">
+                </div>
+                <div class="col-md-4">
+                    <label>Total Heparin infused :</label>
+                    <input type="text" class="form-control" value="" name="total_heparin_infused">
+                </div>
+                     <div class="col-md-4">
+                    <label>Dialyzer Rating:</label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                    <select class="form-control" name="dialyzer_rating" required>
+                        <option selected disabled="true">---select---</option>
+                        {% for dial in rating %}
+                        <option>{{dial.rating}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Bruit/Thrill:</label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                    <select class="form-control" name="bruit_thrill" required>
+                        <option selected disabled="true">---select---</option>
+                        {% for brui in bruit %}
+                        <option>{{brui.bruit_thrill}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label> Minimum BP: </label>
+                    <input type="text" class="form-control" value="" name="minimum_BP_max">
+                </div>
+                 <div class="col-md-2">
+                    <label>.</label>
+                    <input type="text" class="form-control" value="" name="minimum_BP_min">
+                </div>
+                <div class="col-md-12">
+                    <label> Minimum BP Time: </label>
+                    <input type="text" class="form-control" value="" name="minimum_BP_time">
+                </div>
+                <div class="col-md-4">
+                    <label>Dialysis Odometer End Reading: </label>
+                    <input type="text" class="form-control" value="" name="dialysis_odometer_end_eading">
+                </div>
+                <div class="col-md-4">
+                    <label> Completion Notes: </label>
+                    <textarea type="text" class="form-control" value="" placeholder="discharge stable" name="completion_notes"></textarea>
+                </div>
+                <div class="col-md-4">
+                    <label>Notes to be shown in next Pre Dialysis Session: </label>
+                    <textarea class="form-control" placeholder="patient is stable continue dialysis" name="next_pre_dialysis_notes"></textarea>
+                </div>
+                </div>
+
+                        <br>
+                        <br>
+                <div class="col-md-8">
+                    <button type="submit" class="btn btn-primary" value="main_form" name="main_form"  form="main">Save</button>
+                    <a href="/prescription_dialysis_update/{{pk}}" ><button type="button" class="btn btn-primary" value="">Prescription</button>&nbsp;&nbsp;</a>
+                    <a href="/view_pre_dialysis_details/{{pk}}"><button type="button" class="btn btn-primary" value="">Pre Dialysis</button></a>
+                    <a href="/dialysis_details/{{pk}}"><button type="button" class="btn btn-primary" value="">Intra Dialysis</button></a>
+                    <a href="/view_post_dialysis/{{pk}}"><button type="button" class="btn btn-primary" >Post Dialysis</button></a>
+                    <a href="/dialysis_report_chart/{{pk}}"><button type="button" class="btn btn-primary" >Dialysis Report Chart</button></a>
+
+                </div>
+                    </div>
+        </form>
+        {% endif %}
+        </div>
+        <br>
+        <br>
+        <div class="table-responsive">
+            <table class=" table table-stripped "  style="border-style: solid;font-size:x-small;" >
+                <thead>
+                <tr >
+                    <th>Presc Date</th>
+                    <th>Name</th>
+                    <th>Dosage</th>
+                    <th>Route</th>
+                    <th>Remark</th>
+                    <th>Quantity</th>
+                    <th>Batch No </th>
+                    <th>Expiry Date </th>
+                    <th>Administered By</th>
+                    <th>Doctor </th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for data in drugs_table %}
+                    <tr>
+                        <td><input id="temp_id" value="{{data.id}}" hidden>{{data.date_time}}</td>
+                        <td>{{data.medicine_name}}</td>
+                        <td>{{data.dosage_pr_adm}}</td>
+                        <td>{{data.rout}}</td>
+                        <td>{{data.remark}}</td>
+                        <td>{{data.quantity}}</td>
+                        <td>{{data.batch_no}}</td>
+                        <td>{{data.expiry_date}}</td>
+                        <td>{{data.administered_by}}</td>
+                        <td>{{data.doctor}}</td>
+                        <td><button type="button" id="delete_btn" class="btn btn-danger"> <i class="fa fa-trash" aria-hidden="true"></i></button></td>
+                        {% endfor %}
+                        <td><button type="button" class="btn btn-success" data-toggle="modal" data-target=".insert_data"><i class="fa fa-plus" aria-hidden="true"></i></button>&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+</div>
+<!-- Add Modal -->
+<div class="modal fade insert_data" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel"><b>Add Drugs</b></h5>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <div class="form-line">
+                                              <form  method="POST" id="add_med">
+                                                {% csrf_token %}
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-12 mb-0">
+                                                        <label>Medicine Name: </label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                                                        <select name="medical_list" id="medical_list" class="form-control" style="width: 400px%;" required>
+                                                            <option selected disabled="true">Select Medicine</option>
+                                                            {% for result in medical_list %}
+                                                            <option value="{{result.item_name}}">{{result.item_name}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Rout: </label>
+                                                        <select name="rout" class="form-control">
+                                                          <option selected disabled="true">--Select--</option>
+                                                          <option>Oral</option>
+                                                          <option>Injection</option>
+                                                          <option>Subcutaneus</option>
+                                                          <option>Intradermal</option>
+                                                          <option>Intramuscular</option>
+                                                          <option>Sublingual</option>
+                                                          <option>Intravenous</option>
+                                                      </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Dosage per ADM*: </label> <span style="color:red;font-weight:bolder"><b>*</b></span>
+                                                        <input type="text" name="dosage_pr_adm" class="form-control" required>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Batch No: </label>
+                                                        <input type="text" name="batch_no" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Expiry Date: </label>
+                                                        <input type="date" name="exp_date" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Quantity: </label>
+                                                        <input type="text" name="quantity" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Administered By: </label>
+                                                          <select name="administered_by" class="form-control">
+                                                              <option selected disabled="true">--Select--</option>
+                                                              <option>William</option>
+                                                              <option>Julius</option>
+                                                              <option>ASHLEY</option>
+                                                              <option>OBED</option>
+                                                              <option>GENERALP</option>
+                                                          </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Doctor: </label>
+                                                          <select name="doctor" class="form-control">
+                                                              <option selected disabled="true">--Select--</option>
+                                                              {% for doct in doctor_list %}
+                                                              <option value="{{doct.doctor_name}}">{{doct.doctor_name}}</option>
+                                                              {% endfor %}
+                                                          </select>
+                                                    </div>
+                                                    <div class="form-group col-md-8 mb-0">
+                                                        <label>Remark: </label>
+                                                          <textarea name="remark" class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                  <button type="submit"class="btn btn-success" name="add_medicines" value="ADD_DRUGS" form="add_med"> <i class="fas fa-save" >&nbsp;Save</i></button>
+                                                  <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" style="color-red;">Cancel</button>
+                                              </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- print -->
+
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+<!--     FOR SEARCHABLE DROP DOWN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+           $(document).ready(function ()
+            {
+                $('#medical_list').select2();
+            });
+    </script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $(document).on('click', '#delete_btn', function () {
+    var dummy = this;
+
+        var id = $(dummy).closest('tr').find('#temp_id').val();
+        var headers = {'X-CSRFToken': '{{ csrf_token }}' };
+        const url = "{% url 'delete_add_drugs' %}";
+
+        $.ajax({
+                url:url,
+                type:"post",
+                data:{
+                  id:id,
+                 },
+                dataType: 'json',
+                headers:headers,
+                success:function(data)
+                {
+                    alert(data);
+                    window.location.href='{% url 'post_dialysis_details' pk %}'
+                },
+                error:function(data)
+                {
+                    console.log(data);
+                }
+            });
+      });
+});
+</script>
+<!--</body>-->
+{% endblock %}

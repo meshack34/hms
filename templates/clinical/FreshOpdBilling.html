@@ -1,0 +1,657 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+  <!-- content -->
+  <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00041">
+<input type="hidden" name="message_id" value="MSG00041">
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="page-header row">
+            <h5 class="pageheader-title col-sm-4">Out-Patient Billing</h5>
+            <div class="col-sm-8 text-right">
+              <button class="btn-primary border-0 p-2 icon-size" name="button" type="button"><i class="fa fa-save"></i></button>
+              <button class="btn-primary border-0 p-2 icon-size" name="button" type="button"><i class="fas fa-paint-brush"></i></button>
+              <button class="btn btn-primary dropdown-toggle p-2 icon-size" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#payment_mode_popup">Payment Modes</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="/opdbillrecipte">Patient Invoice</a>
+
+              </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal" id="payment_mode_popup" tabindex="-1" role="dialog" aria-labelledby="payment_mode_popup" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:80%;">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-white">
+                      <h5 class="modal-title" id="patient-registration-title">Payment Mode</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="Out-Patient_record">
+                      <form>
+                        <div class="row form_sec">
+                          <div class="col-md-12">
+                            <div class="today_visit" style="min-height: 300px;">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-save" aria-hidden="true"></i></button>
+                              </div>
+                              <form class="">
+                                <table class="table table-border ">
+                                  <tr style="background:#d1dae6;">
+                                    <th>Mode Type</th>
+                                    <th>Amount</th>
+                                    <th>Bank</th>
+                                    <th>Cheque/Card/DD No.</th>
+                                    <th>Expiry Date</th>
+                                    <th></th>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <div class="form-group">
+                                        <select name="cars">
+                                          <option value="Cash">Cash</option>
+                                          <option value="UPI">UPI</option>
+                                        </select>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <select name="cars" id="cars">
+                                          <option value="Bank">Bank</option>
+                                          <option value="UPI">UPI</option>
+                                        </select>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="butns">
+                                        <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                        <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </form>
+                            </div>
+                          </div>
+                        </div><!-- row -->
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form_sec">
+                              <form>
+                                <div class="input_filed d-flex align-items-center">
+                                  <label style="flex: 0 0 100px;" for="GCR">GCR No. <small>*</small></label>
+                                  <input type="text" class="form-control" placeholder="">
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div><!-- row -->
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="billing-form bg-white p-2 mt-2">
+
+        <form class="form-inline row">
+          <div class="col-sm-2">
+            <select class="form-control w-100" name="card" value="">
+              <option>Reg No.</option>
+              <option value="volvo">#1</option>
+              <option value="saab">#2</option>
+              <option value="opel">#3</option>
+              <option value="audi">#4</option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <input class="form-control" type="value" name="value" placeholder="Reg No.">
+          </div>
+          <div class="col-sm-1 p-0">
+            <button class="btn-primary border-0 p-2 icon-size" name="button" type="button"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+            <button class="btn-primary border-0 p-2 icon-size" type="button" data-toggle="modal" data-target="#patient-registration-modal" name="search" class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+          </div>
+          <div class="col-sm-1 p-0">
+            <label for="formGroupExampleInput">Visit No.</label>
+          </div>
+          <div class="col-sm-2">
+            <select class="form-control  w-100" name="card" value="">
+              <option>Reg No.</option>
+              <option value="volvo">132423</option>
+              <option value="saab">3254</option>
+              <option value="opel">65745</option>
+              <option value="audi">34345</option>
+            </select>
+          </div>
+          <div class="col-sm-3 text-right">
+            <button class="btn btn-primary">Pending Orders</button>
+          </div>
+        </form>
+
+        <div class="p-2 border mt-2">
+          <div class="row">
+            <div class="col-sm-6">
+              <h5>Mr. Good Luck</h5>
+              <p class="m-0">Male 23 Year <strong>Mobile No.</strong>: 90090000</p>
+            </div>
+            <div class="col-sm-6">
+              <p class="m-0"><strong> Payer</strong> Private Cash, <strong>Sponsor</strong>: Private Cash, <strong>Network</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <form class="form-inline row no-gutters pt-2 pb-2 alert-primary">
+          <div class="col-sm-1 p-0">
+            <label for="formGroupExampleInput">Activity</label>
+          </div>
+          <div class="col-sm-2">
+            <select class="form-control  w-100" name="card" value="">
+              <option>Discount</option>
+              <option value="volvo">15%</option>
+              <option value="saab">30%</option>
+              <option value="opel">50%</option>
+              <option value="audi">75%</option>
+            </select>
+          </div>
+          <div class="col-sm-2 p-0">
+            <label for="formGroupExampleInput">Amount Type</label>
+          </div>
+          <div class="col-sm-2">
+            <select class="form-control  w-100" name="card" value="">
+              <option>select</option>
+              <option value="volvo">Percentage</option>
+              <option value="saab">Amount</option>
+            </select>
+          </div>
+          <div class="col-sm-1 p-0">
+            <label for="formGroupExampleInput">Value</label>
+          </div>
+          <div class="col-sm-2">
+            <input class="form-control" type="value" name="value" placeholder="">
+          </div>
+          <div class="col-sm-2 text-right">
+            <button class="btn-primary border-0 p-2 icon-size" name="button" type="button"><i class="fa fa-calculator" aria-hidden="true"></i></button>
+            <button class="btn-primary border-0 p-2 icon-size" name="button" type="button"><i class="fas fa-paint-brush"></i></button>
+          </div>
+        </form>
+
+        <table class="table mt-2 table-border">
+          <tr style="background: #d1dae6;">
+            <th>
+              <input type="checkbox" class="" id="customCheck1">
+            </th>
+            <th>Services Name</th>
+            <th>Doctor</th>
+            <th>Amount</th>
+            <th>Discount</th>
+            <th>Unit</th>
+            <th>Net Amount</th>
+            <th>Co-Pay</th>
+            <th>Company name</th>
+            <th>Patient Amt.</th>
+            <th>Receive Amount</th>
+            <th></th>
+            <th>View</th>
+          </tr>
+          <tr>
+            <td colspan=""><input type="checkbox" class="" id="customCheck1"></td>
+            <td>Consultation</td>
+            <td></td>
+            <td>30000</td>
+            <td>26%</td>
+            <td>UNT</td>
+            <td>30000</td>
+            <td>2300</td>
+            <td>2333</td>
+            <td>34343</td>
+            <td>2324</td>
+            <td></td>
+            <td>232</td>
+          </tr>
+        </table>
+        <div class="space" style="min-height: 200px;"></div>
+        <form class="form-inline row pt-2 pb-2 alert-primary">
+          <div class="col-sm-1 p-0">
+            <label for="total-amount">Total Amt.</label>
+          </div>
+          <div class="col-sm-1">
+            <input class="form-control text-right" type="value" name="value" value="0">
+          </div>
+          <div class="col-sm-2 p-0">
+            <label for="patient-payable">Patient Payable</label>
+          </div>
+          <div class="col-sm-1">
+            <input class="form-control text-right" type="value" name="value" value="0">
+          </div>
+          <div class="col-sm-1 p-0">
+            <label for="advance-amount">Advance Amt.</label>
+          </div>
+          <div class="col-sm-2">
+            <input class="form-control" type="value" name="value" placeholder="">
+          </div>
+          <div class="col-sm-1 p-0">
+            <label for="patient-payable">Recevied Amt.</label>
+          </div>
+          <div class="col-sm-1">
+            <input class="form-control text-right" type="value" name="value" value="0">
+          </div>
+          <div class="col-sm-1 p-0">
+            <label for="advance-amount">Balance Amt.</label>
+          </div>
+          <div class="col-sm-1">
+            <input class="form-control text-right" type="value" name="value" value="0">
+          </div>
+          <ul class="patient_record mt-3">
+            <li class="d-flex align-items-center ml-3"><span class="badge-warning"></span>Approval</li>
+            <li class="d-flex align-items-center ml-3"><span class="badge-secondary"></span>Non-discountable</li>
+          </ul>
+        </form>
+      </div><!-- billing-form -->
+    </div>
+  </div><!-- dashboard-ecommerce -->
+</div>
+</div>
+<!-- Modal -->
+<div class="modal" id="patient-registration-modal" tabindex="-1" role="dialog" aria-labelledby="patient-registration-modal" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90%;">
+<div class="modal-content">
+  <div class="modal-header bg-primary text-white">
+    <h5 class="modal-title" id="patient-registration-title">Patient Registration Search</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="row">
+        <div class="col-md-3 pl-2 pr-2">
+          <div class="form-group row no-gutters">
+            <label for="reg-no" class="col-sm-4 col-form-label">Reg. No</label>
+            <div class="col-sm-8">
+              <input type="email" class="form-control" id="reg-no" placeholder="">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pl-2 pr-2">
+          <div class="form-group row no-gutters">
+            <label for="patient-name" class="col-sm-5 col-form-label">Patient Name</label>
+            <div class="col-sm-7">
+              <input type="email" class="form-control" id="patient-name" placeholder="">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pl-2 pr-2">
+          <div class="form-group row no-gutters">
+            <label for="DOB" class="col-sm-3 col-form-label">DOB</label>
+            <div class="col-sm-9">
+              <input type="email" class="form-control" id="DOB" placeholder="">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pl-2 pr-2">
+          <div class="form-group row no-gutters">
+            <label for="mobile-no" class="col-sm-5 col-form-label">Mobile No.</label>
+            <div class="col-sm-7">
+              <input type="email" class="form-control" id="mobile-no" placeholder="">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pl-2 pr-2">
+          <div class="form-group row no-gutters">
+            <label for="surburb" class="col-sm-4 col-form-label">surburb</label>
+            <div class="col-sm-8">
+              <select class="custom-select">
+                <option selected>Select</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pl-2 pr-2">
+          <div class="form-group row no-gutters">
+            <label for="membership-no" class="col-sm-5 col-form-label">Membership No.</label>
+            <div class="col-sm-7">
+              <input type="email" class="form-control" id="membership-no" placeholder="">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pl-2 pr-2">
+          <div class="form-group row no-gutters">
+            <label for="serial-no" class="col-sm-3 col-form-label">Serial No</label>
+            <div class="col-sm-9">
+              <input type="email" class="form-control" id="serial-no" placeholder="">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pl-2 pr-2">
+          <div class="form-group row no-gutters">
+            <label for="folder-no" class="col-sm-5 col-form-label">Old OPD/Folder No.</label>
+            <div class="col-sm-7">
+              <input type="email" class="form-control" id="folder-no" placeholder="">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 pl-2 pr-2">
+          <div class="form-group row no-gutters">
+            <label for="page-size" class="col-sm-4 col-form-label">Page Size</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="page-size" placeholder="">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mr-0 ml-auto pl-2 pr-2">
+          <div class="form-group butns text-right">
+           <button type="button" class="bg-primary border-0 p-2 text-white" name="button"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+           <button type="button" class="bg-primary border-0 p-2 text-white" name="button"><i class="fas fa-paint-brush"></i></button>
+         </div>
+       </div>
+     </div>
+     <div class="row">
+      <div class="col-md-12">
+        <ul class="patient_record">
+          <li class="d-flex align-items-center ml30"><span class="yellow_bg"></span>Admitted Patient</li>
+          <li class="d-flex align-items-center ml30"><span class="red_bg"></span>Emergency Patient</li>
+          <li class="d-flex align-items-center ml30"><span class="green_bg"></span>Expired Patient</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="register_record">
+          <table class="table border">
+            <tr style="background:#d1dae6;">
+              <th>Reg No.</th>
+              <th>Old OPD/Folder No.</th>
+              <th>Patient Name</th>
+              <th>Age/Gender</th>
+              <th>DOB</th>
+              <th>Mobile No.</th>
+              <th>Surburb</th>
+              <th>Payer</th>
+              <th>Serial No.</th>
+              <th>Membership No.</th>
+              <th></th>
+            </tr>
+            <tr>
+              <td>116</td>
+              <td></td>
+              <td>Mr. Good Luck</td>
+              <td>23Y/M</td>
+              <td>11/7/1996</td>
+              <td>9009900909</td>
+              <td>vakpo-lowcost</td>
+              <td>PRIVATE CASE</td>
+              <td>12345678</td>
+              <td>7654321</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>115</td>
+              <td></td>
+              <td>Mr. Good Luck</td>
+              <td>23Y/M</td>
+              <td>11/7/1996</td>
+              <td>9009900909</td>
+              <td>vakpo-lowcost</td>
+              <td>PRIVATE CASE</td>
+              <td>12345678</td>
+              <td>7654321</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="yellow_bg">114</td>
+              <td></td>
+              <td>Mr. Good Luck</td>
+              <td>23Y/M</td>
+              <td>11/7/1996</td>
+              <td>9009900909</td>
+              <td>vakpo-lowcost</td>
+              <td>PRIVATE CASE</td>
+              <td>12345678</td>
+              <td>7654321</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>113</td>
+              <td></td>
+              <td>Mr. Good Luck</td>
+              <td>23Y/M</td>
+              <td>11/7/1996</td>
+              <td>9009900909</td>
+              <td>vakpo-lowcost</td>
+              <td>PRIVATE CASE</td>
+              <td>12345678</td>
+              <td>7654321</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="yellow_bg">112</td>
+              <td></td>
+              <td>Mr. Good Luck</td>
+              <td>23Y/M</td>
+              <td>11/7/1996</td>
+              <td>9009900909</td>
+              <td>vakpo-lowcost</td>
+              <td>PRIVATE CASE</td>
+              <td>12345678</td>
+              <td>7654321</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>111</td>
+              <td></td>
+              <td>Mr. Good Luck</td>
+              <td>23Y/M</td>
+              <td>11/7/1996</td>
+              <td>9009900909</td>
+              <td>vakpo-lowcost</td>
+              <td>PRIVATE CASE</td>
+              <td>12345678</td>
+              <td>7654321</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>110</td>
+              <td></td>
+              <td>Mr. Good Luck</td>
+              <td>23Y/M</td>
+              <td>11/7/1996</td>
+              <td>9009900909</td>
+              <td>vakpo-lowcost</td>
+              <td>PRIVATE CASE</td>
+              <td>12345678</td>
+              <td>7654321</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>109</td>
+              <td></td>
+              <td>Mr. Good Luck</td>
+              <td>23Y/M</td>
+              <td>11/7/1996</td>
+              <td>9009900909</td>
+              <td>vakpo-lowcost</td>
+              <td>PRIVATE CASE</td>
+              <td>12345678</td>
+              <td>7654321</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>108</td>
+              <td></td>
+              <td>Mr. Good Luck</td>
+              <td>23Y/M</td>
+              <td>11/7/1996</td>
+              <td>9009900909</td>
+              <td>vakpo-lowcost</td>
+              <td>PRIVATE CASE</td>
+              <td>12345678</td>
+              <td>7654321</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="yellow_bg">107</td>
+              <td></td>
+              <td>Mr. Good Luck</td>
+              <td>23Y/M</td>
+              <td>11/7/1996</td>
+              <td>9009900909</td>
+              <td>vakpo-lowcost</td>
+              <td>PRIVATE CASE</td>
+              <td>12345678</td>
+              <td>7654321</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+          <nav aria-label="Page navigation example" class="d-flex align-items-center justify-content-end">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#!" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#!">1</a></li>
+              <li class="page-item"><a class="page-link" href="#!">2</a></li>
+              <li class="page-item"><a class="page-link" href="#!">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#!" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+    </div>
+</div>
+</div>
+
+    </div>
+</div>
+{% endblock  %}

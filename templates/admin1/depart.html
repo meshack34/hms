@@ -1,0 +1,42 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+                <hr>
+                <div class="table-responsive">
+                <table class="datatable table table-stripped ">
+                        <thead>
+                            <tr>
+                              <th>UHID</th>
+                                 <th>visit_id</th>
+                                <th>visit_type</th>
+                                <th>visit_date_time</th>
+                                <th>description</th>
+                                <th>nurse_doctor</th>
+                                <th>clinical_department</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in filtering_records %}
+                          <tr>
+                            <td>{{data.uhid}}</td>
+                            <td>{{data.visit_id}}</td>
+                            <td>{{data.visit_type}}</td>
+                            <td>{{data.visit_date_time|upper}}</td>
+                            <td>{{data.description}}</td>
+                            <td>{{data.nurse_doctor}}</td>
+                            <td>{{data.clinical_department}}</td>
+                          </tr>
+                          {% endfor %}
+                         </tbody>
+                </table>
+
+                </div>
+            </div>
+{% endblock %}
+{% block script_block %}
+
+{% endblock  %}

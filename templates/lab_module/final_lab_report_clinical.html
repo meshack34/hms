@@ -1,0 +1,374 @@
+{% load static %}
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="{% static 'js/notepad.js' %}"></script>
+    <style type="text/css">
+        table {
+            page-break-inside: auto
+        }
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
+        #table_int tr, #table_int td, #table_int th{
+            border: 2px solid black;
+        }
+
+        @media print {
+            tr {
+                page-break-inside: initial;
+            }
+
+            table tfoot {
+                bottom: 0;
+                page-break-after: always;
+            }
+
+            .ck-sticky-panel__content,
+            .note-toolbar,
+            .note-statusbar {
+                display: none;
+            }
+
+            .ck.ck-editor__editable_inline,
+            .note-editing-area,
+            .note-editor.note-frame,
+            .note-editor.note-airframe {
+                border: none !important;
+
+            }
+        }
+
+        table tr:nth-child(2) td:nth-child(2) {
+            width: 30%;
+        }
+
+        .note-editable {
+            height: 100% !important;
+        }
+
+        table td:nth-child(4) {
+            width: 20%;
+        }
+
+        table td:nth-child(3) {
+            width: 20%;
+            text-align: center;
+        }
+
+        p {
+            text-align: justify;
+            font-size: 14px;
+        }
+    </style>
+
+    <!--summer note-->
+    <link rel="stylesheet" href="{% static 'assets/plugins/summernote/dist/summernote-bs4.css' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
+
+</head>
+
+<body>
+
+    <div class="container" id="printableArea">
+
+        {% for record in records %}
+        <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+
+            <thead id="header">
+                <tr>
+                    <td colspan="5">
+                        <center>
+                            <h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image"
+                                    style="width:700px;height:120px;"></h2>
+                        </center>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Patient Name</th>
+                    <td>:{{patient_record.first_name|upper}} {% if middle_name.middle_name %}{{middle_name.middle_name|upper}}{% endif %} {{patient_record.last_name|upper}}</td>
+                    <td></td>
+                    <th>Barcode</th>
+                    <td class="barcodes" style="padding-top: 10px;">
+                        <img src="{{barcode.barcode.url}}" width="150px" height="50px">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Age/Gender</th>
+                    <td>{{patient_record.age}}Y/{{patient_record.gender}}</td>
+                    <td></td>
+                    <th>Costomer Since</th>
+                    <td>:{{patient_record.registration_date_and_time}}</td>
+                </tr>
+                <tr>
+                    <th>Order ID</th>
+                    <td>:{{record.1.0.0.bill_no}}</td>
+                    <td></td>
+                    <th>Sample Collected On</th>
+                    <td>:{{record.1.0.0.date_time}}</td>
+                </tr>
+                <tr>
+                    <th>Refer By</th>
+                    <td>:{{referred_by}}</td>
+                    <td></td>
+                    <th>Validated On</th>
+                    <td>:{{record.1.0.3.date_time}}</td>
+                </tr>
+
+                <tr>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Test Name
+                    </th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Service
+                        Name</th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "> Result
+                    </th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Units
+                    </th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Reference
+                        Range
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr style="page-break-before: always;">
+                <td style="page-break-before: always;"></td>
+            </tr> -->
+                <tr>
+                    <td colspan="6" style="font-size: 20px; text-align:center;"><b> DEPARTMENT OF
+                            {{record.0|upper}}</b></td>
+                </tr>
+                {% for data1 in record.1 %}
+
+                <tr>
+                    <td colspan="5"><b>{{data1.0.profile_name}}</b></u></td>
+                </tr>
+
+                {% for data in data1.1 %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{data.service_name}}</td>
+                    <td>
+                        {% if data.status == 'in_range' %}
+                        {{data.value}}
+                        {% else %}
+                        <b>{{data.value}}</b>
+                        {% endif %}
+                    </td>
+                    <td>{{data.units}}</td>
+                    <td>{{data.range}}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        {% if data1.0.profile_name == 'ANTI MULLERIAN HORMONE (AMH)' %}
+                        <p>Interpretation : <br>AMH is a dimeric glycoprotein hormone belonging to the TGF-ß family,
+                            produced by Sertoli cells by ovarian follicular <br>granulosa cells upto antral stage in
+                            females. <br>During reproductive age, follicular AMH production begins during the primary
+                            stage, peaks in preantral stage &amp; has influence <br>on follicular sensitivity to FSH
+                            which is important in selection for follicular dominance. AMH levels thus represent the pool
+                            or <br>number of primordial follicles but not the quality of oocytes. MH does not vary
+                            significantly during menstrual cycle &amp; hence <br>can be measured independently of day of
+                            cycle. </p>
+                        <ul>
+                            <li>Polycystic ovarian syndrome can elevate AMH 2 to 5 fold higher than age-specific
+                                reference ranges &amp; predictovulatory, irregular cycles. Ovarian tumors like Granulosa
+                                cell tumor are often associated with higher AMH.</li>
+                            <li>Obese women are often associated with diminished ovarian reserve &amp; can have 65%
+                                lower mean AMH levels than non-obese women. </li>
+                            <li>A combination of Age, Ultrasound markers -ovarian volume and Antral follicle count, AMH
+                                level &amp; FSH level <br>are useful for optimal assessment of ovarian reserve. Studies
+                                in various fertility clinics are ongoing to establish <br>optimal AMH concentrations for
+                                predicting response to invitro fertilization, however, given below is suggested
+                                interpretative reference-</li>
+                        </ul>
+                        <table id="table_int">
+                            <thead>
+                                <tr>
+                                    <th>AMH levels
+                                        (ng/ml)</th>
+                                    <th>Suggested patient
+                                        Categorization for
+                                        fertility based on
+                                        AMH for age
+                                        group (20 to 45
+                                        yrs)</th>
+                                    <th>Anticipated Antral
+                                        Follicle Counts</th>
+                                    <th>Anticipated FSH
+                                        levels (day 3)</th>
+                                    <th>Anticipated Response to
+                                        IVF/COH cycle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Below 0.3</td>
+                                    <td>Very Low </td>
+                                    <td>Below 4</td>
+                                    <td>Above 20</td>
+                                    <td>Negligible/poor</td>
+                                </tr>
+                                <tr>
+                                    <td>0.3 to 2.19</td>
+                                    <td>Low</td>
+                                    <td>4-10 </td>
+                                    <td>Usually 16-20</td>
+                                    <td>Reduced</td>
+                                </tr>
+                                <tr>
+                                    <td>2.19 to 4</td>
+                                    <td>Satisfactory</td>
+                                    <td>11-25 </td>
+                                    <td>Within reference
+                                        range or Between
+                                        11-15</td>
+                                    <td>Safe/Normal</td>
+                                </tr>
+                                <tr>
+                                    <td>Above 4</td>
+                                    <td>Optimal</td>
+                                    <td>Upto 30 & Above</td>
+                                    <td>Within reference
+                                        range, often
+                                        between 10-15 or
+                                        above 15</td>
+                                    <td>Possibly Excessive</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p> <br>References-</p>
+                        <ul>
+                            <li> The Correlations of Anti-Mullerian Hormone, Follicle-Stimulating Hormone and Antral
+                                Follicle Count in Different Age Groups of Infertile Women. Royan Institute International
+                                Journal of Fertility and Sterility Vol 8, No 4, Jan-Mar 2015 Pages: 393-398 </li>
+                            <li> Age-specific serum antimullerian hormone levels in women with and without polycystic
+                                ovary syndrome. Fertility and Sterility Vol. 102, No. 1, July 2014 </li>
+                            <li>Anti-Mullerian Hormone: A New Marker of Ovarian Function. J Obstet Gynaecol India. 2014
+                                Apr; 64(2): 130–133. </li>
+                            <li>AMH- ovarian reserve marker.Fertil steril. 2005; 83(4): 979-87. Human Reprod. 2007 Mar;
+                                22(3). </li>
+                            <li>Grinspon &amp; Ray: AMH &amp; Sertoli cell function in paediatrics. Horm Res Paediatr
+                                73: 81-92, 2010.</li>
+                        </ul>
+                        <br><br>
+                        {% else %}
+                        {% if data1.2.content %}
+                        <p>{{data1.2.content|safe}}</p>
+                        {% else %}
+                        <p>{{data1.2|safe}}</p>
+                        {% endif %}
+                        {% endif %}
+
+
+
+                    </td>
+                </tr>
+
+
+                {% endfor %}
+
+
+
+                <tr>
+                    <td colspan="2">
+                        <br><br>
+                        <div style="text-align:left">
+                            &nbsp;&nbsp;<img src="{% static 'images/PATHOLOGIST_sign.jpg' %}" alt=""
+                                style="width: 150px;"><br>
+                            &nbsp;&nbsp;<span>DR FREDRICK OKINYI<br> &nbsp;&nbsp;<strong>Consultant Clinical Pathologist
+                                    <br> &nbsp;&nbsp;and Haematopathologist</strong></span><br>
+
+                        </div>
+                    </td>
+                    <td colspan="3">
+                        <div style="text-align:right">
+                            <img src="{{records.0.1.0.0.validated_by.signature.url}}" alt="" style="width: 150px;"><br>
+                            <span>{{records.0.1.0.0.validated_by.f_name|upper}}
+                                {{records.0.1.0.0.validated_by.middle_name|upper}}
+                                {{records.0.1.0.0.validated_by.last_name|upper}} <br><strong>Lab
+                                    Technologist</strong></span><br>
+
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+
+
+            </tfoot>
+
+
+        </table>
+        {% endfor %}
+
+    </div>
+    </div>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>
+        //   $(document).ready(function () {
+        //       var printContents = document.getElementById('printableArea').innerHTML;
+        //       var originalContents = document.body.innerHTML;
+        //
+        //        document.body.innerHTML = printContents;
+        //
+        //          window.print();
+
+        //            document.body.innerHTML = originalContents;
+        //       });
+
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+    <!-- <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script> -->
+
+    <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+    <!-- Summer Note JS -->
+
+    <script src="{% static 'assets/plugins/summernote/dist/summernote-bs4.min.js' %}"></script>
+
+    <!-- Bootstrap Core JS -->
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Slimscroll JS -->
+    <script src="{% static 'assets/js/jquery.slimscroll.js' %}"></script>
+
+
+    <!-- Custom JS -->
+    <script src="{% static 'assets/js/app.js' %}"></script>
+
+</body>
+
+</html>

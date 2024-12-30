@@ -1,0 +1,512 @@
+{% extends 'admin1/base.html' %}
+{% block head_block %}
+<style>
+    .card{
+        box-shadow: 10px 10px 5px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+</style>
+<style>
+
+
+
+.calendar-container {
+	background: #fff;
+	width: 450px;
+	border-radius: 10px;
+	box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.calendar-container header {
+	display: flex;
+	align-items: center;
+	padding: 25px 30px 10px;
+	justify-content: space-between;
+}
+
+header .calendar-navigation {
+	display: flex;
+}
+
+header .calendar-navigation span {
+	height: 38px;
+	width: 38px;
+	margin: 0 1px;
+	cursor: pointer;
+	text-align: center;
+	line-height: 38px;
+	border-radius: 50%;
+	user-select: none;
+	color: #aeabab;
+	font-size: 1.9rem;
+}
+
+.calendar-navigation span:last-child {
+	margin-right: -10px;
+}
+
+header .calendar-navigation span:hover {
+	background: #f2f2f2;
+}
+
+header .calendar-current-date {
+	font-weight: 500;
+	font-size: 1.45rem;
+}
+
+.calendar-body {
+	padding: 20px;
+}
+
+.calendar-body ul {
+	list-style: none;
+	flex-wrap: wrap;
+	display: flex;
+	text-align: center;
+}
+
+.calendar-body .calendar-dates {
+	margin-bottom: 20px;
+}
+
+.calendar-body li {
+	width: calc(100% / 7);
+	font-size: 1.07rem;
+	color: #414141;
+}
+
+.calendar-body .calendar-weekdays li {
+	cursor: default;
+	font-weight: 500;
+}
+
+.calendar-body .calendar-dates li {
+	margin-top: 30px;
+	position: relative;
+	z-index: 1;
+	cursor: pointer;
+}
+
+.calendar-dates li.inactive {
+	color: #aaa;
+}
+
+.calendar-dates li.active {
+	color: #fff;
+}
+
+.calendar-dates li::before {
+	position: absolute;
+	content: "";
+	z-index: -1;
+	top: 50%;
+	left: 50%;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.calendar-dates li.active::before {
+	background: #6332c5;
+}
+
+.calendar-dates li:not(.active):hover::before {
+	background: #e4e1e1;
+}
+</style>
+{% endblock %}
+
+{% block body_block %}
+<!--Main Content-->
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="card-box mb-0">
+        <h6 class="card-title text-bold">DASHBOARD</h6><br>
+            <script>
+                function ShowAndHide() {
+                    var x=document.getElementById('SectionName');
+                    if(x.style.display == 'none') {
+                        x.style.display = 'block';
+                    }else{
+                        x.style.display='none';
+                    }
+                }
+            </script>
+
+            <div class="row">
+                <div class=" col-lg-2  col-sm-6">
+                 <div class="card" style="background-color: Tomato">
+                     <div class="info-box7 l-bg-voilet order-info-box7">
+                        <div class="info-box7-block">
+                            <span><h3 style="color: #fff8f5; padding-top: 5px;">&nbsp;<b>{{no_of_doctor}}</b></h3></span> <h2 class="text-right"><i class="fas fa-stethoscope pull-left" style="color: white;"></i>&nbsp;</h2>
+                            <h5 style="color: #fff8f5; padding-top: 5px;">&nbsp;Total Doctors</h5>
+                        </div>
+                     </div>
+                    </div><br>
+                </div>
+
+                <div class=" col-lg-2  col-sm-6">
+                    <div class="card" style="background-color: Orange;">
+                        <div class="info-box7 l-bg-voilet order-info-box7">
+                           <div class="info-box7-block">
+                               <span><h3 style="color: #fff8f5; padding-top: 5px;">&nbsp;<b>{{patient_count}}</b></h3></span> <h2 class="text-right"><i class="fas fa-procedures pull-left" style="color: white;"></i>&nbsp;</h2>
+                               <h5 style="color: #fff8f5; padding-top: 5px;">&nbsp;Total Patient</h5>
+   
+                           </div>
+                        </div>
+                       </div><br>
+                   </div>
+
+                   <div class=" col-lg-2  col-sm-6">
+                    <div class="card " style="background-color: DodgerBlue;">
+                        <div class="info-box7 l-bg-voilet order-info-box7">
+                           <div class="info-box7-block">
+                               <span><h3 style="color: #fff8f5; padding-top: 5px;">&nbsp;<b>{{total_appointment}}</b></h3></span> <h2 class="text-right"><i class="fas fa-user-clock pull-left" style="color: white;"></i>&nbsp;</h2>
+                               <h5 style="color: #fff8f5; padding-top: 5px;">&nbsp;Total Appointment</h5>
+                           </div>
+                        </div>
+                       </div><br>
+                   </div>
+
+                   <div class=" col-lg-2  col-sm-6">
+                    <div class="card" style="background-color: MediumSeaGreen;" >
+                        <div class="info-box7 l-bg-voilet order-info-box7">
+                           <div class="info-box7-block">
+                               <span><h3 style="color: #fff8f5; padding-top: 5px;">&nbsp;<b>35</b></h3></span> <h2 class="text-right"><i class="far fa-clock pull-left" style="color: white;"></i>&nbsp;</h2>
+                               <h5 style="color: #fff8f5; padding-top: 5px;">&nbsp;Visit Appointment</h5>
+   
+                           </div>
+                        </div>
+                       </div><br>
+                   </div>
+
+                   <div class=" col-lg-2  col-sm-6">
+                    <div class="card" style="background-color: rgb(202, 165, 118);" >
+                        <div class="info-box7 l-bg-voilet order-info-box7">
+                           <div class="info-box7-block">
+                               <span><h3 style="color: #fff8f5; padding-top: 5px;">&nbsp;<b>{{today_total_appointment_records}}</b></h3></span> <h2 class="text-right" style="color: white;"><i class="fas fa-clipboard-list pull-left"></i>&nbsp;</h2>
+                               <h5 style="color: #fff8f5; padding-top: 5px;">&nbsp;Today Appointment</h5>
+   
+                           </div>
+                        </div>
+                       </div><br>
+                   </div>
+
+                   <div class=" col-lg-2  col-sm-6">
+                    <div class="card" style="background-color: Gray" >
+                        <div class="info-box7 l-bg-voilet order-info-box7">
+                           <div class="info-box7-block">
+                               <span><h3 style="color: #fff8f5; padding-top: 5px;">&nbsp;<b>{{today_total_appointment_records}}</b></h3></span> <h2 class="text-right"><i class='fas fa-calendar-times' style="color: white;"></i>&nbsp;</h2>
+                               <h5 style="color: #fff8f5; padding-top: 5px;">&nbsp;Canceled Appointment</h5>
+                           </div>
+                        </div>
+                       </div><br>
+                   </div>
+                   <br>
+                   
+                   <div class=" col-lg-6  col-sm-6">
+                    <div class="card ">
+                        <div class="info-box7 l-bg-voilet order-info-box7">
+                            <div id="stackedbarchart" style="height: 370px; width: 100%;"></div> 
+                           
+                        </div>
+                       </div><br>
+                   </div>
+                   <br>
+                   <div class=" col-lg-6  col-sm-6">
+                    <div class="card " >
+                        <div id="chartContainer1" style="height: 370px; width: 100%;"></div>
+                       </div><br>
+                   </div>
+                   <div class=" col-lg-6  col-sm-6">
+                    <div class="card ">
+                        <div class="info-box7 l-bg-voilet order-info-box7">
+                            <h4><center><b style="font-weight: bold;">Today Appointment</b> </center></h4>
+                            <table class="table">
+                                <thead>
+                                    <th>S.No</th>
+                                    <th>Appointment ID</th>
+                                    <th>Patient Name</th>
+                                    <th>Booking date</th>
+                                    <th>Doctor Name</th>
+                                    <th>Status</th>
+                                </thead>
+                                <tbody>
+                                    {% for data in today_total_appointment_records1 %}
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{data.patient_appointment_id}}</td>
+                                    <td>{{data.first_name}} {{data.middle_name}} {{data.last_name}}</td>
+                                    <td>{{data.patient_appointment_date}}</td>
+                                    <td>{{data.doctor_name}}</td>
+                                    <td>{{data.status}}</td>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                       </div><br>
+                   </div>
+                   <br>
+                   <div class=" col-lg-6  col-sm-6">
+                    <div class="card " >
+                        <h4><center><b style="font-weight: bold;">Today Doctor Appointment</b> </center></h4>
+                            <table class="table">
+                               <thead>
+                                    <th>S.No</th>
+                                    <th>Doctor Name</th>
+                                    <th>Patient Name</th>
+                                    <th>Appointment Counts</th>
+                                    
+                                </thead>
+                                <tbody>
+                                    {% for data in today_total_appointment_records1 %}
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{data.doctor_name}}</td>
+                                    <td>{{data.first_name}} {{data.middle_name}} {{data.last_name}}</td>
+                                    <td>1</td>
+                                   
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                       </div><br>
+                   </div>
+           </div>
+          
+           </div>
+   </div><br><br>
+    </div>
+    </div>
+    
+</div>
+</div>
+<script>
+    let date = new Date();
+let year = date.getFullYear();
+let month = date.getMonth();
+
+const day = document.querySelector(".calendar-dates");
+
+const currdate = document
+	.querySelector(".calendar-current-date");
+
+const prenexIcons = document
+	.querySelectorAll(".calendar-navigation span");
+
+// Array of month names
+const months = [
+	"January",
+	"February",
+	"March",
+	"April",
+	"May",
+	"June",
+	"July",
+	"August",
+	"September",
+	"October",
+	"November",
+	"December"
+];
+
+const manipulate = () => {
+	let dayone = new Date(year, month, 1).getDay();
+	let lastdate = new Date(year, month + 1, 0).getDate();
+	let dayend = new Date(year, month, lastdate).getDay();
+	let monthlastdate = new Date(year, month, 0).getDate();
+	let lit = "";
+	for (let i = dayone; i > 0; i--) {
+		lit +=
+			`<li class="inactive">${monthlastdate - i + 1}</li>`;
+	}
+
+	// Loop to add the dates of the current month
+	for (let i = 1; i <= lastdate; i++) {
+		// Check if the current date is today
+		let isToday = i === date.getDate()
+			&& month === new Date().getMonth()
+			&& year === new Date().getFullYear()
+			? "active"
+			: "";
+		lit += `<li class="${isToday}">${i}</li>`;
+	}
+
+	// Loop to add the first dates of the next month
+	for (let i = dayend; i < 6; i++) {
+		lit += `<li class="inactive">${i - dayend + 1}</li>`
+	}
+	currdate.innerText = `${months[month]} ${year}`;
+	day.innerHTML = lit;
+}
+
+manipulate();
+
+// Attach a click event listener to each icon
+prenexIcons.forEach(icon => {
+	icon.addEventListener("click", () => {
+		month = icon.id === "calendar-prev" ? month - 1 : month + 1;
+		if (month < 0 || month > 11) {
+			date = new Date(year, month, new Date().getDate());
+			year = date.getFullYear();
+			month = date.getMonth();
+		}
+		else {
+			date = new Date();
+		}
+		manipulate();
+	});
+});
+</script>
+
+    <script>
+        function ShowRadioButtonDiv(idBaseName,NumberOfButtons) {
+          for(x=1;x<=NumberOfButtons;x++){
+            CheckThisButton = idBaseName + x;
+            ThisDiv = idBaseName + x + 'Div';
+            if
+            (document.getElementById(CheckThisButton).checked)
+            {
+              document.getElementById(ThisDiv).style.display = "block";
+            }
+            else {
+              document.getElementById(ThisDiv).style.display = "none";
+            }
+          }
+          return false;
+          }
+
+      </script>
+
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+    <script>
+       function renderStackedBarChart() {
+            var chart = new CanvasJS.Chart("stackedbarchart", {
+            animationEnabled: true,
+            title:{
+                text: "Weekly Appointment"
+            },
+            axisX: {
+                interval: 1,
+                intervalType: "year",
+                valueFormatString: "YYYY"
+            },
+            axisY: {
+                suffix: "%"
+            },
+            toolTip: {
+                shared: true
+            },
+            legend: {
+                reversed: true,
+                verticalAlign: "center",
+                horizontalAlign: "right"
+            },
+            data: [{
+                type: "stackedColumn100",
+                name: "appointment",
+                showInLegend: true,
+                xValueFormatString: "YYYY",
+                yValueFormatString: "#,##0\"%\"",
+                color: "#00a4ec",
+                dataPoints: [
+                    { x: new Date(2010,0), y: 40 },
+                    { x: new Date(2011,0), y: 50 },
+                    { x: new Date(2012,0), y: 60 },
+                    { x: new Date(2013,0), y: 61 },
+                    { x: new Date(2014,0), y: 63 },
+                    { x: new Date(2015,0), y: 65 },
+                    { x: new Date(2016,0), y: 67 }
+                ]
+            }, 
+            {
+                type: "stackedColumn100",
+                name: "Canceled",
+                showInLegend: true,
+                xValueFormatString: "YYYY",
+                yValueFormatString: "#,##0\"%\"",
+                color: "#ff567b",
+                dataPoints: [
+                    { x: new Date(2010,0), y: 28 },
+                    { x: new Date(2011,0), y: 18 },
+                    { x: new Date(2012,0), y: 12 },
+                    { x: new Date(2013,0), y: 10 },
+                    { x: new Date(2014,0), y: 10 },
+                    { x: new Date(2015,0), y: 7 },
+                    { x: new Date(2016,0), y: 5 }
+                ]
+            }, 
+
+            {
+                type: "stackedColumn100",
+                name: "Confirmed",
+                showInLegend: true,
+                xValueFormatString: "YYYY",
+                yValueFormatString: "#,##0\"%\"",
+                color: "#00c3c3",
+                dataPoints: [
+                    { x: new Date(2010,0), y: 17 },
+                    { x: new Date(2011,0), y: 20 },
+                    { x: new Date(2012,0), y: 18 },
+                    { x: new Date(2013,0), y: 20 },
+                    { x: new Date(2014,0), y: 20 },
+                    { x: new Date(2015,0), y: 23 },
+                    { x: new Date(2016,0), y: 27 }
+                ]
+            }]
+        });
+        chart.render();
+        
+        }
+        
+        function renderPieChart() {
+          
+        var chart = new CanvasJS.Chart("chartContainer1", {
+        exportEnabled: true,
+        animationEnabled: true,
+        title:{
+            text: "Monthly Appointment"
+        },
+        legend:{
+            cursor: "pointer",
+            itemclick: explodePie
+        },
+        data: [{
+            type: "pie",
+            showInLegend: true,
+            toolTipContent: "{name}: <strong>{y}%</strong>",
+            indexLabel: "{name} - {y}%",
+            dataPoints: [
+                { y: 26, name: "Appointment", exploded: true },
+                { y: 20, name: "canceled appointment" },
+                { y: 5, name: "confirmed" },
+                { y: 3, name: "Available Doctors" },
+                { y: 7, name: "total appointment" },
+                { y: 17, name: "today cancel" },
+               
+            ]
+        }]
+    });
+    chart.render();
+    }
+    
+    function explodePie (e) {
+        if(typeof (e.dataSeries.dataPoints[e.dataPointIndex].exploded) === "undefined" || !e.dataSeries.dataPoints[e.dataPointIndex].exploded) {
+            e.dataSeries.dataPoints[e.dataPointIndex].exploded = true;
+        } else {
+            e.dataSeries.dataPoints[e.dataPointIndex].exploded = false;
+        }
+        e.chart.render();
+    
+    }
+
+    renderPieChart();
+        renderStackedBarChart();
+        
+        </script>
+
+
+    
+       {% endblock %}

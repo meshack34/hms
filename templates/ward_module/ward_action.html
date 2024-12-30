@@ -1,0 +1,401 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+      <form method="post">
+        {% csrf_token %}
+      <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+            <b>Ward </b>
+        </div>
+        <div class="">
+          <!-- <a onClick="toggleVisibility()" class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a> -->
+          <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+          <a onClick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="services" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a type="button" href="/ipd/investigation/{{ad_id}}"  class="dropdown-item bg-primary text-light rounded">Investigation</i></a>
+            <a type="button" href="/ipd/consultation/{{ad_id_id}}" class="dropdown-item bg-info text-light rounded"> Consultation </i></a>
+            <a type="button" href="/ipd/medication/{{ad_id}}" class="dropdown-item bg-success text-light rounded"> Medication</i></a>
+            <a type="button" href="/ipd/procedure/{{ad_id}}" class="dropdown-item bg-warning text-light rounded">Procedure </i></a>
+            <button type="button" name="bed_transfer_button" value="bed_transfer_button"  class="dropdown-item text-light rounded" style="background-color: rgb(16, 156, 86); ;" data-toggle="modal" data-target="#bedtransfer">Bed Transfer </i></button>
+            <button type="button" class="dropdown-item text-light rounded" style="background-color: rgb(89, 165, 235);" form="ward_form" data-toggle="modal" data-target="#doctortransfer" name="doctor_transfer_button" value="doctor_transfer_button">Doctor Transfer </i></button>
+            <button type="submit" class="dropdown-item text-light rounded" style="background-color: rgb(29, 121, 131); color: rgb(53, 44, 44);" onclick="if(!confirm('Are you sure ?')){return false;}" name="discharge"  value="discharge">Discharge Intimation</i></button>
+            <a type="button" href="/diet/diet_prescription/{{records_ad.id}}" class="dropdown-item text-light rounded" style="background-color: rgb(178, 97, 212); color: rgb(15, 13, 13);">Doctor Prescription</i></a>
+          </div>
+        </div>
+      </div>
+      </form>
+
+          <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"><br>
+              <form method="POSt" id="ward_form" modelAttribute="hotel">
+                  {% csrf_token %}
+                  <div class="row clearfix">
+                      <div class="col-sm-3">
+                          <div class="form-group col-md-12 mb-0">
+                              <label for="pat_name" style="padding-left: 20px;"><b>Name:</b>&nbsp;&nbsp;{{pat_name}}</label>
+                              <input type="hidden"  class="form-control" id="pat_name" name="pat_name" value="{{pat_name}}">
+                          </div>
+                      </div>
+                      <div class="col-sm-3">
+                          <div class="form-group col-md-12 mb-0">
+                              <label for="UHID_id" style="padding-left: 20px;"><b>UHID:</b>&nbsp;&nbsp;{{uhid}}</label>
+                              <input type="hidden"  class="form-control" id="UHID_id" name="UHID_id" value="{{uhid}}">
+                          </div>
+                    </div>
+                      <div class="col-sm-3">
+                            <div class="form-group col-md-12 mb-0">
+                                <label for="admission_id" style="padding-left: 20px;"><b class="text-nowrap">Admission Id:</b>&nbsp;&nbsp;{{ad_id}}</label>
+                                <input type="hidden"  class="form-control" id="admission_id" name="admission_id" value="{{ad_id}}">
+                            </div>
+                      </div>
+                      <div class="col-sm-3">
+                            <div class="form-group col-md-12 mb-0">
+                                <label for="doctory" style="padding-left: 20px;"><b>doctor:</b>&nbsp;&nbsp;{{doctory}}</label>
+                                <input type="hidden"  class="form-control" id="doctory" name="doctory" value="{{doctory}}">
+                            </div>
+                      </div>
+                      <div class="col-sm-3">
+                          <div class="form-group col-md-12 mb-0">
+                              <label for="bed_num" style="padding-left: 20px;"><b>Bed No:</b>&nbsp;&nbsp;{{bed_num}}</label>
+                              <input type="hidden"  class="form-control" id="bed_num" name="bed_num" value="{{bed_num}}">
+                          </div>
+                      </div>
+                      <div class="col-sm-4">
+                          <div class="form-group col-md-12 mb-0">
+                              <label for="date_time" style="padding-left: 20px;"><b>Current Date:</b>&nbsp;&nbsp;{{admission_date|date:'d-m-Y'}}</label>
+                              <input type="hidden"  class="form-control" id="date_time" name="date_time" value="{{admission_date}}">
+                          </div>
+  
+                      </div>
+                  </div>
+              </form>
+          </div>
+          <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <strong>Note!</strong> Please Choose the <a href="#" class="alert-link">UHID</a> carefully.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="row">
+            <div class="col-12" >
+                <div class="table-responsive">
+                  <div  style="overflow: auto;" >
+                    <table class="table table-bordered" style="border-style: solid;font-size:x-small; overflow: auto;" align="center" id="tables">
+                        <thead >
+                            <tr >
+                                <th>UHID</th>
+                                <th>Adn.ID</th>
+                                <th>Adn.datetime</th>
+                                <th>Adn.type</th>
+                                <th>Wardtype</th>
+                                <th>Ward_cate</th>
+                                <th>primary_doctor</th>
+                                <th>department</th>
+                      
+                                <th>bed_no</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+
+                                <td><a href="/paitent_ward_actions/{{data.admission_ID}}" >{{data.uhid}}</a></td>
+                                <td>{{data.admission_ID}}</td>
+                                <td>{{data.admission_datetime}}</td>
+                                <td>{{data.admission_type}}</td>
+                                <td>{{data.req_ward_type}}</td>
+                                <td>{{data.req_ward_cate}}</td>
+                                <td>{{data.primary_doctor}}</td>
+                                <td>{{data.department}}</td>                                              
+                                <td>{{data.bed_no}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                  </div>
+                </div>
+            </div>
+          </div>
+
+    </div>
+</div>
+
+
+
+
+<div class="modal fade-lg" id="bedtransfer" tabindex="-1" data-target=".bd-example-modal-lg" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLongTitle" style="padding-left: 30px;">Bed Transfer</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 20px; ">
+        <form method="POST" id="bed_transfer_id" data-cities-url="{% url 'admission_load' %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label>Registration Id</label>
+            <p disabled>
+              {{bed_transfer_form.uhid}}</p>
+            {{bed_transfer_form.bed_transfer_id}}</p>
+            {{bed_transfer_form.admission_ID}}</p>
+            <h3>Transfer From</h3>
+            <div class="card">
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Ward Type</label>
+                  <p>
+                    {{bed_transfer_form.from_ward_type}}</p>
+
+                </div>
+                <div class="col-md-4">
+                  <label>Ward Category</label>
+                  <p>
+                    {{bed_transfer_form.from_ward_cat}}</p>
+
+                </div>
+                <div class="col-md-4">
+                  <label>Bed No</label>
+                  <p>
+                    {{bed_transfer_form.from_bed_no}}</p>
+                </div>
+              </div><br>
+            </div>
+
+            <h3>Transfer To</h3>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Ward Type</label>
+                <p>
+                  {{bed_transfer_form.to_ward_type}}</p>
+              </div>
+              <div class="col-md-4">
+                <label>Ward category</label>
+                <p>
+                  {{bed_transfer_form.to_ward_cat}}</p>
+              </div>
+              <div class="col-md-4">
+                <label>Bed No</label>
+                <p>
+                  {{bed_transfer_form.to_bed_no}}</p>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" name="bed_transfer_button" value="bed_transfer_button">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- bed transfer end -->
+</div>
+
+
+
+<!--Doctor transfer Modal -->
+<div class="modal fade" id="doctortransfer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLongTitle">Doctor Transfer</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label><b>Registration Id:</b></label>
+              <p disabled>
+              {{doctor_transfer_form.uhid}}</p>
+              {{doctor_transfer_form.doctor_transfer_id}}</p>
+              {{doctor_transfer_form.admission_ID}}</p>
+            <h3>Transfer From</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <label >Primary Doctor</label>
+                <p>
+                {{doctor_transfer_form.from_doctor}}</p>
+
+              </div>
+              <div  class="col-md-6">
+                <label>Department</label>
+                <p>
+                {{doctor_transfer_form.from_department}}</p>
+              </div>
+            </div><br>
+            <h3>Transfer To</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <label >Primary Doctor</label>
+                <p>
+                {{doctor_transfer_form.to_doctor}}</p>
+              </div>
+              <div  class="col-md-6">
+                <label>Department</label>
+                <p>
+                {{doctor_transfer_form.to_department}}</p>
+              </div>
+            </div>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="doctor_transfer_button" value="doctor_transfer_button">Save</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  </div>
+
+<!-- Filter Start model -->
+
+<div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header" style="background: skyblue;">
+              <h5 class="modal-title" id="exampleModalLabel1"><b>Search</b></h5>
+          </div>
+          <!-- Main block -->
+          <div class="modal-body">
+              <form method="POST">
+                  {% csrf_token %}
+                  <div id="myDiv1">
+                      <div class="col-lg-12"
+                          style="background-color:rgb(233, 233, 233);"><br>
+                          <div class="row clearfix">
+                              <div class="col-lg-6 col-md-6 col-sm-12">
+                                  <b>From Date </b>
+                                  <div class="form-group">
+                                      <input type="datetime-local" name="frolgat col-md-6 col-sm-12e" class="form-control">
+                                  </div>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-sm-12">
+                                  <b>To Date </b>
+                                  <div class="form-group">
+                                      <input type="datetime-local" name="todate" class="form-control" >
+                                  </div>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-sm-12">
+                                <b>Patient Name </b>
+                                <div class="form-group">
+                                    <input type="text" name="patient" class="form-control" >
+                                </div>
+                            </div>
+
+                              <div class="col-lg-6 col-md-6 col-sm-12">
+                                  <b>Admission ID </b>
+                                  <div class="form-group">
+                                      <input type="text" name="admissionid" class="form-control" >
+                                  </div>
+                              </div>
+
+                              <div class="col-lg-6 col-md-6 col-sm-12">
+                                  <b>Department</b>
+                                  <div class="form-group">
+                                      <select name="department" class="form-control">
+                                          <option value="">Choose</option>
+                                          {% for data in department_name %}
+                                          <option value="{{data.id}}">{{data.department_name}}
+                                          </option>
+                                          {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+
+                              <div class="col-lg-4 col-md-6 col-sm-12"><br>
+                                  <button type="submit" class="btn btn-primary w-100" name="search_btn"
+                                      value="Search"><i class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                              </div> 
+                          </div>
+                      </div>
+                  </div>                               
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- end model -->
+
+<!-- bed transfer drop-down script -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $("#id_to_ward_type").change(function () {
+      const ward_type_id = $(this).val();
+      const url = $("#bed_transfer_id").attr("data-cities-url");  
+  
+      $.ajax({             
+          url: url,   
+          data: {
+              'ward_type_id':ward_type_id 
+          },
+          success: function (data) { 
+              $("#id_to_ward_cat").html(data);  
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (ward_type) {
+              console.log(ward_type)
+                  html_data += `<option value="${ward_type.id}">${ward_type.category_name}</option>`
+              });
+              console.log(html_data);
+              $("#id_to_ward_cat").html(html_data);
+  
+  
+          }
+      });
+  
+  });
+  </script>
+
+
+<script>
+  $("#id_to_ward_cat").change(function () {
+      const ward_cat_id = $(this).val();
+      const ward_type_id = $("#id_to_ward_type").val(); 
+      const url = $("#bed_transfer_id").attr("data-cities-url");  
+  
+      $.ajax({             
+          url: url,   
+          data: {
+              'ward_type_id':ward_type_id,
+              'ward_cat_id':ward_cat_id 
+          },
+          success: function (data) { 
+              $("#id_to_bed_no").html(data);  
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (bed_no) {
+              console.log(bed_no)
+                  html_data += `<option value="${bed_no.id}">${bed_no.bed_no}</option>`
+              });
+              console.log(html_data);
+              $("#id_to_bed_no").html(html_data);
+  
+  
+          }
+      });
+  
+  });
+  </script>
+
+<script>
+function myFunction() {
+  alert("Are you Sure. You need to Discharge this patient.....!");
+}
+
+</script>
+
+{% endblock %}

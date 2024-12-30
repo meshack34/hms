@@ -1,0 +1,152 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+	<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+input{
+  width: 200px;
+  font-size: 20px;
+  text-decoration: underline;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+  min-width: 200px;
+}
+textarea{
+  width: 200px;
+  font-size: 20px;
+  text-decoration: underline;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+<!--  min-width: 200px;-->
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    text-decoration: underline;
+    color: black;
+}
+.vl {
+  border-left: 6px solid green;
+  height: 500px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top: 0;
+}
+input.dashed {
+  border-bottom: 3px dashed black;
+}
+textarea.form-control {
+  border-bottom: 3px dashed black;
+}
+</style>
+
+<!--This for payment receipt print function-->
+<div id="hello" >
+     <form method="POST" id="nurse_notes">
+                {% csrf_token %}
+        <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100% padding: 30px;">
+            <tr style="border-bottom:2px solid #eee;">
+                <td>
+                    <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                        <tr>
+                            <td><img src="https://bharathbrands.in/images/BHARATHBRANDS-01.png" alt="logo Image" width="180px"></td>
+                            <td>
+                                <div class="" >
+                                    <h2 style="margin: 0 0 10px;">BHARATHBRANDS PRIVATE LIMITED</h2>
+                                    <P>GHANA HEALTH SERVICE,P.O. BOX-23, PEKI V/R</P>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr >
+                <td>
+
+                    <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                        <tr>
+                            <td colspan="6" style="text-align:center;border-bottom: 1px solid #222;"><h2 style="margin: 0;"><b>NURSING NOTES</b></h2></td>
+                        </tr>
+                        <tr>
+                            <th>PATIENT NAME</th>
+                            <td><input type="text" value="{{view.patient_name}}" class="dashed" ></td>
+                            <th>AGE</th>
+                            <td><input class="dashed" type="text" value="{{view.age}}" ></td>
+                            <th>SEX</th>
+                            <td><input class="dashed" type="text" value="{{view.gender}}" ></td>
+                        </tr>
+                        <tr>
+                            <th>DIAGNOSIS</th>
+                            <td><input  class="dashed" type="text" value="{{view.diagnosis}}"></td>
+                            <th>HOSP NO</th>
+                            <td><input  class="dashed" type="text" value="{{view.hosp_no}}"></td>
+                        </tr>
+                        <tr>
+                            <th>CHEMOTHERAPY PROTOCOL</th>
+                            <td><input  class="dashed" type="text" value="{{view.chemotherapy_protocol}}" style="width:360%"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+                <tr>
+                    <td>
+                        <table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%"id="example">
+                            <tr style="background-color: #eee;">
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">DATE/TIME</th>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">NURSING NOTES</th>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "></th>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">NAME/SIGN</th>
+                            </tr>
+                            {% for data in view_sub %}
+                            <tr>
+                                <td><input class="dashed" type="text" value="{{data.date_time}}" style="width:70%"></td>
+                                <td><input class="dashed" type="text" value="{{data.nursing_notes}}" style="width:100%" ></td>
+                                <td></td>
+                                <td><input class="dashed" type="text" value="{{data.name_sign}}" style="width:50%" ></td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                </tr>
+        </table>
+     </form>
+</div>
+
+  <input type="button" onclick="printDiv('hello')" class="btn btn-primary" value="Print" />
+<br><br><br><br>
+
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+</div>
+</div>
+{% endblock  %}
+
+

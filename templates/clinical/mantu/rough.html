@@ -1,0 +1,55 @@
+<section class="mainSection">
+    <br>
+    <div class="Dropdown">
+        <center><input type="text" id="myInput" class="dropbtn" onkeypress="searchDrop()" onkeyup="mySearch()" placeholder="Search..." title="Type Series Title"></center>
+        <div id="myDropdown" class="dropdown_content">
+            <ul id="myUL">
+                {% for data in item %}
+                <li><a href="/consultation_insert/{{uhid}}/{{data}}">{{data}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script>
+    /* When the user clicks on the button,
+  toggle between hiding and showing the dropdown content */
+  function searchDrop() {
+      if(this.value != '') {
+          document.getElementById("myDropdown").classList.toggle("show");
+      }
+  }
+
+  // Close the dropdown if the user clicks outside of it
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+
+  function mySearch() {
+      var input, filter, ul, li, a, i;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("myUL");
+      li = ul.getElementsByTagName("li");
+      for (i = 0; i < li.length; i++) {
+          a = li[i].getElementsByTagName("a")[0];
+          if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+              li[i].style.display = "";
+          } else {
+              li[i].style.display = "none";
+
+          }
+      }
+  }
+  </script>

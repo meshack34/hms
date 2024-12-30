@@ -1,0 +1,226 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+<style>
+    .form-control {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+
+<!-- content -->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Payment Status Report</b>
+            </div>
+            <div class="">
+              <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+                <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+                
+              </div>
+            </div>
+          </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" id="filter_card"><br>
+                    
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3 mb-0">
+                            <label style="font-weight: white;"><b>From Date<b style="color: crimson;">*</b></b> </label>
+                            <input type='date' name='b_start_date' id='from_date'
+                                style="background-color: white;" class='form-control' required>
+                        </div>
+
+                        <div class="form-group col-md-3 mb-0">
+                            <label style="font-weight: white;"><b>To Date<b style="color: crimson;">*</b></b></label>
+                            <input type='date' name='b_end_date' style="background-color: white;"
+                                id='to_date' class='form-control' required>
+
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                            <label style="font-weight: bold;">status Of Payment <b style="color: crimson;">*</b></label>
+                            <select name="mode_of_payment"class="form-control"  style="background-color: white;" required>
+                                <option value="">Select</option>
+                                <option>Partially</option>
+                                <option>Fully</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-0"><br>
+                            <button type="submit" class="btn btn-warning w-100 mt-2" name="Search"
+                                value="search_btn"><i
+                                    class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                        </div>
+                    </div>
+                </div>
+            </form>
+      
+                                {% if all %}
+                                <div id="hello">
+                                    <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                                        <tr>
+                                                <div class="" >
+                                                    <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                                                    </center>
+                                                </div>
+                                        </tr>
+                                    </table>
+
+                                    <style>
+                                        table, th, td {
+                                          border: 1px solid black;
+                                          border-collapse: collapse;
+                                        }
+                                        #button2{
+                                        font-size: larger;
+                                        padding: 10px;
+                                        border: none;
+                                        border-radius: 5px;
+                                    }
+                                        </style>
+                                        <center><h3>Payer Status Report</h3></center>
+                                    <table class="table table-bordered" style="border-style: solid;font-size:x-small;" align="center">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">SI.No </th>
+                                                <th scope="col">UHID </th>
+                                                <th scope="col">Visit ID </th>
+                                                <th scope="col">Bill No </th>
+                                                <th scope="col">Settle Date </th>
+                                                <th scope="col">Bill Amt </th>
+                                                <th scope="col">Tax</th>
+                                                <th scope="col">Receivable Amt</th>
+                                                <th scope="col">Received Amt </th>
+                                                <th scope="col">Outstanding Amt </th>
+                                                <th scope="col">Payer Mode </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% regroup all by uhid as record %}
+                                            {% for group in record%}
+                                            <tr>
+                                                <td colspan="11"><b style="font-weight: bold;">{{group.grouper}}</b></td>
+                                            </tr>
+                                            {% for records in group.list %}
+                                                {% if records.outstanding_amt %}
+                                            <tr>
+
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{forloop.counter}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{records.uhid}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{records.visit_id}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{records.bill_no}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{records.settle_date_time}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{records.bill_amt}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{records.tax}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{records.receivable_amt}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{records.received_amt}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{records.outstanding_amt}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;"><b>{{records.status2}}</b></td>
+                                            </tr>
+                                            {% endif %}
+                                            {% endfor %}
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                    </div><br><br>
+
+
+                                {% else %}
+                                    <h4>No Data Found</h4>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    function toggleVisibility() {
+      var demoElement = document.getElementById('filter_card');
+      
+      if (demoElement.style.display === 'none') {
+        demoElement.style.display = 'block'; // Show the element
+      } else {
+        demoElement.style.display = 'none';  // Hide the element
+      }
+    }
+  </script>
+<script src="../assets/js/app.js"></script>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+
+<!-- Export csv -->
+
+<script>
+    function htmlToCSV(html, filename) {
+        var data = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText);
+            }
+
+            data.push(row.join(","));
+        }
+
+        downloadCSVFile(data.join("\n"), filename);
+    }</script>
+<script>
+    function downloadCSVFile(csv, filename) {
+        var csv_file, download_link;
+
+        csv_file = new Blob([csv], { type: "text/csv" });
+
+        download_link = document.createElement("a");
+
+        download_link.download = filename;
+
+        download_link.href = window.URL.createObjectURL(csv_file);
+
+        download_link.style.display = "none";
+
+        document.body.appendChild(download_link);
+
+        download_link.click();
+    }</script>
+
+<script>document.getElementById("download-button").addEventListener("click", function () {
+        var html = document.querySelector("table").outerHTML;
+        htmlToCSV(html, "itemwise_purchase.csv");
+    });</script>
+
+{% endblock %}

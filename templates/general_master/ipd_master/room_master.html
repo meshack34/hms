@@ -1,0 +1,80 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+.room_def_deco p select,input,textarea{
+    width:40%;
+}
+.room_def_deco p label{
+    width:30%;
+}
+.room_def_deco .btn-info{
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+    box-shadow:2px 2px 5px 5px;
+}
+</style>
+{% endblock  %}
+{% block body_block %}
+<div class="page-wrapper">
+    <div class="content">
+<h3>Room Master</h3><hr>
+<form method="POST" class="room_def_deco" id="roomMaster" data-cities-url="{% url 'ajax_bed_master' %}">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Submit" name="Submit" class="btn btn-info">
+</form>
+<hr>
+<table width="100%" class="OwnTableForStyleImplementation">
+    <thead>
+    <th>S.No.</th>
+    <th>Wing Name</th>
+    <th>Floor Name</th>
+    <th>Room Number</th>
+    <th>Description</th>
+    </thead>
+    <tbody>
+    {% for data in records %}
+    <tr>
+        <td>{{data.id}}</td>
+        <td>{{data.wing_name}}</td>
+        <td>{{data.floor_name}}</td>
+        <td>{{data.room_number}}</td>
+        <td>{{data.description}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+$("#id_wing_name").change(function () {
+   const url = $("#roomMaster").attr("data-cities-url");  // get the url of the `load_cities` view
+   const wingId = $(this).val(); 
+   $.ajax({                       // initialize an AJAX request
+       url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+       data: {
+           'wing_id': wingId       // add the country id to the GET parameters
+       },
+       success: function (data) {   // `data` is the return of the `load_cities` view function
+
+        let html_data = '<option value="">---------</option>';
+        data.forEach(function (wings) {
+        console.log(wings)
+            html_data += `<option value="${wings.id}">${wings.floor_name}</option>`
+        });
+        alert(html_data);
+        $("#id_floor_name").html(html_data);
+
+
+       }
+   });
+
+});
+</script>
+{% endblock  %}

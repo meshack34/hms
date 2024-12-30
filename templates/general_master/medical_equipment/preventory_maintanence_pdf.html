@@ -1,0 +1,124 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<!--Main Content-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style type="text/css">
+    body,
+    p {
+        font-family: arial;
+        font-size: 16px;
+    }
+
+    p {
+        margin: 0 0 5px;
+    }
+
+    table td,
+    table th {
+        padding: 10px;
+        text-align: left;
+    }
+
+    @media print {
+        p {
+            margin: 0 0 5px;
+        }
+
+        table td,
+        table th {
+            padding: 10px;
+            text-align: left;
+        }
+    }
+
+    button {
+        font-size: larger;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+</style>
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card">
+        <div class="card-box mb-0">
+            <div id="hello">
+        <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+            <tr style="border-bottom:2px solid #eee;">
+                <td id=s>
+                    <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                        <tr>
+                            <td>
+                                <div class="" >
+                                    <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                                    </center>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%"
+                        id="example">
+
+                        <tr>
+                            <td>Item Name</td>
+                            <td><b>&nbsp;{{get_name|upper}}</b></td>
+                            <td>Schedule Name</td>
+                            <td><b>{{schedule_name|upper}}</b></td>
+                        </tr>
+
+                        <tr>
+                            <td>Item Model No</td>
+                            <td><b>{{data.item_model_no}}</b></td>
+                            <td>Item Sub ID</td>
+                            <td><b>{{data.item_sub_id}}</b></td>
+                        </tr>
+                        <tr>
+                            <td> Due Date</td>
+                            <td><b>{{data.due_date}}</b></td>
+                            <td> Done Date</td>
+                            <td><b>{{data.done_date}}</b></td>
+                        </tr>
+                        <tr>
+                            <td>Done By</td>
+                            <td><b>{{data.done_by}}</b></td>
+                            <td>Description</td>
+                            <td><b>{{data.description}}</b></td>
+                        </tr>
+                        <tr>
+                            <td>Delay Days</td>
+                            <td><b>{{data.delay_days}} Days</b></td>
+                            <td>Remark</td>
+                            <td><b>{{data.remark}}</b></td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+        </table><br>
+    </div>
+    </div>
+        </div>
+        <button type="submit" onclick="printDiv('hello')" class="btn btn-primary"><i class="fa fa-download"> Print</i></button>
+        <button type="button" class="btn btn-info"><a href='/medical_equipment'><i
+            class="fas fa-arrow-left" style="color:white;"> Back</i></a></button>&nbsp;
+
+</div><br><br>
+     <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+    {% endblock %}

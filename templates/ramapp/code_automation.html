@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <form method="POST" action="">
+            {% csrf_token %}
+            {% for msg in messages %}
+            <center>
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="width:50%;text-align: center">
+              <strong>{{ msg }}</strong>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            </center>
+            {% endfor %}
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-md-4 col-12">
+                    <div class="card own-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Automate Model </h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Create The Model</h6>
+                            <p class="card-text">
+                                <a href="{% url 'auto_create' %}" class="btn btn-primary">Create Model</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-md-4 col-12">
+                    <div class="card own-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Do Migrations</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Do Migrations</h6>
+                            <p class="card-text">
+                                <button type="submit" name="get_code_automation_request" value="DoMigrations" class="btn btn-primary">Do Migrations</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-md-4 col-12">
+                    <div class="card own-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Do Migrate</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Do Migrate</h6>
+                            <p class="card-text">
+                                <button type="submit" name="get_code_automation_request" value="DoMigrate" class="btn btn-primary">Do Migrate</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</body>
+</html>

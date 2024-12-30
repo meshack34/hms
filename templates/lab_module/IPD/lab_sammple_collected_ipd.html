@@ -1,0 +1,84 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block %}
+	<!-- Toatr CSS -->		
+  <link rel="stylesheet" href="{% static 'assets/plugins//toastr/toatr.css' %}">
+{% endblock %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+
+        <div class="card" style="padding: 30px;">
+          <div class="alert" role="alert" style="height:20px; width:40%; right: 0px; position: absolute;">
+            {% if messages %}
+            <div class="alert alert-warning" role="alert" style="float: right;">
+            <ul class="messages">
+                {% for message in messages %}
+                <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> <h4>{{ message }}</h4> </li>
+                {% endfor %}
+            </ul>
+        </div>
+            {% endif %}
+          </div>
+            <h2><img src="{% static 'images/lab_test.png' %}" alt="" style="width: 50px;">  <b>Sample Collected</b></h2><br><br>
+            <div>
+            
+                <table class="datatable table table-stripped">
+                    <thead>
+                      <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Test Id</th>
+                        <th scope="col">Unid</th>
+                        <th scope="col">PHID</th>
+                        <th scope="col">Service Name</th>
+                        <th scope="col">Date & Time</th>
+                        <th scope="col">Action</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in collected_records %}
+                        {% ifchanged data.PTID %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.test_id}}</td>
+                            <td>{{data.uhid}}</td>
+                            <td>{{data.PTID}}</td>
+                            <td>{{data.first_name}} {%if data.middle_name %}{{data.middle_name}}{% endif %} {{data.last_name}}</td>
+                            <td>{{data.date_time}}</td>
+                            <td id="pop_up"><a href="/ipd/lab_result_entry_ipd/{{data.PTID}}"><button type="button" class="btn btn-primary">Result Entry</button></a></td>
+                          </tr>
+                          {% endifchanged %}
+                          {% endfor %}
+                  </table>
+                  <p id="demo"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function myFunction() {
+      var txt;
+      if (confirm("Press a button!")) {
+        txt = "You pressed OK!";
+      } else {
+        txt = "You pressed Cancel!";
+      }
+      document.getElementById("demo").innerHTML = txt;
+    }
+    </script>
+
+    <script>
+      window.setTimeout(function() {
+      $(".alert").fadeTo(500, 0).slideUp(500, function(){
+          $(this).remove(); 
+      });
+  }, 5000);
+  </script>
+{% endblock %}

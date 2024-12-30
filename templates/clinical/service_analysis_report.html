@@ -1,0 +1,197 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+    <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;">Detail Revenue Report</a>
+      </div>
+    </nav>
+        <div class="row">
+        <div class="col-12">
+        <div class="card">
+        <div class="card-box mb-0">
+              <div class="header">
+                <div class="body">
+                    <form method="POST">
+                    <div class="icon-button-demo">&nbsp;
+                        <a href="/dashboard" class="btn btn-info"> <i
+                                class="fa fa-arrow-circle-left">&nbsp;Back</i></a>
+                        <button type="button" class="btn btn-primary" onClick="window.location.reload();">
+                            <i class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                        <a href="/dashboard" class="btn btn-danger"> <i
+                                class="fas fa-times-circle">Exit</i></a>
+
+                        <button class="btn btn-warning" role="button"
+                            onclick="codespeedy()">PDF</button>&nbsp;
+                        <button class="btn btn-sucess" style="background-color: green;" id="download-button"
+                            role="button">CSV</button>&nbsp;
+
+                    </div><br>
+           
+                {% csrf_token %}
+
+                    <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"
+                                        style="background-color:rgb(233, 233, 233);"><br>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-3 mb-0">
+                                                <label style="font-weight: white;"><b>From Date*</b> </label>
+                                                <input type='date' name='b_start_date' id='from_date'
+                                                    style="background-color: white;" class='form-control'>
+                                            </div>
+
+                                            <div class="form-group col-md-3 mb-0">
+                                                <label style="font-weight: white;"><b>To Date*</b></label>
+                                                <input type='date' name='b_end_date' style="background-color: white;"
+                                                    id='to_date' class='form-control'>
+
+                                            </div> 
+                                 
+                                            <div class="col-sm-0"><br>
+                                                <button type="submit" class="btn btn-warning w-100 mt-2" name="Search"
+                                                    value="Search"><i
+                                                        class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                                            </div>
+
+                                        </div>
+
+                </div>
+              </div>
+            </form>
+
+        <!--This for payment receipt print function-->
+        <div id="hello">
+        <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+            <tr style="border-bottom:2px solid #eee;">
+                <td id="s">
+                    <table
+                            style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;"
+                            width="100%">
+                            <tr>
+                                <td>
+                                    <div class="">
+                                        <center>
+                                            <h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}"
+                                                    alt="logo Image" style="width:300px;height:100px;"></h2>
+                                        </center>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                <div class="header" style="padding-top: 10px;">
+                   <div class="body">
+                    <div class="table-responsive ">
+                        <table class="datatable table table-stripped">
+                        <table border="2" class="datatable table table-stripped">
+                          <colgroup span="12"></colgroup>
+                          <tr>
+                            <th colspan="2" scope="colgroup"></th>
+                            <th colspan="3" scope="colgroup">OPD</th>
+                            <th colspan="3" scope="colgroup">Total</th>
+                          </tr>
+                          <tr>
+                            <th>Service </th>
+                            <th></th>
+                            <th>Unit</th>
+                            <th>OP Gross Amt </th>
+                            <th>OP Disc </th>
+                            <th>OP Net Amt </th>
+                            <th>Total Amount</th>
+                          </tr>
+                                {% for data in services %}
+                                <tr>
+                                    <td>{{data.service_department}}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            <tr>
+                                <td></td>
+                                <td>{{data.ServiceSubDepartment}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                                                        <tr>
+                                <td></td>
+                                <td>{{data.service_name}}</td>
+                                <td>00</td>
+                                <td>00</td>
+                                <td>00</td>
+                                <td>00</td>
+                                <td>00</td>
+                            </tr>
+                                                        <tr>
+                                <td></td>
+                                <td></td>
+                                <td>total</td>
+                                <td>00</td>
+                                <td>00</td>
+                                <td>00</td>
+                                <td>00</td>
+                                <td>00</td>
+                            </tr>
+                                {% endfor %}
+                        </table>
+                      </div>
+                   </div>
+                </div>
+                </td>
+            </tr>
+        </table>
+            <!--    <canvas id="myChart" width="5" height="5" class="card"></canvas>-->
+
+        </div><br><br>
+<button type="button"  onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;">Print</button>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+                </div>
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+{% endblock %}

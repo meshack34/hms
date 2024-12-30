@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+{% load static %}
+    {% block head_block %}
+<body>
+	<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+input{
+  width: 200px;
+  font-size: 20px;
+  text-decoration: underline;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+  min-width: 200px;
+}
+textarea{
+  width: 200px;
+  font-size: 20px;
+  text-decoration: underline;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+<!--  min-width: 200px;-->
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    text-decoration: underline;
+    color: black;
+}
+.vl {
+  border-left: 6px solid green;
+  height: 500px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top: 0;
+}
+input.dashed {
+  border-bottom: 3px dashed black;
+}
+textarea.form-control {
+  border-bottom: 3px dashed black;
+}
+</style>
+
+<!--This for payment receipt print function-->
+<div id="hello" >
+<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100% padding: 30px;">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+        <tr>
+            <td>
+                <div class="">
+                    <center>
+                        <h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}"
+                                alt="logo Image"
+                                style="width:300px;height:100px;"></h2>
+                    </center>
+
+                </div>
+            </td>
+        </tr>
+    </table>
+		</td>
+	</tr>
+	<tr >
+		<td>
+            <form method="POST" id="nurse_notes">
+                {% csrf_token %}
+                <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;border:2px solid red;" width="100%">
+                    <tr>
+                        <td colspan="6" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;"><b>CHEMOTHERAPY TREATMENT SHEET</b></h3></td>
+                    </tr>
+                    <tr>
+                        <th>Patient name</th>
+                        <td><input type="text" name="pa_name" class="dashed" ></td>
+                        <th></th>
+                        <td></td>
+                        <th>Gender</th>
+                        <td><input class="dashed" type="text" name="pa_name" ></td>
+
+                    </tr>
+                    <tr>
+                        <th>Age</th>
+                        <td><input  class="dashed" type="text" name="pa_name"></td>
+                        <th></th>
+                        <td></td>
+                        <th>Stage</th>
+                        <td><input  class="dashed" type="text" name="pa_name"></td>
+                    </tr>
+                    <tr>
+                        <th>Weight</th>
+                        <td><input  class="dashed" type="text" name="pa_name" ></td>
+                        <th>Height</th>
+                        <td><input  class="dashed" type="text" name="pa_name" ></td>
+                        <th>BSA</th>
+                        <td><input  class="dashed" type="text" name="pa_name" ></td>
+                    </tr>
+                    <tr>
+                        <th>Histology</th>
+                        <td><input class="dashed" type="text" name="pa_name" style="width:400%"></td>
+                    </tr>
+                    <tr>
+                        <th>Drugs</th>
+                        <td><input  class="dashed" type="text" name="pa_name" ></td>
+                        <th>Dose/m2</th>
+                        <td><input  class="dashed" type="text" name="pa_name" ></td>
+                    </tr>
+                    <tr>
+                        <td><input class="dashed" type="text" name="pa_name" style="width:504%"></td>
+                    </tr>
+                    <tr>
+                        <td><input class="dashed" type="text" name="pa_name" style="width:504%"></td>
+                    </tr>
+                    <tr>
+                        <td><input class="dashed" type="text" name="pa_name" style="width:504%"></td>
+                    </tr>
+            <tr>
+            <td style="border:2px solid black;">
+                <div class="header" style="padding-top: 10px;border:2px solid red;">
+                                <div class="body ">
+                                    <div class="table-responsive">
+                                    <table border="2" class="table table-bordered table-striped table-highlight">
+                                      <tr>
+                                        <th>Date</th>
+                                        <th>BP</th>
+                                        <th>P/Temp</th>
+                                        <th>Wht </th>
+                                        <th>Wbc</th>
+                                        <th>HB</th>
+                                        <th>PLT</th>
+                                        <th>Uec</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                      </tr>
+                                        <tbody>
+                                          <tr>
+                                            <td style="width: 100px; background-color:black;"><input type="text" ></td>
+                                            <td><input type="text"></td>
+                                            <td><input type="text"></td>
+                                            <td><input type="text"></td>
+                                            <td><input type="text"></td>
+                                            <td><input type="text"></td>
+                                            <td><input type="text"></td>
+                                            <td><input type="text"></td>
+                                            <td>{{dat.m_name}}</td>
+                                            <td>{{dat.m_qty}}</td>
+                                            <td>{{dat.ot_time}}</td>
+                                            <td>{{dat.ot_urin}}</td>
+<!--                                            <td>{{dat.ot_stoma_color}}</td>-->
+<!--                                            <td>{{dat.ot_content_qty}}</td>-->
+<!--                                            <td>{{dat.ot_stool_qty}}</td>-->
+<!--                                            <td>{{dat.ot_stool_remark}}</td>-->
+
+                                          </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+		    </td>
+	    </tr>
+    </form>
+</table>
+
+
+
+</div>
+    <input type="submit" class="btn btn-primary" form="nurse_notes" value="Save"><br>
+
+	<button type="button"  onclick="codespeedy()" class="btn btn-warning" >Print</button>
+<br><br><br><br>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+</body>
+{% endblock %}
+</html>

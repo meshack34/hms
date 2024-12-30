@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+</head>
+<body>
+{% if is_country_form %}
+<form method="POST">
+    {% csrf_token %}
+  {{form}}
+  <input type="submit" value="Save">
+</form>
+{% else %}
+<form method="POST">
+    {% csrf_token %}
+  {{form}}
+  <input type="submit" value="Save">
+</form>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,322 @@
+{% extends 'admin1/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style type="text/css">
+  body,
+  p {
+    font-family: arial;
+    font-size: 16px;
+  }
+
+  p {
+    margin: 0 0 5px;
+  }
+
+  table td,
+  table th {
+    padding: 10px;
+    text-align: left;
+  }
+
+  @media print {
+    p {
+      margin: 0 0 5px;
+    }
+
+    table td,
+    table th {
+      padding: 10px;
+      text-align: left;
+    }
+  }
+
+  button {
+    font-size: larger;
+    box-sizing: border-box;
+    padding: 10px;
+  }
+</style>
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+      <div>
+        <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+        <b>Consultant/Department Report</b>
+      </div>
+      <div class="">
+        <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+        <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+        <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+          <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <form method="POST">
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card" id="filter_card">
+              {% csrf_token %}
+              <div class="filtering_button"><br>
+                <div class="form-row">&nbsp;&nbsp;&nbsp;
+                  <span>
+                    <input type="radio" id="Button1" name="direct" class="filtering_button" value="User"
+                      ONCLICk="ShowRadioButtonDiv('Button',2)"><label for="Button1">
+                      <h3>&nbsp; <b>Consultant</b></h3>
+                    </label>
+                  </span>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                  <span>
+                    <input type="radio" id="Button2" name="direct" class="filtering_button"
+                      ONCLICk="ShowRadioButtonDiv('Button',2)" value="offline_payment"><label for="Button2">
+                      <h3><b>&nbsp;&nbsp;Department</b> </h3>
+                    </label>
+                  </span>
+                  </div>
+                  </div> 
+                        <DIV id="Button1Div"style="display: none;" >
+                          <form method="POST">
+                            {% csrf_token %}
+
+                            <div class="form-group col-md-6 d-flex">
+                              <label for="inputEmail4">
+                                <h3 class="text-nowrap"><b>Constultant Name</b></h3>
+                              </label>
+                              <div class="input-group ml-3 py-1">
+                                <select class="form-select form-control" name="consultant" >
+                                  <option value="">Select</option>
+                                  {% for data in consultant_name %}
+                                  <option value="{{data}}">{{data}}</option>
+                                  {% endfor %}
+                                </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="submit" class="btn btn-outline-primary form-control"
+                                >Filtering</button>
+                              </div>
+                            </div>
+                          </form>
+                        </DIV>
+
+
+                        <DIV id="Button2Div" style="display: none;">
+                          <form method="POST" action="filtering-department">
+                            {% csrf_token %}
+                            <div class="form-group col-md-6 d-flex">
+                              <label for="inputEmail4">
+                                    <h3 class="text-nowrap"><b>Department Name :</b> </h3>
+                                  </label>
+                                  <div class="input-group ml-3 py-1">
+                                    <select class="form-select form-control" name="department">
+                                      <option value="">Select</option>
+                                      {% for data in department_name %}
+                                      <h1>{{data}}</h1>
+                                      <option value="{{data}}">{{data}}</option>
+                                      {% endfor %}
+                                    </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="submit" class="btn btn-outline-primary form-control"
+                                    >Filtering</button>
+                                  </div>
+
+                                    </div>
+                          </form>
+                        </DIV>
+   
+                </div>
+              </div>
+            </div>
+    </form>
+
+    <div id="hello">
+      {% if filtering_records %}
+
+      <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+          <tr>
+
+                  <div class="" >
+                      <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                      </center>
+                  </div>
+
+          </tr>
+      </table>
+
+      <style>
+          table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+
+          }
+          #button2{
+          font-size: larger;
+          padding: 10px;
+          border: none;
+          border-radius: 5px;
+      }
+          </style>
+          <center><h3>Consultant/Department Report</h3></center>
+        <div class="table-responsive">
+      <table class="datatable table table-bordered" style="border-style: solid;font-size:x-small;" align="center">
+          <thead class="text-nowrap">
+
+              <tr>
+                  <th>SI.No</th>
+                  <th scope="col"><b>Patient Name</b></th>
+                  <th scope="col">Mobile No.</th>
+                  <th scope="col">Doctor Name</th>
+                  <th scope="col">Gender</th>
+                  <th scope="col">Schedule Time</th>
+                  <th scope="col"> Department</th>
+                  <th scope="col">Payment Mode</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for data in filtering_records %}
+              <tr>
+                  <td style="padding-left: 15px;padding-right: 15px;">{{forloop.counter}}</td>
+                  <td scope="row" style="padding-left: 15px;padding-right: 15px;">{{data.first_name}} {{data.middle_name}} {{data.last_name}}</td>
+                  <td style="padding-left: 15px;padding-right: 15px;">{{data.patient_mobile_number}}</td>
+                  <td style="padding-left: 15px;padding-right: 15px;">{{data.doctor_name}}</td>
+                  <td style="padding-left: 15px;padding-right: 15px;">{{data.patient_gender}}</td>
+                  <td style="padding-left: 15px;padding-right: 15px;">{{data.patient_schedule_date_and_time}}</td>
+                  <td style="padding-left: 15px;padding-right: 15px;">{{data.doctor_department}}</td>
+                  <td style="padding-left: 15px;padding-right: 15px;">{{data.patient_payment_mode}}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+    </div>
+      {% endif %}
+      
+  </div>
+
+
+  </form>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+
+<!--This for payment receipt print function-->
+<script>
+  function toggleVisibility() {
+    var demoElement = document.getElementById('filter_card');
+    
+    if (demoElement.style.display === 'none') {
+      demoElement.style.display = 'block'; // Show the element
+    } else {
+      demoElement.style.display = 'none';  // Hide the element
+    }
+  }
+</script>
+
+<script>
+  $('example').margetable({
+    type: 1,
+    colindex: [{
+      index: 1,
+      dependent: [0]
+    }]
+  });
+</script>
+
+<!-- print -->
+<script type="text/javascript">
+
+  function codespeedy(){
+    var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+  }
+</script>
+
+<!--Export csv -->
+
+<script>
+
+  // pdf preview
+  function printData() {
+    var mypage = document.getElementById("hello");
+    summathaan = window.open("");
+    summathaan.document.write(mypage.outerHTML);
+    summathaan.print();
+    summathaan.close();
+  }
+
+  function htmlToCSV(html, filename) {
+    var data = [];
+    var rows = document.querySelectorAll("table tr");
+
+    for (var i = 0; i < rows.length; i++) {
+      var row = [], cols = rows[i].querySelectorAll("td, th");
+
+      for (var j = 0; j < cols.length; j++) {
+        row.push(cols[j].innerText);
+      }
+
+      data.push(row.join(","));
+    }
+
+    downloadCSVFile(data.join("\n"), filename);
+  }</script>
+
+<script>function downloadCSVFile(csv, filename) {
+    var csv_file, download_link;
+
+    csv_file = new Blob([csv], { type: "text/csv" });
+
+    download_link = document.createElement("a");
+
+    download_link.download = filename;
+
+    download_link.href = window.URL.createObjectURL(csv_file);
+
+    download_link.style.display = "none";
+
+    document.body.appendChild(download_link);
+
+    download_link.click();
+  }</script>
+<script>document.getElementById("csvdownload-button").addEventListener("click", function () {
+    var html = document.querySelector("table").outerHTML;
+    htmlToCSV(html, "Appointment.csv");
+  });</script>
+
+
+
+<script>
+  function ShowRadioButtonDiv(idBaseName, NumberOfButtons) {
+    for (x = 1; x <= NumberOfButtons; x++) {
+      CheckThisButton = idBaseName + x;
+      ThisDiv = idBaseName + x + 'Div';
+      if
+        (document.getElementById(CheckThisButton).checked) {
+        document.getElementById(ThisDiv).style.display = "block";
+      }
+      else {
+        document.getElementById(ThisDiv).style.display = "none";
+      }
+    }
+    return false;
+  }
+
+</script>
+</div>
+</div>
+
+</div>
+</div>
+{% endblock %}

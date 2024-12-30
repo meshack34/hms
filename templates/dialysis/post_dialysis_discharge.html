@@ -1,0 +1,389 @@
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+<div class="page-wrapper">
+	<div class="content">
+<div id="hello" class="card">
+<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+				<tr>
+					<td>
+						<div class="" >
+							<center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+							</center>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr >
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse; width=100%">
+				<tr>
+					<td colspan="8" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;">PATIENT DISCHARGE SUMMARY FORM</h3></td>
+				</tr>
+				<tr style="border: 2px solid black;">
+					<td><b>Name : {{pat_name}}</b></td>
+					<td><b>Age : {{pat_age}}Y</b></td>
+					<td><b>Gender : {{pat_sex}}</b></td>
+					<td><b>Date:</b><b id="datetime"></b></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<form method="post" id="main_f"  enctype="multipart/form-data">
+				{% csrf_token %}
+				<table id="table2" style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse; solid;"  width="100%" >
+					<tr>
+						<td colspan="4" ><b>Cause of ESRD(end-stage renal disease):</b></td>
+						<td colspan="4" ><input type="text" name="cause" class="form-control" value="{{discharge_reco.cause_ESRD}}" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td colspan="4"><b>Duration of dialysis:</b></td>
+						<td colspan="4"><input type="text" name="dod" class="form-control" value="{{discharge_reco.d_of_d}}" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td colspan="2" ><b>Coexisting Comorbidities:</b></td>
+						<td colspan="2" ><input type="text" name="coe_com" class="form-control" value="{{discharge_reco.cc}}" style="width:100%;"></td>
+						<td colspan="2"><b>Duration</b></td>
+						<td colspan="2"><input type="text" name="duration" class="form-control" value="{{discharge_reco.duration}}" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td colspan="2"><b>Access:</b></td>
+						<td colspan="2"><select name="access" class="form-control" style="width:100%;">
+							<option>{{discharge_reco.access}}</option>
+							<option>Permanent Catheter</option>
+							<option>Temporary Catheterr</option>
+							<option>Arteriovenous FIstula</option>
+						</select></td>
+						<td colspan="2"><b>Status:</b></td>
+						<td colspan="2"><input type="text" name="status" class="form-control" value="{{discharge_reco.status}}" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td colspan="1" style="text-align:center;"><b>Medicine:</b></td>
+						<td colspan="4">
+							<input type="text" name="medicines" class="form-control" style="width:100%;">
+						</td>
+						<td colspan="1" style="text-align:center;"><b>Dosage</b></td>
+						<td colspan="2" style="text-align:center;"><input type="text" name="dosage" class="form-control"></td>
+						<td colspan="1"><button type="submit" name="medicine" value="MEDICINE" class="btn btn-primary">+</button></td>
+					</tr>
+					{% for data in med_records %}
+					<tr>
+						<td colspan="1"><b>{{forloop.counter}}</b></td>
+						<td colspan="6"><b>{{data.med_name}}</b></td>
+						<td colspan="6"><b>{{data.dosage}}</b></td>
+                        <td><a href="#"  onclick="deleteDataMed(event,'{{uhid_visit}}','{{data.id}}')"><button type="button" class="btn btn-danger" > <i class="fa fa-trash" aria-hidden="true"></i></button></a></td>
+					</tr>
+					{% endfor %}
+					<tr>
+						<td colspan="4" style="text-align:center;"><b>Dialysis Prescription:</b></td>
+					</tr>
+					<tr>
+						<td colspan="4"><input name="dialysis1" class="form-control" style="width:100%;"></td>
+						<td colspan="4"><input name="dialysis2" class="form-control" style="width:100%;"></td>
+						<td><button type="submit" name="prescription_dialysis" value="prescription_dialysis" class="btn btn-primary">+</button></td>
+					</tr>
+						{% for data in presc_records %}
+					<tr>
+						<td colspan="1"><b>{{forloop.counter}}</b></td>
+						<td colspan="6"><b>{{data.namw1}}</b></td>
+						<td colspan="6"><b>{{data.name2}}</b></td>
+                        <td><a href="#" onclick="deleteDataPre(event,'{{uhid_visit}}','{{data.id}}')"><button type="button"   class="btn btn-danger"> <i class="fa fa-trash" aria-hidden="true"></i></button></a></td>
+						{% endfor %}
+					</tr>
+					<tr>
+						<td colspan="4" style="text-align:center;" ><b>Medications Post Dialysis:</b></td>
+						<td colspan="4" style="text-align:center;" ><input type="text" name="outs_ource_med_name" class="form-control" style="width:100%;"></td>
+						<td><button type="submit" name="post_medicine" value="POST_MEDICINE" id="add" class="btn btn-primary">+</button></td>
+					</tr>
+					{% for data in post_med_records %}
+					<tr>
+						{% if data.outs_ource_med_name != None %}
+						<td colspan="1"><b>{{forloop.counter}}</b></td>
+						<td colspan="12"><b>{{data.outs_ource_med_name}}</b></td>
+                        <td><a href="#" onclick="deleteData(event,'{{uhid_visit}}','{{data.id}}')"><button type="button" class="btn btn-danger"> <i class="fa fa-trash" aria-hidden="true"></i></button></a></td>
+						{% endif %}
+					</tr>
+					{% endfor %}
+					<tr>
+						<td colspan="4" ><b>Blood Pressure:</b></td>
+						<td colspan="4"><input name="bp" class="form-control" value="{{discharge_reco.bp}}" style="width:100%;"></td>
+					<tr>
+						<td colspan="4" ><b>Ktv (treatment adequacy):</b></td>
+						<td colspan="4"><input name="kt_v" id="" class="form-control" value="{{discharge_reco.kt_v}}" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td colspan="4" ><b>ACC QB (accumulated blood flow):</b></td>
+						<td colspan="4"><input name="acc_qb" class="form-control" value="{{discharge_reco.acc_qb}}" style="width:100%;"></td>
+					<tr>
+						<td colspan="4" ><b>OutCome:</b></td>
+						<td colspan="4"><input name="out_come" id="" class="form-control" value="{{discharge_reco.out_come}}" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td colspan="4" ><b>Recommendations:</b></td>
+						<td colspan="4"><input name="recommendation" class="form-control" value="{{discharge_reco.recommendant}}" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td colspan="4" ><b>TCA (to come again):</b></td>
+						<td colspan="4"><input name="tca" id="" class="form-control" value="{{discharge_reco.tca}}" style="width:100%;"></td>
+					</tr>
+					<tr>
+						<td colspan="4" ><b>Nephrologist:</b></td>
+						<td colspan="4"><input type="text" class="form-control" name="nephrologist" value="{{discharge_reco.nephrologist}}"/></td>
+<!--						<td colspan="4"><textarea id="sig-dataUrl" name="nephrologist" cols="30" rows="10" hidden></textarea><img id="sig-image" name="image" src="{{record.owner_sign}}" alt=""/></td>-->
+					</tr>
+					<tr>
+						{% if discharge_reco %}
+						<td colspan="2"><button type="submit" name="main_form" value="UPDATE_form" form="main_f" data-value="" class="btn btn-info" style="width:100%;">UPDATE</button></td>
+						{% else %}
+						<td colspan="2"><button type="submit" name="main_form" value="MAIN_form" form="main_f" class="btn btn-primary" style="width:100%;">Save</button></td>
+						{% endif %}
+						<td>
+							<div class="col-md-4">
+							   <a href="/dialysis_dishcharge_report/{{uhid}}-{{visit_id}}"><button type="button" class="btn btn-success">Print</button></a>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>
+</div>
+	</div>
+</div>
+
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--     FOR SEARCHABLE DROP DOWN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+           $(document).ready(function ()
+            {
+                $('#medicine').select2();
+            });
+    </script>
+    <script>
+           $(document).ready(function ()
+            {
+                $('#medicine2').select2();
+            });
+    </script>
+<!--  digital singnature -->
+<script>
+    (function() {
+  window.requestAnimFrame = (function(callback) {
+    return window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      window.msRequestAnimaitonFrame ||
+      function(callback) {
+        window.setTimeout(callback, 1000 / 60);
+      };
+  })();
+
+  var canvas = document.getElementById("sign");
+  var ctx = canvas.getContext("2d");
+  ctx.strokeStyle = "#222222";
+  ctx.lineWidth = 4;
+
+  var drawing = false;
+  var mousePos = {
+    x: 0,
+    y: 0
+  };
+  var lastPos = mousePos;
+
+  canvas.addEventListener("mousedown", function(e) {
+    drawing = true;
+    lastPos = getMousePos(canvas, e);
+  }, false);
+
+  canvas.addEventListener("mouseup", function(e) {
+    drawing = false;
+  }, false);
+
+  canvas.addEventListener("mousemove", function(e) {
+    mousePos = getMousePos(canvas, e);
+  }, false);
+
+  // Add touch event support for mobile
+  canvas.addEventListener("touchstart", function(e) {
+
+  }, false);
+
+  canvas.addEventListener("touchmove", function(e) {
+    var touch = e.touches[0];
+    var me = new MouseEvent("mousemove", {
+      clientX: touch.clientX,
+      clientY: touch.clientY
+    });
+    canvas.dispatchEvent(me);
+  }, false);
+
+  canvas.addEventListener("touchstart", function(e) {
+    mousePos = getTouchPos(canvas, e);
+    var touch = e.touches[0];
+    var me = new MouseEvent("mousedown", {
+      clientX: touch.clientX,
+      clientY: touch.clientY
+    });
+    canvas.dispatchEvent(me);
+  }, false);
+
+  canvas.addEventListener("touchend", function(e) {
+    var me = new MouseEvent("mouseup", {});
+    canvas.dispatchEvent(me);
+  }, false);
+
+  function getMousePos(canvasDom, mouseEvent) {
+    var rect = canvasDom.getBoundingClientRect();
+    return {
+      x: mouseEvent.clientX - rect.left,
+      y: mouseEvent.clientY - rect.top
+    }
+  }
+
+  function getTouchPos(canvasDom, touchEvent) {
+    var rect = canvasDom.getBoundingClientRect();
+    return {
+      x: touchEvent.touches[0].clientX - rect.left,
+      y: touchEvent.touches[0].clientY - rect.top
+    }
+  }
+
+  function renderCanvas() {
+    if (drawing) {
+      ctx.moveTo(lastPos.x, lastPos.y);
+      ctx.lineTo(mousePos.x, mousePos.y);
+      ctx.stroke();
+      lastPos = mousePos;
+    }
+  }
+
+  // Prevent scrolling when touching the canvas
+  document.body.addEventListener("touchstart", function(e) {
+    if (e.target == canvas) {
+      e.preventDefault();
+    }
+  }, false);
+  document.body.addEventListener("touchend", function(e) {
+    if (e.target == canvas) {
+      e.preventDefault();
+    }
+  }, false);
+  document.body.addEventListener("touchmove", function(e) {
+    if (e.target == canvas) {
+      e.preventDefault();
+    }
+  }, false);
+
+  (function drawLoop() {
+    requestAnimFrame(drawLoop);
+    renderCanvas();
+  })();
+
+  function clearCanvas() {
+    canvas.width = canvas.width;
+
+  }
+
+  // Set up the UI
+  var sigText = document.getElementById("sig-dataUrl");
+  var sigImage = document.getElementById("sig-image");
+  var clearBtn = document.getElementById("sig-clearBtn");
+  var submitBtn = document.getElementById("sig-submitBtn");
+  clearBtn.addEventListener("click", function(e) {
+    clearCanvas();
+
+    sigText.innerHTML = "Data URL for your signature will go here!";
+    sigImage.setAttribute("src", "");
+  }, false);
+  submitBtn.addEventListener("click", function(e) {
+    var dataUrl = canvas.toDataURL();
+    sigText.innerHTML = dataUrl;
+    sigImage.setAttribute("src", dataUrl);
+  }, false);
+})();
+</script>
+  <script>
+    function showPopup() {
+      alert("Are you want to delete this data !");
+    }
+  </script>
+<script>
+  function deleteData(event,uhid,id) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    // Display the confirmation message
+    var confirmation = confirm("Are you sure you want to delete the data?");
+
+    // Check user's choice
+    if (confirmation) {
+      window.location.href = "/discharge_post_medi_delete/"+ uhid+'/' + id;
+    }
+  }
+</script>
+
+<script>
+  function deleteDataPre(event,uhid,id) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    // Display the confirmation message
+    var confirmation = confirm("Are you sure you want to delete the data?");
+
+    // Check user's choice
+    if (confirmation) {
+      window.location.href = "/discharge_prescription_delete/"+ uhid+'/' + id;
+    }
+  }
+</script>
+
+<script>
+  function deleteDataMed(event,uhid,id) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    // Display the confirmation message
+    var confirmation = confirm("Are you sure you want to delete the data?");
+
+    // Check user's choice
+    if (confirmation) {
+      window.location.href = "/discharge_medi_delete/"+ uhid+'/' + id;
+    }
+  }
+</script>
+<script>
+  // Retrieve current datetime
+  var currentDatetime = new Date();
+
+  // Format the datetime as a string
+  var datetimeString = currentDatetime.toLocaleString();
+
+  // Update the HTML element with the datetime
+  document.getElementById("datetime").innerHTML = datetimeString;
+</script>
+
+{% endblock %}

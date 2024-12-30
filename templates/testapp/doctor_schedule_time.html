@@ -1,0 +1,61 @@
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<div class="heroo">
+  <div class="outer" >
+<div class="container" align="center1">
+  <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+    <div class="center" style="background-color: white; ">
+      <div class="header">
+          <div class="card"> 
+             <h1 align='center'>Scheduled Time</h1><hr>
+  <h3 align='center'>This is Your Availabile days</h3><hr>
+  <div class="row">
+    {% for date in scheduled_date_list%}
+    <div class="col-lg-2 col-md-3 col-sm-3  schedule-design">
+        {{date}}
+    </div>
+    {% endfor %}
+  </div><br>
+  <div class="Schedule_time" align='center'>
+    <h3>Set Schedule Timing</h3>
+    <form method="POST" action="time-scheduling">
+      {% csrf_token %}
+        <div class="form-row">
+          <div class="col">
+            <label for="">Schedule Date*</label>
+            <select name="select_scheduled" class="form-control" >
+              <option value="All" name='all'>For All Availability</option>
+              <option value="Weekly" name='weekly' disabled>Weekly</option>
+              <option value="Monthly" name='monthly' disabled>Monthly</option>
+            </select>
+          </div>
+          <div class="col">
+            <label for="">Start Time*</label>
+            <input type="time" name="start_time" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col">
+            <label for="">End Time*</label>
+            <input type="time" name="end_time" class="form-control" required>
+          </div>
+          <div class="col">
+            <label for="">Average Time Duration in minuts*</label>
+            <input type="number" name="average_duration" class="form-control" min="10" max="55" step="5" pattern="[0-6]{1}[0-9]{1}" title='Please Follow pattern' placeholder="Average Time Duration in minuts" required>
+          </div>
+        </div><br>
+      <input type="submit" name="time_scheduling" value="Go Next" class="btn btn-block btn-primary">
+    </form>
+  </div>
+  <br><br><a href="/doctor-schedule" class="btn btn-primary">Go Back</a>
+</div>
+</div>
+</div>
+</div><br><br>
+</div>
+</div>
+</div>
+
+{% endblock %}

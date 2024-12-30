@@ -1,0 +1,52 @@
+{% extends 'doctor/base.html' %}
+{% load static %}
+{% block body_block %}
+
+
+
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                   <div class="container-fluid"><br>
+                    <div class="row clearfix">
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                             <div class="info-box7 l-bg-green order-info-box7">
+                                <div class="info-box7-block">
+                                    <span><h4 style="color: #f94001;">&nbsp;{{today_app}}</h4></span> <h2 class="text-right"><i class="fas fa-calendar-check pull-left"></i>&nbsp;</h2>
+                                    <h5 >&nbsp;Today Appointment</h5>
+                                </div>
+                             </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                             <div class="info-box7 l-bg-green order-info-box7">
+                                <div class="info-box7-block">
+                                    <span><h4 style="color: #f94001;">&nbsp;{{tomorrow_app}}</h4></span> <h2 class="text-right"><i class="fas fa-calendar-day pull-left"></i>&nbsp;</h2>
+                                    <h5 >&nbsp;Tomorrow Appointment</h5>
+                                </div>
+                             </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                             <div class="info-box7 l-bg-green order-info-box7">
+                                <div class="info-box7-block">
+                                    <span><h4 style="color: #f94001;">&nbsp;{{records}}</h4></span> <h2 class="text-right"><i class="fas fa-calendar-week pull-left"></i>&nbsp;</h2>
+                                    <h5 >&nbsp;All Appointment</h5>
+                                </div>
+                             </div>
+                            </div>
+                        </div>
+
+        </div>
+    </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+    </div>
+
+    {% endblock  %}

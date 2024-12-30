@@ -1,0 +1,698 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load customfilter %}
+
+{% block head_block %}
+
+<style>
+    .form-control {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+
+    #id_from_date,
+    #id_to_date,
+    #id_Store,
+    #id_MRP,
+    #id_Expiry_Date,
+    #id_Pysical_Qty,
+    #id_GST,
+    #id_CGST,
+    #id_SGST,
+    #id_IGST,
+    #id_Remark {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="color: white;" href="#">Stock Entry</a>
+            </div>
+        </nav><br>
+        <div class="container-fluid">
+
+            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <div class="card">
+                    <div class="body">
+                        <div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="/stock_entry" class="btn btn-info"> <i
+                                    class="fa fa-arrow-circle-left">&nbsp;Back</i></a>&nbsp;
+                            <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">&nbsp;Exit</i></a>&nbsp;
+                            <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+                                    class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                            <button type="submit" class="btn btn-success" name="saveall" value="saveall"
+                                form="form_id"><i class="fas fa-save">&nbsp; Save</i></button>&nbsp;
+
+                            <a href="/SE_preview" class="btn btn-warning"> <i
+                                    class="fas fa-sync-alt"></i>&nbsp;&nbsp;PREVIEW</a>&nbsp;
+
+                            <!-- <button class="btn btn-secondary"><input  class="form-control" type="file" id="formFile"></button> -->
+                            <form enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <button style="display:block;width:120px; height:35px;" class="btn btn-primary"
+                                    name="upload_invoice" type="submit" form="form_id" class="form-control"
+                                    onclick="document.getElementById('file').click()">Upload</button>
+                                <!-- <input type='file' id="getFile" style="display:none"> -->
+                                <input type="file" id="file" name="file" data-cities-url="{% url 'fileupload' %}"
+                                    style="display:none">
+
+
+                            </form>
+
+
+
+                        </div><br>
+                        <form action="" method="post" id="form_id">
+                            {% csrf_token %}
+
+                            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"
+                                style="background-color:rgb(233, 233, 233);"><br>
+                                <div class="form-row">
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>PO ID</label>
+                                        <!-- <input type="text" name="po_no" id="po_no" style="background-color: white;" value='{{PO_parent.PO_id}}' class="form-control" disabled> -->
+                                        <input type="text" name="po_no" id="po_no" style="background-color: white;"
+                                            value='{{PO_parent.PO_id}}' class="form-control" readonly>
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>PO Date</label>
+                                        <input type="text" name="po_datetime" id="po_datetime" class="form-control"
+                                            value='{{PO_parent.PO_datetime}}' style="background-color: white;" readonly>
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Vendor Name</label>
+                                        <input type="text" name="vendor_name" name="vendor_id" class="form-control"
+                                            style="background-color: white;" readonly value='{{PO_parent.vendar_id.vendor_name}}'>
+                                        <input type="hidden" name="vendor_id" id="vendor_id" class="form-control"
+                                            style="background-color: white;" readonly value='{{PO_parent.vendar_id_id}}'>
+                                        <!-- <input type="hidden" name="po_vendor_id" id="po_vendor_id" value='{{PO_parent.PO_id}}'>
+                                        <input type="hidden" name="po_tax_id" id="po_tax_id" value='{{PO_parent.PO_id}}'> -->
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Net Amount</label>
+                                        <input type="text" name="po_net_amt" id="po_net_amt" class="form-control"
+                                            style="background-color: white;" readonly value='{{PO_parent.net_amount}}'>
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Basic Amount</label>
+                                        <input type="text" name="po_basic_amt" id="basic_amt" class="form-control"
+                                            style="background-color: white;" readonly value='{{PO_parent.basic_amt}}'>
+                                    </div>
+
+                                    <input type="hidden" name="department" id="department" value='{{PO_parent.Department_id}}'>
+                                    <input type="hidden" name="store_id" id="store_id" value='{{PO_parent.store_id_id}}'>
+                                    <input type="hidden" name="location_id" id="location_id" value='{{PO_parent.Location_id}}'>
+                                    <input type="hidden" name="po_location" id="po_location" value='{{PO_parent.po_location_id}}'>
+
+
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Invoice No</label>
+                                        <input type="text" name="po_invoice_no" id="invoice_no" class="form-control">
+                                    </div>
+
+                                </div>
+                                <br>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-stripped ">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Item Name</th>
+                                            <th>Batch No</th>
+                                            <th>Expiry Date</th>
+                                            <th>PO Qty</th>
+                                            <th>Outstand Qty</th>
+                                            <th>Received Qty</th>
+                                            <th>Stock Qty</th>
+                                            <th>Rate</th>
+                                            <th>Dis Amt</th>
+                                            <th>Amt</th>
+                                            <th>Tax</th>
+
+                                        </tr>
+                                    </thead>
+                                    {% for data1,data2 in records1 %}
+                                    <tbody>
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+
+                                           <input type="hidden" style="background-color: white;"
+                                                    class="form-control" name="child_id" id="child_id" value="{{data1.id}}"
+                                                    >
+                                            <td><input type="hidden" style="background-color: white;" class="form-control"
+                                                    name="po_item_id" id="po_item_id" value="{{data1.item_id_id}}"
+                                                    readonly>{{data1.item_id}} {{data1.item_id.unit}} {{data1.item_id.item_subcategory.itemsubcategory}}</td>
+                                            <td><input type='text' name='po_serial_batch' id='serial_batch'
+                                                    class='form-control'></td>
+                                            <td><input type='date' name='po_expiry_date' id='expiry_date'
+                                                    class='form-control'></td>
+                                            <td><input type='hidden' name='qty' style="background-color: white;"
+                                                    id='qty' class='form-control' value='{{data1.qty}}'>{{data1.qty}}</td>
+                                            <td><input type='text' name='po_os_qty' id='po_os_qty' class='form-control'
+                                                    value='{{data1.qty|sub:data1.received_qty }}'></td>
+                                            <td><input type='text' name='po_physical_qty' id='physical_qty'
+                                                    class='form-control' value='{{data1.qty|sub:data1.received_qty }}'></td>
+                                            <td><input type="text" style="background-color: white;" class="form-control"
+                                                    name="stock_qty" id="stock_qty" value="{{data1.stocy_qty}}"
+                                                    readonly></td>
+                                            <td><input type="text" style="background-color: white;" class="form-control"
+                                                    name="rate" id="rate" value="{{data1.rate}}" readonly></td>
+                                            <td><input type="text" style="background-color: white;" class="form-control"
+                                                    name="discount_amt" id="discount_amt" value="{{data1.discount_amt}}"
+                                                    readonly>
+                                                <input type="hidden" style="background-color: white;"
+                                                    class="form-control" name="discount" id="discount"
+                                                    value="{{data1.discount}}" readonly>
+                                                <input type="hidden" name="schema" id="schema"
+                                                    value="{{data1.schema}}" readonly>
+                                                <input type="hidden" name="free_qty" id="free_qty"
+                                                    value="{{data1.free_qty}}" readonly>
+                                            </td>
+                                            <td><input type="text" style="background-color: white;" class="form-control"
+                                                    name="amount" id="amount" value="{{data1.amount}}" readonly></td>
+                                            <td><input type="text" style="background-color: white;" class="form-control"
+                                                    name="tax" id="tax" value="{{data1.tex_details}}" readonly></td>
+                                        </tr>
+
+                                    </tbody>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+
+                <div class="modal fade" id="stock_entry" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <!-- Header -->
+                            <div class="modal-header" style="background: skyblue;">
+                                <h5 class="modal-title" id="stock_entry"><b> Stock Entry </b></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                </button>
+                            </div><br>
+                            <!-- Main block -->
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="body">
+                                        <div class="demo-masked-input">
+                                            <div class="row clearfix">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <div class="form-line">
+                                                            <form method="post">
+
+                                                                <div class="row clearfix">
+                                                                    <div class="col-md-3">
+                                                                        <label>Item</label>
+                                                                        <input type="text" name="item_name"
+                                                                            id="item_name" class="form-control">
+                                                                        <input type="hidden" name="item_id"
+                                                                            id="item_id">
+                                                                        <input type="hidden" name="po_id" id="po_id">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Invoice No</label>
+                                                                        <input type="text" name="invoice_no"
+                                                                            id="invoice_no" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Store</label>
+                                                                        <select class="form-control" name="store_id"
+                                                                            id="store_id">
+                                                                            <option>Select</option>
+
+                                                                            <option value=""></option>
+
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Serial/Batch</label>
+                                                                        <input type="text" name="serial_batch"
+                                                                            id="serial_batch" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>MRP</label>
+                                                                        <input type="text" name="mrp" id="mrp"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Expiry Date</label>
+                                                                        <input type="date" name="expiry_date"
+                                                                            id="expiry_date" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Physical Qty</label>
+                                                                        <input type="text" name="physical_qty"
+                                                                            id="physical_qty" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Rate per Qty</label>
+                                                                        <input type="text" name="rate" id="rate"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Amount</label>
+                                                                        <input type="text" name="amount" id="amount"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>GST%</label>
+                                                                        <select name="gst" id="gst"
+                                                                            class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>5%</option>
+                                                                            <option>12%</option>
+                                                                            <option>18%</option>
+                                                                            <option>22%</option>
+                                                                            <option>28%</option>
+                                                                        </select>
+
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>CGST%</label>
+                                                                        <input type="text" name="cgst" id="cgst"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>SGST%</label>
+                                                                        <input type="text" name="sgst" id="sgst"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>IGST%</label>
+                                                                        <input type="text" name="igst" id="igst"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Remark</label>
+                                                                        <input type="text" name="remark" id="remark"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-0"><br>
+                                                                        <button type="submit" class="btn btn-success">
+                                                                            <i
+                                                                                class="fas fa-save">Save</i></button>&nbsp;
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Footer -->
+                                            <!-- <div class="modal-footer">
+                         <hr style="border: 10%; color: aqua;"><br>
+                    <button type="button"class="btn btn-success" > <i class="fas fa-save" >&nbsp;Save</i></button>
+                         </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="stock_entry_update" tabindex="-1" role="dialog"
+                    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <!-- Header -->
+                            <div class="modal-header" style="background: skyblue;">
+                                <h5 class="modal-title" id="stock_entry_update"><b> Edit Stock Entry </b></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                </button>
+                            </div><br>
+                            <!-- Main block -->
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="body">
+                                        <div class="demo-masked-input">
+                                            <div class="row clearfix">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <div class="form-line">
+                                                            <form method="post">
+
+                                                                <div class="row clearfix">
+                                                                    <div class="col-md-3">
+                                                                        <label>Item</label>
+                                                                        <input type="text" name="item_name"
+                                                                            id="item_name" class="form-control">
+                                                                        <input type="hidden" name="item_id"
+                                                                            id="item_id">
+                                                                        <input type="hidden" name="po_id" id="po_id">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Invoice No</label>
+                                                                        <input type="text" name="e_invoice_no"
+                                                                            id="e_invoice_no" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Store</label>
+                                                                        <select class="form-control" name="e_store_id"
+                                                                            id="e_store_id">
+                                                                            <option>Select</option>
+
+                                                                            <option value=""></option>
+
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Serial/Batch</label>
+                                                                        <input type="text" name="e_serial_batch"
+                                                                            id="e_serial_batch" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>MRP</label>
+                                                                        <input type="text" name="e_mrp" id="e_mrp"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Expiry Date</label>
+                                                                        <input type="date" name="e_expiry_date"
+                                                                            id="e_expiry_date" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Physical Qty</label>
+                                                                        <input type="text" name="e_physical_qty"
+                                                                            id="e_physical_qty" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Rate per Qty</label>
+                                                                        <input type="text" name="e_rate" id="e_rate"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Amount</label>
+                                                                        <input type="text" name="e_amount" id="e_amount"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>GST%</label>
+                                                                        <select name="e_gst" id="e_gst"
+                                                                            class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>5%</option>
+                                                                            <option>12%</option>
+                                                                            <option>18%</option>
+                                                                            <option>22%</option>
+                                                                            <option>28%</option>
+                                                                        </select>
+
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>CGST%</label>
+                                                                        <input type="text" name="e_cgst" id="e_cgst"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>SGST%</label>
+                                                                        <input type="text" name="e_sgst" id="e_sgst"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>IGST%</label>
+                                                                        <input type="text" name="e_igst" id="e_igst"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Remark</label>
+                                                                        <input type="text" name="e_remark" id="e_remark"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-0"><br>
+                                                                        <button type="submit" class="btn btn-success">
+                                                                            <i
+                                                                                class="fas fa-save">Update</i></button>&nbsp;
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Footer -->
+                                            <!-- <div class="modal-footer">
+                         <hr style="border: 10%; color: aqua;"><br>
+                    <button type="button"class="btn btn-success" > <i class="fas fa-save" >&nbsp;Save</i></button>
+                         </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="stock_entry_list" tabindex="-1" role="dialog"
+                    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <!-- Header -->
+                            <div class="modal-header" style="background: skyblue;">
+                                <h5 class="modal-title" id="stock_entry_list"><b> Stock Entry List</b></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                </button>
+                            </div><br>
+                            <!-- Main block -->
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="body">
+                                        <div class="demo-masked-input">
+                                            <div class="row clearfix">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <div class="form-line">
+                                                            <form method="post" action="">
+                                                                {% csrf_token %}
+
+                                                                <input type="hidden" name="po_no" value="">
+                                                                <input type="hidden" name="po_datetime" value="">
+                                                                <input type="hidden" name="po_vendor_id" value="">
+                                                                <input type="hidden" name="po_tax_id" value="">
+                                                                <input type="hidden" name="po_net_amt" value="">
+                                                                <input type="hidden" name="basic_amt" id="basic_amt"
+                                                                    value="">
+                                                                <button type="submit" class="btn btn-success"> <i
+                                                                        class="fas fa-save">Save</i></button>&nbsp;
+                                                                <br><br>
+                                                                <div class="table-responsive">
+                                                                    <table class="datatable table table-stripped ">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>S.No</th>
+                                                                                <th>PO ID</th>
+                                                                                <th>Invoice No</th>
+                                                                                <th>Item</th>
+                                                                                <th>Store</th>
+                                                                                <th>Batch/Serial No.</th>
+                                                                                <th>MRP</th>
+                                                                                <th>Expiry Date</th>
+                                                                                <th>Physical Qty</th>
+                                                                                <th>Rate</th>
+                                                                                <th>Amount</th>
+                                                                                <th>GST</th>
+                                                                                <th>CGST%</th>
+                                                                                <th>SGST%</th>
+                                                                                <th>IGST</th>
+                                                                                <th>Remark</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td>
+                                                                                    <input type="hidden"
+                                                                                        name="item_id[]" id="item_id"
+                                                                                        value="">
+                                                                                    <input type="hidden" name="po_id[]"
+                                                                                        id="po_id" value="">
+                                                                                    <input type="hidden"
+                                                                                        name="invoice_no"
+                                                                                        id="invoice_no" value="">
+                                                                                    <input type="hidden"
+                                                                                        name="po_date[]" id="po_date"
+                                                                                        value="">
+                                                                                    <input type="hidden"
+                                                                                        name="vendor_id[]"
+                                                                                        id="vendor_id" value="">
+                                                                                    <input type="hidden"
+                                                                                        name="net_amt[]" id="net_amt"
+                                                                                        value="">
+                                                                                    <input type="hidden"
+                                                                                        name="tax_details[]"
+                                                                                        id="tax_details" value="">
+                                                                                    <input type="hidden" name="tax[]"
+                                                                                        id="tax" value="">
+                                                                                    <input type="hidden"
+                                                                                        name="discount_amount[]"
+                                                                                        id="discount_amount" value="">
+                                                                                    <input type="hidden"
+                                                                                        name="item_qty[]" id="item_qty"
+                                                                                        value="">
+                                                                                    <input type="hidden"
+                                                                                        name="store_id[]" id="store_id"
+                                                                                        value="">
+                                                                                    <input type="hidden"
+                                                                                        name="serial_batch[]"
+                                                                                        id="serial_batch" value="">
+                                                                                    <input type="hidden" name="mrp[]"
+                                                                                        id="mrp" value="">
+                                                                                    <input type="hidden" name="rate[]"
+                                                                                        id="rate" value="">
+                                                                                    <input type="hidden" name="amount[]"
+                                                                                        id="amount" value="">
+                                                                                    <input type="hidden"
+                                                                                        name="expiry_date[]"
+                                                                                        id="expiry_date" value="">
+                                                                                    <input type="hidden"
+                                                                                        name="physical_qty[]"
+                                                                                        id="physical_qty" value="">
+                                                                                    <input type="hidden" name="gst[]"
+                                                                                        id="gst" value="">
+                                                                                    <input type="hidden" name="cgst[]"
+                                                                                        id="cgst" value="">
+                                                                                    <input type="hidden" name="sgst[]"
+                                                                                        id="sgst" value="">
+                                                                                    <input type="hidden" name="igst[]"
+                                                                                        id="igst" value="">
+                                                                                    <input type="hidden" name="remark[]"
+                                                                                        id="remark" value="">
+                                                                                </td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                            </tr>
+
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+
+                                                        </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <script src="jquery-3.6.0.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            $(document).ready(function () {
+
+                $(document).on('keyup', '#physical_qty', function () {
+
+                    var qty = this.value;
+                    var physical_qty=$('#qty').val();
+                    var final = qty-physical_qty;
+
+                    // alert(qty);
+                    $('#po_os_qty').val(final);
+
+                });
+
+            }); -->
+
+            </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+            <script>
+                $("input").on("change", function () {
+                    this.setAttribute(
+                        "data-date",
+                        moment(this.value, "YYYY-MM-DD")
+                            .format(this.getAttribute("data-date-format"))
+                    )
+                }).trigger("change")
+            </script>
+
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+                $(document).ready(function () {
+                    $('#file').on('change', function () {
+                        // var form_data = new FormData($('form')[0]);
+                        var file = this.files[0];
+                        var formData = new FormData();
+                        formData.append('file', file);
+                        url = $("#file").attr("data-cities-url");
+                        var headers = { 'X-CSRFToken': '{{ csrf_token }}' }
+                        alert(url)
+                        // $.ajax({
+                        // 	url:url,
+                        // 	form_data : formData,
+                        // 	processData: false,
+                        // 	contentType: false,
+
+                        //     headers:headers,
+                        // 	success: function(data) {
+                        // 		console.log(data);
+                        // 		alert(data);
+                        // 	},
+                        // 	error: function(error) {
+                        // 		console.log(error);
+                        // 		alert('File upload failed');
+                        // 	}
+                        // });
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            headers: headers,
+                            success: function (response) {
+                                console.log(response);
+                                alert('File uploaded successfully!');
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(error);
+                                alert('An error occurred while uploading the file.');
+                            }
+                        });
+
+
+                    });
+                });
+            </script>
+
+
+
+
+            {% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+
+
+
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <button type="menu" style="font-family: monospace; width: 100%; text-align: left;" class="btn btn-primary m-t-15 waves-effect"> <b>Payment Mode</b></button>
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+           <div class="card">
+               <div class="header">
+       <div class="body">
+
+               <div class="container-fluid">
+                <div class="body">
+                    <div class="demo-masked-input">
+                      <br>
+                      <form  method="POST" id="form">
+                        <div class="row clearfix">
+                          <br><div class="icon-button-demo">&nbsp;
+                            <button type="submit"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;
+                            <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+                        </div><br>
+                        <br>
+                          <div class="col-12">
+                              <div class="form-group">
+                                  <div class="form-line">
+                                    
+                                      {% csrf_token %}
+                                      <div class="form-row">
+                                          <div class="form-group col-md-6 mb-0">
+                                              {{form.Staff_name|as_crispy_field}}
+                                          </div>
+                
+                                          <div class="form-group col-md-6 mb-0">
+                                              {{form.description|as_crispy_field}}
+                                          </div>
+                                        </div>
+                                  
+                                  </div>
+                              </div>
+                          </div>
+                        </form>
+   
+   
+                            </div>
+   
+                        </div>
+                      </div>
+                  </div>
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+{% endblock  %}
+
+
+
+

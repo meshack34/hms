@@ -1,0 +1,93 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px;"><br><br>
+          <h2>Doctor Ability Report</h2>
+            <br><br>
+            <form method="post">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-3">
+                  <label for="">Doctor Name</label><br>
+                  <select name="search_doc" id="search_doc" class="form-control">
+                    <option value="">All</option>
+                    {% for data in doctor %}
+                    <option value="{{data.doctor_id}}">{{data.doctor_name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-3" style="margin-top: 30px;">
+                  <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+              </div>
+              
+            </form>
+            <br><br><br>
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Doctor name</th>
+                    <th scope="col">Sunday</th>
+                    <th scope="col">Monday</th>
+                    <th scope="col">Tuesday</th>
+                    <th scope="col">Wednesday</th>
+                    <th scope="col">Thursday</th>
+                    <th scope="col">Friday</th>
+                    <th scope="col">Saturday</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for data1,doc,time in records %}
+                  <td colspan="8" style="font-size: 18px;"><b>{{doc}}</b></td>
+                  {% for mon,tue,wen,thur,fri,sat,sun in data1.0 %}
+                  <tr>
+                    <td style="border: none;"></td>
+                    <td style="border-left: ridge; border-top: ridge; border-bottom: ridge;  font-size: 15px;">{{sun}}
+                      {% if sun != "" %}
+                       <br><p style="font-size: 10px;">( {{time}} )</p>
+                       {% endif %}
+                      </td>
+                       
+                    <td style="border-top: ridge; border-bottom: ridge; font-size: 15px;">{{mon}} 
+                      {% if mon != "" %}
+                      <br><p style="font-size: 10px;">( {{time}} )</p>
+                      {% endif %}
+                     </td>
+                    <td style="border-top: ridge; border-bottom: ridge; font-size: 15px;">{{tue}} 
+                      {% if tue != "" %}
+                      <br><p style="font-size: 10px;">( {{time}} )</p>
+                      {% endif %}
+                     </td>
+                    <td style="border-top: ridge; border-bottom: ridge; font-size: 15px;">{{wen}} 
+                      {% if wen != "" %}
+                      <br><p style="font-size: 10px;">( {{time}} )</p>
+                      {% endif %}
+                     </td>
+                    <td style="border-top: ridge; border-bottom: ridge; font-size: 15px;">{{thur}} 
+                      {% if thur != "" %}
+                      <br><p style="font-size: 10px;">( {{time}} )</p>
+                      {% endif %}
+                     </td>
+                    <td style="border-top: ridge; border-bottom: ridge; font-size: 15px;">{{fri}} 
+                      {% if fri != "" %}
+                      <br><p style="font-size: 10px;">( {{time}} )</p>
+                      {% endif %}
+                     </td>
+                    <td style="border-right: ridge; border-top: ridge; border-bottom: ridge; font-size: 15px;">{{sat}} 
+                      {% if sat != "" %}
+                      <br><p style="font-size: 10px;">( {{time}} )</p>
+                      {% endif %}
+                     </td>
+                  </tr>
+                    {% endfor %}
+                  
+                    {% endfor %}
+                 
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

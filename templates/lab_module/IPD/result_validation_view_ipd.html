@@ -1,0 +1,94 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px;">
+            
+            <h2><img src="{% static 'images/result entry' %}" alt="" style="width: 50px;">  <b>Result Validation</b></h2><br><br>
+            <form method="post">
+            <div class="icon-button-demo">&nbsp;
+                <a href=''><button type="submit"class="btn btn-success" form='form_id'> <i class="fas fa-check">  Validation </i></button></a>&nbsp;
+                <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+              <button type="button" class="btn btn-danger"><a href='/'><i class="fas fa-times-circle" style="color:white;">Exit</i></a></button>
+          </div> </form><br>
+          <div>
+            <div class='row'>
+                <div class='col-md-4'>
+                    <label> UHID</label>
+                    <input type='text' class='form-control' value='{{pat.uhid}}' readonly>
+                </div>
+                <div class='col-md-4'>
+                    <label> Name</label>
+                    <input type='text' class='form-control' value='{{pat.first_name}}' readonly>
+                </div>
+                <div class='col-md-4'>
+                    <label> Age</label>
+                    <input type='text' class='form-control' value='{{pat.age}}' readonly>
+                </div>
+            </div><br>
+            <div class='row'>
+                <div class='col-md-4'>
+                    <label> Phone</label>
+                    <input type='text' class='form-control' value='{{pat.mobile_number}}' readonly>
+                </div>
+                <div class='col-md-4'>
+                    <label> Gender</label>
+                    <input type='text' class='form-control' value='{{pat.gender}}' readonly>
+                </div>
+            </div>
+          </div>
+            <div><br><br>
+                <table class="table ">
+                    <thead>
+                      <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Service Name</th>
+                        <th scope="col">Range</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">units</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <form method='post' id='form_id'>
+                        {% csrf_token %}
+                        {% for head,body in records %}
+                        <tr >
+                            <td colspan="5" style="font-size: 16px; padding: 20px;">{{head}}</td>
+                        </tr>
+                        {% for data in body %}
+                        {% if data.status == "in_range" %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.service_name}}</td>
+                            <td>{{data.range}}</td>
+                            <td>{{data.value}}</td>
+                            <td>{{data.units}}</td>
+                          </tr>
+                          {% elif data.status == "out_range" %}
+                          <tr>
+                            <td style="background-color: rgb(255, 255, 174);">{{forloop.counter}}</td>
+                            <td style="background-color: rgb(255, 255, 174);">{{data.service_name}}</td>
+                            <td style="background-color: rgb(255, 255, 174);">{{data.range}}</td>
+                            <td style="background-color: rgb(255, 255, 174);">{{data.value}}</td>
+                            <td style="background-color: rgb(255, 255, 174);">{{data.units}}</td>
+                          </tr>
+                          {% endif %}
+                          {% endfor %}
+                          {% endfor %}
+                        </form>
+                    </tbody>
+                  </table>
+                  
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

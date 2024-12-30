@@ -1,0 +1,148 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+    .form {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Duty Roaster</h4>
+            </div>
+           
+        </div>          
+        <br>
+        <div class="card" style="padding: 10px;background-color:#ebebf8;">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <div class="col-md-0">
+                            <button type="submit" class="btn btn-success" name="save_shift_assign" value="save_shift_assign"> <i
+                                    class="fas fa-save">Assign</i></button>&nbsp;
+                        </div>
+                        <div class="col-md-0">
+                            <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+                                    class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                        </div>
+                        <div class="col-md-0">
+                            <button type="button" class="btn btn-danger"><a href='/'><i class="fas fa-times-circle"
+                                        style="color:white;">Exit</i></a></button>&nbsp;
+                        </div>
+                        <div class="col-md-0">
+                            <a href="{% url 'assign_shift' %}" class="btn btn-primary"> <i
+                                    class="fa fa-arrow-circle-left">&nbsp;Back</i></a>&nbsp;
+                        </div>
+
+                    </div><br>
+                    <br>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Shift</label>
+                            <select name="shift_id" id="shift_id" class="form-control">
+                                <option value="">Select</option>
+                                {% for data in shift_detail %}
+                                <option value="{{ data.id }}">{{ data.shift_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Start Time</label>
+                            <input type="text" name="start_time" id="start_time" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label>End Time</label>
+                            <input type="text" name="end_time" id="end_time" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label>From Date</label>
+                            <input type="date" name="from_date" id="from_date" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label>To Date</label>
+                            <input type="date" name="to_date" id="to_date" class="form-control">
+                        </div>
+                    </div><br><br>
+
+                    <div class="card mb-0">
+                        <div class="card-body p-0">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table class="datatable table table-stripped ">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Employee ID</th>
+                                                    <th>Employee Name</th>
+                                                    <th>Department</th>
+                                                    <th>Current Shift</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for data in emp_details %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{data.employee_id}}<input type="hidden" name="emp_id"
+                                                            id="emp_id" value="{{data.id}}"></td>
+                                                    <td>{{data.first_name}}{{data.last_name}}</td>
+                                                    <td>{{data.depart_name}}<input type="text" name="dept_id"
+                                                        id="dept_id" value="{{data.department_id}}"></td>
+                                                    <td>{{data.shift_name}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+       
+    </div>
+
+</div>
+<!--/ content-->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(document).on('change', '#shift_id', function () {
+            var shift_id = $('#shift_id').val();
+            var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+
+            $.ajax({
+                url: '{% url "get_shift_detail" %}',
+                type: "GET",
+                data: {
+                    shift_id: shift_id,
+                },
+                headers: headers,
+                dataType: 'json',
+                success: function (data) {
+                    $("#end_time").val(data.end_time);
+                    $("#start_time").val(data.start_time);
+
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

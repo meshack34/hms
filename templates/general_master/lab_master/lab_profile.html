@@ -1,0 +1,238 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<style>
+    input[type=text],
+    input[type=number] {
+        width: 100%;
+        height: 100%;
+        border: none;
+        box-sizing: border-box;
+        border-top: 2px solid rgba(0, 0, 0, 0);
+        border-left: 2px solid rgba(0, 0, 0, 0);
+        border-right: 2px solid rgba(0, 0, 0, 0);
+        border-bottom: 2px solid rgb(233, 215, 215);
+        font-size: 14px;
+        background-color: rgba(0, 0, 0, 0);
+        background-position: 10px 12px;
+        background-repeat: no-repeat;
+        text-align: center !important;
+    }
+</style>
+
+<!-- search css  -->
+<style>
+    #myInput[type=text] {
+        width: 130px;
+        box-sizing: border-box;
+        border-top: 2px solid rgba(0, 0, 0, 0);
+        border-left: 2px solid rgba(0, 0, 0, 0);
+        border-right: 2px solid rgba(0, 0, 0, 0);
+        border-bottom: 2px solid rgb(233, 215, 215);
+        font-size: 16px;
+        /* font-weight: bold; */
+        color: #999;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: url('Main/search.png');
+        background-position: 10px 12px;
+        background-repeat: no-repeat;
+        text-align: left !important;
+        -webkit-transition: width 0.4s ease-in-out;
+        transition: width 0.4s ease-in-out;
+        font-family: 'gothic' !important;
+    }
+
+    #myInput[type=text]:focus {
+        width: 100%;
+        outline: none;
+        border-bottom: 2px solid #2E51A2;
+    }
+
+    .Dropdown {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .dropdown_content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 940px;
+        overflow: auto;
+        text-align: left !important;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdown_content a {
+        color: black;
+        padding: 12px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .Dropdown a:hover {
+        background-color: #f1f1f1
+    }
+
+    .show {
+        display: block;
+    }
+
+    ul {
+        padding: 0;
+        list-style-type: none;
+        
+    }
+    th,td{
+        text-align: center;
+    }
+</style>
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="width: 100%; padding:30px;">
+                <h3 style="padding: 10px; background-color: rgb(81, 201, 201); color: white;">Opd Package Service</h3>
+                <br>
+                <div class="icon-button-demo">&nbsp;
+                     <button type="submit" class="btn btn-warning" form="form_id"><i class="fas fa-plus" >  Save</i></button>&nbsp;
+                     <a href="edit-gender-master" class="btn btn-info"> <i class="fas fa-edit" style="color:white;">  Edit</i></a>&nbsp;
+                     <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i class="fas fa-sync-alt" >  Refresh</i></button>&nbsp;
+                     <a href="/" class="btn btn-danger"> <i class="fas fa-times-circle">  Exit</i></a>
+        
+                 </div><br>
+                <form method="post" id="form_id">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <label class="form-lable" style="padding:10px 10px 10px;">Lab Service Name</label>
+                        <input type='text' class="form-control" name="name"  style="width:250px;" requried>
+                    </div>
+                </form><br><br>
+            </div>
+            <div>
+                {% if lab_name %}
+                <table class="table"  style="overflow: auto;">
+                    <thead>
+                        <tr>
+                            <th> Search Service</th>
+                            <th>Service Name</th>
+                            <th>Quantity</th>
+                            <th>Discount</th>
+                            <th>Rate</th>
+                            <th>Net Amount</th>
+                            <th>Action </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <section class="mainSection">
+                                    <br>
+                                    <div class="Dropdown">
+                                        <center><input type="text" id="myInput" class="dropbtn"
+                                                onkeypress="searchDrop()" onkeyup="mySearch()" placeholder="Search..."
+                                                title="Type Series Title"></center>
+                                        <div id="myDropdown" class="dropdown_content" style="width: 100px;">
+                                            <ul id="myUL">
+                                                {% for data in item %}
+                                                <li><a href="/lab_service_add/{{data}}">{{data}}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </section>
+                            </td>
+                            <form method="post">
+                                {% csrf_token %}
+                                <td style="padding-top: 30px;"><input type="text" id="UPservice_name" name="service_name"
+                                        value="{{service_master.service_name}}" style="background-color: whitesmoke;"
+                                        readonly></td>
+                                <td style="padding-top: 30px;"><input type="number" id='UPquantity' name="quantity"
+                                        required style="background-color: whitesmoke;"></td>
+                                <td style="padding-top: 30px;"><input type="number" id="UPdiscount" name="discount"
+                                        required style="background-color: whitesmoke;"></td>
+                                <td style="padding-top: 30px;"><input type="number" id="UPrate" name="rate"
+                                        value="{{service_master.Charges}}" readonly
+                                        style="background-color: whitesmoke;"></td>
+                                <td style="padding-top: 30px;"><input type="number" id="UP_net_amount" name="net_amount"
+                                        required style="background-color: whitesmoke;" readonly> </td>
+
+                                <td><button type="submit" class="btn btn-warning" name="save_temp" value="save_temp"><i
+                                            class="fa fa-plus" aria-hidden="true"></i></button> </td>
+                            </form>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+    </div>
+</div>
+<script>
+    function searchDrop() {
+        if (this.value != '') {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+    }
+
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+    function mySearch() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+
+            }
+        }
+    }
+</script>
+
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- cal script -->
+<script>
+    $(document).ready(function () {
+
+        $(document).on('keyup', '#UPquantity', function () {
+
+            var qty = this.value;
+            var rate = $('#UPrate').val();
+            var amount = qty * rate;
+            $('#UP_net_amount').val(amount);
+
+        });
+
+        $(document).on('keyup', '#UPdiscount', function () {
+            var discount = this.value;
+            var qty = $('#UPquantity').val();
+            var rate = $('#UPrate').val();
+            var before_amt = $('#UPnet_amount').val();
+            var discount_amt = ((rate * qty) * discount) / 100;
+            var amount = (rate * qty) - discount_amt;
+            $('#UP_net_amount').val(amount);
+        });
+    });
+
+</script>
+{% endblock %}

@@ -1,0 +1,376 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+
+<style>
+    #id_purchase_order_number,#id_date,#id_vendor_code,#id_vendor_name,#id_bill_disc,#id_total_amt,#id_total_disc_amt,#id_total_gst_amt,#id_total_net_amt,#id_packaging_forwarding,#id_other_expenses,#id_bill_disc_amt,#id_net_payable_amt{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    #id_barcode{
+      border: 2px solid white;
+      width: 100%;
+      background-color: white;
+      border-bottom: 1px solid black;
+    }
+    .form-control{
+      border: 2px solid white;
+      width: 100%;
+      background-color: white;
+      border-bottom: 1px solid black;
+    }
+    </style>
+
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;" href="#">Indent Detail</a>
+      </div>
+      </nav>   
+    <div class="container-fluid">
+      <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+              <div class="card">
+                <form method="POST">
+                  {% csrf_token %}
+                  <div class="form-row">
+                    <div class="col-sm-0"><br>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fas fa-plus" >Add</i></button>&nbsp;
+                    </div>
+                    <div class="col-sm-0"><br>
+                        <button type="button" class="btn btn-warning"><i class="fa fa-pen" >Edit</i></button>&nbsp;                        
+                       </div>
+                    <div class="col-sm-0"><br>
+                        <button type="button"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;
+                    </div>
+                    <div class="col-sm-0"><br>
+                        <button type="button" class="btn btn-primary"  onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+                    </div>
+                    <div class="col-sm-0"><br>
+                         <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+                    </div>              
+                    <div class="col-sm-0"><br>
+                      <button type="button" class="btn btn-warning"><i class="fa fa-print" >Print</i></button>&nbsp;                        
+                     </div>
+                    <br>
+                     
+                  <!-- <button type="button"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;  -->
+              </div>
+                </form><br>
+        
+<div class="row" >
+<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+  <div class="card">
+     
+    <div class='container'>
+      <div class="col-lg-16">
+        <fieldset class="border" >
+          <legend class ='text-left' style="color: red;"><b>Indent Detail</b></legend>
+          <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;"><br>
+            <div class="table-responsive">
+                <table class="datatable table table-stripped ">
+        
+        
+                          <thead>
+                              <tr>
+                                  <th>S.No</th>
+                                  <th>Select</th>
+                                  <th>Indent Number</th>
+        
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr>
+                                  <td>1</td>
+                                  <td>Nil</td>
+                                  <td>1569</td>
+                              </tr>
+                           </tbody>
+        
+                  </table>
+                  </div>
+          </div>
+          
+    
+        </fieldset>
+      </div>
+  </div>
+  </div>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+  <div class="card">
+    <div class='container'>
+      <div class="col-lg-16">
+        <fieldset class="border" >
+          <legend class ='text-left' style="color: red;"><b>Supplier Detail</b></legend>
+          <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row clearfix">
+                   <div class="col-md-4">
+                       {{form.purchase_order_number|as_crispy_field}}
+                   </div>
+                    <div class="col-md-4">
+                        {{form.date|as_crispy_field}}
+                    </div>
+                    <div class="col-md-4">
+                        {{form.vendor_code|as_crispy_field}}
+                    </div>
+                    <div class="col-md-4">
+                        {{form.vendor_name|as_crispy_field}}
+                    </div>
+                    <div class="col-md-4">
+                        {{form.bill_disc|as_crispy_field}}
+                    </div>
+                    <div class="col-md-0"><br>
+                        <button type="button" class="btn btn-warning"><i class="fa fa-plus" >Vendor Detail</i></button>&nbsp;
+                       </div>
+                </div>
+            </form>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+  </div>
+  </div>
+</div>
+<div class="row" >
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+      <div class="card">
+         
+        <div class='container'>
+          <div class="col-lg-16">
+            <fieldset class="border" >
+              <legend class ='text-left' style="color: red;"><b>Item Detail</b></legend>
+              <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;"><br>
+                <div class="col-md-6">
+                    {{form.indent_number|as_crispy_field}}
+                </div>
+                <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+            
+            
+                              <thead>
+                                  <tr>
+                                      <th>S.No</th>
+                                      <th>Select</th>
+                                      <th>Item</th>
+            
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <td>1</td>
+                                      <td>Nil</td>
+                                      <td>Nil</td>
+                                  </tr>
+                               </tbody>
+            
+                      </table>
+                      </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+              </div>
+              
+        
+            </fieldset>
+          </div>
+      </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+      <div class="card">
+        <div class='container'>
+          <div class="col-lg-16">
+            <fieldset class="border" >
+              <legend class ='text-left' style="color: red;"><b>Item Detail</b></legend>
+              <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;"><br>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row clearfix">
+                       <div class="col-md-4">
+                           {{form.item_name|as_crispy_field}}
+                       </div>
+                       <div class="col-md-0"><br>
+                         <button type="button" class="btn btn-warning">+</button>
+                        </div>
+
+                        <div class="col-md-3">
+                            {{form.hsn_code|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.indent_qty|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.paid_qty|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.free_qty|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.total_qty|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.rate|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.item_disc|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.disc_amt|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.gst|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.gst_amt|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.net_amt|as_crispy_field}}
+                        </div>
+                        <div class="col-md-0"><br>
+                          <button type="button" class="btn btn-warning">Insert</button>
+                         </div>
+                        <div class="col-md-3">
+                            {{form.cgst|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.sgst|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.igst|as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-2 mb-2"><br>
+                          <label class="check_opt">Is IGST
+                            <input type="checkbox" name="InActive" >
+                            <span class="checkmark" ></span>	
+                          </label>
+                          </div> 
+                        <div class="col-md-3">
+                            {{form.cgst_amt|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.sgst_amt|as_crispy_field}}
+                        </div>
+                        <div class="col-md-3">
+                            {{form.igst_amt|as_crispy_field}}
+                        </div>
+                        
+          
+                    </div>
+                </form>
+                </div>
+                       <div class="table-responsive">
+                  <table class="datatable table table-stripped ">
+          
+          
+                            <thead>
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Charged Qty</th>
+                                    <th>Free Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Name</td>
+                                    <th>10</th>
+                                    <th>26</th>
+                                   
+                                </tr>
+                             </tbody>
+          
+                    </table>
+                    </div>
+          
+              </div>
+            </fieldset>
+          </div>
+          </div>
+          <div class='container'>
+            <div class="col-lg-16">
+              <fieldset class="border" >
+                <legend class ='text-left' style="color: red;"><b>Payment Detail</b></legend>
+                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                  <form method="POST">
+                      {% csrf_token %}
+                      <div class="row clearfix">
+                         <div class="col-md-4">
+                             {{form.total_amt|as_crispy_field}}
+                         </div>
+                          <div class="col-md-4">
+                              {{form.total_disc_amt|as_crispy_field}}
+                          </div>
+                          <div class="col-md-4">
+                              {{form.total_gst_amt|as_crispy_field}}
+                          </div>
+                          <div class="col-md-4">
+                              {{form.total_net_amt|as_crispy_field}}
+                          </div>
+                          <div class="col-md-4">
+                              {{form.packaging_forwarding|as_crispy_field}}
+                          </div>
+                          <div class="col-md-4">
+                            {{form.other_expenses|as_crispy_field}}
+                        </div>
+                        <div class="col-md-4">
+                          {{form.bill_disc_amt|as_crispy_field}}
+                      </div>
+                      <div class="col-md-4">
+                        {{form.net_payable_amt|as_crispy_field}}
+                    </div>
+                      </div>
+                  </form>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+      </div>
+    </div>
+    </div>
+    
+  </div>
+  
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- <script>
+    function ShowRadioButtonDiv(idBaseName,NumberOfButtons) {
+      for(x=1;x<=NumberOfButtons;x++){
+        CheckThisButton = idBaseName + x;
+        ThisDiv = idBaseName + x + 'Div';
+        if
+        (document.getElementById(CheckThisButton).checked)
+        {
+          document.getElementById(ThisDiv).style.display = "block";
+        }
+        else {
+          document.getElementById(ThisDiv).style.display = "none";
+        }
+      }
+      return false;
+      }
+
+  </script> -->
+  <script>
+      function myFunction(){
+          var x = document.getElementById("myDiv");
+          if(x.style.display ==="none"){
+              x.style.display = "block";
+          }else{
+              x.style.display = "none";
+          }
+      }
+  </script>
+
+{% endblock  %}

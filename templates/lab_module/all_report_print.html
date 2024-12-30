@@ -1,0 +1,313 @@
+{% load static %}
+<html>
+
+<head>
+	<!-- Step 1 - Include the fusioncharts core library -->
+	<script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+	<!-- Step 2 - Include the fusion theme -->
+	<script type="text/javascript"
+		src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+		integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script type="text/javascript"
+		src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		@page {
+			size: 8.5in 12.5in;
+
+			.page {
+				page-break-after: always;
+			}
+
+
+			.header {
+				height: 50px;
+			}
+
+			.header>div {
+				position: fixed;
+				top: 0;
+			}
+
+			.footer {
+				height: 50px;
+			}
+
+			.footer>div {
+				position: fixed;
+				bottom: 0;
+			}
+
+			body {
+				font-size: 30px;
+				font-family: sans-serif;
+			}
+		}
+	</style>
+	<style type="text/css">
+
+		body,
+		p {
+			font-family: arial;
+			font-size: 8px;
+		}
+
+		p {
+			margin: 0 0 3px;
+		}
+
+		table td,
+		table th {
+			padding: 2px;
+			text-align: left;
+		}
+
+		@media print {
+			p {
+				margin: 0 0 3px;
+			}
+
+			table td,
+			table th {
+				padding: 5px;
+				text-align: left;
+			}
+			#print_button{
+				display: none;
+			}
+		}
+
+		button {
+			font-size: larger;
+			box-sizing: border-box;
+			padding: 10px;
+		}
+
+		.imm {
+			background-image: url("../../static/images/p_img4.png");
+
+		}
+
+		.my-div {
+			background-image: url('{% static "images/p_img4.png" %}');
+			height: 50%;
+			width: 80%;
+			border: 2px solid red;
+		}
+
+		p {
+			text-align: justify;
+			font-size: 15px;
+		}
+	</style>
+</head>
+
+<body>
+
+
+	<div class="container"><button onclick="printDiv('printableArea')" class="btn btn-warning" value="print a div!" id="print_button">print</button></div>
+
+	<div id="printableArea">
+		<div class="col-md-12">
+			<br>
+			<br>
+			{% for booking_id,s_type,s_time,dept,service_list,profile_n,technician_name,dr_name,dr_sign,dr_dept,dr_qualifi,template in records %}
+			<div id="hello" class="page" style="break-after:page">
+				<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+					<tr style="border-bottom:2px solid #eee;">
+						<td>
+							<table
+								style="width: 100%;max-width: auto;margin: 0 auto;border-collapse: collapse; background-color: #48D1CC;"
+								width="180%">
+								<tr>
+									<td>
+										<div class="">
+											<center>
+												<h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}"
+														alt="logo Image" style="width:700px;height:100px;"></h2>
+											</center>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;"
+								width="100%">
+								<tr>
+									<th>Patient Name</th>
+									<td>:{{name|upper}}</td>
+									<th>Barcode</th>
+									<td class="barcodes" style="padding-top: 10px;">
+										<img src="{{barcodes.url}}" width="150px" height="50px">
+									</td>
+								</tr>
+								<tr>
+									<th>Age/Gender</th>
+									<td>{{age}}Y/{{gender}}</td>
+									<th>Sample Collected On</th>
+									<td>:{{s_time}}</td>
+								</tr>
+								<tr>
+									<th>Order ID</th>
+									<td>:{{booking_id}}</td>
+									<th>Sample Received On</th>
+									<td>:{{s_time}}</td>
+								</tr>
+								<tr>
+									<th>Refer By</th>
+									<td>:{{referred_by}}</td>
+									<th>Report Generated On</th>
+									<td>:{{s_time}}</td>
+								</tr>
+								<tr>
+									<th>Costomer Since</th>
+									<td>:{{registration_date_and_time}}</td>
+									<th>Sample Type</th>
+									<td>:{{s_type|upper}}</td>
+								</tr>
+
+							</table>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;"
+								width="100%" id="example">
+								<tbody>
+									<tr>
+										<td colspan="6" style="font-size: 20px; text-align:center;"><b> DEPARTMENT OF
+												{{dept|upper}}</b></td>
+									</tr>
+									<tr>
+										<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Test Name
+										</th>
+										<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Service
+											Name</th>
+										<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "> Result
+										</th>
+										<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Units
+										</th>
+										<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Reference Range
+										</th>
+									</tr>
+
+									<tr>
+										<td><b>{{profile_n}}</b></u></td>
+									</tr>
+									{% for data in service_list %}
+									{% if data.status == "in_range" %}
+									<tr>
+										<td>{{forloop.counter}}</td>
+										<td>{{data.service_name}}</td>
+										<td><b>{{data.value}}</b></td>
+										<td>{{data.units}}</td>
+										<td>{{data.range}}</td>
+									</tr>
+									{% elif data.status == "out_range" %}
+									<tr>
+										<td style="background-color: rgb(255, 255, 174);">{{forloop.counter}}</td>
+										<td style="background-color: rgb(255, 255, 174);">{{data.service_name}}</td>
+										<td style="background-color: rgb(255, 255, 174);"><b>{{data.value}}</b></td>
+										<td style="background-color: rgb(255, 255, 174);">{{data.units}}</td>
+										<td style="background-color: rgb(255, 255, 174);">{{data.range}}</td>
+									</tr>
+									{% else %}
+									{% endif %}
+									{% endfor %}
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<br>
+				<br>
+				<div class="container" style="width: 100%;max-width: 1024px;">
+					<p style="font-size: xx-small; height:10px;">{{template.content|safe}}</p>
+					<table width="100%">
+						<tr>
+							<td><img src="{{barcodes.url}}" width="150px" height="50px"></td>
+							<td></td>
+
+							<td>
+								<div style="text-align:right">
+									<img src="{{technician_name.signature.url}}" alt="" style="width: 150px;"><br>
+									Name : <span>{{technician_name.f_name|upper}} {{technician_name.middle_name|upper}} {{technician_name.last_name|upper}}</span><br>
+
+								</div>
+							</td>
+
+						</tr>
+
+					</table>
+
+				</div>
+
+				<!-- Footer -->
+			</div>
+			{% endfor %}
+		</div>
+		<div class="container" style="width: 100%;max-width: 1024px;">
+			<h3><b>Disclaimer</b></h3>
+			<h3>DISCLOSURE OF TEST RESULTS</h3>
+			<p><b>If we communicate your result to you in writing (by mail or electronically), know that, unless otherwise
+					required by law</b></p>
+			<br>
+			<p>
+				1. the laboratory test results have already been, or are simultaneously being communicated to the
+				ordering/referring provider authorized by law to order and use
+				the results of laboratory tests;
+				<br>
+				2. <b>THE COMMUNICATION SHOULD NOT BE VIEWED AS MEDICAL ADVICE AND IS NOT MEANT ΤΟ REPLACE DIRECT
+					COMMUNICATION WITH A PHYSICIAN OR OTHER HEALTH SERVICE PURVEYOR</b>; and
+				<br>
+				3.<b>All</b> inquiries regarding the meaning or interpretation of the test results should be made to the
+				ordering/referring healthcare provider.
+			</p>
+		</div>
+	</div>
+	<br>
+	<br>
+	<br>
+	<hr>
+
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			var printContents = document.getElementById('printableArea').innerHTML;
+			var originalContents = document.body.innerHTML;
+
+			document.body.innerHTML = printContents;
+
+			window.print();
+
+			document.body.innerHTML = originalContents;
+		});
+
+		function printDiv(divName) {
+			var printContents = document.getElementById(divName).innerHTML;
+			var originalContents = document.body.innerHTML;
+
+			document.body.innerHTML = printContents;
+
+			window.print();
+
+			document.body.innerHTML = originalContents;
+		}
+	</script>
+
+</body>
+
+</html>

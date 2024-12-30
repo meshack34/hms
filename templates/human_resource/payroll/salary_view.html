@@ -1,0 +1,139 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+
+<!--content-->
+<form method="POST" action="{% url 'save_payment' %}">
+    {% csrf_token %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-5 col-4">
+                <h4 class="page-title">Payslip</h4>
+            </div>
+           
+            <div class="col-sm-7 col-8 text-right m-b-30">
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-primary" type="submit">Pay</button>&nbsp;
+                    <button class="btn btn-primary" type="button">CSV</button>&nbsp;
+                    <button class="btn btn-primary" type="button">PDF</button>&nbsp;
+                    <button class="btn btn-primary" type="button"><i class="fa fa-print fa-lg"></i> Print</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-box mb-0">
+                    <h4 class="payslip-title">Payslip for the month of {{current_month}}</h4>
+                    <div class="row">
+                        <div class="col-sm-6 m-b-20">
+                            <img src="assets/img/logo-dark.png" class="inv-logo" alt="">
+                            <ul class="list-unstyled m-b-0">
+                                <li>Preadmin</li>
+                                <li>3864 Quiet Valley Lane,</li>
+                                <li>Sherman Oaks, CA, 91403</li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6 m-b-20">
+                            <div class="invoice-details">
+                                <h3 class="text-uppercase">Payslip #49029</h3>
+                                <ul class="list-unstyled">
+                                    <li>Salary Month: <span>{{current_month}}</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 m-b-20">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <h5 class="m-b-0"><strong>{{data.first_name}}{{data.last_name}}</strong></h5></li><input type="hidden" name="salary_id" id="salary_id" value="{{data.salary_id}}">
+                                <li><span>{{data.dept_name}}<input type="hidden" name="dep_id" id="dep_id" value="{{data.dept_id}}"></span></li>
+                                <li>Employee ID: {{data.emp_id}}<input type="hidden" name="emp_id" id="emp_id" value="{{data.emp_id}}"></li>
+                                <li>Joining Date: {{data.join_date}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div>
+                                <h4 class="m-b-10"><strong>Earnings</strong></h4>
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Basic Salary</strong> <span class="float-right">{{data.basic}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>DA</strong> <span class="float-right">{{data.da}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>House Rent Allowance (H.R.A.)</strong> <span class="float-right">{{data.hra}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Conveyance</strong> <span class="float-right">{{data.conveyance}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Allowance</strong> <span class="float-right">{{data.allowance}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Medical Allowance</strong> <span class="float-right">{{data.medical_allowance}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Others</strong> <span class="float-right">{{data.earning_other}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Total Earnings</strong> <span class="float-right"><strong>{{total_earnings}}<input type="hidden" name="total_earnings" id="total_earnings" value="{{total_earnings}}"></strong></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div>
+                                <h4 class="m-b-10"><strong>Deductions</strong></h4>
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Tax Deducted at Source (T.D.S.)</strong> <span class="float-right">{{data.tds}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Provident Fund</strong> <span class="float-right">{{data.pf}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ESI</strong> <span class="float-right">{{data.esi}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Leave</strong> <span class="float-right">{{leave_amt}}<input type="hidden" name="leave_amt" value="{{leave_amt}}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Prof.Tax</strong> <span class="float-right">{{data.prof_tax}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Labour Welfare</strong> <span class="float-right">{{data.labour_welfare}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Fund</strong> <span class="float-right">{{data.fund}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Other</strong> <span class="float-right">{{data.deduct_other}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Total Deductions</strong> <span class="float-right"><strong>{{total_decutions}}<input type="hidden" name="total_decutions" id="total_decutions" value="{{total_decutions}}"></strong></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-sm-12"><input type="hidden" name="net_salary" id="net_salary" value="{{net_salary}}">
+                            <p><strong>Net Salary: INR. {{net_salary}}</strong> ({{salary_words}} only.)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    {% endblock %}

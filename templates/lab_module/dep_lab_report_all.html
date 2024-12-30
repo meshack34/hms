@@ -1,0 +1,121 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+      <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>Lab Report</b>
+        </div>
+        <div class="">
+          <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+          <a type="button" class="text-light px-1" onClick="window.location.reload();" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" onclick="codespeedy()" href="#">PDF</a>
+            <a class="dropdown-item" id="download-button" href="#">CSV</a>
+          </div>
+        </div>
+      </div>
+
+              
+             <div class="table-responsive">
+                <table class="datatable table table-stripped table-border">
+                  <thead class="text-nowrap">
+                    <tr>
+                      <th scope="col">S.No</th>
+                      <th scope="col">Unid</th>
+                      <th scope="col">Patient Id</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Age / Sex</th>
+                      <th scope="col">Date & Time</th>
+                      <th scope="col"> Report</th>
+                      <!-- <th scope="col">Report Send Email</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for data in records %}
+                       {% ifchanged data.PTID %}
+                      <tr>
+                          <td >{{forloop.counter}}</td>
+                          <td><input type="text" id="id" class='f orm-comtrol' style="border: none; text-align:center;" value="{{data.uhid}}" readonly></td>
+                          <td><input type="text" id="id" class='f orm-comtrol' style="border: none; text-align:center;" value="{{data.PTID}}" readonly></td>
+                          <td><input type="text" id="id" class='f orm-comtrol' style="border: none; text-align:center;" value="{{data.first_name}} {%if data.middle_name %}{{data.middle_name}}{% endif %} {{data.last_name}}" readonly></td>
+                          <td><input type="text" id="id" class='form-comtrol' style="border: none; text-align:center;" value="{{data.pat_gender|first}} / {{data.pat_age}}" readonly></td>
+                          <td><input type="text" id="id" class='form-comtrol' style="border: none; text-align:center;" value="{{data.date_time}}" readonly></td>
+                          <td id="pop_up"><a href="/final_lab_report/{{data.PTID}}"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" >Report</button></a></td>
+                          <!-- <td id="pop_up"><a href="/send_email/{{data.PTID}}"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" >Report Send Email</button></a></td> -->
+                        </tr>
+                        {% endifchanged %}
+                        {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Start model -->
+
+<div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header" style="background: skyblue;">
+              <h5 class="modal-title" id="exampleModalLabel1"><b>Search</b></h5>
+          </div>
+          <!-- Main block -->
+          <div class="modal-body">
+            <form method="post" style=" padding-left: 30px; padding-top: 10px;">
+              {% csrf_token %}
+               <div class="form-row">
+                   <div class="form-group col-md-3 mb-0">
+                       <label><b>From Date*</b> </label>
+                       <input type="date" name="from_date" id="from_date" class="form-control">
+                   </div>
+                   <div class="form-group col-md-3 mb-0">
+                       <label><b>To Date*</b></label>
+                       <input type="date" name="to_date" id="to_date" class="form-control">
+                   </div>
+                   <div class="form-group col-md-3 mb-0">
+                       <label><b>Patient Name</b></label>
+
+                      <input type="text" class="form-control" name="patient_name">
+                   </div>
+
+
+                   <div class="form-group col-md-0 mb-0" style="padding-top: 10px;"><br>
+                       <button type="submit" name="search_btn" value="search_btn"  class="btn btn-warning"><i
+                               class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                   </div>
+
+               </div>
+               <br>
+
+           </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- end model -->
+<script>
+    function myFunction() {
+      var txt;
+      if (confirm("Press a button!")) {
+        txt = "You pressed OK!";
+      } else {
+        txt = "You pressed Cancel!";
+      }
+      document.getElementById("demo").innerHTML = txt;
+    }
+    </script>
+{% endblock %}

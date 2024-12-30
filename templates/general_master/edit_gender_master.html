@@ -1,0 +1,111 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+
+
+
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <button type="menu" style="font-family: monospace; width: 100%; text-align: left;" class="btn btn-primary m-t-15 waves-effect"> <b>Gender</b></button>
+
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+           <div class="card">
+               <div class="header">
+       <div class="body">
+
+         <br><div class="icon-button-demo">&nbsp;
+             <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fas fa-plus" >Add</i></button>&nbsp;
+             <a href="edit-gender-master" class="btn btn-info"> <i class="fas fa-edit" style="color:white;">Edit</i></a>&nbsp;
+             <button type="button"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;
+             <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+             <a href="/gender_master" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+
+         </div><br>
+
+           <div class="table-responsive">
+           <table class="table table-bordered table-striped table-hover save-stage dataTable"
+               style="width:100%;">
+
+                   <thead>
+                       <tr><th bgcolor= "rgb(2, 35, 46)" style="color:azure; ">S.No.</th>
+                           <th bgcolor= "rgb(2, 35, 46)" style="color:azure; ">Gender</th>
+                           <th bgcolor= "rgb(2, 35, 46)" style="color:azure; ">Status</th>
+                           <th bgcolor= "rgb(2, 35, 46)" style="color:azure; ">Action</th>
+
+                       </tr>
+                   </thead>
+                   <tbody>
+                     {% for data in gender_master %}
+                       <tr>
+                           <td>{{data.id}}</td>
+                           <td>{{data.Gender}}</td>
+                           <td>{{data.status}}</td>
+                           <td><a href="/editing-gender-master/{{data.id}}" class="btn btn-info"> <i class="fas fa-edit" >Edit</i></a>&nbsp;</td>
+
+                       </tr>
+                       {% endfor %}
+                    </tbody>
+
+           </table>
+           </div>
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Add Modal -->
+
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl">
+ <div class="modal-content">
+     <!-- Header -->
+     <div class="modal-header" style="background: skyblue;">
+         <h5 class="modal-title" id="exampleModalLabel" ><b>Gender</b></h5>
+         <button type="button" class="close" data-dismis="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+         </button>
+         </div><br>
+      <!-- Main block -->
+      <div class="modal-body">
+         <div class="container-fluid">
+             <div class="body" style="border:0px solid red;">
+                 <div class="demo-masked-input">
+                     <div class="row clearfix">
+                       <div class="col-12">
+                         <form method="POST">
+                           {% csrf_token %}
+                           <div class="form-row own_decor_forms">
+                               <div class="form-group col-md-6 mb-0">
+                                   {{form.Gender|as_crispy_field}}
+                               </div>
+                               <div class="form-group col-md-6 mb-0">
+                                   {{form.status|as_crispy_field}}
+                               </div>
+                               <div class="form-group col-md-6 mb-0">
+                                   {{form.description|as_crispy_field}}
+                               </div>
+                             </div>
+                             <!-- Footer -->
+                         <div class="modal-footer">
+                             <hr style="border: 10%; color: aqua;"><br>
+                        <button type="submit"class="btn btn-success" > <i class="fas fa-save" >&nbsp;Save</i></button>
+                             </div>
+                         </form>
+                       </div>
+                         </div>
+                     </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+</div>
+</div>
+
+    {% endblock  %}

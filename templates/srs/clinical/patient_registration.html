@@ -1,0 +1,874 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00037">
+<input type="hidden" name="message_id" value="MSG00037">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="box-outer">
+                        <div id="Patient_R" class="h-100">
+                            <div class="patient-registration">
+                              <div class="top-heading lightgreen_bg">
+                                <h3 class="section_title"> Patient Registration</h3>
+                              </div>
+                              <div class="container-fluid">
+                                <div class="row">
+                                  <div class="col-10">
+                                    <ul class="file-list">
+                                      <li><a href="#" class="green_bg"><i class="fa fa-plus" aria-hidden="true"></i></a></li>
+                                      <li><a href="#" class="gray_bg"><i class="fa fa-pen" aria-hidden="true"></i></a></li>
+                                      <li><a  href="my-form"  button type="submit" form="my-form" class="save_bg"><i style="font-size: px;" class="fa fa-save" aria-hidden="true"></i></a></li>
+                                      <li><a href="#" class="reload"><i class="fa fa-undo" aria-hidden="true"></i></a></li>
+                                      <li><a href="register_card" class="slyblue_bg"><i class="fa fa-qrcode" aria-hidden="true"></i></a></li>
+                                      <li><a href="#" class="slyblue_bg"  data-toggle="modal" data-target="#out-patient-visit"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a></li>
+                                      <li><a href="#" class="red_bg"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+                                    </ul>
+                                  </div>
+                                  <div class="col-2">
+                                    <div class="patient-img text-right">
+                                      <div class="profile-img-wrap" >
+                                        <img class="inline-block" src="{% static 'assets/images/user.jpg' %}" id="output" alt="user">
+                                        <div class="fileupload btn">
+                                            <span class="btn-text">edit</span>
+                                            <input class="upload" type="file" onchange="loadFile(event)"/>
+                                        </div>
+                                    </div>                                     
+                                  </div>
+                                  </div>
+                                </div>  <br><br> <br><br>
+                        
+                                <div class="form_sec">
+                                  <form id="my-form" action="dashboard" >
+                                    <div class="form-group">
+                                      <label for="Appoints">Appointment Id</label>
+                                      <div class="flexContainer">
+                                        <input type="text"  class="form-control" id="Appoints" placeholder="">
+                                         <button type="button" data-toggle="modal" data-target="#patient-registration-modal" name="search" class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                     </div>
+                                   </div>
+                                   <div class="form-group">
+                                    <label for="UHID">UHID</label>              
+                                    <div class="flexContainer">
+                                      <input type="text" class="form-control" id="UHID" placeholder="UHID">
+                                        <button type="button" data-toggle="modal" data-target="#patient-registration-modal" name="search" class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="DateTime">Registration Date Time</label>
+                                    <input type="text" class="form-control" id="DateTime" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Patient Name</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Mobile Number</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Title</label>
+                                    <select name="cars" id="cars">
+                                      <option value="Title">Mr.</option>
+                                      <option value="Title2">Ms.</option>
+                                      <option value="Title3">Mx.</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">First Name</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Middle Name</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Last Name</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Age</label>
+                                    <h3  id="result" placeholder=""></h3>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">DOB</label>
+                                    <input type="date" class="form-control"  onchange = "ageCalculator()" id="DOB" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Gender</label>
+                                    <select name="gender" id="gender">
+                                      <option value="Male">Male</option>
+                                      <option value="Female">Female</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Blood Group</label>
+                                    <select name="gender" id="gender">
+                                      <option value="A">O+</option>
+                                      <option value="B">O-</option>
+                                      <option value="C">A+</option>
+                                      <option value="C">A-</option>
+                                      <option value="C">B+</option>
+                                      <option value="C">B-</option>
+                                      <option value="C">AB+</option>
+                                      <option value="C">AB-</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Marital Status</label>
+                                    <select name="gender" id="gender">
+                                      <option value="Married ">Married</option>
+                                      <option value="Unmarried">Unmarried</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Father's/Husband Name</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Mother Name</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Mobile Number</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Address</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Referred by</label>
+                                    <select name="gender" id="gender">
+                                      <option value="Married ">AAA</option>
+                                      <option value="Unmarried">BBB</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">City</label>
+                                    <select name="gender" id="gender">
+                                      <option value="City">City</option>
+                                      <option value="City2">City2</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">State</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Country</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Pin Code</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Aadhar Number</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">PAN Card Number</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Emergency Contact Person</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Emergency Contact Number</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Alternate Contact Number</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Nationality</label>
+                                    <select>
+                                      <option value="Indian">Indian</option>
+                                      <option value="Indian">Others</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Email ID</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Staff Member</label>
+                                    <select>
+                                      <option value="10">AA</option>
+                                      <option value="20">BB</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Relationship</label>
+                                    <select>
+                                      <option value="Father">Father</option>
+                                      <option value="Husband">Husband</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="check_opt">Allow Photo At Nursing Station
+                                      <input type="checkbox" checked="checked">
+                                      <span class="checkmark"></span>
+                                    </label>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="check_opt">Notable
+                                      <input type="checkbox" checked="checked">
+                                      <span class="checkmark"></span>
+                                    </label>
+                                  </div>
+                                </form>
+                                <form>
+                                  <div class="attech_doc w100 border ptb20">
+                                    <div class="form-group">
+                                      <label class="check_opt">Cash
+                                        <input type="checkbox" checked="checked">
+                                        <span class="checkmark"></span>
+                                      </label>
+                                    </div>
+                                    <div class="form-group">
+                                      <label class="check_opt">Senior Citizen
+                                        <input type="checkbox" checked="checked">
+                                        <span class="checkmark"></span>
+                                      </label>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Billing Group</label>
+                                      <select>
+                                        <option value="Billing">Billing</option>
+                                        <option value="Billing">Billing</option>
+                                      </select>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Corporate Name</label>
+                                      <select>
+                                        <option value="Corporate Name">Corporate Name</option>
+                                        <option value="Corporate Name">Corporate Name</option>
+                                      </select>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Card Holder Name</label>
+                                      <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Card Number</label>
+                                      <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Relation</label>
+                                      <select>
+                                        <option value="Relation">Relation</option>
+                                        <option value="Relation">Relation</option>
+                                      </select>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Valid Upto</label>
+                                      <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Sum Insured Amount</label>
+                                      <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                      <label class="check_opt">InActive
+                                        <input type="checkbox" checked="checked">
+                                        <span class="checkmark"></span>
+                                      </label>
+                                      <div class="alert-warning mt-3"><i class="fa fa-plus" aria-hidden="true"></i> Insert</div>
+                                    </div>
+                                  </div>
+                                </form>
+                                <div class="table-responsive">
+                                  <table class="table border">
+                                    <tr style="background: #76aeb3;">
+                                      <th style="color: #fff;">Billing Group</th>
+                                      <th style="color: #fff;">Corporate Name</th>
+                                      <th style="color: #fff;">Card Holder Name</th>
+                                      <th style="color: #fff;">Card Name</th>
+                                      <th style="color: #fff;">Reletion</th>
+                                      <th style="color: #fff;">Valid Upto</th>
+                                      <th style="color: #fff;">Sum Insured Amt</th>
+                                      <th style="color: #fff;">Active  </th>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="8">&nbsp;</td>
+                                    </tr>
+                                  </table>
+                                </div>
+                                <form>
+                                  <div class="row w-100">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label for="Remark">Remark</label>
+                                        <input type="text" class="form-control" id="Remark" placeholder="">
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                      <div class="form-group ">
+                                        <label for="formGroupExampleInput2">Last Modified</label>
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                      <div class="form-group ">
+                                        <label for="formGroupExampleInput2">Last Modified Date</label>
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>   
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <!-- Modal -->
+                        <div class="modal" id="patient-registration-modal" tabindex="-1" role="dialog" aria-labelledby="patient-registration-modal" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90%;">
+                            <div class="modal-content">
+                              <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="patient-registration-title">Patient Registration Search</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <form>
+                                  <div class="row">
+                                    <div class="col-md-3 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="reg-no" class="col-sm-4 col-form-label">Reg. No</label>
+                                        <div class="col-sm-8">
+                                          <input type="email" class="form-control" id="reg-no" placeholder="">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="patient-name" class="col-sm-5 col-form-label">Patient Name</label>
+                                        <div class="col-sm-7">
+                                          <input type="email" class="form-control" id="patient-name" placeholder="">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="DOB" class="col-sm-3 col-form-label">DOB</label>
+                                        <div class="col-sm-9">
+                                          <input type="email" class="form-control" id="DOB" placeholder="">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="mobile-no" class="col-sm-5 col-form-label">Mobile No.</label>
+                                        <div class="col-sm-7">
+                                          <input type="email" class="form-control" id="mobile-no" placeholder="">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="surburb" class="col-sm-4 col-form-label">surburb</label>
+                                        <div class="col-sm-8">
+                                          <select class="custom-select">
+                                            <option selected>Select</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                          </select>                    
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="membership-no" class="col-sm-5 col-form-label">Membership No.</label>
+                                        <div class="col-sm-7">
+                                          <input type="email" class="form-control" id="membership-no" placeholder="">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="serial-no" class="col-sm-3 col-form-label">Serial No</label>
+                                        <div class="col-sm-9">
+                                          <input type="email" class="form-control" id="serial-no" placeholder="">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="folder-no" class="col-sm-5 col-form-label">Old OPD/Folder No.</label>
+                                        <div class="col-sm-7">
+                                          <input type="email" class="form-control" id="folder-no" placeholder="">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="page-size" class="col-sm-4 col-form-label">Page Size</label>
+                                        <div class="col-sm-8">
+                                          <input type="text" class="form-control" id="page-size" placeholder="">
+                                        </div>
+                                      </div>
+                                    </div>
+                        
+                                    <div class="col-md-3 mr-0 ml-auto pl-2 pr-2">
+                                      <div class="form-group butns text-right">
+                                       <button type="button" class="bg-primary border-0 p-2 text-white" name="button"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                                       <button type="button" class="bg-primary border-0 p-2 text-white" name="button"><img src="./images/paintbrush.png" width="16px"></button>
+                                     </div>
+                                   </div>
+                                 </div>
+                                 <div class="row">
+                                  <div class="col-md-12">
+                                    <ul class="patient_record">
+                                      <li class="d-flex align-items-center ml30"><span class="yellow_bg"></span>Admitted Patient</li>
+                                      <li class="d-flex align-items-center ml30"><span class="red_bg"></span>Emergency Patient</li>
+                                      <li class="d-flex align-items-center ml30"><span class="green_bg"></span>Expired Patient</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="register_record">
+                                      <table class="table border">
+                                        <tr style="background:#d1dae6;">
+                                          <th>Reg No.</th>
+                                          <th>Old OPD/Folder No.</th>
+                                          <th>Patient Name</th>
+                                          <th>Age/Gender</th>
+                                          <th>DOB</th>
+                                          <th>Mobile No.</th>
+                                          <th>Surburb</th>
+                                          <th>Payer</th>
+                                          <th>Serial No.</th>
+                                          <th>Membership No.</th>
+                                          <th></th>
+                                        </tr>
+                                        <tr>
+                                          <td>116</td>
+                                          <td></td>
+                                          <td>Mr. Good Luck</td>
+                                          <td>23Y/M</td>
+                                          <td>11/7/1996</td>
+                                          <td>9009900909</td>
+                                          <td>vakpo-lowcost</td>
+                                          <td>PRIVATE CASE</td>
+                                          <td>12345678</td>
+                                          <td>7654321</td>
+                                          <td>
+                                            <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>115</td>
+                                          <td></td>
+                                          <td>Mr. Good Luck</td>
+                                          <td>23Y/M</td>
+                                          <td>11/7/1996</td>
+                                          <td>9009900909</td>
+                                          <td>vakpo-lowcost</td>
+                                          <td>PRIVATE CASE</td>
+                                          <td>12345678</td>
+                                          <td>7654321</td>
+                                          <td>
+                                            <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td class="yellow_bg">114</td>
+                                          <td></td>
+                                          <td>Mr. Good Luck</td>
+                                          <td>23Y/M</td>
+                                          <td>11/7/1996</td>
+                                          <td>9009900909</td>
+                                          <td>vakpo-lowcost</td>
+                                          <td>PRIVATE CASE</td>
+                                          <td>12345678</td>
+                                          <td>7654321</td>
+                                          <td>
+                                            <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>113</td>
+                                          <td></td>
+                                          <td>Mr. Good Luck</td>
+                                          <td>23Y/M</td>
+                                          <td>11/7/1996</td>
+                                          <td>9009900909</td>
+                                          <td>vakpo-lowcost</td>
+                                          <td>PRIVATE CASE</td>
+                                          <td>12345678</td>
+                                          <td>7654321</td>
+                                          <td>
+                                            <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td class="yellow_bg">112</td>
+                                          <td></td>
+                                          <td>Mr. Good Luck</td>
+                                          <td>23Y/M</td>
+                                          <td>11/7/1996</td>
+                                          <td>9009900909</td>
+                                          <td>vakpo-lowcost</td>
+                                          <td>PRIVATE CASE</td>
+                                          <td>12345678</td>
+                                          <td>7654321</td>
+                                          <td>
+                                            <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>111</td>
+                                          <td></td>
+                                          <td>Mr. Good Luck</td>
+                                          <td>23Y/M</td>
+                                          <td>11/7/1996</td>
+                                          <td>9009900909</td>
+                                          <td>vakpo-lowcost</td>
+                                          <td>PRIVATE CASE</td>
+                                          <td>12345678</td>
+                                          <td>7654321</td>
+                                          <td>
+                                            <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>110</td>
+                                          <td></td>
+                                          <td>Mr. Good Luck</td>
+                                          <td>23Y/M</td>
+                                          <td>11/7/1996</td>
+                                          <td>9009900909</td>
+                                          <td>vakpo-lowcost</td>
+                                          <td>PRIVATE CASE</td>
+                                          <td>12345678</td>
+                                          <td>7654321</td>
+                                          <td>
+                                            <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>109</td>
+                                          <td></td>
+                                          <td>Mr. Good Luck</td>
+                                          <td>23Y/M</td>
+                                          <td>11/7/1996</td>
+                                          <td>9009900909</td>
+                                          <td>vakpo-lowcost</td>
+                                          <td>PRIVATE CASE</td>
+                                          <td>12345678</td>
+                                          <td>7654321</td>
+                                          <td>
+                                            <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>108</td>
+                                          <td></td>
+                                          <td>Mr. Good Luck</td>
+                                          <td>23Y/M</td>
+                                          <td>11/7/1996</td>
+                                          <td>9009900909</td>
+                                          <td>vakpo-lowcost</td>
+                                          <td>PRIVATE CASE</td>
+                                          <td>12345678</td>
+                                          <td>7654321</td>
+                                          <td>
+                                            <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td class="yellow_bg">107</td>
+                                          <td></td>
+                                          <td>Mr. Good Luck</td>
+                                          <td>23Y/M</td>
+                                          <td>11/7/1996</td>
+                                          <td>9009900909</td>
+                                          <td>vakpo-lowcost</td>
+                                          <td>PRIVATE CASE</td>
+                                          <td>12345678</td>
+                                          <td>7654321</td>
+                                          <td>
+                                            <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                      <nav aria-label="Page navigation example" class="d-flex align-items-center justify-content-end">
+                                        <ul class="pagination">
+                                          <li class="page-item">
+                                            <a class="page-link" href="#!" aria-label="Previous">
+                                              <span aria-hidden="true">&laquo;</span>
+                                              <span class="sr-only">Previous</span>
+                                            </a>
+                                          </li>
+                                          <li class="page-item"><a class="page-link" href="#!">1</a></li>
+                                          <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                                          <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                                          <li class="page-item">
+                                            <a class="page-link" href="#!" aria-label="Next">
+                                              <span aria-hidden="true">&raquo;</span>
+                                              <span class="sr-only">Next</span>
+                                            </a>
+                                          </li>
+                                        </ul>
+                                      </nav>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                        
+                        
+                        <!-- Modal -->
+                        <div class="modal" id="out-patient-visit" tabindex="-1" role="dialog" aria-labelledby="out-patient-visit" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90%;">
+                            <div class="modal-content">
+                              <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="patient-registration-title">Out-Patient Visit</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="Out-Patient_record">
+                                  <form>
+                                    <div class="col-sm-12 text-right">
+                                      <button class="btn-primary border-0 p-2 icon-size" name="button" type="button"><i class="fa fa-save"></i></button>
+                                      <button class="btn btn-primary dropdown-toggle p-2 icon-size" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+                                      <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#" >Edit</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                        
+                                      </div>
+                                    </div><hr>
+                                    <div class="alert-primary patient-visit mb-3">
+                                      <div class="row no-gutters">
+                                        <div class="col-md-3 pl-2 pr-2">
+                                          <div class="form-group">
+                                            <label for="reg-no" class=" col-form-label">Visit Type</label>                    
+                                            <select class="custom-select">
+                                              <option >select</option>
+                                              <option value="Visit">General Visit</option>
+                                              <option value="Visit">Antenatal Visit</option>
+                                              <option value="Visit">Day Surgery Visit</option>
+                                              <option value="Visit">General Visit</option>
+                                              <option value="Visit">Mental Health Visit</option>
+                                            </select>  
+                                          </div>
+                                        </div>
+                                        <div class="col-md-3 pl-2 pr-2">
+                                          <div class="form-group ">
+                                            <label for="page-size" class="col-form-label">Description</label>
+                                            <input type="text" class="form-control" id="page-size" placeholder="">
+                                          </div>
+                                        </div>
+                                        <div class="col-md-3 pl-2 pr-2">
+                                          <div class="form-group">
+                                            <label for="reg-no" class="col-form-label">Clinic/Department</label>
+                                            
+                                            <select class="custom-select">
+                                              <option >select</option>
+                                              <option value="General">General OPD</option>
+                                              <option value="General">Ortho</option>
+                                              <option value="General">ENT</option>
+                                            </select> 
+                                          </div>
+                                        </div>
+                                        <div class="col-md-3 pl-2 pr-2">
+                                          <div class="form-group">
+                                            <label for="reg-no" class="col-form-label">Doctor/Nurse</label>
+                                            <select class="custom-select">
+                                              <option >select</option>
+                                              <option value="select">Dr.Raju</option>
+                                              <option value="select">Dr.Yusuf</option>
+                                            </select>   
+                                          </div>
+                                        </div>
+                                      </div><!-- row -->
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                        <div class="today_visit">
+                                          <h5>Today's Visit</h5>
+                                          <hr>
+                                        </div>
+                                      </div>
+                                    </div><!-- row -->
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                        <div class="today_visit">
+                                          <h5> <i class="fa fa-minus-square-o" aria-hidden="true"></i>  Previous Visits</h5>
+                                          <form>
+                                            <table class="table table-border ">
+                                              <tr style="background:#d1dae6;">
+                                                <th>SN</th>
+                                                <th>Visit No.</th>
+                                                <th>Visit Date</th>
+                                                <th>Patent Name</th>
+                                                <th>Clinic/Department</th>
+                                                <th>Doctor/Nurse Name</th>
+                                              </tr>
+                                              <tr>
+                                                <td>1</td>
+                                                <td>180</td>
+                                                <td>11/07/2019</td>
+                                                <td>Mr. Good Luck</td>
+                                                <td>General OPD</td>
+                                                <td></td>
+                                              </tr>
+                                            </table>
+                                          </form>
+                                        </div>
+                                      </div>
+                                    </div><!-- row -->
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                    
+                    </div>
+                    <!--end chat overlay-->
+                </div>
+            </div>
+        </div>
+        <!--end page wrapper -->                    
+    </div>
+        </div>
+        <!--/ Latest Patients-->
+    </div>
+    <script>
+      var loadFile = function (event) {
+var image = document.getElementById("output");
+image.src = URL.createObjectURL(event.target.files[0]);
+};
+
+  </script> <script>
+
+function ageCalculator() {
+    var userinput = document.getElementById("DOB").value;
+    var dob = new Date(userinput);
+
+    if(userinput==null || userinput==''){
+      document.getElementById("message").innerHTML = "**Choose a date please!";
+      return false;
+    }
+
+    else {
+    var mdate = userinput.toString();
+    var dobYear = parseInt(mdate.substring(0,4), 10);
+    var dobMonth = parseInt(mdate.substring(5,7), 10);
+    var dobDate = parseInt(mdate.substring(8,10), 10);
+
+    var today = new Date();
+    var birthday = new Date(dobYear, dobMonth-1, dobDate);
+
+    var diffInMillisecond = today.valueOf() - birthday.valueOf();
+    var year_age = Math.floor(diffInMillisecond / 31536000000);
+    var day_age = Math.floor((diffInMillisecond % 31536000000) / 86400000);
+
+
+
+     var month_age = Math.floor(day_age/30);
+     day_ageday_age = day_age % 30;
+
+     var tMnt= (month_age + (year_age*12));
+     var tDays =(tMnt*30) + day_age;
+     if (dob>today) {
+        document.getElementById("result").innerHTML = ("Invalid date input - Please try again!");
+      }
+      else {
+        document.getElementById("result").innerHTML = year_age + " yy " + month_age + " mm " + day_age + " dd"
+      }
+   }
+}
+</script>
+
+    {% endblock  %}
+

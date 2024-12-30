@@ -1,0 +1,25 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Docment Details</h4>
+            </div>
+        </div>
+        <div class="card mb-0">
+            <div class="card-body">
+                {{file_content}}
+            </div>
+        </div>
+    </div>
+ 
+</div>
+<!--/ content-->
+
+{% endblock %}

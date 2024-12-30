@@ -1,0 +1,50 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <button type="menu" style="font-family: monospace; width: 100%; text-align: left;"
+            class="btn btn-primary m-t-15 waves-effect"> <b>Needle Type Master </b></button>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+                    <div class="card">
+                        <div class="header">
+                            <div class="body">
+                                <br>
+                                <div class="icon-button-demo">&nbsp;
+                                    <button type="submit" form="form" class="btn btn-success" > <i
+                                        class="fas fa-save">&nbsp;Save</i></button>
+                                    <button type="button" class="btn btn-primary" onClick="window.location.reload();">
+                                        <i class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                                    <button type="button" class="btn btn-danger"><a href='/needle_type'><i
+                                                class="fas fa-times-circle" style="color:white;">Exit</i></a></button>
+                                </div><br>
+                                <form method="POST" id="form">
+                                    {% csrf_token %}
+                                    <div style="padding-left: 20px;">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6 mb-0">
+                                                <label>Needle Type</label>
+                                                {{form.needle_type}}
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6 mb-0">
+                                                <label> Dscription</label>
+                                                {{form.description}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form><br><br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

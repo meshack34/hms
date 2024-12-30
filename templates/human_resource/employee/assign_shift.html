@@ -1,0 +1,122 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+    .form {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  }
+    </style>
+{% endblock  %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+      <div class="row">
+        <div class="col-sm-4 col-3">
+            <h4 class="page-title">Duty Roaster</h4>
+        </div>
+       
+    </div>          
+    <br>
+    <form method="POST">
+      {% csrf_token %}
+        <div class="card">
+            <div class="card-body">
+              <div class="row filter-row">
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group form-focus select-focus mb-0">
+                      <label class="focus-label">Department</label>
+                      <select class="select floating" name="dept_id" id="dept_id">
+                          <option value="">-</option>
+                          {% for data in dept_detail %}
+                          <option value="{{data.id}}">{{data.department_name}}</option>
+                         {% endfor %}
+                      </select>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <button type="submit" class="btn btn-success btn-block" name="search" value="search"> Search </button>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <button type="submit" class="btn btn-success btn-block" name="assign" value="assign"> Assign </button>
+          </div>
+              </div>
+            <br>
+              <div class="card mb-0">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="table-responsive">
+                                <table class="datatable table table-stripped ">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Employee ID</th>
+                                            <th>Employee Name</th>
+                                            <th>Department</th>
+                                            <th>Current Shift</th>
+                                            <th>Assign</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for data in dept_details %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{data.employee_id}}<input type="hidden" name="emp_id" id="emp_id" value="{{data.id}}"></td>
+                                            <td>{{data.first_name}}{{data.last_name}}</td>
+                                            <td>{{data.depart_name}}</td>
+                                            <td>{{data.shift_name}}</td>
+                                            <td><input type="checkbox" id="check" name="check" value="{{data.id}}"></td>
+                                          </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+
+            </div>
+        </div>
+      </form>
+    </div>
+ 
+</div>
+<!--/ content-->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $(document).on('keyup', '#emp_id', function () {
+        var emp_id = $('#emp_id').val();
+        var headers = {'X-CSRFToken': '{{ csrf_token }}' };
+
+        $.ajax({
+            url: '{% url "get_empid" %}',
+            type: "GET",
+            data: {
+                emp_id: emp_id,
+            },
+            headers: headers,
+            dataType : 'json',
+            success: function(data){
+              $("#emp_fname").val(data.emp_fname);
+              $("#emp_lname").val(data.emp_lname);
+              $("#dep_name").val(data.dept_name);
+             
+           },
+           error:function(data)
+            {
+                console.log(data);
+            }
+               });
+        }); 
+
+    });
+</script>            
+{% endblock %}

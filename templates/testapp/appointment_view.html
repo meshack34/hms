@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+    <form  method="POST" class="doctor_view_form">
+      <h2 align='center'>Book Appointment </h2><hr>
+      {% csrf_token %}
+      <!-- {{form | crispy}} -->
+      <div class="form-row">
+          <div class="form-group col-md-6 mb-0">
+              {{form.appointment_id|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.appointment_number|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.reason_for_appointment|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.appointment_time|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.status|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.patient_come_into_hospital|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_comment|as_crispy_field}}
+          </div>
+
+      </div>
+      <input type="submit" name="submit" value="Submit" class="btn btn-primary  btn-block">
+      <strong>Go To Previous Page&nbsp;</strong><a href="doctor-view">Doctor View</a>
+      <strong>Go To Next Page&nbsp;</strong><a href="patient-view">Patient View</a>
+    </form><br><br>
+{% endblock %}

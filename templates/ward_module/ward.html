@@ -1,0 +1,274 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block%}
+<style>
+    .table>thead>tr>th {
+    white-space: nowrap;
+
+}
+.icon-button-demo{
+    white-space: nowrap;
+}
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+      <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          {% if user %}
+            {% for data in records|slice:":1" %}
+                  <b>{{data.req_ward_cate}} Ward</b>
+            {% endfor %}
+          {% endif %}
+            {% if admin %}
+            <b>Ward Management</b>
+            {% endif %}
+        </div>
+        <div class="">
+          <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+          <a onClick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="services" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button type="button"  class="dropdown-item bg-primary text-light rounded">Investigation</i></button>
+            <button type="button" class="dropdown-item bg-info text-light rounded"> Consultation </i></button>
+            <button type="button" class="dropdown-item bg-success text-light rounded"> Medication</i></button>
+            <button type="button"  class="dropdown-item bg-warning text-light rounded">Procedure </i></button>
+            <button type="button"  class="dropdown-item text-light rounded" style="background-color: rgb(16, 156, 86); ;">Bed Transfer </i></button>
+            <button type="submit" class="dropdown-item text-light rounded" style="background-color: rgb(89, 165, 235);" form="ward_form" data-toggle="modal" data-target="#bedtransfer">Doctor Transfer </i></button>
+            <button type="button" class="dropdown-item text-light rounded" style="background-color: rgb(29, 121, 131); color: rgb(53, 44, 44);">Discharge Intimation</i></button>
+            <button type="button" class="dropdown-item text-light rounded" style="background-color: rgb(178, 97, 212); color: rgb(15, 13, 13);">Doctor Prescription</i></button>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="table-responsive">
+        <div style="overflow:auto;" >
+            <table class="datatable table table-hover" id="tables">
+                <thead style="background-color: rgb(181, 181, 233);">
+                    <tr>
+                        <th>UHID</th>
+                        <th>AdmID</th>
+                        <th>Adm.Date</th>
+                        <th>Adm.Type</th>
+                        <th>Ward Type</th>
+                        <th>Ward Cate</th>
+                        <th>Doctor</th>
+                        <th>Department</th>
+                        <th>Bed No</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td><a href="/paitent_ward_actions/{{data.admission_ID}}">{{data.uhid}}</a></td>
+                        <td>{{data.admission_ID}}</td>
+                        <td>{{data.admission_datetime|date:'Y-m-d'}} {{data.admission_datetime|time:'H:i'}}</td>
+                        <td>{{data.admission_type}}</td>
+                        <td>{{data.req_ward_type}}</td>
+                        <td>{{data.req_ward_cate}}</td>
+                        <td>{{data.primary_doctor}}</td>
+                        <td>{{data.department}}</td> 
+                        <td>{{data.bed_no}}</td> 
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    </div>
+</div>
+<!-- Filter Start model -->
+
+<div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header" style="background: skyblue;">
+              <h5 class="modal-title" id="exampleModalLabel1"><b>Search</b></h5>
+          </div>
+          <!-- Main block -->
+          <div class="modal-body">
+              <form method="POST">
+                  {% csrf_token %}
+                  <div id="myDiv1">
+                      <div class="col-lg-12"
+                          style="background-color:rgb(233, 233, 233);"><br>
+                          <div class="row clearfix">
+                              <div class="col-lg-4 col-md-6 col-sm-12">
+                                  <b>From Date <b style="color: red;">*</b></b>
+                                  <div class="form-group">
+                                      <input type="datetime-local" name="frolgat col-md-6 col-sm-12e" class="form-control">
+                                  </div>
+                              </div>
+                              <div class="col-lg-4 col-md-6 col-sm-12">
+                                  <b>To Date <b style="color: red;">*</b></b>
+                                  <div class="form-group">
+                                      <input type="datetime-local" name="todate" class="form-control" >
+                                  </div>
+                              </div>
+
+                              <div class="col-lg-4 col-md-6 col-sm-12">
+                                  <b>Admission ID <b style="color: red;">*</b></b>
+                                  <div class="form-group">
+                                      <input type="text" name="admissionid" class="form-control" >
+                                  </div>
+                              </div>
+                              <!-- Filter Start model -->
+
+        <div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <!-- Header -->
+                  <div class="modal-header" style="background: skyblue;">
+                      <h5 class="modal-title" id="exampleModalLabel1"><b>Search</b></h5>
+                  </div>
+                  <!-- Main block -->
+                  <div class="modal-body">
+                      <form method="POST">
+                          {% csrf_token %}
+                          <div id="myDiv1">
+                              <div class="col-lg-12"
+                                  style="background-color:rgb(233, 233, 233);"><br>
+                                  <div class="row clearfix">
+                                      <div class="col-lg-6 col-md-6 col-sm-12">
+                                          <b>From Date <b style="color: red;">*</b></b>
+                                          <div class="form-group">
+                                              <input type="datetime-local" name="frolgat col-md-6 col-sm-12e" class="form-control">
+                                          </div>
+                                      </div>
+                                      <div class="col-lg-6 col-md-6 col-sm-12">
+                                          <b>To Date <b style="color: red;">*</b></b>
+                                          <div class="form-group">
+                                              <input type="datetime-local" name="todate" class="form-control" >
+                                          </div>
+                                      </div>
+  
+                                      <div class="col-lg-6 col-md-6 col-sm-12">
+                                          <b>Admission ID <b style="color: red;">*</b></b>
+                                          <div class="form-group">
+                                              <input type="text" name="admissionid" class="form-control" >
+                                          </div>
+                                      </div>
+  
+                                      <div class="col-lg-6 col-md-6 col-sm-12">
+                                          <b>Department</b>
+                                          <div class="form-group">
+                                              <select name="department" class="form-control">
+                                                  <option value="">Choose</option>
+                                                  {% for data in department_name %}
+                                                  <option value="{{data.id}}">{{data.department_name}}
+                                                  </option>
+                                                  {% endfor %}
+                                              </select>
+                                          </div>
+                                      </div>
+  
+                                      <div class="col-lg-4 col-md-6 col-sm-12"><br>
+                                          <button type="submit" class="btn btn-primary w-100" name="search_btn"
+                                              value="Search"><i class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                                      </div> 
+                                  </div>
+                              </div>
+                          </div>                               
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  
+      <!-- end model -->
+
+                              <div class="col-lg-4 col-md-6 col-sm-12"><br>
+                                  <button type="submit" class="btn btn-primary w-100" name="search_btn"
+                                      value="Search"><i class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                              </div> 
+                          </div>
+                      </div>
+                  </div>                               
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- end model -->
+<!-- Modal -->
+<div class="modal fade" id="bedtransfer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLongTitle">Bed Transfer</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label>Registration Id</label>
+              <p disabled>
+              {{bed_transfer_from.uhid}}</p>
+            <h3>Transfer From</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <label >Ward Type</label>
+                <p>
+                {{bed_transfer_from.from_ward_type}}</p>
+                
+              </div>
+              <div  class="col-md-6">
+                <label>Bed No</label>
+                <p>
+                {{bed_transfer_from.from_bed_no}}</p>
+              </div>
+            </div><br>
+            <h3>Transfer To</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <label >Ward Type</label>
+                <p>
+                {{bed_transfer_from.to_ward_type}}</p>
+              </div>
+              <div  class="col-md-6">
+                <label>Bed No</label>
+                <p>
+                {{bed_transfer_from.to_bed_no}}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Transfer data & Time</label>
+              <p>
+              {{bed_transfer_from.transfer_datatime}}</p>
+            </div>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="bed_transfer_button" value="Save">Save</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  <!-- bed transfer end -->
+
+  <script>
+    function toggleVisibility() {
+      var demoElement = document.getElementById('filter_card');
+      if (demoElement.style.display === 'none' || demoElement.style.display === '') {
+        demoElement.style.display = 'block'; // Show the element
+      } else {
+        demoElement.style.display = 'none';  // Hide the element
+      }
+    }
+  </script>
+
+
+{% endblock %}

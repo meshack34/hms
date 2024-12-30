@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Preadmin - Bootstrap Admin Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
+
+    <!-- Font Family -->
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}" >
+
+    <!-- Calendar CSS -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar/fullcalendar.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/calendar.css' %}">
+
+    <!-- Datatable-->
+    <link rel="stylesheet" href="{% static 'assets/css/dataTables.bootstrap4.min.css' %}">
+
+    <!-- Select 2-->
+    <link rel="stylesheet" href="{% static 'assets/css/select2.min.css' %}">
+
+    <!-- Datetime Picker-->
+    <link rel="stylesheet" href="{% static 'assets/plugins/datetimepicker/css/tempusdominus-bootstrap-4.min.css' %}">
+
+    <!--custom styles-->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+    <!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+       <!-- Header -->
+        <div class="header-menu">
+            <div class="header-left">
+                <a href="./index" class="logo">
+                    <img src="{% static 'assets/img/Logo_Hospital.png' %}" width="35" height="35" alt=""> 
+                    <span>PreAdmin</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <div class="menubar">
+                <a id="toggle_btn" href="javascript:void(0);"><i class="fas fa-bars"></i></a>
+            </div>
+            <!-- /Mobile Menu Toggle -->
+            
+            <!-- Search-->
+            <div class="searchbar">
+                <form class="form-inline my-1 w-25 float-left">
+                    <input class="form-control mr-sm-2 search-input search_icon" type="search" placeholder="Search..." >
+                </form>
+            </div>  
+            <!--/ Search-->
+
+            <a id="mobile_btn" class="mobile_btn float-left" href="#sidebar"><i class="fa fa-bars"></i></a>
+
+            <!-- Header Right Menu -->
+            <ul class="nav user-menu float-right">
+                <li class="nav-item dropdown d-none d-sm-block">
+                    <a href="javascript:void(0);" id="open_msg_box" class="hasnotifications nav-link"><i class="far fa-paper-plane"></i> <span class="badge badge-pill bg-danger float-right">8</span></a>
+                </li>
+
+                <!-- /Notifications -->
+                <li class="nav-item dropdown d-none d-sm-block">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="far fa-bell"></i> <span class="badge badge-pill bg-danger float-right">3</span></a>
+                    <div class="dropdown-menu notifications">
+                        <div class="topnav-dropdown-header">
+                            <span>Notifications</span>
+                        </div>
+                        <div class="drop-scroll">
+                            <ul class="notification-list">
+                                <li class="notification-message">
+                                    <a href="./activities">
+                                        <div class="media">
+											<span class="avatar">
+												<img alt="John Doe" src="{% static 'assets/img/user.jpg' %}" class="img-fluid">
+											</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
+												<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+											</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities">
+                                        <div class="media">
+											<span class="avatar">V</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title">Appointment booking with payment gateway</span></p>
+												<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
+											</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities">
+                                        <div class="media">
+											<span class="avatar">L</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title">Doctor available module</span></p>
+												<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
+											</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities">
+                                        <div class="media">
+											<span class="avatar">G</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title">Patient and Doctor video conferencing</span></p>
+												<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
+											</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities">
+                                        <div class="media">
+											<span class="avatar">V</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title">Private chat module</span></p>
+												<p class="noti-time"><span class="notification-time">2 days ago</span></p>
+											</div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="topnav-dropdown-footer">
+                            <a href="activities">View all Notifications</a>
+                        </div>
+                    </div>
+                </li>
+                <!-- /Notifications -->
+                
+                <li class="nav-item dropdown has-arrow">
+                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                        <span>Jones Ferdinand</span>&nbsp;
+                        <span class="user-img">
+							<img class="rounded-circle" src="{% static 'assets/img/user.jpg' %}" width="24" alt="Admin">
+							<span class="status online"></span>
+						</span>
+                    </a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="profile">My Profile</a>
+						<a class="dropdown-item" href="edit-profile">Edit Profile</a>
+						<a class="dropdown-item" href="settings">Settings</a>
+						<a class="dropdown-item" href="login">Logout</a>
+					</div>
+                </li>
+            </ul>
+            <!--/ Header Right Menu -->
+
+            <!-- User Menu -->
+            <div class="dropdown mobile-user-menu float-right">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="profile">My Profile</a>
+                    <a class="dropdown-item" href="edit-profile">Edit Profile</a>
+                    <a class="dropdown-item" href="settings">Settings</a>
+                    <a class="dropdown-item" href="login">Logout</a>
+                </div>
+            </div>
+            <!--/ User Menu -->
+        </div>
+        <!-- /Header -->
+
+        <!--sidebar-->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="menu-title">Main</li>
+                        <li >
+                            <a href="dashboard"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+                        </li>
+						<li>
+                            <a href="patient_registration"><i class="fa fa-user-md"></i> <span>Patient Registration</span></a>
+                        </li>
+                        <li class="submenu">
+                            <a href="patients"><i class="fa fa-wheelchair"></i> <span>Clinical Managements</span><span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+								<li><a href="nursing_assessment">Nursing Assessment</a></li>
+								<li><a href="opd_billing">OPD Billing</a></li>
+								<li class="active"><a href="patient_visit">Patient Visit</a></li>
+								<li><a href="visit_dashboard">Visit Dashboard</a></li>
+								<li><a href="opd_reception_view">OPD Reception View</a></li>
+							</ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="appointments"><i class="far fa-calendar-alt"></i> <span>Emergency</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+								<li><a href="employees">Employees List</a></li>
+								<li><a href="leaves">Leaves</a></li>
+							</ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="schedule"><i class="far fa-calendar-check"></i> <span>Procedure Room</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+								<li><a href="employees">Employees List</a></li>
+								<li><a href="leaves">Leaves</a></li>
+							</ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="departments"><i class="far fa-building"></i> <span>Operation Theatre</span><span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+								<li><a href="employees">Employees List</a></li>
+								<li><a href="leaves">Leaves</a></li> 
+							</ul>
+                        </li>
+						<li class="submenu">
+							<a href="#"><i class="fa fa-user"></i> <span> In-Patient Management </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="employees">Employees List</a></li>
+								<li><a href="leaves">Leaves</a></li>
+							</ul>
+						</li>
+						<li class="submenu">
+							<a href="#"><i class="far fa-money-bill-alt"></i> <span> Nurse Station </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="invoices">Invoices</a></li>
+								<li><a href="payments">Payments</a></li>
+								<li><a href="expenses">Expenses</a></li>
+								<li><a href="taxes">Taxes</a></li>
+								<li><a href="provident-fund">Provident Fund</a></li>
+							</ul>
+						</li>
+						<li class="submenu">
+							<a href="#"><i class="fa fa-book"></i> <span> Mental Health </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="salary"> Employee Salary </a></li>
+								<li><a href="salary-view"> Payslip </a></li>
+							</ul>
+						</li>
+                        <li>
+                            <a href="chat"><i class="fa fa-comments"></i> <span>Antenatal Care</span> <span class="badge badge-pill bg-primary float-right">5</span></a>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-video"></i> <span> Accounts And Revenue</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="voice-call">Voice Call</a></li>
+                                <li><a href="video-call">Video Call</a></li>
+                                <li><a href="incoming-call">Incoming Call</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-envelope"></i> <span> Insurance And E-Claim</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="compose">Compose Mail</a></li>
+                                <li><a href="inbox">Inbox</a></li>
+                                <li><a href="mail-view">Mail View</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="far fa-comment-dots"></i> <span> Phlebotomy</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="blog">Blog</a></li>
+                                <li><a href="blog-details">Blog View</a></li>
+                                <li><a href="add-blog">Add Blog</a></li>
+                                <li><a href="edit-blog">Edit Blog</a></li>
+                            </ul>
+                        </li>
+						<li>
+							<a href="assets"><i class="fa fa-cube"></i> <span>Laboratory</span></a>
+						</li>
+						<li>
+							<a href="activities"><i class="far fa-bell"></i> <span>Blood Bank</span></a>
+						</li>
+						<li class="submenu">
+							<a href="#"><i class="far fa-flag"></i> <span> Radiology </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="expense-reports"> Expense Report </a></li>
+								<li><a href="invoice-reports"> Invoice Report </a></li>
+							</ul>
+						</li>
+                        <li>
+                            <a href="settings"><i class="fa fa-cog"></i> <span>Linen And Laundry</span></a>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-laptop"></i> <span> Discharge Summary</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="uikit">UI Kit</a></li>
+                                <li><a href="typography">Typography</a></li>
+                                <li><a href="tabs">Tabs</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="widgets"><i class="fa fa-th"></i> <span>Mortuary Management</span></a>
+                        </li>
+						<li class="submenu">
+							<a href="#"><i class="fas fa-boxes"></i> <span>Feedback Management</span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="sweetalerts">Sweet Alerts</a></li>
+								<li><a href="tooltip">Tooltip</a></li>
+							
+							</ul>
+						</li>
+						<li class="submenu">
+							<a href="#"><i class="fas fa-chart-area"></i> <span> Inventory </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="chart-apex">Apex Charts</a></li>
+								<li><a href="chart-js">Chart Js</a></li>
+								<li><a href="chart-morris">Morris Charts</a></li>
+								<li><a href="chart-flot">Flot Charts</a></li>
+								<li><a href="chart-peity">Peity Charts</a></li>
+								<li><a href="chart-c3">C3 Charts</a></li>
+							</ul>
+						</li>
+						<li class="submenu">
+							<a href="#"><i class="fab fa-buffer"></i> <span> MRD </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="icon-fontawesome">Fontawesome Icons</a></li>
+								<li><a href="icon-feather">Feather Icons</a></li>
+								<li><a href="icon-ionic">Ionic Icons</a></li>
+								<li><a href="icon-material">Material Icons</a></li>
+								<li><a href="icon-pe7">Pe7 Icons</a></li>
+								<li><a href="icon-simpleline">Simpleline Icons</a></li>
+								<li><a href="icon-themify">Themify Icons</a></li>
+								<li><a href="icon-weather">Weather Icons</a></li>
+								<li><a href="icon-typicon">Typicon Icons</a></li>
+								<li><a href="icon-flag">Flag Icons</a></li>
+							</ul>
+						</li>
+						<li class="submenu">
+                            <a href="#"><i class="fa fa-edit"></i> <span> MIS REPORTS</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="form-basic-inputs">Basic Inputs</a></li>
+                                <li><a href="form-input-groups">Input Groups</a></li>
+                                <li><a href="form-horizontal">Horizontal Form</a></li>
+                                <li><a href="form-vertical">Vertical Form</a></li>
+								<li><a href="form-mask">Form Mask </a></li>
+								<li><a href="form-validation">Form Validation </a></li>
+								<li><a href="form-select2">Form Select2 </a></li>
+								<li><a href="form-fileupload">File Upload </a></li>
+							</ul>
+						</li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-table"></i> <span> Inventory Setup</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="tables-basic">Basic Tables</a></li>
+                                <li><a href="tables-datatables">Data Table</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="calendar"><i class="far fa-calendar-alt"></i> Custom Template</a>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-columns"></i> <span>System Control</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="login"> Login </a></li>
+                                <li><a href="register"> Register </a></li>
+                               
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-columns"></i> <span>Security And Audit</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="login"> Login </a></li>
+                                <li><a href="register"> Register </a></li>
+                                
+                            </ul>
+                        </li>
+                       <br><br><br><br><br>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--/sidebar-->
+
+        <!-- content -->
+        <div class="page-wrapper">
+            <div class="content">
+<!-- Main Dashboard -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header row align-items-center">
+                  <h5 class="pageheader-title col-sm-4">Patient Visits</h5>
+                  <div class="col-sm-8 text-right d-flex align-items-center justify-content-end">
+                    <ul class="d-flex align-items-center font-weight-bold m-0" style="font-size: 14px; list-style: none;color: #367186">
+                      <li class="px-2">Reg No.: <span style="color: #4b343f">116</span></li>
+                      <li class="px-2">Name: <span style="color: #4b343f">Mr. Good Luck</span></li>
+                      <li class="px-2">Age/Gender: <span style="color: #4b343f">23Y/M</span></li>
+                      <li class="px-2"><i class="fa fa-user" aria-hidden="true"></i></li>
+                      <li><button type="button" class="btn border border-primary rounded-circle" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="width: 30px;height: 30px;padding: 0;"><i class="fa fa-info" aria-hidden="true"></i></button></li>
+                    </ul>
+                  </div><!-- col-sm-8 -->
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="bg-white p-2 mt-2">
+                  <div class="tab_options">
+                    <!-- Nav pills -->
+                    <ul class="nav nav-pills justify-content-between" role="tablist">
+                      <li class="nav-item">
+                        <a class="rounded-0 text-center blue_bg nav-link text-white uppercase border border-white" data-toggle="pill" href="#home"><i class="fa fa-book" aria-hidden="true"></i> medical records</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="rounded-0 text-center blue_bg nav-link text-white uppercase border border-white" data-toggle="pill" href="#menu1"><i class="fa fa-stethoscope" aria-hidden="true"></i> history</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="rounded-0 text-center blue_bg nav-link text-white uppercase border border-white active" data-toggle="pill" href="#menu2"><i class="fa fa-heartbeat" aria-hidden="true"></i> vitals</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="rounded-0 text-center blue_bg nav-link text-white uppercase border border-white" data-toggle="pill" href="#medication"><i class="fa fa-heartbeat" aria-hidden="true"></i> medication details</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="rounded-0 text-center blue_bg nav-link text-white uppercase border border-white" data-toggle="pill" href="#prescription"><i class="fa fa-heartbeat" aria-hidden="true"></i> prescription medicine</a>
+                      </li>
+                    </ul>
+  
+                    <!-- Tab panes -->
+                    <div class="tab-content">                
+                      <div id="home" class="tab-pane fade"><br>
+                        sdfsfsfsdfsdf
+                      </div>
+                      <div id="menu1" class="tab-pane fade"><br>
+                        <h3>Menu 1</h3>
+                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                      </div>
+                      <div id="menu2" class="tab-pane m-0 active">
+  
+                        <!--  -->
+                        <ul class="visit-tabs nav nav-tabs alert-secondary d-flex align-items-center" role="tablist ">
+                          <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-1" role="tab">Allergies/Immunization</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link p-2 uppercase active " data-toggle="tab" href="#tabs-2" role="tab">Vital Sign</a>
+                          </li>
+                        </ul><!-- Tab panes -->
+                        <div class="tab-content">
+                          <div class="tab-pane pt-2" id="tabs-1" role="tabpanel">
+                            <h5>Allergies / Immunization</h5>
+                            <hr>
+                            <div id="accordion" role="tablist">
+                              <div class="card mb-3">
+                                <div class="card-header" role="tab" id="headingOne">
+                                  <h5 class="mb-0">
+                                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#018bbc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                      Allergies
+                                    </a>
+                                  </h5>
+                                </div>
+  
+                                <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" style="">
+  
+                                  <form class="card-body">
+                                    <div class="row">
+                                      <div class="col-md-4">
+                                        <div class="form-group row mb-0">
+                                          <label for="inputEmail3" class="col-sm-4 col-form-label">Allergy type</label>
+                                          <div class="col-sm-8">
+                                            <select class="form-control" name="select">
+                                              <option>Select</option>
+                                              <option>Drug Allergy</option>
+                                              <option>Dust Allergy</option>
+                                              <option>Food Allergy</option>
+                                              <option>Skin Allergy</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+  
+                                      <div class="col-md-3">
+                                        <div class="form-group row mb-0">
+                                          <label for="inputEmail3" class="col-sm-4 col-form-label">Allergen</label>
+                                          <div class="col-sm-8">
+                                           <select class="form-control" name="select">
+                                              <option>Select</option>
+                                            </select>
+                                         </div>
+                                       </div>
+                                     </div> 
+  
+                                     <div class="col-md-5">
+                                      <div class="form-group row mb-0">
+                                        <label for="inputEmail3" class="col-sm-3 col-form-label">Reaction</label>
+                                        <div class="col-sm-7">
+                                         <input type="text" name="date" class="form-control" placeholder="Reaction">
+                                       </div>
+                                       <div class="col-md-2">
+                                        <button class="btn-primary btn icon-size"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+  
+                              <table class="table-border table">
+                                <tr style="background: #d1dae6;">
+                                  <th>Sr</th>
+                                  <th>Allergy type</th>
+                                  <th>Allergy</th>
+                                  <th>Reaction</th>
+                                </tr>
+                                <tr>
+                                  <td colspan="4"></td>
+                                </tr>
+                              </table>
+  
+                            </div>
+                          </div>
+                          <div class="card">
+                            <div class="card-header" role="tab" id="headingTwo">
+                              <h5 class="mb-0">
+                                <a class="" data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#018bbc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Immunization
+                               </a>
+                             </h5>
+                           </div>
+                           <div id="collapseTwo" class="collapse show" role="tabpanel" aria-labelledby="headingTwo" style="">
+                            <div class="card-body">
+                              <form>
+                                <div class="row">
+                                  <div class="col-md-5">
+                                    <div class="form-group row mb-0">
+                                      <label for="inputEmail3" class="col-sm-4 col-form-label">Immunization</label>
+                                      <div class="col-sm-8">
+                                        <select class="form-control" name="select">
+                                          <option>Select</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+  
+                                  <div class="col-md-5">
+                                    <div class="form-group row mb-0">
+                                      <label for="inputEmail3" class="col-sm-4 col-form-label">Givan Date</label>
+                                      <div class="col-sm-8">
+                                       <input type="date" name="date" class="form-control" placeholder="">
+                                     </div>
+                                   </div>
+                                 </div> 
+  
+                                 <div class="col-md-2 text-right">
+                                  <button class="btn-primary btn icon-size"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                             <table class="table-border table">
+                                <tr style="background: #d1dae6;">
+                                  <th>Sr</th>
+                                  <th>Immunization</th>
+                                  <th>Date</th>
+                                </tr>
+                                <tr>
+                                  <td colspan="3"></td>
+                                </tr>
+                              </table>
+                        </div>
+                      </div>
+                    </div>
+  
+                  </div>
+  
+                  <div class="tab-pane active" id="tabs-2" role="tabpanel">
+                    <div class="row no-gutters p-2">
+                      <div class="col-md-6">
+                        <h5>Vital Signs</h5>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="btns d-flex align-items-center justify-content-end">
+                          <label class="check_opt ">reiease
+                            <input type="checkbox" checked="checked">
+                            <span class="checkmark"></span>
+                          </label>
+                          <button class="btn-primary ml-1 border-0 p-2 icon-size" name="button" type="button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                          <button class="btn-primary ml-1 border-0 p-2 icon-size" name="button" type="button"><img src="./images/paintbrush.png" alt="" width="16px"></button>
+                        </div>
+                      </div>
+                    </div>
+                    <form>
+                      <div class="form-group row mb-2">
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="systolic" class="col-sm-5  col-form-label">Systolic B.P</label>
+                            <div class="col-sm-7">
+                              <input type="email" class="form-control" id="systolic" placeholder="  ">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="diastolic" class="col-sm-5  col-form-label">Diastolic B.P</label>
+                            <div class="col-sm-7">
+                              <input type="email" class="form-control" id="diastolic" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="temperature" class="col-sm-5  col-form-label">Temperature (oC)</label>
+                            <div class="col-sm-7">
+                              <input type="email" class="form-control" id="temperature" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="form-group row mb-2">
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="weight" class="col-sm-5  col-form-label">Weight (Kg)</label>
+                            <div class="col-sm-7">
+                              <input type="email" class="form-control" id="weight" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="height" class="col-sm-5 col-form-label">Height (cm)</label>
+                            <div class="col-sm-7">
+                              <input type="email" class="form-control" id="height" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="BMI (Kg/M2)" class="col-sm-5 col-form-label">BMI (Kg/M2)</label>
+                            <div class="col-sm-7">
+                              <input type="email" class="form-control" id="BMI" placeholder="Email">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="form-group row mb-2">
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="respiratory" class="col-sm-5  col-form-label">Respiratory rate (/Min)</label>
+                            <div class="col-sm-7">
+                              <input type="email" class="form-control" id="respiratory" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="heart-rate" class="col-sm-5 col-form-label">Heart rate (BPM)</label>
+                            <div class="col-sm-7">
+                              <input type="email" class="form-control" id="heart-rate" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="urine-output" class="col-sm-5 col-form-label">Urine Output</label>
+                            <div class="col-sm-7">
+                              <input type="email" class="form-control" id="urine-output" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="form-group row mb-2">
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="blood-sugar" class="col-sm-5 col-form-label">Blood Sugar (F)</label>
+                            <div class="col-sm-7">
+                              <input type="email" class="form-control" id="inputEmail3" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="blood-sugar" class="col-sm-5 col-form-label">Blood Sugar (R)</label>
+                            <div class="col-sm-7">
+                              <input type="email" class="form-control" id="blood-sugar" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="SPO2" class="col-sm-5 col-form-label">SPO2</label>
+                            <div class="col-sm-7">
+                              <input type="email" class="form-control" id="SPO2" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="form-group row mb-2">
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="blood-sugar" class="col-sm-5 col-form-label">AVPU</label>
+                            <div class="col-sm-7">
+                              <select class="box form-control ">
+                                <option>---Select---</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="blood-sugar" class="col-sm-5 col-form-label">Trauma</label>
+                            <div class="col-sm-7">
+                              <select class="box form-control ">
+                                <option>---Select---</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="SPO2" class="col-sm-5 col-form-label">Mobility</label>
+                            <div class="col-sm-7">
+                              <select class="box form-control ">
+                                <option>---Select---</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4 mt-2">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="SPO2" class="col-sm-5 col-form-label">Oxygen supplementation</label>
+                            <div class="col-sm-7">
+                              <select class="box form-control ">
+                                <option>---Select---</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+  
+                        <div class="col-md-12">
+                          <div class="form-group row m-0 no-gutters">
+                            <label for="SPO2" class="col-sm-2 col-form-label">Comment</label>
+                            <div class="col-sm-10">
+                              <select class="box form-control ">
+                                <option>---Select---</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+  
+                    </form>
+  
+                    <h5>Current Vitals</h5>
+                    <hr>
+                    <table class="table mt-2 table-border">
+                      <tr style="background: #d1dae6;">
+                        <th>Select</th>
+                        <th>Visit Type</th>
+                        <th>Score</th>
+                        <th>Date Time</th>
+                        <th>SBP</th>
+                        <th>DBP</th>
+                        <th>Temp</th>
+                        <th>RR</th>
+                        <th>HR</th>
+                        <th>Urine OP</th>
+                        <th>BS(F)</th>
+                        <th>BS(R)</th>
+                        <th>SP02</th>
+                        <th>AVPU</th>
+                        <th>Trauma</th>
+                        <th>Mobility</th>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <!--  -->
+  
+  
+              </div>
+              <div id="medication" class="tab-pane fade"><br>
+                <h3>Menu 2</h3>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+              </div>
+              <div id="prescription" class="container tab-pane fade"><br>
+                <h3>Menu 2</h3>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+              </div>
+            </div>
+          </div>
+            </div>
+        </div>
+    </div>
+
+            </div>
+        </div>
+
+            <!-- Notifications -->
+            <div class="notification-box">
+                <div class="msg-sidebar notifications msg-noti">
+                    <div class="topnav-dropdown-header">
+                        <span>Messages</span>
+                    </div>
+                    <div class="drop-scroll msg-list-scroll">
+                        <ul class="list-box">
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">R</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Richard Miles </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item new-message">
+                                        <div class="list-left">
+                                            <span class="avatar">J</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">John Doe</span>
+                                            <span class="message-time">1 Aug</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">T</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author"> Tarah Shropshire </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">M</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Mike Litorus</span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">C</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author"> Catherine Manseau </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">D</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author"> Domenic Houston </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">B</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author"> Buster Wigton </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">R</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author"> Rolland Webber </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">C</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author"> Claire Mapes </span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">M</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Melita Faucher</span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">J</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Jeffery Lalor</span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">L</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Loren Gatlin</span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="chat">
+                                    <div class="list-item">
+                                        <div class="list-left">
+                                            <span class="avatar">T</span>
+                                        </div>
+                                        <div class="list-body">
+                                            <span class="message-author">Tarah Shropshire</span>
+                                            <span class="message-time">12:28 AM</span>
+                                            <div class="clearfix"></div>
+                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="topnav-dropdown-footer">
+                        <a href="chat">See all messages</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Notifications -->
+        </div>
+        <!--/ content -->
+    </div>
+
+    <!--scripts-->
+    <!-- jQuery -->
+    <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+
+    <!-- Bootstrap Core JS -->
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Slimscroll JS -->
+    <script src="{% static 'assets/js/jquery.slimscroll.js' %}"></script>
+
+    <!-- Select2 JS -->
+    <script src="{% static 'assets/js/select2.min.js' %}"></script>
+    <script src="{% static 'assets/js/moment.min.js' %}"></script>
+
+    <!-- Datetime picker JS -->
+    <script src="{% static 'assets/plugins/datetimepicker/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+    
+    <!-- Calender JS -->
+    <script src="{% static 'assets/js/calendar.min.js' %}"></script>
+
+    <!-- Apex chart JS -->
+    <script src="{% static 'assets/js/apex.js' %}"></script>
+
+    <!-- Custom JS -->
+    <script src="{% static 'assets/js/app.js' %}"></script>
+	
+	
+</body>
+
+</html>

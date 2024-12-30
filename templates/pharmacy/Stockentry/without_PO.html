@@ -1,0 +1,392 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+  .form-control {
+    border: 2px solid white;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid black;
+  }
+
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+  <div class="content">
+    <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+        <a class="navbar-brand" style="color: white;" href="#">Stock Entry Without PO</a>
+      </div>
+    </nav><br>
+    <div class="container-fluid">
+
+      <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+        <div class="card">
+          <div class="body">
+            <div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+              <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+                  class="fas fa-sync-alt">&nbsp;&nbsp;Refresh</i></button>&nbsp;
+              <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">&nbsp;Exit</i></a>&nbsp;
+              <a href="" class="btn btn-info"> <i class="fa fa-arrow-circle-left"> &nbsp;Back</i></a>&nbsp;
+              <button type="submit" class="btn btn-success" name="Save" value="Save" form="temp"> <i
+                  class="fas fa-save">&nbsp;Save</i></button>
+            </div>
+            <br>
+
+            <button type="menu" style="font-family: monospace; width: 50%; text-align: left;"
+              class="btn btn-primary m-t-15 waves-effect"> <b>Capture Item Details</b></button><br><br>
+            <div class="table-responsive">
+              <table class="datatable table table-stripped auto-index">
+                <thead>
+                  <tr>
+                    <th>Item_Name</th>
+                    <th>Batch</th>
+                    <th>Expiry Date</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Free Qty</th>
+                    <th>Stock Qty</th>
+                    <th>Schema%</th>
+                    <th>Dis%</th>
+                    <th>Dis Amt</th>
+                    <th>Amount</th>
+                    <th>Tax</th>
+                    <th>Remark</th>
+                    <th></th>
+                    <!-- <th><a href="javascript:;" class="btn btn-success" id="add_button">+</a></th> -->
+
+                  </tr>
+                  <tr></tr>
+                </thead>
+                <tbody>
+                  <form method="post">
+                    {% csrf_token %}
+                    <tr class="clonetr" id="addrow">
+                      <td><input class="form-control" type="text" name="item_name" id="item_namewithoutpo"
+                          data-uhid-url="{% url 'calculate' %}" list="item" required></td>
+                      <td><input type="text" name="serial_batch" id="serial_batchwithoutpo" class="form-control"
+                          required></td>
+                      <td><input type="date" name="expiry_date" id="expiry_datewithoutpo" class="form-control" required>
+                      </td>
+                      <td><input type="text" name="physical_qty" id="physical_qtywithoutpo" class="form-control"
+                          required></td>
+                      <td><input type="text" name="rate" id="ratewithoutpo" class="form-control" required></td>
+                      <td><input type="text" name="free_qty" id="free_qtywithoutpo" class="form-control"></td>
+                      <td><input type="text" name="stock_qty" id="stock_qtywithoutpo" class="form-control"></td>
+                      <td><input type="text" name="schema" id="schemawithoutpo" class="form-control"></td>
+                      <td><input type="text" name="discount" id="discountwithoutpo" class="form-control"></td>
+                      <td><input type="text" name="discount_amt" id="discount_amtwithoutpo" class="form-control"></td>
+                      <td><input type="text" name="amount" id="amountwithoutpo" class="form-control" required><input type="hidden" class="form-control" name="hidden_amt1" id="hidden_amt1"></td>
+                      <td><input type="text" name="tax_detail" id="tax_detailwithoutpo" class="form-control" required>
+                      </td>
+                      <td><input type="text" name="remark" id="remarkwithoutpo" class="form-control"><input type="hidden" name="store_id" id="store_id" class="form-control" value="{{store_detail.id}}"></td>
+                      <td><button class="btn btn-primary" type="submit" name="add_button" id="save_temp"
+                          value="add_button">+Add</button></td>
+                    </tr>
+                    <datalist id='item'>
+                      {% for data in item %}
+                      <option value="{{data.id}}.{{data.item_name}}"></option>
+                      {% endfor %}
+                    </datalist>
+                  </form>
+                  <tr></tr>
+                </tbody>
+              </table>
+
+            </div>
+            <form method="post" id="temp">
+              {% csrf_token %}
+
+              <br><button type="menu" style="font-family: monospace; width: 50%; text-align: left;"
+                class="btn btn-primary m-t-15 waves-effect"> <b>Capture Vendor
+                  Details</b></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+              <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                <div class="form-row">
+
+                  <div class="form-group col-md-2 mb-0" required>
+                    <label><b>Vendor</b></label>
+                    <select name="vendor_id" id="vendor_id" class="form-control" required>
+                      <option value=''>select</option>
+                      {% for data in vendor %}
+                      <option value="{{data.id}}">{{data.vendor_name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group col-md-2 mb-0">
+                    <label><b>Department</b></label>
+                    <!-- <input type="text" name="department_name" id="department_name" class="form-control"
+                      value="{{store_detail.department_id}}"> -->
+                      <select name="department2" id="department2" class="form-control" required>
+                        <option value="">Select</option>
+                        {% for data in dept_detail %}
+                        <option value="{{data.id}}">{{data.service_department}}</option>
+                        {% endfor %}
+                      </select>
+                    <input type="hidden" name="location" id="location" class="form-control"
+                      value="{{store_detail.location_id_id}}">
+
+                  </div>
+                  <div class="form-group col-md-2 mb-0">
+                    <label><b>Location</b></label>
+                    <select name="po_location" id="po_location" class="form-control" required>
+                      <option value=''>Select</option>
+                      {% for data in location_detail %}
+                      <option value="{{data.id}}">{{data.location_name}}</option>
+                      {% endfor %}
+                    </select>
+
+                  </div>
+                  <div class="form-group col-md-2 mb-0">
+                    <label><b>Store</b></label>
+                    <input type="text" name="store_name" id="store_name" class="form-control"
+                      value="{{store_detail.store_name}}">
+                    <input type="hidden" name="store_id" id="store_id" class="form-control" value="{{store_detail.id}}">
+                  </div>
+
+                  <div class="form-group col-md-2 mb-0" required>
+                    <label><b>Basic Amount</b></label>
+                    <input type="text" name="basic_amount" id="basic_amount" value="{{basic_amount}}"
+                      class="form-control">
+                  </div>
+                  <div class="form-group col-md-2 mb-0" required>
+                    <label><b>Net Amount</b></label>
+                    <input type="text" name="net_amount" id="net_amount" value="{{netamount}}" class="form-control">
+                  </div>
+                  <div class="form-group col-md-1.9 mb-0" required>
+                    <label><b>Invoice No</b></label>
+                    <input type="text" name="invoice_no" id="invoice_no" class="form-control">
+                  </div>
+
+
+                  <!-- <button type="button"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;  -->
+
+                </div>
+              </div><br><br>
+              <div class="table-responsive">
+                <table class="datatable table table-stripped ">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Item</th>
+                      <th>Store</th>
+                      <th>Batch/Serial No.</th>
+                      <th>Expiry Date</th>
+                      <th>Physical Qty</th>
+                      <th>Rate</th>
+                      <th>Amount</th>
+                      <!-- <th>GST</th>
+                           <th>CGST%</th>
+                           <th>SGST%</th>
+                           <th>IGST</th> -->
+                      <th>Remark</th>
+                    </tr>
+                  </thead>
+                  {% for data in SE_temp1 %}
+                  <tbody>
+                    <tr class="clonetr" id="addrow">
+                    <tr>
+                      <td>{{forloop.counter}}</td>
+
+                      <td><input type="hidden" name="item_id" id="item_id" value="{{data.item_id_id}}"
+                          class="form-control">{{data.item_id}}</td>
+                      <td><input type="hidden" name="store_id" id="store_id"
+                          value="{{data.store_id_id}}">{{data.store_id}}</td>
+                      <td><input type="hidden" name="serial_batch" id="serial_batch"
+                          value="{{data.serial_batch}}">{{data.serial_batch}}</td>
+                      <td><input type="hidden" name="expiry_date" id="expiry_date"
+                          value="{{data.expiry_date}}">{{data.expiry_date}}</td>
+                      <td><input type="hidden" name="physical_qty" id="physical_qty"
+                          value="{{data.physical_qty}}">{{data.physical_qty}}</td>
+                      <td><input type="hidden" name="rate" id="rate" value="{{data.rate}}">{{data.rate}}</td>
+                      <td><input type="hidden" name="amount" id="amount" value="{{data.amount}}">{{data.amount}}</td>
+                      <!-- <td><input type="hidden" name="gst" id="gst" value="{{data.gst}}">{{data.gst}}</td>
+                           <td><input type="hidden" name="cgst" id="cgst" value="{{data.cgst}}">{{data.cgst}}</td>
+                           <td><input type="hidden" name="sgst" id="sgst" value="{{data.sgst}}">{{data.sgst}}</td>
+                           <td><input type="hidden" name="igst" id="igst" value="{{data.igst}}">{{data.igst}}</td> -->
+                      <td><input type="hidden" name="remark" id="remark" value="{{data.remark}}">{{data.remark}}</td>
+                    </tr>
+
+                    <tr></tr>
+                  </tbody>
+                  {% endfor %}
+                </table>
+              </div>
+            </form>
+
+            <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+            <script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script type="text/javascript">
+              $(document).ready(function () {
+                $(document).on('keyup', '#item_namewithoutpo', function () {
+                  var Item_namea = this.value;
+                  var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+                  const url = $("#item_namewithoutpo").attr("data-uhid-url");
+                  const url1 = "{% url 'get_stock_details' %}";
+
+                  $.ajax({
+                    url: url,
+                    type: "post",
+                    data: {
+                      Item_name1: Item_namea,
+                    },
+                    dataType: 'json',
+                    headers: headers,
+                    success: function (data) {
+                      var item_id = data["item_id"];
+                      $('#tax_detailwithoutpo').val(data["tax"]);
+                      $.ajax({
+                        url: url1,
+                        type: "post",
+                        data: {
+                          item_id: item_id,
+                        },
+                        dataType: 'json',
+                        headers: headers,
+                        success: function (data) {
+                          $('#stock_qtywithoutpo').val(data["total_qty"]);
+                          $('#ratewithoutpo').val(data["rate"]);
+                        },
+                        error: function (data) {
+                          console.log(data);
+                        }
+                      });
+
+                    },
+                    error: function (data) {
+                      console.log(data);
+                    }
+                  });
+
+
+                });
+              });
+            </script>
+            <script>
+              $(document).ready(function () {
+
+                $(document).on('keyup', '#physical_qtywithoutpo', function () {
+                  var qty = this.value;
+                  var rate = $('#ratewithoutpo').val();
+                  var tax = $('#tax_detailwithoutpo').val();
+
+                  if (rate == 0 && tax == 0){
+                    var amount1 = 0;
+                    var amt = 0;
+                  }
+                  else if(rate != 0 && tax != 0){
+                    var amt = qty * rate;
+                    var amt1 = (amt * tax) / 100;
+                    var amount1 = amt + amt1;
+                  }
+                  else if(rate != 0 && tax == 0){
+                    var amount1 = qty * rate;
+                    var amt = qty * rate;
+                  }
+                  else if(rate == 0 && tax != 0){
+                    var amount1 = 0;
+                    var amt = 0;
+                  }
+                  var amtt = amount1.toFixed(2);
+                  var amt1 = amt.toFixed(2);
+                  $('#amountwithoutpo').val(amtt);
+                  $('#hidden_amt1').val(amt1);
+
+                });
+
+                $(document).on('keyup', '#ratewithoutpo', function () {
+                  var rate = this.value;
+                  var qty = $('#physical_qtywithoutpo').val();
+                  var tax = $('#tax_detailwithoutpo').val();
+                  if(tax == 0){
+                    var amount1 = qty * rate;
+                    var amt = qty * rate;
+                  }
+                  else{
+                    var amt = qty * rate;
+                    var amt1 = (amt * tax) / 100;
+                    var amount1 = amt + amt1;
+                  }
+
+                    var amttt = amount1.toFixed(2);
+                    var amtt = amt.toFixed(2);
+                  $('#amountwithoutpo').val(amttt);
+                  $('#hidden_amt1').val(amtt);
+                });
+
+
+                $(document).on('keyup', '#schemawithoutpo', function () {
+                  var qty = $('#physical_qtywithoutpo').val();
+                  var rate = $('#ratewithoutpo').val();
+                  var schema = $('#schemawithoutpo').val();
+                  var amount = $('#amountwithoutpo').val();
+                  var amount1 = qty * rate
+                  var schema_cal = (amount1 * schema) / 100;
+                  var amount1 = amount - schema_cal;
+
+                  $('#amountwithoutpo').val(amount1);
+
+                });
+
+                $(document).on('keyup', '#discountwithoutpo', function () {
+                  var hidden_amt = $('#hidden_amt1').val();
+                  var discount = $('#discountwithoutpo').val();
+                  var schema = $('#schemawithoutpo').val();
+                  var qty = $('#physical_qtywithoutpo').val();
+                  var rate = $('#ratewithoutpo').val();
+                  var tax = $('#tax_detailwithoutpo').val();
+                  var discount1 = qty * rate * discount
+                  var discount_amount = (discount1 / 100);
+                  if(tax == ''){
+                    var amount1 = hidden_amt - discount_amount;
+                  }
+                  else if(tax != ''){
+                    var amount = qty * rate;
+                    var tax_amount = (amount * tax) / 100;
+                    var tax_amt = (hidden_amt) + (tax_amount);
+                    var amount1 = tax_amt - discount_amount;
+                  }
+                  var amount3 = (amount1);
+                  var amount2 = (amount3);
+                    amt = amount2.toFixed(2);
+                    diss_amt = discount_amount.toFixed(2);
+                  $('#discount_amtwithoutpo').val(diss_amt);
+                  $('#amountwithoutpo').val(amt);
+
+                });
+
+                $(document).on('keyup', '#tax_detailwithoutpo', function () {
+                  var tax = $('#tax_detailwithoutpo').val();
+                  var qty = $('#physical_qtywithoutpo').val();
+                  var hidden_amt = $('#hidden_amt1').val();
+                  var rate = $('#ratewithoutpo').val();
+                  var schema = $('#schemawithoutpo').val();
+                  var discount = $('#discountwithoutpo').val();
+                  var amount = qty * rate;
+                  var tax_amount = (amount * tax) / 100;
+                  if(discount == ''){
+                    var tax_detail = parseInt(hidden_amt) + parseInt(tax_amount);
+                  }
+                  else if(discount != ''){
+                    var discount1 = qty * rate * discount
+                    var discount_amount = (discount1 / 100);
+                    var dis_amt = hidden_amt - discount_amount;
+                    var tax_detail = parseInt(dis_amt) + parseInt(tax_amount);
+                  }
+                  amt = tax_detail.toFixed(2);
+                  $('#amountwithoutpo').val(amt);
+                });
+
+
+              });
+            </script>
+
+            {% endblock %}

@@ -1,0 +1,251 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+    #id_from_date,
+    #id_to_date,
+    #id_store {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Item Status with Particular Report</b>
+            </div>
+            <div class="">
+              <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+                <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+                
+              </div>
+            </div>
+          </div>
+            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" id="filter_card"><br>
+                
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-md-2 mb-0">
+                            <label><b>From Date*</b> </label>
+                            <input type="date" name="from_date" id="from_date" class="form-control">
+                        </div>
+                        <div class="form-group col-md-2 mb-0">
+                            <label><b>To Date*</b></label>
+                            <input type="date" name="to_date" id="to_date" class="form-control">
+                        </div>
+                        <div class="form-group col-md-2 mb-0">
+                            <label><b>Store *</b> </label>
+                            <select class='form-control' name='store_id' id='store_id'>
+                                <option value="">Select</option>
+                                {% for data in store_detail %}
+                                <option value="{{data.id}}">{{data.store_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                            <div class="form-group col-md-3 mb-0">
+                            <label><b>particulars</b> </label>
+                            <select class='form-control' name='particular' id='particulars' required>
+                                <option >Select</option>
+                                <option>GRN ENTRY</option>
+                                <option>CPC Issue Entry</option>
+                                <option>MainStore Issue Entry</option>
+                                <option>Item Return</option>
+                                <option>Return To CPC</option>
+                                <option>Supplier Return Entry</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-0 mb-0 py-2" ><br>
+                            <button type="submit" name="Submit_btn" value="submit_btn"  class="btn btn-warning"><i
+                                    class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+                                <!-- Tab -->
+                                {% if itemstatus_report_temp3 %}
+                                <div class="nursing-assessment-tabs p-2 bg-white">
+                                    <div role="tabpanel">
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+                                            <div id="hello">
+                                              <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                                                  <tr>
+
+                                                          <div class="" >
+                                                              <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                                                              </center>
+                                                          </div>
+
+                                                  </tr>
+                                              </table>
+
+                                              <style>
+                                                  table, th, td {
+                                                    border: 1px solid black;
+                                                    border-collapse: collapse;
+
+                                                  }
+                                                  #button2{
+                                                  font-size: larger;
+                                                  padding: 10px;
+                                                  border: none;
+                                                  border-radius: 5px;
+                                              }
+                                                  </style>
+                                                  <center><h3> Item Status with Particular Report</h3></center>
+                                            <div class="table-responsive" style="overflow: auto;">
+                                              <table class="table table-bordered" style="border-style: solid;" align="center">
+                                                  <thead class="text-nowrap">
+                                                      <tr>
+                                                        <th scope="col">S.No</th>
+                                                        <th scope="col">Item Name</th>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Particular </th>
+                                                        <th scope="col">Opening Balance</th>
+                                                        <th scope="col">Opening Cost</th>
+                                                        <th scope="col">Transaction Cost</th>
+                                                        <th scope="col">Purchase Qty</th>
+                                                        <th scope="col">Issue Qty</th>
+                                                        <th scope="col">Return Qty</th>
+                                                        <th scope="col">Closing Balance</th>
+                                                        <th scope="col">Closing Cost</th>
+                                                      </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    {% regroup itemstatus_report_temp3 by item_id as itemname %}
+                                                    {% for group in itemname %}
+                                                      <tr>
+                                                               <td></td>
+                                                              <input type="hidden"  name="item_id" id="item_id" value="{{data}}">
+                                                                 <td colspan="11"><span style="font-weight:bold">{{group.grouper}}</span></td>
+                                                           </tr>
+                                                           {% for data1 in group.list %}
+                                                      <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td></td>
+                                                          <td scope="row" style="padding-left: 15px;padding-right: 15px;">{{data1.date}}</td>
+                                                            <td style="padding-left: 15px;padding-right: 15px;">{{data1.particular}}</td>
+                                                            <td style="padding-left: 15px;padding-right: 15px;">{{data1.opening_balance}}</td>
+                                                            <td style="padding-left: 15px;padding-right: 15px;">{{data1.opening_cost}}</td>
+                                                            <td style="padding-left: 15px;padding-right: 15px;">{{data1.transaction_cost}}</td>
+                                                            <td style="padding-left: 15px;padding-right: 15px;">{{data1.purchase_qty}}</td>
+                                                            <td style="padding-left: 15px;padding-right: 15px;">{{data1.issue_qty}}</td>
+                                                            <td style="padding-left: 15px;padding-right: 15px;">{{data1.return_qty}}</td>
+                                                            <td style="padding-left: 15px;padding-right: 15px;">{{data1.closing_balance}}</td>
+                                                            <td style="padding-left: 15px;padding-right: 15px;">{{data1.closing_cost}}</td>
+                                                      </tr>
+                                                      {% endfor %}
+                                                      {% endfor %}
+                                                  </tbody>
+                                              </table>
+                                              </div>
+                                            </div>
+                                        </div>
+                                        <!-- Tab Ends -->
+                                    </div>
+                                </div>
+                                {% endif %}
+<script>
+    function toggleVisibility() {
+        var demoElement = document.getElementById('filter_card');
+        
+        if (demoElement.style.display === 'none') {
+        demoElement.style.display = 'block'; // Show the element
+        } else {
+        demoElement.style.display = 'none';  // Hide the element
+        }
+    }
+    </script>
+<script>
+  $('example').margetable({
+    type: 1,
+    colindex: [{
+      index: 1,
+      dependent: [0]
+    }]
+  });
+</script>
+<script type="text/javascript">
+
+  function codespeedy(){
+    var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+  }
+</script>
+
+<script>
+
+  // pdf preview
+
+function printData()
+{
+var mypage = document.getElementById("hello");
+summathaan = window.open("");
+summathaan.document.write(mypage.outerHTML);
+summathaan.print();
+summathaan.close();
+}
+
+      function htmlToCSV(html, filename) {
+          var data = [];
+          var rows = document.querySelectorAll("table tr");
+
+          for (var i = 0; i < rows.length; i++) {
+              var row = [], cols = rows[i].querySelectorAll("td, th");
+
+              for (var j = 0; j < cols.length; j++) {
+                      row.push(cols[j].innerText);
+              }
+
+              data.push(row.join(","));
+          }
+
+          downloadCSVFile(data.join("\n"), filename);
+      }</script>
+
+      <script>function downloadCSVFile(csv, filename) {
+          var csv_file, download_link;
+
+          csv_file = new Blob([csv], {type: "text/csv"});
+
+          download_link = document.createElement("a");
+
+          download_link.download = filename;
+
+          download_link.href = window.URL.createObjectURL(csv_file);
+
+          download_link.style.display = "none";
+
+          document.body.appendChild(download_link);
+
+          download_link.click();
+      }</script>
+      <script>document.getElementById("csvdownload-button").addEventListener("click", function () {
+          var html = document.querySelector("table").outerHTML;
+          htmlToCSV(html, "PatientRegister.csv");
+      });</script>
+                                {% endblock %}

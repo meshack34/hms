@@ -1,0 +1,112 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+  .form-control {
+    border: 2px solid rgb(247, 247, 247);
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid rgb(27, 26, 26);
+  }
+</style>
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+      <div>
+        <a href="/item_issue" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+        <b>View of Stock in MainStore</b>
+      </div>
+      <div class="">
+        <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+        <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+        <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+          <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+          
+        </div>
+      </div>
+    </div>
+
+
+                <div class="table-responsive">
+                  <table class="datatable table table-bordered table-stripped ">
+                    <thead>
+                  
+                            <tr>
+                                <th>S.No</th>
+                                <th>Item Name</th>
+                                <th>Batch No</th>
+                                <th>Expiry Date</th>
+                                <th>Qty In-hand</th>
+                            </tr>
+                       
+                      </thead>
+                      
+                      <tbody>
+                        {% for data in stock_detail %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.item_id}} {{data.item_id.unit}} {{data.item_id.item_subcategory.itemsubcategory}}</td>
+                            <td>{{data.batch_no}}</td>
+                            <td>{{data.expiry_date}}</td>
+                            <td>{{data.available_qty}}</td>
+                        </tr>      
+                        {% endfor %}           
+                      </tbody>
+                  </table>
+                </div>
+
+</div>
+</div>
+
+  <!-- Filter Start model -->
+
+  <div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel1"><b>Search</b></h5>
+            </div>
+            <!-- Main block -->
+            <div class="modal-body">
+              <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"><br>
+                <form method="post" action="">
+                  {% csrf_token %}
+                  <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                      <label>From Date</label>
+                      <input type="date" name="from_date" id="from_date" class="form-control">
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                      <label>To Date</label>
+                      <input type="date" name="to_date" id="to_date" class="form-control">
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                      <label>Item Name</label>
+                      <input type="text" name="item_id" id="item_id" class="form-control" list="item_name">
+                    </div>
+                    <datalist id="item_name">
+                      {% for data in item_detail %}
+                      <option value="{{data.id}}.{{data.item_name}} {{data.unit}} {{data.item_subcategory}}"></option>
+                      {% endfor %}
+                    </datalist>
+                    <div class="form-group col-md-0"><br>
+                      <button type="submit" class="btn btn-warning"> <i
+                          class="fas fa-search">Search</i></button>&nbsp;
+                    </div>
+                     
+                  </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- end model -->
+{% endblock %}

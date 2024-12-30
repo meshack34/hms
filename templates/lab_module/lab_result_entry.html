@@ -1,0 +1,133 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+  th,
+  td {
+    text-align: center;
+  }
+
+  input[type='text'] {
+    border: none;
+    text-align: center;
+  }
+</style>
+<style>
+
+  #alert {
+    position: fixed;
+    top: 10%;
+    right: 20px;
+    margin-left: 20px;
+    max-width: 300px;
+    z-index: 1;
+  }
+
+  #alert {
+    padding: 25px 15px;
+    color: white;
+  }
+
+
+  </style>
+<div class="page-wrapper">
+  <div class="content">
+    <div class="card" style="padding: 30px;">
+
+      <h2><img src="{% static 'images/result entry.png' %}" alt="" style="width: 50px;"> <b>Result Entry</b></h2>
+
+      <!-- <div class="icon-button-demo">&nbsp;
+        <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+            class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+        <button type="button" class="btn btn-danger"><a href='/'><i class="fas fa-times-circle"
+              style="color:white;">Exit</i></a></button>
+      </div> -->
+
+      <hr>
+
+<!-- -============================ -->
+{% for message in messages %}
+<div class="container-fluid p-0 " id="alert">
+  <div class="alert {{ message.tags }} alert-dismissible bg-{{ message.tags }}" role="alert" >
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="True">&times;</span>
+    </button>
+    <b>{{ message }}</b>
+  </div>
+</div>
+{% endfor %}
+
+<div id="accordion">
+  {% for data in records %}
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne{{forloop.counter}}" aria-expanded="true" aria-controls="collapseOne{{forloop.counter}}">
+          {{data.0}}
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseOne{{forloop.counter}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+        <form action="{% url 'lab_result_save' pk %}" method="post">
+          {% csrf_token %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>s.no</th>
+              <th>Service Name</th>
+              <th>Result</th>
+              <th>Units</th>
+              <th>Reference Range</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for test in data.1 %}
+             <tr>
+              <td><input type="hidden" value="{{test.id}}" name="idss">{{forloop.counter}}</td>
+              <td>{{test.service_name}}</td>
+              {% if data.0 == "PAP SMEAR" %}
+              <td><textarea name="value" id="" cols="30" rows="10" class="form-control" >{% if test.value != None %}{{test.value}}{% endif %}</textarea> </td>
+              {% else %}
+              <td><input type="text" value="{% if test.value != None %}{{test.value}}{% endif %}" name="value" style="border-bottom:1px solid black;"></td>
+              {% endif %}
+              <td><input type="hidden" value="{{test.unit}}" name="units">{{test.unit}}</td>
+              <td><input type="hidden" value="{{test.range}}" name="range">{{test.range}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+        <button type="submit" class="btn btn-success" style="float: right;">Save</button>
+      </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+    </div>
+  </div>
+</div>
+<script>
+  function myFunction() {
+    var txt;
+    if (confirm("Press a button!")) {
+      txt = "You pressed OK!";
+    } else {
+      txt = "You pressed Cancel!";
+    }
+    document.getElementById("demo").innerHTML = txt;
+  }
+</script>
+<script>
+  window.setTimeout(function() {
+  $(".alert").fadeTo(500, 0).slideUp(500, function(){
+      $(this).remove();
+  });
+}, 3000);
+</script>
+{% endblock %}

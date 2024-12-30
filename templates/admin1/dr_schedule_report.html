@@ -1,0 +1,91 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+         /* Style the search box */
+        .input-box {
+            width: 250px;
+            padding: 8px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            outline: 2px;
+        }
+    /* .form-control{
+        border-radius: 15px;
+    } */
+</style>
+<!--Main Content-->
+<div class="page-wrapper bg-white">
+    <div class="content px-3">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Doctor Schedule Report</b>
+            </div>
+            <div class="">
+              <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <!-- <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+                <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a> -->
+                
+              </div>
+            </div>
+          </div>
+                <form method="POST">
+                    {% csrf_token %}<br>
+                    <div id="filter_card">
+                    <div class="row filter-row" >
+                        <div class="col-md-3">
+                                <select name="dr_id" id="dr_is" class="input-box" required>
+                                    <option>----Choose Doctor----</option>
+                                    {% for data in dr_list %}
+                                    <option value="{{data.doctor_id}}">{{data.doctor_name}}</option>
+                                    {% endfor %}
+                                </select>
+                        </div>
+                        <div class="col-md-0">
+                                <button type="submit" class=" btn btn-info  rounded" >Search</button>
+                        </div>
+                    </div>
+                </div>
+                </form>
+       
+            {% if dr_schedule_records %}
+            <div class="container-fluid" >
+                <div class="card col-md-12 ">
+                    <h1 align='center'>Scheduled Date & Time</h1><br>
+                    <h4 align='center'> Total Scheduled:- {{total_schedule}}</h4><hr>
+                    <div class="row">
+                        {% for date in dr_schedule_records %}
+                        <div class="col-md-2 mb-3">
+                            <div class="card p-2 light dark text-center">
+                                {{date.time_slot_id}} <br>
+                                <h5>{{date.time_slot_start_time}}-{{date.time_slot_end_time}}</h5>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <h3>Records Not Found</h3>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script>
+    function toggleVisibility() {
+      var demoElement = document.getElementById('filter_card');
+      
+      if (demoElement.style.display === 'none') {
+        demoElement.style.display = 'block'; // Show the element
+      } else {
+        demoElement.style.display = 'none';  // Hide the element
+      }
+    }
+  </script>
+{% endblock %}

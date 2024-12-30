@@ -1,0 +1,441 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+   <!-- content -->
+   <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00043">
+<input type="hidden" name="message_id" value="MSG00043">
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="padding: 10px;">
+        <div class="page-header row align-items-center">
+          <h5 class="pageheader-title col-sm-4">Patient Visits</h5>
+          <div class="col-sm-8 text-right d-flex align-items-center justify-content-end">
+            <ul class="d-flex align-items-center font-weight-bold m-0" style="font-size: 14px; list-style: none;color: #367186">
+              <li class="px-2">Reg No.: <span style="color: #4b343f">116</span></li>
+              <li class="px-2">Name: <span style="color: #4b343f">Mr. Good Luck</span></li>
+              <li class="px-2">Age/Gender: <span style="color: #4b343f">23Y/M</span></li>
+              <li class="px-2"><i class="fa fa-user" aria-hidden="true"></i></li>
+              <li><button type="button" class="btn border border-primary rounded-circle" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="width: 30px;height: 30px;padding: 0;"><i class="fa fa-info" aria-hidden="true"></i></button></li>
+            </ul>
+          </div><!-- col-sm-8 -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="bg-white p-2 mt-2">
+          <div class="tab_options">
+            <!-- Nav pills -->
+            <ul class="nav nav-pills justify-content-between" role="tablist">
+              <li class="nav-item">
+                <a class="rounded-0 text-center blue_bg nav-link text-white uppercase border border-white" data-toggle="pill" href="#home"><i class="fa fa-book" aria-hidden="true"></i> medical records</a>
+              </li>
+              <li class="nav-item">
+                <a class="rounded-0 text-center blue_bg nav-link text-white uppercase border border-white" data-toggle="pill" href="#menu1"><i class="fa fa-stethoscope" aria-hidden="true"></i> history</a>
+              </li>
+              <li class="nav-item">
+                <a class="rounded-0 text-center blue_bg nav-link text-white uppercase border border-white active" data-toggle="pill" href="#menu2"><i class="fa fa-heartbeat" aria-hidden="true"></i> vitals</a>
+              </li>
+              <li class="nav-item">
+                <a class="rounded-0 text-center blue_bg nav-link text-white uppercase border border-white" data-toggle="pill" href="#medication"><i class="fa fa-heartbeat" aria-hidden="true"></i> medication details</a>
+              </li>
+              <li class="nav-item">
+                <a class="rounded-0 text-center blue_bg nav-link text-white uppercase border border-white" data-toggle="pill" href="#prescription"><i class="fa fa-heartbeat" aria-hidden="true"></i> prescription medicine</a>
+              </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">                
+              <div id="home" class="tab-pane fade"><br>
+                sdfsfsfsdfsdf
+              </div>
+              <div id="menu1" class="tab-pane fade"><br>
+                <h3>Menu 1</h3>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+              </div>
+              <div id="menu2" class="tab-pane m-0 active">
+
+                <!--  -->
+                <ul class="visit-tabs nav nav-tabs alert-secondary d-flex align-items-center" role="tablist ">
+                  <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#tabs-1" role="tab">Allergies/Immunization</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link p-2 uppercase active " data-toggle="tab" href="#tabs-2" role="tab">Vital Sign</a>
+                  </li>
+                </ul><!-- Tab panes -->
+                <div class="tab-content">
+                  <div class="tab-pane pt-2" id="tabs-1" role="tabpanel">
+                    <h5>Allergies / Immunization</h5>
+                    <hr>
+                    <div id="accordion" role="tablist">
+                      <div class="card mb-3">
+                        <div class="card-header" role="tab" id="headingOne">
+                          <h5 class="mb-0">
+                            <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#018bbc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                              Allergies
+                            </a>
+                          </h5>
+                        </div>
+
+                        <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" style="">
+
+                          <form class="card-body">
+                            <div class="row">
+                              <div class="col-md-4">
+                                <div class="form-group row mb-0">
+                                  <label for="inputEmail3" class="col-sm-4 col-form-label">Allergy type</label>
+                                  <div class="col-sm-8">
+                                    <select class="form-control" name="select">
+                                      <option>Select</option>
+                                      <option>Drug Allergy</option>
+                                      <option>Dust Allergy</option>
+                                      <option>Food Allergy</option>
+                                      <option>Skin Allergy</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="col-md-3">
+                                <div class="form-group row mb-0">
+                                  <label for="inputEmail3" class="col-sm-4 col-form-label">Allergen</label>
+                                  <div class="col-sm-8">
+                                   <select class="form-control" name="select">
+                                      <option>Select</option>
+                                    </select>
+                                 </div>
+                               </div>
+                             </div> 
+
+                             <div class="col-md-5">
+                              <div class="form-group row mb-0">
+                                <label for="inputEmail3" class="col-sm-3 col-form-label">Reaction</label>
+                                <div class="col-sm-7">
+                                 <input type="text" name="date" class="form-control" placeholder="Reaction">
+                               </div>
+                               <div class="col-md-2">
+                                <button class="btn-primary btn icon-size"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+
+                      <table class="table-border table">
+                        <tr style="background: #d1dae6;">
+                          <th>Sr</th>
+                          <th>Allergy type</th>
+                          <th>Allergy</th>
+                          <th>Reaction</th>
+                        </tr>
+                        <tr>
+                          <td colspan="4"></td>
+                        </tr>
+                      </table>
+
+                    </div>
+                  </div>
+                  <div class="card">
+                    <div class="card-header" role="tab" id="headingTwo">
+                      <h5 class="mb-0">
+                        <a class="" data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#018bbc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Immunization
+                       </a>
+                     </h5>
+                   </div>
+                   <div id="collapseTwo" class="collapse show" role="tabpanel" aria-labelledby="headingTwo" style="">
+                    <div class="card-body">
+                      <form>
+                        <div class="row">
+                          <div class="col-md-5">
+                            <div class="form-group row mb-0">
+                              <label for="inputEmail3" class="col-sm-4 col-form-label">Immunization</label>
+                              <div class="col-sm-8">
+                                <select class="form-control" name="select">
+                                  <option>Select</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-5">
+                            <div class="form-group row mb-0">
+                              <label for="inputEmail3" class="col-sm-4 col-form-label">Givan Date</label>
+                              <div class="col-sm-8">
+                               <input type="date" name="date" class="form-control" placeholder="">
+                             </div>
+                           </div>
+                         </div> 
+
+                         <div class="col-md-2 text-right">
+                          <button class="btn-primary btn icon-size"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                     <table class="table-border table">
+                        <tr style="background: #d1dae6;">
+                          <th>Sr</th>
+                          <th>Immunization</th>
+                          <th>Date</th>
+                        </tr>
+                        <tr>
+                          <td colspan="3"></td>
+                        </tr>
+                      </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="tab-pane active" id="tabs-2" role="tabpanel">
+            <div class="row no-gutters p-2">
+              <div class="col-md-6">
+                <h5>Vital Signs</h5>
+              </div>
+              <div class="col-md-6">
+                <div class="btns d-flex align-items-center justify-content-end">
+                  <label class="check_opt ">reiease
+                    <input type="checkbox" checked="checked">
+                    <span class="checkmark"></span>
+                  </label>
+                  <button class="btn-primary ml-1 border-0 p-2 icon-size" name="button" type="button"><i class="fa fa-save" aria-hidden="true"></i></button>
+                  <button class="btn-primary ml-1 border-0 p-2 icon-size" name="button" type="button"><img src="{% static 'images/paintbrush.png' %}" alt="" width="16px"></button>
+                </div>
+              </div>
+            </div>
+            <form>
+              <div class="form-group row mb-2">
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="systolic" class="col-sm-5  col-form-label">Systolic B.P</label>
+                    <div class="col-sm-7">
+                      <input type="email" class="form-control" id="systolic" placeholder="  ">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="diastolic" class="col-sm-5  col-form-label">Diastolic B.P</label>
+                    <div class="col-sm-7">
+                      <input type="email" class="form-control" id="diastolic" placeholder="">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="temperature" class="col-sm-5  col-form-label">Temperature (oC)</label>
+                    <div class="col-sm-7">
+                      <input type="email" class="form-control" id="temperature" placeholder="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row mb-2">
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="weight" class="col-sm-5  col-form-label">Weight (Kg)</label>
+                    <div class="col-sm-7">
+                      <input type="email" class="form-control" id="weight" placeholder="">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="height" class="col-sm-5 col-form-label">Height (cm)</label>
+                    <div class="col-sm-7">
+                      <input type="email" class="form-control" id="height" placeholder="">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="BMI (Kg/M2)" class="col-sm-5 col-form-label">BMI (Kg/M2)</label>
+                    <div class="col-sm-7">
+                      <input type="email" class="form-control" id="BMI" placeholder="Email">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row mb-2">
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="respiratory" class="col-sm-5  col-form-label">Respiratory rate (/Min)</label>
+                    <div class="col-sm-7">
+                      <input type="email" class="form-control" id="respiratory" placeholder="">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="heart-rate" class="col-sm-5 col-form-label">Heart rate (BPM)</label>
+                    <div class="col-sm-7">
+                      <input type="email" class="form-control" id="heart-rate" placeholder="">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="urine-output" class="col-sm-5 col-form-label">Urine Output</label>
+                    <div class="col-sm-7">
+                      <input type="email" class="form-control" id="urine-output" placeholder="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row mb-2">
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="blood-sugar" class="col-sm-5 col-form-label">Blood Sugar (F)</label>
+                    <div class="col-sm-7">
+                      <input type="email" class="form-control" id="inputEmail3" placeholder="">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="blood-sugar" class="col-sm-5 col-form-label">Blood Sugar (R)</label>
+                    <div class="col-sm-7">
+                      <input type="email" class="form-control" id="blood-sugar" placeholder="">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="SPO2" class="col-sm-5 col-form-label">SPO2</label>
+                    <div class="col-sm-7">
+                      <input type="email" class="form-control" id="SPO2" placeholder="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row mb-2">
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="blood-sugar" class="col-sm-5 col-form-label">AVPU</label>
+                    <div class="col-sm-7">
+                      <select class="box form-control ">
+                        <option>---Select---</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="blood-sugar" class="col-sm-5 col-form-label">Trauma</label>
+                    <div class="col-sm-7">
+                      <select class="box form-control ">
+                        <option>---Select---</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="SPO2" class="col-sm-5 col-form-label">Mobility</label>
+                    <div class="col-sm-7">
+                      <select class="box form-control ">
+                        <option>---Select---</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mt-2">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="SPO2" class="col-sm-5 col-form-label">Oxygen supplementation</label>
+                    <div class="col-sm-7">
+                      <select class="box form-control ">
+                        <option>---Select---</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group row m-0 no-gutters">
+                    <label for="SPO2" class="col-sm-2 col-form-label">Comment</label>
+                    <div class="col-sm-10">
+                      <select class="box form-control ">
+                        <option>---Select---</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </form>
+
+            <h5>Current Vitals</h5>
+            <hr>
+            <table class="table mt-2 table-border">
+              <tr style="background: #d1dae6;">
+                <th>Select</th>
+                <th>Visit Type</th>
+                <th>Score</th>
+                <th>Date Time</th>
+                <th>SBP</th>
+                <th>DBP</th>
+                <th>Temp</th>
+                <th>RR</th>
+                <th>HR</th>
+                <th>Urine OP</th>
+                <th>BS(F)</th>
+                <th>BS(R)</th>
+                <th>SP02</th>
+                <th>AVPU</th>
+                <th>Trauma</th>
+                <th>Mobility</th>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <!--  -->
+
+
+      </div>
+      <div id="medication" class="tab-pane fade"><br>
+        <h3>Menu 2</h3>
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+      </div>
+      <div id="prescription" class="container tab-pane fade"><br>
+        <h3>Menu 2</h3>
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+      </div>
+    </div>
+  </div>
+    </div>
+</div>
+</div>
+
+    </div>
+</div>
+{% endblock  %}

@@ -1,0 +1,1479 @@
+{% extends 'user_management/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+
+</style>
+{% endblock %}
+{% block body_block %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card" style="padding: 20px;">
+                        <div>
+                            <h3><b>User management</b></h3>
+                        </div>
+                        <div class="col-12">
+
+                            <div>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div>
+
+                                        <br>
+                                        <div class="icon-button-demo">&nbsp;
+                                            <a href="/usermanagementapp/user_management" class="green_bg"> <button
+                                                    type="button" class="btn btn-warning" data-toggle="modal"
+                                                    data-target=".bd-example-modal-xl"><i
+                                                        class="fas fa-plus">Add</i></button></a>&nbsp;
+                                            <a href="/usermanagementapp/user_management_details" class="gray_bg"><button
+                                                    type="button" class="btn btn-info"><i class="fas fa-edit"
+                                                        style="color:white;">Edit</i></button></a>&nbsp;
+                                            <button type="submit" class="btn btn-success" aria-label="Close"> <i
+                                                    class="fas fa-save">Save</i></button></a>&nbsp;
+                                            <button type="button" class="btn btn-primary"
+                                                onClick="window.location.reload();"> <i
+                                                    class="fas fa-sync-alt">Refresh</i></button></a>&nbsp;
+                                            <a href="/dashboard" class="red_bg"><button type="button"
+                                                    class="btn btn-danger"> <i
+                                                        class="fas fa-times-circle">Exit</i></button></a>
+                                        </div><br><br>
+                                        {% if messages %}
+                                        <div class="alert alert-success" role="alert">
+                                            <ul class="messages">
+                                                {% for message in messages %}
+                                                <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{
+                                                    message }} </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        {% endif %}
+                                        <div class="form-row">
+                                            <div class="form-group col-md-5">
+                                                <label>User Id</label>
+                                                {{form.user_id}}
+                                            </div>
+                                            <div class="form-group col-md-0">
+                                                <label></label>
+                                                <button type="button" name="search_uhid" value="IsUHID"
+                                                    class="input-group-text" style="margin-top: 8.5px;"><a
+                                                        href="/search_create_user"><svg
+                                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" class="feather feather-search">
+                                                            <circle cx="11" cy="11" r="8"></circle>
+                                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                                        </svg></a></button>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-5">
+                                                <label for="inputEmail4">User Name</label>
+                                                {{form.user}}
+                                            </div>
+
+                                        </div>
+                                        {{form.password}}
+
+                                    </div>
+                                    <div><br>
+                                        <h3 style="color: blue;"><b>Access</b></h3>
+                                    </div><br>
+
+
+                                    <div class="form-row" style="margin-left:10%;">
+                                        <div class="col-md-4">
+                                            <h4>Patient Registration</h4>
+                                        </div>
+                                        <div class="form-row col-md-8">
+                                            <div class="form-row col-md-1.5">
+                                                <div class="col-md-0">
+                                                    {{form.patient_registration_add}}
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="btn btn-success"
+                                                        for="id_patient_registration_add">Save</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row col-md-1.5">
+                                                <div class="col-md-0">
+                                                    {{form.patient_registration_edit}}
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="btn btn-info"
+                                                        for="id_patient_registration_edit">Edit</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row col-md-1.5">
+                                                <div class="col-md-0">
+                                                    {{form.patient_registration_register_card}}
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label class="btn btn-warning"
+                                                        for="id_patient_registration_register_card">Register_Card</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row col-md-1.5">
+                                                <div class="col-md-0">
+                                                    {{form.patient_registration_visiter}}
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="btn btn-warning"
+                                                        for="id_patient_registration_visiter"> Visiter</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><br><br>
+
+                                    <div class="form-row" style="margin-left:10%;">
+                                        <div class="col-md-4">
+                                            <h4>IPD</h4>
+                                        </div>
+                                        <div class="form-row col-md-8">
+                                            <div class="form-row col-md-1.5">
+                                                <div class="col-md-0">
+                                                    {{form.ipd_save}}
+                                                </div>
+                                                <div class="col-md-1.5">
+                                                    <label class="btn btn-success" for="id_ipd_save">Save</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row col-md-1.5">
+                                                <div class="col-md-0">
+                                                    {{form.ipd_edit}}
+                                                </div>
+                                                <div class="col-md-1.5">
+                                                    <label class="btn btn-info" for="id_ipd_edit">Edit</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row col-md-1.5">
+                                                <div class="col-md-0">
+                                                    {{form.ipd_print_QR_code}}
+                                                </div>
+                                                <div class="col-md-1.5">
+                                                    <label class="btn btn-warning" for="id_ipd_print_QR_code"> Print QR
+                                                        code</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row col-md-1.5">
+                                                <div class="col-md-0">
+                                                    {{form.ipd_discharge}}
+                                                </div>
+                                                <div class="col-md-1.5">
+                                                    <label class="btn btn-warning"
+                                                        for="id_ipd_discharge">Discharge</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row col-md-1.5">
+                                                <div class="col-md-0">
+                                                    {{form.ipd_admission_slip}}
+                                                </div>
+                                                <div class="col-md-1.5">
+                                                    <label class="btn btn-warning" for="id_ipd_admission_slip">Admission
+                                                        Slip</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row col-md-1.5">
+                                                <div class="col-md-0">
+                                                    {{form.ipd_admission_form}}
+                                                </div>
+                                                <div class="col-md-1.5">
+                                                    <label class="btn btn-warning" for="id_ipd_admission_form">Admission
+                                                        form</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row col-md-1.5">
+                                                <div class="col-md-0">
+                                                    {{form.ipd_stickers}}
+                                                </div>
+                                                <div class="col-md-1.5">
+                                                    <label class="btn btn-warning" for="id_ipd_stickers"> Ipd
+                                                        Stickers</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row col-md-1.5">
+                                                <div class="col-md-0">
+                                                    {{form.ipd_bed_transfer}}
+                                                </div>
+                                                <div class="col-md-1.5">
+                                                    <label class="btn btn-primary" for="id_ipd_bed_transfer"> Bed
+                                                        Transfer</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div><br><br>
+
+                                    <h3 style="color: blue;"><b>Master</b> </h3>
+                                    <div class="col-lg-12">
+                                        <h4 style="padding-left: 50px;color: blueviolet;"><U>General Master</U></h4>
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Title Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.title_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_title_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.title_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_title_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.title_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_title_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Hospital Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.hospital_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_hospital_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.hospital_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_hospital_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.hospital_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary"
+                                                    for="id_hospital_master_view">View</label>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Holiday Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.holiday_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_holiday_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.holiday_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_holiday_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.holiday_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_holiday_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Gender Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.gender_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_gender_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.gender_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_gender_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.gender_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_gender_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>District Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.district_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_district_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.district_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_district_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.district_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_district_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Country Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.country_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_country_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.country_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_country_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.country_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_country_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>City Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.city_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_city_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.city_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_city_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.city_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_city_master_view"> View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Most Document Type</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.most_document_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_most_document_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.most_document_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_most_document_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.most_document_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_most_document_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Marital Status</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.Martial_status_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_Martial_status_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.Martial_status_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_Martial_status_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.Martial_status_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_Martial_status_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Relation Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.relation_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_relation_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.relation_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_relation_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.relation_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_relation_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Group Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.group_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_group_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.group_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_group_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.group_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_group_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Room Master </h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.room_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_room_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.room_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_room_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.room_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_room_master_view"> View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Branch Master </h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.branch_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_branch_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.branch_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_branch_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.branch_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_branch_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Visit type Master </h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.visit_type_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_visit_type_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.visit_type_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_visit_type_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.visit_type_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_visit_type_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Service Category </h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.service_category_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_service_category_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.service_category_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_service_category_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.service_category_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_service_category_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Service Sub Category </h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.service_sub_category_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_service_sub_category_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.service_sub_category_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info"
+                                                    for="id_service_sub_category_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.service_sub_category_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_service_sub_category_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Service Department </h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.service_department_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_service_department_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.service_department_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info"
+                                                    for="id_service_department_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.service_department_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_service_department_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Service sub Department </h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.service_sub_department_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_service_sub_department_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.service_sub_department_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info"
+                                                    for="id_service_sub_department_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.service_sub_department_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_service_sub_department_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Ward Type</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ward_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_ward_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ward_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_ward_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ward_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_ward_view"> View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Ward Category</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ward_category_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_ward_category_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ward_category_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_ward_category_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ward_category_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_ward_category_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Blood Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.blood_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_blood_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.blood_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_blood_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.blood_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_blood_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Clinical Department</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.clinical_department_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_clinical_department_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.clinical_department_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info"
+                                                    for="id_clinical_department_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.clinical_department_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_clinical_department_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Designation</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.desgination_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_desgination_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.desgination_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_desgination_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.desgination_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_desgination_view"> View</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <h4 style="padding-left: 50px;color: blueviolet;"><U>Service Master</U></h4>
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Service Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.sevice_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_sevice_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.sevice_search}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-warning" for="id_sevice_search">Search</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <h4 style="padding-left: 50px;color: blueviolet;"><U>IPD Master</U></h4>
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Wing Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.wing_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_wing_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.wing_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_wing_master_view"> View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Floor Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.floor_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_floor_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.floor_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_floor_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Room Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ipd_room_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_ipd_room_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ipd_room_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_ipd_room_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Bed Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.bed_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_bed_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.bed_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_bed_master_view"> View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Ward Type</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ward_type_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_ward_type_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ward_type_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_ward_type_view"> View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Ward Category</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ipd_ward_category_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_ipd_ward_category_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ipd_ward_category_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_ipd_ward_category_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Ward Name</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ward_name_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_ward_name_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ward_name_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_ward_name_view"> View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Bed Location</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.bed_location_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_bed_location_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.bed_location_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_bed_location_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Nursing Counter</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.nursing_counter_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_nursing_counter_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.nursing_counter_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_nursing_counter_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Department</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ipd_department_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_ipd_department_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.ipd_department_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_ipd_department_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Room Defination</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.room_defination_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_room_defination_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.room_defination_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_room_defination_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <h4 style="padding-left: 50px;color: blueviolet;"><U>Charge</U></h4>
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Billing Group Tariff</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.billing_group_traiff_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_billing_group_traiff_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.billing_group_traiff_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info"
+                                                    for="id_billing_group_traiff_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.billing_group_traiff_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_billing_group_traiff_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Tariff Charge Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.tariff_charge_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_tariff_charge_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.tariff_charge_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info"
+                                                    for="id_tariff_charge_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.tariff_charge_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_tariff_charge_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Tariff Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.tariff_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_tariff_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.tariff_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_tariff_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.tariff_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_tariff_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-lg-12">
+                                        <h4 style="padding-left: 50px;color: blueviolet;"><U>Billing Group</U></h4>
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Corporate Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.corporate_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_corporate_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.corporate_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_corporate_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.corporate_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_corporate_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Billing Group Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.billing_group_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_billing_group_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.billing_group_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info"
+                                                    for="id_billing_group_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.billing_group_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_billing_group_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Corporate Billing Linking</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.cop_billing_linking_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_cop_billing_linking_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.cop_billing_linking_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info"
+                                                    for="id_cop_billing_linking_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.cop_billing_linking_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_cop_billing_linking_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+                                    </div><br><br>
+
+
+
+
+
+                                    <h3 style="color: blue;"><b>Inventory</b> </h3>
+                                    <div class="col-lg-12">
+                                        <h4 style="padding-left: 50px;color: blueviolet;"><U>Inventory Master</U></h4>
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Item Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_item_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_item_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_item_master_view"> View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Item Category Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_category_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_item_category_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_category_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info"
+                                                    for="id_item_category_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_category_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_item_category_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Item Belong to Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_belong_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_item_belong_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_belong_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info"
+                                                    for="id_item_belong_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_belong_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_item_belong_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Packaging Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.packaging_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_packaging_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.packaging_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_packaging_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.packaging_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_packaging_view"> View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Item Unit Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_unit_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_item_unit_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_unit_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_item_unit_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_unit_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_item_unit_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Item Manufacture</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_manufacture_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_item_manufacture_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_manufacture_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_item_manufacture_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_manufacture_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_item_manufacture_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Store Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.store_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_store_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.store_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_store_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.store_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_store_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Vendor Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.vendor_master_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_vendor_master_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.vendor_master_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_vendor_master_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.vendor_master_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_vendor_master_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Store Nursing counter</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.store_nursing_counter_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success"
+                                                    for="id_store_nursing_counter_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.store_nursing_counter_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info"
+                                                    for="id_store_nursing_counter_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.store_nursing_counter_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_store_nursing_counter_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row" style="margin-left:20%;">
+                                            <div class="col-md-4">
+                                                <h4>Item Location Master</h4>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_location_add}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-success" for="id_item_location_add">Save</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_location_edit}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-info" for="id_item_location_edit">Edit</label>
+                                            </div>
+                                            <div class="col-md-0">
+                                                {{form.item_location_view}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="btn btn-secondary" for="id_item_location_view">
+                                                    View</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+    <style>
+        /* Style the search box */
+        .input-box {
+            width: 250px;
+            padding: 8px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            outline: 2px;
+        }
+    </style>
+<style>
+    div.dataTables_wrapper div.dataTables_filter label{
+    display:none;
+    }
+</style>
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+<div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>Discount Report</b>
+        </div>
+        <div class="">
+          <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+          <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+            <a class="dropdown-item btn-primary" id="download-button"  onclick="exportTableToCSV()" role="button" href="#">CSV</a>
+            
+          </div>
+        </div>
+      </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="col-md-12 col-sm-4 col-xs-4" id="filter_card"><br>
+                   
+                    <div class="form-row">
+                        <div class="form-group col-md-3 mb-0">
+                            <label style="font-weight: bold;" >From Date<b style="color: red;">*</b> </label>
+                            <input type='datetime-local' name='b_start_date' id='b_start_date' style="background-color: white;" class='form-control' required>
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                            <label style="font-weight: bold">To Date<b style="color: red;">*</b></label>
+                            <input type='datetime-local' name='b_end_date' style="background-color: white;" id='b_end_date' class='form-control' required>
+                        </div>
+
+                        <div class="col-sm-0"><br>
+                            <button type="submit" class="btn btn-warning w-100 mt-2" name="search_btn"
+                                value="Search"><i class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+                {% if both_data %}
+        <div id="hello">
+            <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                <tr>
+                    <div class="" >
+                        <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                        </center>
+                    </div>
+                </tr>
+            </table>
+            <style>
+                table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+
+                }
+            </style>
+        <div class="table-responsive">
+            <div class="mb-3">
+                <input type="text"  id="myinputv" class="input-box float-right" placeholder="Search Here...." >
+            </div>
+                <table class="table table-stripped " id="tableIDv">
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Bill_no</th>
+                            <th>Date/Time</th>
+                            <th>Payable Amt</th>
+                            <th>Discount</th>
+                            <th>Net Amt</th>
+                            <th>Remark</th>
+                            <th>Authorised By</th>
+                            <th>Created By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for dat,data in both_data %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{dat.bill_no}}</td>
+                            <td>{{dat.created_at}}</td>
+                            <td>{{data.pay_amount}}</td>
+                            <td>{{data.discount}}</td>
+                            <td>{{data.net_amount}}</td>
+                            <td>{{dat.remark}}</td>
+                            <td>{{dat.authorised_by}}</td>
+                            <td>{{dat.created_by}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+<script>
+    function toggleVisibility() {
+      var demoElement = document.getElementById('filter_card');
+      
+      if (demoElement.style.display === 'none') {
+        demoElement.style.display = 'block'; // Show the element
+      } else {
+        demoElement.style.display = 'none';  // Hide the element
+      }
+    }
+  </script>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src=
+"https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js">
+    </script>
+    <script>
+    var table = $('#tableIDv').DataTable();
+        // #myInput is a <input type="text"> element
+        $('#myinputv').on( 'keyup', function () {
+            table.search( this.value ).draw();
+        } );
+</script>
+
+
+<script src="../assets/js/app.js"></script>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+
+<!-- Export csv -->
+
+<script>
+
+function exportTableToCSV() {
+    var csv = [];
+    var rows = document.querySelectorAll("table tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+
+        for (var j = 0; j < cols.length; j++) {
+            var cellText = cols[j].innerText;
+            cellText = cellText.replace(/"/g, '""');  // Escape double quotes within cell value
+            row.push('"' + cellText + '"');
+        }
+
+        csv.push(row.join(","));
+    }
+
+    // Create a download link
+    var csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+    var link = document.createElement("a");
+    link.setAttribute("href", encodeURI(csvContent));
+    link.setAttribute("download", "monthly_report.csv");
+    link.click();
+}
+</script>
+{% endblock %}

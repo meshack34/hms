@@ -1,0 +1,25 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px;">
+            <h1>Report change</h1>
+            <div>
+                <form  method="post">
+                    {% csrf_token %}
+                    <label for="doct_name">Doctor name</label>
+                    <select name="doct_name" id="doct_name" class="form-control" style="width: 200px;">
+                        <option value="">chooes doctor.....</option>
+                        {% for data in records %}
+                        <option value="{{data.doctor_id}}">{{data.doctor_name}}</option>
+                        {% endfor %}
+                    </select><br>
+                    <button type="submit" class="btn btn-primary"> add changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

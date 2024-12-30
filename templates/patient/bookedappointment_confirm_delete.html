@@ -1,0 +1,21 @@
+{% extends 'patient/base.html' %}
+{% block body_block %}
+<!--Main Content start-->
+<div class="container" align='center'  style="background-image: linear-gradient(white,#9AD0EC);"><br><br><br>
+  <div class="card">
+      <div class="header">
+        <div class="body">
+            <h2>Really , Do You Want To Delete <span style="color:red;">{{object.patient_name}}</span> Records</h2>
+            <form method="post">
+              {% csrf_token %}
+              <input type="submit" name="delete" class="btn btn-danger" value="Yes Delete">
+              <a href="/appointment_table" style="border:2px solid red; width:20%;float:right" class="btn btn-primary">Please Cancle</a>
+            </form>
+
+        </div>
+      </div>
+    </div>
+
+</div>
+<!--Main Content ends-->
+{% endblock %}

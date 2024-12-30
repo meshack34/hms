@@ -1,0 +1,89 @@
+{% extends 'incident/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<script src="{% static 'js/country-states.js' %}"></script>
+{% endblock  %}
+{% block body_block %}
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00037">
+<input type="hidden" name="message_id" value="MSG00037">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="box-outer">
+                        <div id="Patient_R" class="h-100">
+                            <div class="patient-registration">
+                              <div class="top-heading lightgreen_bg">
+                                <h3 class="section_title">Incident List Report </h3>
+                              </div>
+                              <div class="container-fluid">
+                                <div class="row">
+                                  <div class="col-10">
+                                    
+                                  </div>
+
+                                </div>  <br><br> 
+                                <div class="form_sec">
+                                  <form method="POST" id="my_form" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="table-responsive ">
+                                        <table class="datatable table table-stripped">
+                                                       <thead>
+                                                           <tr><th>S.No</th>
+                                                               <th>Incident No</th>
+                                                               <th>Submitter Name</th>
+                                                               <th>Incident Reported Date</th>
+                                                               <th>Incident Type</th>
+                                                               <th>Incident Location</th>
+                                                               <th>Affected Person</th>                                                  
+                                                               <th>Responsible Dept</th>
+                                                               <th>Incident Desc</th>
+                                                               <th>View</th>
+                                                           </tr>
+                                                       </thead>
+                                                       <tbody>
+                                                            {% for data in incident_details %}
+                                                           <tr>
+                                                               <td>{{forloop.counter}}</td>
+                                                               <td>{{data.incident_id}}</td>
+                                                               <td>{{data.submitter_name}}</td>
+                                                               <td>{{data.incident_reported_date}}</td>
+                                                               <td>{{data.incident_type}}</td>
+                                                               <td>{{data.incident_location}}</td>
+                                                               <td>{{data.affected_people}}</td>
+                                                               <td>{{data.responsible_dept}}</td>
+                                                               <td>{{data.incident_description}}</td>
+                                                               <td><a class="btn btn-primary" href="{% url 'investigation_list' data.id %}"><i
+                                                                    class="fa fa-hand-pointer"
+                                                                    aria-hidden="true"></i></a></td>
+                                                           </tr>
+                                                           {% endfor %}
+                                                       
+                                                          
+                                                        </tbody>
+                                               </table>
+                                               </div>
+                               
+                                 
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                       
+                </div>
+            </div>
+        </div>
+        <!--end page wrapper -->
+    </div>
+        </div>
+        <!--/ Latest Patients-->
+    </div>
+    
+    {% endblock  %}

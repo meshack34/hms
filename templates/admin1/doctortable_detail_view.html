@@ -1,0 +1,68 @@
+{% extends 'admin1/base.html' %}
+{% block body_block %}
+<!--Main Content-->
+<!--content-->
+ <div class="page-wrapper">
+    <div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7 col-4">
+                <h4 class="page-title">&nbsp;&nbsp;&nbsp;My Profile</h4>
+            </div>
+        </div>
+        <div class="card-box profile-header">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="profile-view">
+                        <div class="profile-img-wrap">
+                            <div class="profile-img">
+                                <img src="{{data.doctor_profile_image.url}}" class="avatar"  alt="{{data.doctor_name}}" >
+                            </div>
+                        </div>
+                        <div class="profile-basic">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="profile-info-left">
+                                        <h3 class="user-name m-t-0 m-b-0">{{data.doctor_name|upper}}</h3>
+                                        <h4 class="text-muted">{{data.doctor_department}}</h4>
+                                        <div class="staff-id">Doctor ID :{{data.doctor_id}}</div>
+                                        <div class="staff-id">Reg. No. :{{data.doctor_registration_no}}</div>
+                                        <div class="staff-id">Docotor Register By :{{data.doctor_register_by}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <ul class="personal-info">
+                                        <li>
+                                            <span class="title">Phone:</span>
+                                            <span class="text">{{data.doctor_phone_no}}</span>
+                                        </li>
+                                        <li>
+                                            <span class="title">Email:</span>
+                                            <span class="text">{{data.doctor_email_address}}</span>
+                                        </li>
+                                        <li>
+                                            <span class="title">Birthday:</span>
+                                            <span class="text">{{data.doctor_date_of_birth}}</span>
+                                        </li>
+                                        <li>
+                                            <span class="title">Address:</span>
+                                            <span class="text">{{data.doctor_address}}</span>
+                                        </li>
+                                        <li>
+                                            <span class="title">Doctor Fee:</span>
+                                            <span class="text">{{data.doctor_fee}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><br>
+        <a href="/doctor_table" class="btn btn-primary">Go Back</a>
+    </div>
+</div>
+</div>
+
+{% endblock %}

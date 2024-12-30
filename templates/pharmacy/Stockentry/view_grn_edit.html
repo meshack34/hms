@@ -1,0 +1,130 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+
+    </style>
+{% endblock  %}
+{% block body_block %}
+
+
+
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <button type="menu" style="font-family: monospace; width: 100%; text-align: left;" class="btn btn-primary m-t-15 waves-effect"> <b>View GRN</b></button>
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+           <div class="card">
+               <div class="header">
+       <div class="body">
+        <form  method="post" id="PI_update"  data-cities-url="{% url 'PI_update' %}">
+            {% csrf_token %}
+        <div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;
+            <button type="reset" class="btn btn-primary"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+                <button type="button" class="btn btn-danger"><a href='/'><i class="fas fa-times-circle" style="color:white;">Exit</i></a></button>&nbsp;
+                <a href="/stock_entry" class="btn btn-primary"><i class="fa fa-arrow-circle-left">&nbsp;Back</i></a>
+        </div><br>
+
+           <div class="table-responsive">
+             <table class="datatable table table-stripped ">
+
+                   <thead>
+                       <tr>
+                           <th>SI.NO</th>
+                           <th>GRN.No</th>
+                           <th>GRN Date</th>
+                           <th>PO No</th>
+                           <th>PO Date</th>
+                           <th>Invoice No</th>
+                           <th>Vendor</th>
+                           <th>Basic Amt</th>
+                           <th>Net Amt</th>
+                           <th>GRN Amt</th>
+                           <th>Preview</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                     {% for data in grn_parent %}
+                     <tr>
+                         <td>{{forloop.counter}}</td>
+                         <td>{{data.GRN_id}}</td>
+                         <td>{{data.GRN_datetime}}</td>
+                         <td>{{data.PO_id}}</td>
+                         <td>{{data.PO_datetime}}</td>
+                         <td>{{data.invoice_no}}</td>
+                         <td>{{data.vendar_id}}</td>
+                         <td>{{data.basic_amount}}</td>
+                         <td>{{data.net_amount}}</td>
+                         <td>{{data.GRN_amount}}</td>
+                         <td><a class="btn btn-warning" href="/grn_preview/{{data.GRN_id}}"><i class="fa fa-print pr-2"></i></a></td>
+                        </tr>
+                         {% endfor %}
+                    </tbody>
+           </table>
+           </div>
+         </form>
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Add Modal -->
+
+
+
+</div>
+</div>
+
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function Approvedmsg() {
+      alert("Approved");
+    }
+    </script>
+
+<script>
+function edit_po_item()
+    {
+        var pi_id = $('#intent_id').val();
+        var itemid = $('#item_id').val();
+        var qty = $('#quantity').val();
+        var rate = $('#rate').val();
+        var amount = $('#amount').val();
+        var url=$("#PI_update").attr("data-cities-url");
+
+
+        $.ajax({
+            url:url,
+            data: {
+            "pi_id": pi_id,
+            "itemid": itemid,
+            "qty": qty,
+            "rate": rate,
+            "amount": amount,
+            },
+            success: function(data){
+                alert("Updated");
+           },
+           error:function(data)
+            {
+                console.log(data);
+            }
+     });
+    }
+
+</script>
+
+
+{% endblock  %}

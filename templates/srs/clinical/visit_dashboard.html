@@ -1,0 +1,109 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 " style="padding: 5px;">
+        <div class="page-header row align-items-center">
+          <h5 class="pageheader-title col-sm-4">Visit Dashboard</h5>
+          <div class="col-sm-8 text-right d-flex align-items-center justify-content-end">
+            <button class="btn-primary border-0 p-2 icon-size mr-2" name="button" type="button"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+            <button class="btn-primary border-0 p-2 icon-size" name="button" type="button"><img src="{% static 'images/paintbrush.png' %}" alt="" width="16px"></button>
+          </div><!-- col-sm-8 -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="bg-white p-2 mt-2">
+          <form class="form-inline row">
+            <div class="col-sm-2">
+              <select class="form-control w-100" name="card" value="">
+                <option>Reg No.</option>
+                <option value="volvo">#1</option>
+                <option value="saab">#2</option>
+                <option value="opel">#3</option>
+                <option value="audi">#4</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <input class="form-control" type="value" name="value" placeholder="Reg No.">
+            </div>
+
+            <div class="d-flex align-items-center col-md-3">
+              <label style="flex: 0 0 100px;">Doctor</label>
+              <select class="form-control w-100" name="Patient Type" value="" style="flex:0 0 160px;">
+                <option value="Out Pationt">Out Pationt</option>
+                <option value="Out Pationt">Out Pationt</option>
+                <option value="Out Pationt">Out Pationt</option>
+                <option value="Out Pationt">Out Pationt</option>
+              </select>
+            </div>
+            <div class="d-flex align-items-center col-md-3">
+              <label style="flex: 0 0 100px;">Patient Type</label>
+              <select class="form-control w-100" name="Patient Type" value="" style="flex:0 0 160px;">
+                <option value="Out Pationt">Out Pationt</option>
+                <option value="Out Pationt">Out Pationt</option>
+                <option value="Out Pationt">Out Pationt</option>
+                <option value="Out Pationt">Out Pationt</option>
+              </select>
+            </div>
+          </form>
+
+          <div class="btns pt-2 pb-2">
+              <button class="lightgreen_bg text-white border-0 p-2 rounded">New Patient (1)</button>
+              <button class="orange_bg text-white border-0 p-2 rounded">Nurse Seen (0)</button>
+              <button class="orange_bg text-white border-0 p-2 rounded">Doctor Seen (0)</button>
+              <button class="orange_bg text-white border-0 p-2 rounded">Visit Complete (0)</button>
+          </div>
+
+          <table class="table mt-2 table-border">
+            <tr style="background: #d1dae6;">
+              <th>SN</th>
+              <th>Visit No.</th>
+              <th>Date & Time</th>
+              <th>Clinic Department</th>
+              <th>Reg. No.</th>
+              <th>Patient Name</th>
+              <th>Age</th>
+              <th>Assigned User</th>
+              <th>Status</th>
+              <th>Visit complete Date time</th>
+              <th>Remarks</th>
+              <th>Acknowledge</th>
+              <th></th>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>181</td>
+              <td>13/07/2019 10:36AM</td>
+              <td>General OPD</td>
+              <td>116</td>
+              <td>Mr. Good Luck</td>
+              <td>23Y/M</td>
+              <td></td>
+              <td>Billed</td>
+              <td></td>
+              <td></td>
+              <td>Acknowledge</td>
+              <td></td>
+            </tr>
+          </table>
+          <div class="space" style="min-height: 200px;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+    </div>
+</div>
+</div>
+
+    </div>
+</div>
+{% endblock  %}

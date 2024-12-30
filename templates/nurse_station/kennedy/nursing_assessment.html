@@ -1,0 +1,1078 @@
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+{% block body_block %}
+
+<style>
+#alert {
+  position: fixed;
+  top: 10%;
+  right: 20px;
+  margin-left: 20px;
+  max-width: 300px;
+  z-index: 1;
+}
+
+#alert {
+  padding: 25px 15px;
+  color: white;
+}
+
+  .own_form_class div input,select{
+  border:2px solid rgb(190, 189, 189);
+  border-bottom:2px solid #181616;
+  }
+  .form-control{
+    border:2px solid rgb(190, 189, 189);
+    border-bottom:2px solid #181616;
+  }
+</style>
+
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+ <!-- Main Dashboard -->
+ <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+  <div>
+    <a href="/MRD/MRD_dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+    <b>Consultant tabs</b>
+  </div>
+  <div class="">
+    <button type="submit" class="btn text-light" form="nurse_notes" name="save_btn" value="Save"><i class="fas fa-save"></i></button>
+    <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+    <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+       
+      <a class="dropdown-item btn-primary" id="download-button " type="button" onclick="printDiv('hello')">Print</a>
+      <a href="/doctornotes_view" class="dropdown-item btn-primary"> Records</a>
+    </div>
+  </div>
+</div>
+ <input type="hidden" name="screen_id" value="SCR00040">
+ <input type="hidden" name="message_id" value="MSG00040">
+ <div class="row">
+     <div class="col-12">
+          <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4 text-nowrap">
+            <br>
+              <div class="row clearfix">
+                  <div class="col-sm-3">
+                      <h5><b>UHID:</b>&nbsp;&nbsp;{{uhid}}</h5>
+                  </div>              
+                  <div class="col-sm-3">
+                      <h5><b>IPD No (Admission ID):</b>&nbsp;&nbsp;{{inpatient.admission_ID}}</h5>
+                      <div class="form-group">
+                          <input type="hidden" name="admissionid" value="{{inpatient.admission_ID}}"  class="form-control" >
+                          <input type="hidden" name="admissionid_id" value="{{inpatient.id}}"  class="form-control" >
+                      </div>
+                  </div>
+
+                  <div class="col-sm-3">
+                      <h5><b>Patient name:</b>&nbsp;&nbsp;{{patient_name | upper}}</h5>
+                      <div class="form-group">
+                          <input type="hidden" name="patient_name" value="{{get_patient.first_name}} {{get_patient.middle_name}} {{get_patient.last_name}}" class="form-control" >
+                      </div>
+                  </div>
+                  <div class="col-sm-3">
+                      <h5><b>Age/Gender:</b>&nbsp;&nbsp;{{dob}}/{{gender}}</h5>
+                      <div class="form-group">
+                          <input type="hidden" name="age" value="{{get_patient.age}}" class="form-control" >
+                      </div>
+                  </div>
+              </div>
+            </div>
+        {% for message in messages %}
+        <div class="container-fluid p-0 " id="alert">
+          <div class="alert {{ message.tags }} alert-dismissible bg-{{ message.tags }}" role="alert" >
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="True">&times;</span>
+            </button>
+            <b>{{ message }}</b>
+          </div>
+        </div>
+        {% endfor %}
+             <div class="nursing-assessment-tabs p-2 bg-white">
+               <div role="tabpanel">
+                 <div class="tab-content">
+                   <div role="tabpanel" class="tab-pane pt-2" id="profile">
+                     <div class="row inner-tabs no-gutters ">
+                       <div class="col-sm-3 pr-0">
+                         <ul id="nav-tabs-wrapper" class="nav nav-tabs nav-pills nav-stacked well">
+                           <li class="w-100"><a class="active show" href="#mrtab1" data-toggle="tab"><b>Allergies</b> </a></li>
+                           <li class="w-100"><a href="#mrtab2" data-toggle="tab"><b>Immmunization</b> </a></li>
+                           <li class="w-100"><a href="#mrtab3" data-toggle="tab"><b>Health Issues</b> </a></li>
+                           <li class="w-100"><a href="#mrtab4" data-toggle="tab"><b>Diagnosis</b> </a></li>
+                           <li class="w-100"><a href="#mrtab5" data-toggle="tab"><b>Medications</b> </a></li>
+                           <li class="w-100"><a href="#mrtab6" data-toggle="tab">Test Results</a></li>
+                           <li class="w-100"><a href="#mrtab7" data-toggle="tab">Medical History</a></li>
+                           <li class="w-100"><a href="#mrtab8" data-toggle="tab">Social History</a></li>
+                           <li class="w-100"><a href="#mrtab9" data-toggle="tab">Visit History</a></li>
+                           <li class="w-100"><a href="#mrtab10" data-toggle="tab">Clinical History</a></li>
+                           <li class="w-100"><a href="#mrtab11" data-toggle="tab">Patient Document</a></li>
+                           <li class="w-100"><a href="#vtab10ins" data-toggle="tab">investigation_process</a></li>
+                         </ul>
+                       </div>
+                       <div class="col-sm-9 border">
+                         <div class="tab-content p-1">
+                            <div role="tabpanel" class="tab-pane" id="mrtab4">
+                             <h5 class="">Diagnosis</h5>
+                             <table class="table table-border">
+                                 <thead>
+                                    <tr>
+                                      <th>#</th>
+                                      <th>Attendance</th>
+                                      <th>Category</th>
+                                      <th>Diagnosis</th>
+                                      <th>D GRD </th>
+                                      <th>Adverse Effect </th>
+                                      <th>Visit Date </th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                 {% if diagnosis %}
+                                    {% for diag in diagnosis %}
+                                    <tr>
+                                      <td>{{ forloop.counter }}</td>
+                                      <td>{{ diag.attendance }}</td>
+                                      <td>{{ diag.category }}</td>
+                                      <td>{{ diag.diagnosis.diagnosis_name }}</td>
+                                      <td>{{ diag.D_GRG_Code }}</td>
+                                      <td>{{ diag.adverse_effect }}</td>
+                                      <td>{{ diag.visit_date }}</td>
+                                    </tr>
+                                 {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                      <td colspan="6">No Diagnosis Found</td>
+                                    </tr>
+                                    {% endif %}
+                                 </tbody>
+                             </table>
+                           </div>
+                           <div role="tabpanel" class="tab-pane" id="mrtab9">
+                             <h5 class="">Visit History</h5>
+                             <table class="table table-border">
+                               <tr style="background: #d1dae6;">
+                                 <th style="font-size: 11px;">Visit No </th>
+                                 <th style="font-size: 11px;">Visit Date</th>
+                                 <th style="font-size: 11px;">Doctro Name</th>
+                                 <th style="font-size: 11px;">Visit Summary</th>
+                                 <th style="font-size: 11px;">Prescription</th>
+                                 <th style="font-size: 11px;">Discharge Summary</th>
+                                 <th style="font-size: 11px;">Test Report</th>
+                               </tr>
+                               <tr>
+                                 <td colspan="">181</td>
+                                 <td colspan="">13/07/2019</td>
+                                 <td colspan="">General OPD</td>
+                                 <td colspan="">View</td>
+                                 <td colspan="">View</td>
+                                 <td colspan="">View</td>
+                                 <td colspan="">Lipid Profile! X-Ray</td>
+                               </tr>
+                               <tr>
+                                 <td colspan="">180</td>
+                                 <td colspan="">13/07/2019</td>
+                                 <td colspan="">General OPD</td>
+                                 <td colspan="">View</td>
+                                 <td colspan="">View</td>
+                                 <td colspan="">View</td>
+                                 <td colspan="">Lipid Profile! X-Ray</td>
+                               </tr>
+                             </table>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+
+                   <div role="tabpanel" class="tab-pane active" id="home">
+                     <div class="row mt-2 no-gutters">
+                       <h4 class="col-sm-8">Treatments Details</h4>
+                       <div class="col-sm-4 text-right">
+                         <form method="post" id="prescription_report_form">
+                          {% csrf_token %}
+                           <input type="hidden" name="prescription_report"  value="report">
+                         </form>
+                       </div>
+                     </div>
+
+                     <div class="row inner-tabs no-gutters mt-2">
+                       <div class="col-sm-3 pr-0">
+                         <ul id="nav-tabs-wrapper" class="nav nav-tabs nav-pills nav-stacked well">
+                           <li class="w-100"><a class="{% if Active == 'nurse_assessment' %}active show{% endif %}" href="#vtab1" data-toggle="tab">Nurse Assessment</a></li>
+                            <li class="w-100"><a class="{% if Active == 'pre_medication' %}active show{% endif %}" href="#vtab9" data-toggle="tab">Prescription Medicine</a></li>
+
+                           <li class="w-100"><a href="#vtab4" data-toggle="tab">Current medication</a></li>
+                           <li class="w-100"><a class="{% if Active == 'presenting_com' %}active show{% endif %}" href="#vtab5" data-toggle="tab">Presenting Complaint</a></li>
+                           <li class="w-100"><a class="{% if Active == 'history_exam' %}active show{% endif %}"  href="#vtab6" data-toggle="tab">History</a></li>
+                           <li class="w-100"><a class="{% if Active == 'history_exam' %}active show{% endif %}"  href="#vtab15" data-toggle="tab">Examination</a></li>
+                           <li class="w-100"><a class="{% if Active == 'investigation' %}active show{% endif %}" href="#vtab8" data-toggle="tab">Investigation/Procedure</a></li>
+                           <li class="w-100"><a  class="{% if Active == 'diagnosis' %}active show{% endif %}" href="#vtab7" data-toggle="tab">Diagnosis</a></li>
+                           <li class="w-100"><a class="{% if Active == 'Advices' %}active show{% endif %}" href="#vtab10" data-toggle="tab">Advice</a></li>
+                           <li class="w-100"><a class="{% if Active == 'MedicalCertificate' %}active show{% endif %}" href="#vtab11" data-toggle="tab">Medical Certificate</a></li>
+                            <li class="w-100"><a href="#vtab12" data-toggle="tab">Vitals</a></li>
+                            {% if lab_report != None %}
+                            <li class="w-100"><a href="/final_lab_report_clinical/{{lab_report.PTID}}">Current Report</a></li>
+                           {% else %}
+                            <li class="w-100"><a href="#vtab13" data-toggle="tab">Current Report</a></li>
+                           {% endif %}
+                             <li class="w-100"><a href="/current_report/{{uhid}}">Previous Report</a></li>
+
+                         </ul>
+                       </div>
+                       <div class="col-sm-9 border">
+                         <div class="tab-content p-1">
+                           <div role="tabpanel" class="tab-pane {% if Active == 'nurse_assessment' %}active{% endif %}" id="vtab1">                             
+                               <div class="form-group row no-gutters p-2">                          
+                                 
+                                 <div class="row">              
+                                 <div class="col-sm-8 pr-2">
+                                  <label for="inputEmail3" class="col-form-label">Nurse Forms</label>
+                                   <select class="form-control" name="Select" value="Select">
+                                      <option> Select</option>
+                                      <option>ER Nurse Note</option>
+                                      <option>History and Examination</option>
+                                      <option>Medical History</option>
+                                      <option>Social History</option>
+                                      <option>Triage/ Emergency Unit addmission Form 1</option>
+                                      <option>Triage/ Emergency Unit addmission Form 2</option>
+                                   </select>
+                                 </div>
+                             
+                                 <div class="col-sm-4 pr-2">
+                                   <div class="butns d-flex">
+                                    <label for="inputEmail3" class="col-sm-3 col-form-label"></label>
+                                     <button type="button" class="bg-primary border-0 p-2 text-white icon-size" name="button"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                                   </div>
+                                 </div>
+                                </div>
+                               </div>
+                           </div>
+
+                           <div role="tabpanel" class="tab-pane " id="vtab2">
+                             <h3>Tab 2</h3>
+                           </div>
+
+                           <div role="tabpanel" class="tab-pane" id="vtab3">
+                             <h3>Tab 3</h3>
+                           </div>
+
+                           <div role="tabpanel" class="tab-pane" id="vtab4">
+                            <button class="btn-primary p-2" form='prescription_report_form' onclick="printData('currentmedication')" name="button" type="button" style="float: right;" ><i class="fa fa-print"></i></button>
+
+                            <h4>Current Medication</h4>
+                             <table class="table table-border" id="currentmedication">
+                               <tr style="background: #c0daf1;" >
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">Medication</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">Dosage</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">Frequency</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">Food Relation</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">Route</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">Prescribe Date</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">End Date</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">Visite Date</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">Stop</th>
+                               </tr>
+                               {% for data in records %}
+                               <tr>
+                                 <td style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">{{data.medicine}}</td>
+                                 <td style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">{{data.dosage}}</td>
+                                 <td style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">{{data.frequency}}</td>
+                                 <td style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">{{data.food_relations}}</td>
+                                 <td style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">{{data.route}}</td>
+                                 <td style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">{{data.prescribe_date}}</td>
+                                 <td style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">{{data.end_date}}</td>
+                                 <td style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">{{data.end_date}}</td>
+                                 <td style="font-size: 11px; border: 1px solid rgb(0, 0, 0);"></td>
+                               </tr>
+                               {% endfor %}
+                             </table>
+                           </div>
+
+                           <div role="tabpanel" class="tab-pane {% if Active == 'presenting_com' %}active{% endif %}" id="vtab5">
+                             <h5 class=""><b>Presenting Complaint</b> </h5>
+                             <form method="POST">
+                               {% csrf_token %}
+                               <div class="row">
+                                 <div class="col-sm-8  ">
+                                   <div class="form-group d-flex">
+                                     <input type="text" required class="form-control " name="presenting_comp" id="cold">
+                                   </div>
+                                 </div>
+                               </div>
+                               <div class="form-group">
+                                 <h5 class=""><b>History of Presenting Complaint</b> </h5>
+                                 <textarea placeholder="fever" name="initial_comp" required class="w-100 h-100 border rounded" style="min-height: 150px;"> </textarea>
+                                <button type="submit" name="presenting_complaint_temp" value="PresentingComplaintTemp" class="btn btn-primary ml-2"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                                 </div>
+                             </form>
+                             <div>
+                               <form method="post" id="sub_main">
+                                 {% csrf_token %}
+
+                                 <table class="table table-border">
+                                   {% if present_complains %}
+                                    <tr style="background: #c0daf1;">
+                                      <th>SN.No</th>
+                                      <th>Presenting Complaint</th>
+                                      <th>Initial Complaint</th>
+                                      <th>Visit Date</th>
+                                    </tr>
+                                    {% for data in present_complains %}
+                                    <tr>
+                                      <td>{{forloop.counter}}</td>
+                                      <td><input type="text" name="presenting_comp_sub" class="form-control" value="{{data.presenting_comp}}"></td>
+                                      <td><input type="text" name="initial_comp_sub" class="form-control" value="{{data.initial_comp}}"></td>
+                                      <td><input type="text" name="p_c" class="form-control" value="{{data.visit_date}}"></td>
+                                    </tr>
+                                    {% endfor %}
+                                   <tr>
+                                     <td><button type="submit" for="sub_main" name="presenting_complaint_main" value="PresentingComplaintMain" class="btn btn-primary ml-2"><i class="fa fa-plus-circle" aria-hidden="true"></i></button></td>
+                                   </tr>
+                                     {% endif %}
+                                   <tr>
+                                     <th colspan="4" style="text-align:center;"><b>This is Main Table Data</b></th>
+                                   </tr>
+                                   <tr style="background: #c0daf1;">
+                                      <th>SN.No</th>
+                                      <th>Presenting Complaint</th>
+                                      <th>Initial Complaint</th>
+                                      <th>Visit Date</th>
+                                    </tr>
+                                   {% for data in present_sub %}
+                                   <tr>
+                                      <td>{{forloop.counter}}</td>
+                                      <td>{{data.presenting_comp}}</td>
+                                      <td>{{data.initial_comp}}</td>
+                                      <td>{{data.visit_date}}</td>
+                                    </tr>
+                                   {% endfor %}
+                                    <tr>
+                                      <td colspan="4">No Data Found</td>
+                                    </tr>
+                                 </table>
+                               </form>
+                             </div>
+                           </div>
+
+                           <div role="tabpanel" class='tab-pane {% if Active == "history_exam" %}active show{% endif %}' id="vtab6">
+                             <div class="col-md-12">
+                               <div class="row">
+                                 <div class="col-md-6">
+                                   <h4 class=""><b>History</b>  </h4>
+
+                                 </div>
+                               </div>
+                             </div>
+                             <br><hr>
+                             <form method="POST">
+                               {% csrf_token %}
+
+                               <div class="form-group row">
+                                 <label for="inputEmail3" class="col-sm-3 col-form-label"><b>Past Medical/Surgical History</b> </label>
+                                 <div class="col-sm-9">
+                                   <input type="text" class="form-control" required name="past_medical" id="inputEmail3" placeholder="">
+                                 </div>
+                               </div>
+
+                               <div class="form-group row">
+                                 <label for="family-history" class="col-sm-3 col-form-label"><b> Family History</b></label>
+                                 <div class="col-sm-9">
+                                   <input type="text" class="form-control" required name="Family_History" id="family-history" placeholder="">
+                                 </div>
+                               </div>
+
+                               <div class="form-group row">
+                                 <label for="paediatric" class="col-sm-3 col-form-label"><b>Paediatric History</b> </label>
+                                 <div class="col-sm-9">
+                                   <input type="text" class="form-control" required name="Paediatric_History" id="paediatric" placeholder="">
+                                 </div>
+                               </div>
+
+                               <div class="form-group row">
+                                 <label for="obstetric" class="col-sm-3 col-form-label"><b>Gynaec/ Obstetric History</b> </label>
+                                 <div class="col-sm-9">
+                                   <input type="text" class="form-control" required name="Gynaec_Obstetric_History" id="obstetric" placeholder="">
+                                 </div>
+                               </div>
+                               <div class="form-group row">
+                                 <label for="vaginal-examination" class="col-sm-3 col-form-label"><b>Socioeconomic history</b>  </label>
+                                 <div class="col-sm-9">
+                                   <input type="text" class="form-control" required name="Socioeconomic_Examination" id="vaginal-examination" placeholder="">
+                                 </div>
+                               </div>
+                               <button type="submit" class="btn btn-primary" name="His_and_exam" value="HistoryAndExamination">Save</button>
+                               <button onclick="print_history()" class="btn btn-primary">Print PDF</button>
+                             </form>
+                             <br>
+                             <br>
+                             <div>
+                                 <div class="table-responsive">
+                                  <table class="table table-border">
+                                    <tr style="background: #c0daf1;">
+                                      <th>SI.No</th>
+                                      <th>Past Medical/Surgical</th>
+                                      <th>Family History</th>
+                                      <th>Paediatric History</th>
+                                      <th>Gynaec/ Obstetric History</th>
+                                      <th>Socioeconomic History</th>
+                                      <th>Action </th>
+                                    </tr>
+                                   {%if history_diagnosis%}
+                                    {% for data in history_diagnosis %}
+                                    <tr>
+                                      <td>{{forloop.counter}}</td>
+                                      <td>{{data.Past_Medical_Surgical}}</td>
+                                      <td>{{data.Family_History}}</td>
+                                      <td>{{data.Paediatric_History}}</td>
+                                      <td>{{data.Gynaec_Obstetric_History}}</td>
+                                      <td>{{data.socioeconomic_history}}</td>
+                                      <td></td>
+                                    </tr>
+                                    {% endfor %}
+                                    {%else%}
+                                    <tr>
+                                      <td colspan="4">No Data Found</td>
+                                    </tr>
+                                    {%endif%}
+                                 </table>
+                                 </div>                             </div>
+                           </div>
+
+                           <div role="tabpanel" class='tab-pane {% if Active == "history_exam1" %}active show{% endif %}' id="vtab15">
+                            <div class="col-md-12">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <h4><b>Examination</b> </h4>
+
+                                </div>
+
+                              </div>
+                            </div>
+                            <br><hr>
+                            <form method="POST">
+                              {% csrf_token %}
+                              <div class="form-group row">
+                                <label for="general-examination" class="col-sm-3 col-form-label"><b>General Examination</b> </label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" required name="general_examination" id="general-examination" placeholder="">
+                                </div>
+                              </div>
+                              <!-- <div class="form-group row">
+                                <label for="cardiovascular" class="col-sm-3 col-form-label"><b> Systemic examination/review of systems</b></label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" required name="systemtic_examination" id="systemtic_examination" placeholder="">
+                                </div>
+                              </div> -->
+                              <div class="form-group row">
+                                <label for="cardiovascular" class="col-sm-3 col-form-label"><b>Cardiovascular system</b></label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" required name="Cardiovascular" id="cardiovascular" placeholder="">
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="respiration" class="col-sm-3 col-form-label"><b>Respiratory system</b>  </label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" required name="Respiration" id="respiration" placeholder="">
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="inputEmail3" class="col-sm-3 col-form-label"><b>Gastrointestinal system</b> </label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" required name="gastrointestinal" id="inputEmail3" placeholder="">
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="musculoskeletal" class="col-sm-3 col-form-label"><b>Genitourinary system</b> </label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" required name="genitourinary" id="genitourinary" placeholder="">
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="family-history" class="col-sm-3 col-form-label"><b>Masculoskeletal system</b> </label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" required name="masculoskeletal" id="masculoskeletal" placeholder="">
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="paediatric" class="col-sm-3 col-form-label"><b>Integumentary system</b> </label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" required name="integumentary" id="integumentary" placeholder="">
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="obstetric" class="col-sm-3 col-form-label"><b>Central nervous system</b> </label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" required name="central_nervous_system" id="central_nervous_system" placeholder="">
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="vaginal-examination" class="col-sm-3 col-form-label"><b>Ears, nose and throat</b> </label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" required name="ENT" id="ENT" placeholder="">
+                                </div>
+                              </div>
+                              <button type="submit" class="btn btn-primary" name="examination" value="HistoryAndExamination1">Save</button>
+                              <button onclick="print_history()" class="btn btn-primary">Print PDF</button>
+                            </form>
+                            <br>
+                            <br>
+                            <div>
+                               <div class="table-responsive" >
+                                <table class="table table-border">
+                                  <tr style="background: #c0daf1;">
+                                    <th>#</th>
+                                    <th>General Examination</th>
+                                    <!-- <th>Systemic Examination</th> -->
+                                    <th>Cardiovascular System</th>
+                                    <th>Respiratory System</th>
+                                    <th>Gastrointestinal system</th>
+                                    <th>Genitourinary system</th>
+                                    <th>Masculoskeletal system</th>
+                                    <th>Integumentary system</th>
+                                    <th>Central nervous system</th>
+                                    <th>Ears, nose and throat</th>
+                                    <th>Action </th>
+                                  </tr>
+                                 {%if examination_diagnosis%}
+                                  {% for data in examination_diagnosis %}
+                                  <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{data.general_examination}}</td>
+                                    <!-- <td>{{data.systemetic_examination}}</td> -->
+                                    <td>{{data.Cardiovascular}}</td>
+                                    <td>{{data.Respiration}}</td>
+                                    <td>{{data.gastrointestinal_system}}</td>
+                                    <td>{{data.genitourinary_system}}</td>
+                                    <td>{{data.Musculoskeletal}}</td>
+                                    <td>{{data.integumentary}}</td>
+                                    <td>{{data.central_nervous_system}}</td>
+                                    <td>{{data.ENT}}</td>
+                                    <td></td>
+                                  </tr>
+                                  {% endfor %}
+                                  {%else%}
+                                  <tr>
+                                    <td colspan="4">No Data Found</td>
+                                  </tr>
+                                  {%endif%}
+                               </table>
+                               </div>
+                            </div>
+                          </div>
+
+                           <div role="tabpanel" class="tab-pane {% if Active == 'diagnosis' %}active show{% endif %}" id="vtab7">
+                             <form method="POST">
+                               <h5 class=""><b>Diagnosis</b> </h5>
+                               <hr>
+                               {% csrf_token %}
+                                  <div class="form-row">
+<!--                                    <div class="form-group col-md-12">-->
+<!--                                      <label>Attendance</label>-->
+<!--                                      {{diagnosis_form.attendance}}-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group col-md-6">-->
+<!--                                      <label>Type</label>-->
+<!--                                      {{diagnosis_form.type}}-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group col-md-6">-->
+<!--                                      <label >Category</label>-->
+<!--                                      {{diagnosis_form.category}}-->
+<!--                                    </div>-->
+                                    <div class="form-group col-md-6">
+                                      <label><b>Diagnosis</b> </label><br>
+                                      <input type="text" class="form-control" required name="diagnosis" id="diog" placeholder="">
+                                    </div>
+
+<!--                                    <div class="form-group col-md-6">-->
+<!--                                      <label>state_of_diagnosis</label>-->
+<!--                                      {{diagnosis_form.state_of_diagnosis}}-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group col-md-6">-->
+<!--                                      <label>Adverse Effect</label>-->
+<!--                                      {{diagnosis_form.adverse_effect}}-->
+<!--                                    </div>-->
+                                  </div>
+                               <button type="submit" class="btn btn-primary" name="diagno" value="DiagnosisTemp">Save</button>
+                             <br>
+                             </form>
+                             <form method="post">
+                               {% csrf_token %}
+                             <table class="table" border="3">
+                               {% if diagnosis %}
+                               <thead style="background: #d1dae6;">
+                                 <th style="font-size: 11px;">SN.</th>
+                                 <th style="font-size: 11px;">UHID.</th>
+                                 <th style="font-size: 11px;">Bill ID</th>
+                                 <th style="font-size: 11px;">Diagnosis</th>
+                                 <!-- <th style="font-size: 11px;">D-GRG Code</th> -->
+<!--                                 <th style="font-size: 11px;">User Name</th>-->
+                               </thead>
+                              <tbody>
+                              {% for data in diagnosis %}
+                               <tr>
+                                 <td>{{forloop.counter}}</td>
+                                 <td>{{data.uhid}}</td>
+                                 <td>{{data.bill_id}}</td>
+                                 <td><input type="text" name="diagnosis_main" class="form-control" value="{{data.diagnosis}}"></td>
+                                 <!-- <td><input type="text" name="D_GRG_Codes_main" class="form-control" value="{{data.D_GRG_Code}}"></td> -->
+                               </tr>
+                               {% endfor %}
+                              </tbody>
+                               <tr>
+                                 <td><button type="submit" class="btn btn-primary" name="diagnosis_main_b" value="DiagnosisMain">Save</button></td>
+                               </tr>
+                             {% endif %}
+                                <tr>
+                                     <th colspan="5" style="text-align:center;"><b>This is Main Table Data</b></th>
+                                   </tr>
+                                   <tr style="background: #c0daf1;">
+                                      <th>SN.No</th>
+                                      <th>UHID</th>
+                                      <th>Bill ID</th>
+                                      <th>Diagnosis</th>
+                                      <th>D-GRG Code</th>
+                                    </tr>
+                                   {% for data in diagnosis_sub %}
+                                   <tr>
+                                      <td>{{forloop.counter}}</td>
+                                      <td>{{data.uhid}}</td>
+                                      <td>{{data.bill_id}}</td>
+                                      <td>{{data.diagnosis}}</td>
+                                      <td>{{data.D_GRG_Code}}</td>
+                                    </tr>
+                                   {% endfor %}
+                                    <tr>
+                                      <td colspan="4">No Data Found</td>
+                                    </tr>
+                             </table>
+                             </form>
+
+                           </div>
+                           <div role="tabpanel" class="tab-pane {% if Active == 'investigation' %}active{% endif %}" id="vtab8">
+                             <h5 class="">Investigation / Procedure</h5>
+                           <form method="POST" class="form border-top  pt-3">
+                               {% csrf_token %}
+                               <div class="form-group row">
+                                 <label for="general-examination" class="col-sm-3 col-form-label">Investigation and Procedure</label>
+                                 <div class="col-sm-4">
+                                        <select name="investigation_and_procedure" id="investigation_and_procedure" class="form-control" style="width:300px%;">
+                                        <option selected disabled="true">Select Investigation/Procedure*</option>
+                                        {% for result in service_list %}
+                                        <option value="{{result.service_id}}">{{result.service_id}}</option>
+                                        {% endfor %}
+                                        {% for data in profile_list %}
+                                        <option value="{{data.profile_id}}">{{data.profile_id}}</option>
+                                        {% endfor %}
+                                        {% for data in package_list %}
+                                        <option value="{{data.package_id.package_name}}">{{data.package_id.package_name}}</option>
+                                        {% endfor %}
+                                     </select>
+                                 </div>
+                                 <div class="col-sm-3">Stat <input type="checkbox" name="status"></div>
+                                 <div class="col-sm-2">
+                                   <div class="form-group butns text-right mb-0">
+                                    <button class="btn-primary p-2" form='prescription_report_form' onclick="printData('vtab10ins')" name="button" type="button"><i class="fa fa-print" aria-hidden="true"></i></button>
+                                     <button type="submit" class="bg-primary border-0 p-2 text-white icon-size" name="inves_proce" value="InvestigationAndProcedure"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                                   <button type="submit" class="btn btn-primary" name="to_opd" value="OPD_Billing">TO Bill</button>
+                                   </div>
+                                 </div>
+                               </div>
+                             </form>
+                           <div role="tabpanel" class="tab-pane" id="vtab10ins">
+                             <table class="table">
+                               <tr style="border: 1px solid rgb(0, 0, 0);">
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">SNn</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">Investigation / Procedure</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">Result Status</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">Stat</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">OT Required</th>
+                                 <th style="font-size: 11px; border: 1px solid rgb(0, 0, 0);">Action</th>
+                               </tr>
+                               {% for data in invest_and_proce_records %}
+                                    <tr >
+                                      <td style="border: 1px solid rgb(0, 0, 0);">{{forloop.counter}}</td>
+                                      <td style="border: 1px solid rgb(0, 0, 0);">{{data.investigation_and_procedure}}</td>
+                                      <td style="border: 1px solid rgb(0, 0, 0);">{{data.result_status}}</td>
+                                      <td style="border: 1px solid rgb(0, 0, 0);">{{data.status}}</td>
+                                      <td style="border: 1px solid rgb(0, 0, 0);">{{data.ot_required}}</td>
+                                      <td style="border: 1px solid rgb(0, 0, 0);"><span class="btn-danger p-1"><a href="/investigation_cancel/{{data.id}}~{{primary_key}}" style="color: white;">&nbsp;X&nbsp;</a></span></td>
+                                   </tr>
+                               {% endfor %}
+                             </table>
+                           </div>
+                           </div>
+                           <div role="tabpanel" class="tab-pane {% if Active == 'pre_medication' %}active show{% endif %}" id="vtab9">
+                             <div class="col-md-12">
+                               <div class="row">
+                                 <div class="col-md-6">
+                                   <h4 class=""><b>Prescription Medicine</b> </h4>
+                                   <!-- <button onclick="print_prescription()" class="btn btn-primary">Print PDF</button> -->
+                                 </div>
+
+                               </div>
+                             </div>
+
+                             <div id="prescriptions">
+                             <form method="POST" class="pm_form_field">
+                               {% csrf_token %}
+                                <div class="row">
+
+<!--                                  <div class="col-4">-->
+<!--                                    <label>Medicine*</label>-->
+<!--                                    {{pm_form.medicine}}-->
+<!--                                  </div>-->
+                                  <div class="col-4">
+                                    <label><b>  Medicine*</b></label>
+                                    <br>
+                                    <select name="medicine" id="medical_list" class="form-control" style="width: 100%;">
+                                      <option selected disabled="true"><b>Select Medicine*</b> </option>
+                                      {% for result in medical_list %}
+                                      <option value="{{result.id}}">{{result.item_name}}</option>
+                                      {% endfor %}
+                                  </select>
+                                  </div>
+                                  <div class="col-4">
+                                    <label><b> dosage*</b></label>
+                                     <select name="dosage" id="medical_list" class="form-control" >
+                                            <option selected disabled="true">---Select---</option>
+                                            <option>BD</option>
+                                            <option>TD</option>
+                                          <option>OD</option>
+                                        </select>
+                                  </div>
+                                  <div class="col-4">
+                                    <label><b> frequency*</b></label><br>
+                                    {{pm_form.frequency}}
+                                  </div>
+                                  <div class="col-4">
+                                    <label><b>no_of_days*</b> </label>
+                                    {{pm_form.no_of_days}}
+                                  </div>
+                                  <div class="col-4">
+                                    <label><b>food_relations*</b> </label><br>
+                                    {{pm_form.food_relations}}
+                                  </div>
+                                  <div class="col-4">
+                                    <label><b>route*</b> </label><br>
+                                    {{pm_form.route}}
+                                  </div>
+                                  <div class="col-4">
+                                    <label><b>instruction*</b> </label><br>
+                                    {{pm_form.instruction}}
+                                  </div>
+                                  <div class="col-4">
+                                    <label><b> Prescribe Date*</b></label><br>
+                                    {{pm_form.prescribe_date}}
+                                  </div>
+                                  <div class="col-4">
+                                    <label><b> End Date*</b></label><br>
+                                    {{pm_form.end_date}}
+                                  </div>
+                                <div class="col-4 "><br>
+                                     <button type="submit" name="pre_medicine_btn" value="Prescription_medicine" class="bg-primary border-0 p-2 text-white btn btn-primary">Save</button>
+                                     <!-- <button onclick="print_history()" class="btn btn-primary">Print PDF</button> -->
+
+                                 </div>
+                                </div>
+                              </form>
+                               <br>
+                               <br>
+                               <div>
+                                <table class="table table-border">
+                               <tr style="background: #c0daf1;">
+                                 <th>Medication</th>
+                                 <th>Dosage</th>
+                                 <th>Frequency</th>
+                                 <th>Food Relation</th>
+                                 <th>Route</th>
+                                 <th>Prescribe Date</th>
+                                 <th>End Date</th>
+                                 <th>Visite Date</th>
+                                 <th>Stop</th>
+                               </tr>
+                               {% for data in recordsss %}
+                               <tr>
+                                 <td>{{data.medicine}}</td>
+                                 <td>{{data.dosage}}</td>
+                                 <td>{{data.frequency}}</td>
+                                 <td>{{data.food_relations}}</td>
+                                 <td>{{data.route}}</td>
+                                 <td>{{data.prescribe_date}}</td>
+                                 <td>{{data.end_date}}</td>
+                                 <td>{{data.end_date}}</td>
+                                 <td><span class="btn-danger p-1"><a href="/consultant_tab_cancel/{{data.id}}~{{primary_key}}" style="color: white;">&nbsp;X&nbsp;</a></span></td>
+                               </tr>
+                               {% endfor %}
+                             </table>
+                           </div>
+
+                               </div>
+                           </div>
+                           <div role="tabpanel" class="tab-pane {% if Active == 'Advices' %}active{% endif %}" id="vtab10">
+                             <div class="row">
+                               <div class="col-sm-8  ">
+                                 <h5 class=""><b>Advice</b>  </h5>
+                               </div>
+                               <div class="col-sm-4 text-right">
+                                 <button type="button" class="bg-primary border-0 p-2 text-white icon-size" name="button"><img src="{% static 'images/paintbrush.png' %}" width="16px"></button>
+                               </div>
+                             </div>
+                             <form method="POST" class="border-top pt-2">
+                               {% csrf_token %}
+                               <div class="form-group">
+                                 <textarea placeholder="Advices" name="advice"  class="w-100 h-100 border rounded" style="min-height: 100px;" required> </textarea>
+                               </div>
+                               <div class="row no-gutters">
+                                 <div class="col-sm-5 border p-3 rounded">
+                                   <div class="form-group row">
+                                     <label for="general-examination" class="col-sm-5 col-form-label"><b> Follo-Up Date</b></label>
+                                     <div class="col-sm-7">
+                                       <input type="date" name="follow_up_date" required class="form-control " id="diagnosis" placeholder="Date(dd-mm-yyyy)">
+                                     </div>
+                                   </div>
+                                   <!-- <div class="custom-control custom-checkbox">
+                                     <input type="checkbox" class="custom-control-input" name="refer_to_emergency" value="Refer To Emergency" id="Emergency">
+                                     <label class="custom-control-label" for="Emergency">Refer to Emergency</label>
+                                   </div> -->
+                                   <!-- <div class="custom-control custom-checkbox mt-3">
+                                     <input type="checkbox" class="custom-control-input" name="refer_to_admission" value="Refer To Admission" id="Admission">
+                                     <label class="custom-control-label" for="Admission">Refer to Admission</label>
+                                   </div> -->
+
+                                   <div class="custom-control custom-checkbox mt-3">
+                                     <input type="checkbox" class="custom-control-input" name="visit_complete" value="Visit Complete" id="visit-complete">
+                                     <label class="custom-control-label" for="visit-complete">Visit Complete</label>
+                                   </div>
+                                   <!-- <div class="custom-control custom-checkbox mt-3">
+                                     <input type="checkbox" class="custom-control-input" value="Refer To Mental Health" name="refer_to_mental_health" id="refer_to_mental_health">
+                                     <label class="custom-control-label" for="refer_to_mental_health">Refer To Mental Health</label>
+                                   </div> -->
+                                 </div>
+                               </div>
+                               {% if not advice %}
+                               <button type="submit" class="btn btn-primary" name="advice" value="Advices">Save</button>
+                               {% endif %}
+                             </form>
+                                <br>
+                               <br>
+                               <div>
+                                <table class="table table-border">
+                               <tr style="background: #c0daf1;">
+                                 <th>SN.No</th>
+                                 <th>UHID</th>
+                                 <th>Bill No</th>
+                                 <th>Advice</th>
+                                 <th>Folloe up to</th>
+                                 <th>Follow Check</th>
+                               </tr>
+                               {% for data in advice %}
+                               <tr>
+                                 <td>{{forloop.counter}}</td>
+                                 <td>{{data.uhid}}</td>
+                                 <td>{{data.bill_id}}</td>
+                                 <td>{{data.advice}}</td>
+                                 <td>{{data.follow_up_date}}</td>
+                                 <td>{{data.follow_check_box}}</td>
+                                 <td><span class="btn-danger p-1">X</span></td>
+                               </tr>
+                               {% endfor %}
+                             </table>
+                           </div>
+                           </div>
+                           <div role="tabpanel" class="tab-pane {% if Active == 'MedicalCertificate' %}active{% endif %}  p-2" id="vtab11">
+                             <form method="POST">
+                               {% csrf_token %}
+                               <h5 class=""><bMedical Certificateb> </h5>
+                             <div class="form-group row no-gutters">
+                               <div class="col-4">
+                                  <label for="template" class="col-sm-6 col-form-label"><b>Template</b> </label>
+                                  <br>
+                                 <select  name="template"   id="template" class="form-control" required="required">
+                                   <option value="">---------------</option>
+                                   <option>In Patient Medical Certificate</option>
+                                   <option>Medical Examinations form</option>
+                                   <option>Out Patient Certificate</option>
+                                 </select>
+                               </div>
+                               <div class="col-4">
+                                  <label for="template" class="col-sm-4 col-form-label"><b>AuthorizedDr.</b> </label>
+                                  <br>
+                                 <select  name="authorize_dr"   id="authorize_dr" class="form-control" required>
+                                   <option value="">---------------</option>
+                                   <option>DOCT1</option>
+                                   <option>DOCT2</option>
+                                   <option>DOCT3</option>
+                                 </select>
+                               </div>
+                               <div class="col-4">
+                                  <label for="template" class="col-sm-2 col-form-label">Finalized</label>
+                                  <input type="checkbox" class="form-control" name="finalized" id="" placeholder="">
+                               </div>
+                             </div>
+                               <button type="submit" name="medical_certificate" value="MedicalCertificate" class="btn btn-primary">Save</button>
+                             </form>
+                           </div>
+                            <div role="tabpanel" class="tab-pane p-2" id="vtab12">
+                                <h5>Current Vitals</h5>
+                            <hr>
+                            <table class="table mt-2 table-border">
+                              <tr style="background: #d1dae6;">
+                <!--                <th>sno</th>-->
+                <!--                <th>Visit Id</th>-->
+                <!--                <th>Bill Id</th>-->
+                                <th>SBP</th>
+                                <th>DBP</th>
+                                <th>Temp</th>
+                                <th>Weight</th>
+                                <th>Height</th>
+                                <th>BMI</th>
+                                <th>RR</th>
+                                <th>HR</th>
+                                <th>Urine OP</th>
+                                <th>BS(F)</th>
+                                <th>BS(R)</th>
+                                <th>SP02</th>
+                                <th>AVPU</th>
+                                <th>Trauma</th>
+                                <th>Mobility</th>
+                              </tr>
+                                {% if vital_records %}
+                              {% for data in vital_records %}
+                                <tr>
+                <!--                <td>{{forloop.counter}}</td>-->
+                <!--                <td>{{data.visit_id}}</td>-->
+                <!--                <td>{{data.bill_id}}</td>-->
+                                <td>{{data.sys_bp}}</td>
+                                <td>{{data.dia_bp}}</td>
+                                <td>{{data.temp}}</td>
+                                <td>{{data.weight}}</td>
+                                <td>{{data.height}}</td>
+                                <td>{{data.bmi}}</td>
+                                <td>{{data.resp_rate}}</td>
+                                <td>{{data.heart_rate}}</td>
+                                <td>{{data.urine_output}}</td>
+                                <td>{{data.blood_sugar_f}}</td>
+                                <td>{{data.blood_sugar_r}}</td>
+                                <td>{{data.spo2}}</td>
+                                <td>{{data.avpu}}</td>
+                                <td>{{data.trauma}}</td>
+                                <td>{{data.mobility}}</td>
+                                <td>{{data.avpu}}</td>
+                              </tr>
+                              {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="14" style="text-align: center">No records found</td>
+                                </tr>
+                                {% endif %}
+                            </table>
+                          </div>
+                            <div role="tabpanel" class="tab-pane p-2" id="vtab13">
+                                <h2 style="text-align:center;color:Red;">Report Not Generated</h2>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+             </div>
+         </div>
+     </div>
+
+             </div>
+
+
+<style>
+  .pm_form_field div input,select{
+    width:100%;
+    margin:2%;
+    border:2px solid white;
+    border-bottom:2px solid #eee;
+}
+  .pm_form_field div select{
+    width:100%;
+    border-bottom:2px solid #eee;
+    background-color:white;
+}
+#id_diagnosis,#id_D_GRG_Code {
+  border: 2px solid white;
+  border-bottom: 2px solid #eee;
+  width: 100%;
+}
+
+</style>
+
+<script>
+
+  // pdf preview
+
+  function printData(data) {
+      var mypage = document.getElementById(data);
+      opening = window.open("");
+      opening.document.write(mypage.outerHTML);
+      opening.print();
+      opening.close();
+  }
+
+
+</script>
+
+   <script type="text/javascript">
+
+    function print_prescription(){
+    var printContents = document.getElementById('vtab9').innerHTML;
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+    function print_history(){
+    var printContents = document.getElementById('vtab6').innerHTML;
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+
+  </script>
+<!--     FOR SEARCHABLE DROP DOWN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+           $(document).ready(function ()
+            {
+                $('#medical_list').select2();
+            });
+    </script>
+         <script>
+           $(document).ready(function ()
+            {
+                $('#investigation_and_procedure').select2();
+            });
+    </script>
+    <script>
+      $(document).ready(function ()
+       {
+           $('#template').select2();
+       });
+</script>
+<script>
+  $(document).ready(function ()
+   {
+       $('#authorize_dr').select2();
+   });
+</script>
+  <script>
+      window.setTimeout(function() {
+      $(".alert").fadeTo(500, 0).slideUp(500, function(){
+          $(this).remove();
+      });
+  }, 3000);
+  </script>
+<!--    END SEARCHABLE DROPDOWN-->
+   {% endblock  %}

@@ -1,0 +1,208 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+    #id_from_date,
+    #id_to_date,
+    #id_store {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <form method="post" action="">
+            {% csrf_token %}
+            <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+                <div>
+                  <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+                  <b>PO Status Report</b>
+                </div>
+                <div class="">
+                  <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+                  <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+                  <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+                    <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+                    
+                  </div>
+                </div>
+              </div>
+ 
+            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" id="filter_card"><br>                                  
+                <div class="form-row">
+                    <div class="form-group col-md-3 mb-0">
+                        <label style="font-weight: white;"><b>From Date*</b> </label>
+                        <input type="date" name="from_date" id="from_date" class="form-control">
+                    </div>
+                    <div class="form-group col-md-3 mb-0">
+                        <label style="font-weight: white;"><b>To Date*</b></label>
+                        <input type="date" name="to_date" id="to_date" class="form-control">
+                    </div>
+                    <div class="form-group col-md-3 mb-0">
+                        <label style="font-weight: white;"><b>Status*</b></label>
+                        <select name='po_status' id='po_status' class='form-control'>
+                            <option>Select</option>
+                            <option value="all">All</option>
+                            <option value="completed">Completed</option>
+                            <option value="pending">Pending</option>
+                            <option value="partially completed">Partially Completed</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-0 py-2"><br>
+                        <button type="submit" name="search_btn" value="search_btn"
+                            class="btn btn-warning"><i
+                                class="fa fa-search">Search</i></button>&nbsp;
+                    </div>
+                </div>
+            </div>
+                                    <!-- Tab -->
+                    <div class="nursing-assessment-tabs p-2 bg-white">
+                        <div role="tabpanel">
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+
+
+                                <div role="tabpanel" class="tab-pane active" id="home">
+
+                                    <div id="hello">
+                                    {% if po_detail %}
+
+                                    <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                                        <tr>
+
+                                                <div class="" >
+                                                    <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                                                    </center>
+                                                </div>
+
+                                        </tr>
+                                    </table>
+
+                                    <style>
+                                        table, th, td {
+                                          border: 1px solid black;
+                                          border-collapse: collapse;
+
+                                        }
+                                        #button2{
+                                        font-size: larger;
+                                        padding: 10px;
+                                        border: none;
+                                        border-radius: 5px;
+                                    }
+                                        </style>
+                                        <center><h3> PO Status Report</h3></center>
+                                    <table class="table table-bordered" style="border-style: solid;" align="center">
+                                        <thead>
+                                            <tr>
+
+                                              <th scope="col">S.No</th>
+                                                <th scope="col">PO No.</th>
+                                                <th scope="col">Date Time</th>
+                                                <th scope="col">Vendor Name</th>
+                                                <th scope="col">Department</th>
+                                                <th scope="col">Net Amount</th>
+                                                <th scope="col">Basic Amount</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">View</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for data in po_detail %}
+                                            <tr>
+
+                                                <td>{{forloop.counter}}</td>
+                                                <td scope="row" style="padding-left: 15px;padding-right: 15px;">{{data.PO_id}}<input type="hidden"
+                                                        name="po_id" id="po_id"
+                                                        value="{{data.PO_id}}"></td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{data.PO_datetime}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{data.vendar_id}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{data.Department}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{data.net_amount}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{data.basic_amt}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;">{{data.PO_status|upper}}</td>
+                                                <td style="padding-left: 15px;padding-right: 15px;"><a href="/po_item_details_report/{{data.PO_id}}" class="btn btn-primary"
+                                                        ><i class="fa fa-hand-pointer" aria-hidden="true"></i></a>
+                                                </td>
+
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                    {% endif %}
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+<script>
+    function toggleVisibility() {
+      var demoElement = document.getElementById('filter_card');
+      
+      if (demoElement.style.display === 'none') {
+        demoElement.style.display = 'block'; // Show the element
+      } else {
+        demoElement.style.display = 'none';  // Hide the element
+      }
+    }
+  </script>
+<!-- Custom JS -->
+<script src="../assets/js/app.js"></script>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+  var print_area = window.open();
+  print_area.document.write(print_div.innerHTML);
+  print_area.document.close();
+  print_area.focus();
+  print_area.print();
+  print_area.close();
+  // This is the code print a particular div element
+    }
+  </script>
+
+<!-- Export csv -->
+
+<script>
+                           function exportTableToCSV() {
+    var csv = [];
+    var rows = document.querySelectorAll("table tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+
+        for (var j = 0; j < cols.length; j++) {
+            var cellText = cols[j].innerText;
+            cellText = cellText.replace(/"/g, '""');  // Escape double quotes within cell value
+            row.push('"' + cellText + '"');
+        }
+
+        csv.push(row.join(","));
+    }
+
+    // Create a download link
+    var csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+    var link = document.createElement("a");
+    link.setAttribute("href", encodeURI(csvContent));
+    link.setAttribute("download", "po_status_report.csv");
+    link.click();
+}</script>
+{% endblock %}

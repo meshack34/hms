@@ -1,0 +1,55 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Docment Details</h4>
+            </div>
+        </div>
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped table-bordered dt-responsive nowrap w-100  datatable">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th style="width:30%;">File ID</th>
+                                        <th>Title</th>
+                                        <th>Created By</th>
+                                        <th>Date Time</th>
+                                        <th class="text-right">View</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in doc_detail %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{data.file_id}}</td>
+                                        <td style="width:30%;">{{data.title}}</td>
+                                        <td>{{data.created_by.first_name}}</td>
+                                        <td>{{data.uploaded_at}}</td>
+                                        <td><a class="btn btn-primary" href="{{ data.file.url }}"><i class="fa fa-hand-pointer"
+                                            aria-hidden="true"></i></a></td>
+                                    </tr>
+                                   {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</div>
+<!--/ content-->
+
+{% endblock %}

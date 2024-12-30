@@ -1,0 +1,1172 @@
+{% extends 'ipd/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<script src="{% static 'js/country-states.js' %}"></script>
+<style>
+  .own_form {
+    border: 0px solid red;
+  }
+  .own_form_class div input,
+  select {
+    border: 2px solid white;
+    background-color: white;
+    border-bottom: 2px solid #eee;
+  }
+  input[readonly] {
+    background-color: #d9eff65b !important;
+  }
+  select[readonly] {
+    background-color: #d9eff65b !important;
+  }
+  #id_transfer_datatime {
+    width: 100%;
+    height: 40px;
+    border: solid rgba(124, 115, 115, 0.186) 1px;
+  }
+  .image_wrapper_ipo {
+    height: 100px !important;
+    width: 100px !important;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+      <div>
+        <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+        <b >IPD Front Desk</b>
+      </div>
+      <div class="">
+        <button type="submit" class="btn text-light" form="my_form" name="save_btn" value="Save" title="Save"><i class="fas fa-save"></i></button>
+        <a href="/patient_registration"  class="text-light px-1" title="Add"><i class="fas fa-plus"  ></i></a>
+        <a href="/register_card/{{records.uhid}}" class="text-light px-1" title="QR Code"><i class="fa fa-qrcode" ></i></a>
+        <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+        <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">          
+          <a href="/ipd/admission_records" class="dropdown-item btn-primary">Admission Records</a>
+          <button type="button" class="dropdown-item btn-primary" data-toggle="modal" data-target="#bedtransfer">Bed Transf</button>
+          <button type="button" class="dropdown-item btn-danger" data-toggle="modal" data-target="#doctortransfer"
+                            name="doctor_transfer_button" value="doctor_transfer_button">Doctor Transfer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <input type="hidden" name="screen_id" value="SCR00037">
+    <input type="hidden" name="message_id" value="MSG00037">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="box-outer">
+            <div id="Patient_R" class="h-100">
+              <div class="patient-registration">
+                <div class="container-fluid">
+                  <div class="row">
+                  <div class="form_sec">
+                     <div class="row">
+                        <div class="col-12">
+                          <form method="GET" class="row">
+                            <div class="col-md-2">
+                           <div class="form-group">
+                            <label for="UHID"><b>UHID</b></label>
+                            <div class="flexContainer">
+                              <input type="text" name="uhid" class="form-control" id="UHID" placeholder="" value="{{uhid}}">
+                                  <button type="button" name="search_uhid" value="IsUHID" class="input-group-text"  ><a href="/patient_search"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></a></button>
+                            </div>
+                          </div>
+                            </div>
+                          <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="Appoints"><b>IPD No</b></label>
+                            <div class="flexContainer">
+                              <input type="text" name="appointment_id"  class="form-control" id="Appoints" placeholder="">
+                               <button type="button"  name="search_app_id"  value="IsAppointmentId" class="input-group-text" >
+                                 <a href="{% url 'ipd_search' %}">
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                               </a>
+                                 </button>
+                           </div>
+                         </div>
+                        </div>
+                         <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="DateTime"><b>Registration Date Time</b></label>
+                            <input type="text" class="form-control" id="DateTime" placeholder="" value="{{registration_date_and_time}}" readonly>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="formGroupExampleInput2"><b>Patient Name</b></label>
+                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" value="{{first_name}}" readonly>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="formGroupExampleInput2"><b>Age/Gender</b></label>
+                            <input type="number" class="form-control" id="formGroupExampleInput2" placeholder="" value="{{age}}/" readonly>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="image_wrapper_ipo d-flex align-items-center justify-content-center">
+                            {% if records.patient_profile %}
+                            <img src="{{records.patient_profile.url}}" class="h-100 w-100" alt="Img">
+                            {% else %}
+                            <img class="inline-block" src="{% static 'assets/images/user.jpg' %}" id="output" alt="user">
+                            <div class="fileupload btn">
+                              <span class="btn-text">Upload</span>
+                              <input name="patient_profile" class="upload" type="file" required />
+                            </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                      <!-- Tab -->
+                      <div class="nursing-assessment-tabs p-2 bg-white">
+                        <div role="tabpanel">
+                          <!-- Nav tabs -->
+                          <ul class="nav nav-tabs nav-justified nav-tabs-dropdown " role="tablist">
+                            <li role="presentation" class="w-50">
+                              <a href="#profile" aria-controls="home" class=" btn-primary active" role="tab"
+                                data-toggle="tab">Registration Information</a>
+                            </li>
+                            <li role="presentation" class="w-50"><a class="btn-primary " href="#home"
+                                aria-controls="profile" role="tab" data-toggle="tab"> Admission Information</a>
+                            </li>
+                          </ul>
+                          </div>
+                          <!-- Tab panes -->
+                          <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane pt-2 " id="profile">
+                              <div class="inner-tabs no-gutters ">
+                                <form class="row" method="POST" id="my_form" enctype="multipart/form-data">
+                                  {% csrf_token %}
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Title</b><b class="text-red">*</b></label>
+                                    <select name="title" id="cars" class="form-control" required>
+                                      <option value="Mr">Mr.</option>
+                                      <option value="Ms">Ms.</option>
+                                      <option value="Mrs">Mrs</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>First Name</b><b class="text-red">*</b></label>
+                                    <input type="text" name="first_name" class="form-control" value="{{first_name}}" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Middle Name</b></label>
+                                    <input type="text" name="middle_name" class="form-control" value="{{middle_name}}" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Last Name</b><b class="text-red">*</b></label>
+                                    <input type="text" name="last_name" class="form-control" value="{{last_name}}" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Age</b><b class="text-red">*</b></label>
+                                  <h3  id="result" placeholder="" style="border:1px solid #CED4DA;height:1.6em;border-radius:0.2em;margin-top:0.3em;"></h3>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>DOB</b><b class="text-red">*</b></label>
+                                    <input type="date" name="dob" class="form-control" value="{{dob}}"  onchange = "ageCalculator()" id="DOB" placeholder="" required>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Gender</b><b class="text-red">*</b></label>
+                                    <select name="gender" id="gender" class="form-control">
+                                      <option value="Male">Male</option>
+                                      <option value="Female">Female</option>
+                                      <option value="Other">Other</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Blood Group</b><b class="text-red">*</b></label>
+                                    <select name="blood_group" id="gender" class="form-control">
+                                      <option value="NA">N/A</option>
+                                      <option value="A">O+</option>
+                                      <option value="B">O-</option>
+                                      <option value="C">A+</option>
+                                      <option value="C">A-</option>
+                                      <option value="C">B+</option>
+                                      <option value="C">B-</option>
+                                      <option value="C">AB+</option>
+                                      <option value="C">AB-</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Marital Status</b><b class="text-red">*</b></label>
+                                    <select name="marital_status" id="gender" class="form-control">
+                                      <option value="Married ">Married</option>
+                                      <option value="Unmarried">Unmarried</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Father's/Husband Name</b><b class="text-red">*</b></label>
+                                    <input type="text" name="father_or_husband_name" value="{{father_or_husband_name}}" class="form-control" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Mother Name</b></label>
+                                    <input type="text" name="mother_name" value="{{mother_name}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Mobile Numbe</b></label>
+                                    <input type="text" name="mobile_number" value="{{mobile_number}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Email ID</b></label>
+                                    <input type="text" name="email_id" value="{{email_id}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Address</b><b class="text-red">*</b></label>
+                                    <input type="text" name="address" value="{{address}}" class="form-control" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Referred by</b><b class="text-red">*</b></label>
+                                    <select name="referred_by" id="gender" class="form-control">
+                                      <option value="AAA ">AAA</option>
+                                      <option value="BBB">BBB</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="country"><b>Country</b><b class="text-red">*</b></label>
+                                  <select id="country" name="country" class="form-control">
+                                      <option>select country</option>
+                                  </select>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="state-code"><b>State</b><b class="text-red">*</b></label>
+                                    <select id="state-code" name="state" class="form-control">
+                                        <option>select country</option>
+                                    </select>
+                                    <!-- <span id="state-code"><input type="text" id="state" name="state"></span> -->
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>City</b><b class="text-red">*</b></label>
+                                    <input type="text" class="form-control" name="city" value="{{city}}">
+                    
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Pin Code</b><b class="text-red">*</b></label>
+                                    <input type="text" name="pin_code" value="{{pin_code}}" class="form-control" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Aadhar Number</b></label>
+                                    <input type="text" name="aadhar_number" value="{{aadhar_number}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>PAN Card Number</b></label>
+                                    <input type="text" name="pan_number" value="{{pan_number}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Emergency Contact Person</b></label>
+                                    <input type="text" name="emergency_contact_person" value="{{emergency_contact_person}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Emergency Contact Number</b></label>
+                                    <input type="text" name="emergency_contact_num" value="{{emergency_contact_num}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Alternate Contact Number</b></label>
+                                    <input type="text" name="alternate_contact_number" value="{{alternate_contact_number}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Nationality</b></label>
+                                    <select name="nationality" class="form-control">
+                                      <option value="Indian">Indian</option>
+                                      <option value="Indian">Others</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Staff Member</b></label>
+                                    <select name="staff_member" class="form-control">
+                                      <option value="Yes">Yes</option>
+                                      <option value="No">No</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="formGroupExampleInput2"><b>Relationship</b></label>
+                                    <select name="relationship" class="form-control">
+                                      <option value="Father">Father</option>
+                                      <option value="Husband">Husband</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label class="check_opt" ><b>Allow Photo At Nursing Station</b>
+                                      <input type="checkbox" name="allow_photo_at_nursing_station" >
+                                      <span class="checkmark"></span>
+                                    </label>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label class="check_opt"><b>Notable</b>
+                                      <input type="checkbox" name="notable" >
+                                      <span class="checkmark"></span>
+                                    </label>
+                                  </div>
+                                  <div class="attech_doc w100 border ptb20">
+                                    <div class="form-group col-md-3">
+                                      <label class="check_opt"><b>Cash</b>
+                                        <input type="checkbox" name="cash" value="{{cash}}" >
+                                        <span class="checkmark"></span>
+                                      </label>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                      <label class="check_opt"><b>Senior Citizen</b>
+                                        <input type="checkbox" name="senior_citizen">
+                                        <span class="checkmark"></span>
+                                      </label>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                      <label for="formGroupExampleInput2"><b>Billing Group</b><b class="text-red">*</b></label>
+                                      <select name="billing_group" class="form-control" required>
+                                        <option value="Billing">Billing</option>
+                                        <option value="Billing">Billing</option>
+                                      </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                      <label for="formGroupExampleInput2"><b>Corporate Name</b></label>
+                                      <select name="corporate_name" class="form-control">
+                                        <option value="Corporate Name">Corporate Name</option>
+                                        <option value="Corporate Name">Corporate Name</option>
+                                      </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                      <label for="formGroupExampleInput2"><b>Card Holder Name</b></label>
+                                      <input type="text" name="card_holder_name" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                      <label for="formGroupExampleInput2"><b>Card Number</b></label>
+                                      <input type="text" name="card_number" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                      <label for="formGroupExampleInput2"><b>Relation</b></label>
+                                      <select name="relation" class="form-control">
+                                        <option value="Relation1">Relation1</option>
+                                        <option value="Relation2">Relation2</option>
+                                      </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                      <label for="formGroupExampleInput2"><b>Valid Upto</b></label>
+                                      <input type="date" name="valid_upto" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                      <label for="formGroupExampleInput2"><b>Sum Insured Amount</b></label>
+                                      <input type="number" name="sum_insured_amount" value="{{sum_insured_amount}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                      <label class="check_opt"><b>InActive</b>
+                                        <input type="checkbox" name="InActive" >
+                                        <span class="checkmark"></span>
+                                      </label>
+                                      <div class="alert-warning mt-3"><i class="fa fa-plus" aria-hidden="true"></i> Insert</div>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                            <div role="tabpanel" class="tab-pane active" id="home">
+                              <form method="POST" class="" id="admission_form_id" data-cities-url="{% url 'admission_load' %}">
+                                {% csrf_token %}
+                                {{admission_form.uhid}}
+                                {{admission_form.admission_ID}}
+                                <div class="row mt-2 no-gutters">
+                                  <div class="col-md-3 ">
+                                    <label><b>Admission Type</b><b class="text-red">*</b> </label>
+                                    {{admission_form.admission_type}}&nbsp;
+                                  </div>&nbsp;&nbsp;&nbsp;
+                                  <div class="col-md-2 ">
+                                    <label><b>Ward Type</b></label><br>
+                                    {{admission_form.req_ward_type}}&nbsp;
+                                  </div>&nbsp;&nbsp;&nbsp;
+                                  <div class="col-md-3">
+                                    <label><b>Ward Category</b></label><br>
+                                    {{admission_form.req_ward_cate}}&nbsp;
+                                  </div>&nbsp;&nbsp;&nbsp;
+                                  <div class="col-md-3" class="abc">
+                                    <label><b>MLC No</b></label><br>
+                                    {{admission_form.MLC_No}}
+                                  </div>
+                                  {% if admission_charge %}
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="admission_charge" value="admission_charge" name="admission_charge_idd">
+                                    <label class="form-check-label" for="admission_charge">
+                                      Apply Admission charge
+                                    </label>
+                                  </div>
+                                  {% endif %}
+                                  <div class="col-md-2 form-group">
+                                    <div class="form-check">
+                                      {{admission_form.infected}}
+                                      <label class="form-check-label" ><b>Infected</b></label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-2 form-group" style="margin-left: 90ox;">
+                                    <div class="form-check">
+                                    {{admission_form.MLC}}
+                                    <label  class="form-check-label"><b>MLC</b></label>
+                                  </div>
+                                  </div>
+                                  <div class="col-md-3 form-group">
+                                    {{admission_form.uhid}}
+                                  </div>
+                                  <div class="col-md-12">
+                                    <h4 class ='text-left' style="color: orange;"><b>Doctor and Bed Allocation</b></h4>
+                                </div>
+                                <div class="col-md-3">
+                                  <label><b>Primary Doctor</b><b class="text-red">*</b></label><br>
+                              {{admission_form.primary_doctor}}
+                              </div>&nbsp;&nbsp;
+                              <div class="col-md-3">
+                                <label><b>Department</b></label><br>
+                                {{admission_form.department}}
+                              </div>&nbsp;&nbsp;
+                              <div class="col-md-2">
+                                <label><b>Secondary Doctor</b></label><br>
+                                {{admission_form.secondary_doctor}}
+                              </div>&nbsp;&nbsp;
+                              <div class="col-md-3">
+                                <label><b>Ref Hospital</b></label><br>
+                                {{admission_form.ref_hospital}}
+                              </div>&nbsp;&nbsp;
+                              <div class="col-md-3">
+                                <label><b>Schedule ID</b></label><br>
+                                <select name="schedule_id" class="form-control">
+                                  <option selected disabled="true">---------</option>
+                                  {% for dat in schedule_id_list %}
+                                  <option value="{{dat.schedule_id}}">{{dat.schedule_id}}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>&nbsp;&nbsp;
+                              <div class="col-md-3">
+                                <label>Bed No</label>
+                                {{admission_form.bed_no}}
+                              </div> &nbsp;&nbsp;
+                              <div class="col-md-2 py-4">
+                                &nbsp;&nbsp;<button  type="submit" class="btn btn-primary " name="admission_form_button" value="AdmissionData"><i class="fas fa-save"></i></button>
+                                &nbsp;&nbsp;<button  type="submit" class="btn btn-primary" name="add_ipd_pack" value="ADD_IPD_PACKAGE">Add Package</button>
+                            </div>     
+                                    </div>
+                                  </div>
+
+                              </form>
+                            </div><br>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Tab Ends -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal" id="patient-registration-modal" tabindex="-1" role="dialog"
+              aria-labelledby="patient-registration-modal" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90%;">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="patient-registration-title">Patient Registration Search</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form class="needs-validation">
+                      <div class="row">
+                        <div class="col-md-4 pl-2 pr-2">
+                          <div class="form-group row no-gutters">
+                            <label for="reg-no" class="col-sm-3 col-form-label">UHID</label><br>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" id="reg-no" placeholder="" required>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4 pl-2 pr-2">
+                          <div class="form-group row no-gutters">
+                            <label for="patient-name" class="col-sm-3 col-form-label">Patient Name</label>
+                            <div class="col-sm-7">
+                              <input type="text" class="form-control" id="patient-name" placeholder="" required>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4 pl-2 pr-2">
+                          <div class="form-group row no-gutters">
+                            <label for="mobile-no" class="col-sm-3 col-form-label">Mobile No.</label>
+                            <div class="col-sm-7">
+                              <input type="number" class="form-control" id="mobile-no" placeholder="" required>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4 pl-2 pr-2">
+                          <div class="form-group row no-gutters">
+                            <label for="DOB" class="col-sm-3 col-form-label">DOB</label>
+                            <div class="col-sm-7">
+                              <input type="date" class="form-control" id="DOB" placeholder="" required>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4 mr-0 ml-auto pl-2 pr-2">
+                          <div class="form-group butns text-right">
+                            <button type="submit" class="bg-primary border-0 p-2 text-white" name="button"><i
+                                class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                            <button type="button" class="bg-primary border-0 p-2 text-white" name="button"><i
+                                class="fas fa-paint-brush"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <ul class="patient_record">
+                          <li class="d-flex align-items-center ml30"><span class="yellow_bg"></span>Admitted Patient
+                          </li>
+                          <li class="d-flex align-items-center ml30"><span class="red_bg"></span>Emergency Patient</li>
+                          <li class="d-flex align-items-center ml30"><span class="green_bg"></span>Expired Patient</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="register_record">
+                          <table class="table border">
+                            <tr style="background:#d1dae6;">
+                              <th>UHID/Reg No.</th>
+                              <th>Registration date and time</th>
+                              <th>Patient Name</th>
+                              <th>Gender</th>
+                              <th>DOB</th>
+                              <th>Mobile No.</th>
+                              <th></th>
+                            </tr>
+                            {% for data in records1 %}
+                            <tr>
+                              <td>{{data.uhid}}</td>
+                              <td></td>
+                              <td>
+                                {{data.title}}.&nbsp;{{data.first_name}}&nbsp;{{data.middle_name}}&nbsp;{{data.last_name}}
+                              </td>
+                              <td>{{data.gender}}</td>
+                              <td>{{data.dob}}</td>
+                              <td>9009900909</td>
+                            </tr>
+                            {% endfor %}
+                            <!-- <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div> -->
+
+                          </table>
+                          <nav aria-label="Page navigation example"
+                            class="d-flex align-items-center justify-content-end">
+                            <ul class="pagination">
+                              <li class="page-item">
+                                <a class="page-link" href="#!" aria-label="Previous">
+                                  <span aria-hidden="true">&laquo;</span>
+                                  <span class="sr-only">Previous</span>
+                                </a>
+                              </li>
+                              <li class="page-item"><a class="page-link" href="#!">1</a></li>
+                              <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                              <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                              <li class="page-item">
+                                <a class="page-link" href="#!" aria-label="Next">
+                                  <span aria-hidden="true">&raquo;</span>
+                                  <span class="sr-only">Next</span>
+                                </a>
+                              </li>
+                            </ul>
+                          </nav>
+                        </div>
+                      </div>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Modal -->
+            <!-- style="width:40%;margin-left:30%;margin-right:auto;display:block;" -->
+            <div class="modal" style="opacity:1;" id="out-patient-visit" tabindex="-1" role="dialog"
+              aria-labelledby="out-patient-visit" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 55%;margin-top:5%;">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="patient-registration-title">Out-Patient Visit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <a href="/patient_registration"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                          viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" class="feather feather-x">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg></a>
+                    </button>
+                  </div>
+                  <div class="modal-body" style="overflow-y:scroll;height:29.1em;">
+                    <form method="POST" id="VisitForm" action="/out_paient_visit">
+                      {% csrf_token %}
+                      <div class="Out-Patient_record">
+                        <div class="col-sm-12 text-right">
+                          <button type="submit" class="btn btn-primary border-0 p-2 icon-size" name="visit_form"><i
+                              class="fa fa-save"></i></button>
+                          <button class="btn btn-primary dropdown-toggle p-2 icon-size" type="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                              class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="alert-primary patient-visit ">
+                          <div class="row no-gutters">
+                            <div class="col-md-3 pl-2 pr-2">
+                              <div class="form-group">
+                                {{form_visit.uhid}}
+                              </div>
+                            </div>
+                            <div class="col-md-3 pl-2 pr-2">
+                              <div class="form-group">
+                                {{form_visit.visit_type}}
+                              </div>
+                            </div>
+                            <div class="col-md-3 pl-2 pr-2">
+                              <div class="form-group ">
+                                {{form_visit.clinical_department}}
+                              </div>
+                            </div>
+                            <div class="col-md-3 pl-2 pr-2">
+                              <div class="form-group">
+                                {{form_visit.nurse_doctor}}
+                              </div>
+                            </div>
+                            <div class="col-12 pl-2 pr-2">
+                              <div class="form-group">
+                                {{form_visit.description}}
+                              </div>
+                            </div>
+                            <div class="col-3 pl-2 pr-2">
+                              <div class="form-group">
+                                {{form_visit.visit_id}}
+                              </div>
+                            </div>
+
+                          </div><!-- row -->
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="today_visit">
+                              <h5>Today's Visit</h5>
+                              <hr>
+                            </div>
+                          </div>
+                        </div><!-- row -->
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="today_visit">
+                              <h5> <i class="fa fa-minus-square-o" aria-hidden="true"></i> Previous Visits</h5>
+                              {% if visited %}
+                              <table class="table table-border ">
+                                <tr style="background:#d1dae6;">
+                                  <th>UHID</th>
+                                  <th>Visit Id</th>
+                                  <th>Visit_Date</th>
+                                  <th>Visit Type</th>
+                                  <th>Clinic/Department</th>
+                                  <th>Doctor/Nurse Name</th>
+                                </tr>
+                                {% for data in visited %}
+                                <tr>
+                                  <td>{{ data.uhid}}</td>
+                                  <td>{{ data.visit_id}}</td>
+                                  <td>{{ data.visit_date_time}}</td>
+                                  <td>{{ data.visit_type}}</td>
+                                  <td>{{ data.clinical_department}}</td>
+                                  <td>{{ data.nurse_doctor}}</td>
+
+                                </tr>
+                                {% endfor %}
+                              </table>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </div><!-- row -->
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <!--end chat overlay-->
+      </div>
+    </div>
+  </div>
+  <!--end page wrapper -->
+</div>
+</div>
+<!--/ Latest Patients-->
+</div>
+
+
+
+
+
+<!--  bed transfer Modal -->
+<div class="modal fade-lg" id="bedtransfer" tabindex="-1" data-target=".bd-example-modal-lg" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLongTitle" style="padding-left: 30px;">Bed Transfer</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 20px; ">
+        <form method="POST" id="bed_transfer_id" data-cities-url="{% url 'admission_load' %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label>Registration Id</label>
+            <p disabled>
+              {{bed_transfer_form.uhid}}</p>
+            {{bed_transfer_form.bed_transfer_id}}</p>
+            {{bed_transfer_form.admission_ID}}</p>
+            <h3>Transfer From</h3>
+            <div class="card">
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Ward Type</label>
+                  <p>
+                    {{bed_transfer_form.from_ward_type}}</p>
+  
+                </div>
+                <div class="col-md-4">
+                  <label>Ward Category</label>
+                  <p>
+                    {{bed_transfer_form.from_ward_cat}}</p>
+  
+                </div>
+                <div class="col-md-4">
+                  <label>Bed No</label>
+                  <p>
+                    {{bed_transfer_form.from_bed_no}}</p>
+                </div>
+              </div><br>
+            </div>
+            
+            <h3>Transfer To</h3>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Ward Type</label>
+                <p>
+                  {{bed_transfer_form.to_ward_type}}</p>
+              </div>
+              <div class="col-md-4">
+                <label>Ward category</label>
+                <p>
+                  {{bed_transfer_form.to_ward_cat}}</p>
+              </div>
+              <div class="col-md-4">
+                <label>Bed No</label>
+                <p>
+                  {{bed_transfer_form.to_bed_no}}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Transfer data & Time</label>
+              <p>
+                {{bed_transfer_form.transfer_datatime}}</p>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" name="bed_transfer_button" value="bed_transfer_button">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- bed transfer end -->
+</div>
+
+
+
+
+
+<!--Doctor transfer Modal -->
+<div class="modal fade" id="doctortransfer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLongTitle">Doctor Transfer</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label>Registration Id</label>
+            <p disabled>
+              {{doctor_transfer_form.uhid}}</p>
+            {{doctor_transfer_form.doctor_transfer_id}}
+            {{doctor_transfer_form.admission_ID}}</p></p>
+
+            <h3>Transfer From</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Primary Doctor</label>
+                <p>
+                  {{doctor_transfer_form.from_doctor}}</p>
+
+              </div>
+              <div class="col-md-6">
+                <label>Department</label>
+                <p>
+                  {{doctor_transfer_form.from_department}}</p>
+              </div>
+            </div><br>
+            <h3>Transfer To</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Primary Doctor</label>
+                <p>
+                  {{doctor_transfer_form.to_doctor}}</p>
+              </div>
+              <div class="col-md-6">
+                <label>Department</label>
+                <p>
+                  {{doctor_transfer_form.to_department}}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Transfer data & Time</label>
+              <p>
+                {{doctor_transfer_form.transfer_datatime}}</p>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" name="doctor_transfer_button"
+              value="doctor_transfer_button">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Doctor transfer Modal end-->
+
+
+
+
+<script>
+  var loadFile = function (event) {
+    var image = document.getElementById("output");
+    image.src = URL.createObjectURL(event.target.files[0]);
+  };
+
+</script>
+<script>
+
+  function ageCalculator() {
+    //collect input from HTML form and convert into date format
+    var userinput = document.getElementById("DOB").value;
+    var dob = new Date(userinput);
+
+    //check user provide input or not
+    if (userinput == null || userinput == '') {
+      document.getElementById("message").innerHTML = "**Choose a date please!";
+      return false;
+    }
+
+    //execute if the user entered a date
+    else {
+      //extract the year, month, and date from user date input
+      var dobYear = dob.getYear();
+      var dobMonth = dob.getMonth();
+      var dobDate = dob.getDate();
+
+      //get the current date from the system
+      var now = new Date();
+      //extract the year, month, and date from current date
+      var currentYear = now.getYear();
+      var currentMonth = now.getMonth();
+      var currentDate = now.getDate();
+
+      //declare a variable to collect the age in year, month, and days
+      var age = {};
+      var ageString = "";
+
+      //get years
+      yearAge = currentYear - dobYear;
+
+      //get months
+      if (currentMonth >= dobMonth)
+        //get months when current month is greater
+        var monthAge = currentMonth - dobMonth;
+      else {
+        yearAge--;
+        var monthAge = 12 + currentMonth - dobMonth;
+      }
+
+      //get days
+      if (currentDate >= dobDate)
+        //get days when the current date is greater
+        var dateAge = currentDate - dobDate;
+      else {
+        monthAge--;
+        var dateAge = 31 + currentDate - dobDate;
+
+        if (monthAge < 0) {
+          monthAge = 11;
+          yearAge--;
+        }
+      }
+      //group the age in a single variable
+      age = {
+        years: yearAge,
+        months: monthAge,
+        days: dateAge
+      };
+
+
+      if ((age.years > 0) && (age.months > 0) && (age.days > 0))
+        ageString = age.years + "Y " + age.months + "M  " + age.days + "D";
+      else if ((age.years == 0) && (age.months == 0) && (age.days > 0))
+        ageString = "Only " + age.days + " days old!";
+      //when current month and date is same as birth date and month
+      else if ((age.years > 0) && (age.months == 0) && (age.days == 0))
+        ageString = age.years + " years old. Happy Birthday!!";
+      else if ((age.years > 0) && (age.months > 0) && (age.days == 0))
+        ageString = age.years + " years and " + age.months + " months old.";
+      else if ((age.years == 0) && (age.months > 0) && (age.days > 0))
+        ageString = age.months + " months and " + age.days + " days old.";
+      else if ((age.years > 0) && (age.months == 0) && (age.days > 0))
+        ageString = age.years + " years, and" + age.days + " days old.";
+      else if ((age.years == 0) && (age.months > 0) && (age.days == 0))
+        ageString = age.months + " months old.";
+      //when current date is same as dob(date of birth)
+      else ageString = "Welcome to Earth! <br> It's first day on Earth!";
+
+      //display the calculated age
+      return document.getElementById("result").innerHTML = ageString;
+
+    }
+  }
+</script>
+<!-- Start Country State -->
+<script>
+  // user country code for selected option
+  let user_country_code = "IN";
+
+  (function () {
+    // script https://www.html-code-generator.com/html/drop-down/country-region
+
+    // Get the country name and state name from the imported script.
+    let country_list = country_and_states['country'];
+    let states_list = country_and_states['states'];
+
+    // creating country name drop-down
+    let option = '';
+    option += '<option>select country</option>';
+    for (let country_code in country_list) {
+      // set selected option user country
+      let selected = (country_code == user_country_code) ? ' selected' : '';
+      option += '<option value="' + country_code + '"' + selected + '>' + country_list[country_code] + '</option>';
+    }
+    document.getElementById('country').innerHTML = option;
+
+    // creating states name drop-down
+    let text_box = '<input type="text" class="input-text" id="state">';
+    let state_code_id = document.getElementById("state-code");
+
+    function create_states_dropdown() {
+      // get selected country code
+      let country_code = document.getElementById("country").value;
+      let states = states_list[country_code];
+      // invalid country code or no states add textbox
+      if (!states) {
+        state_code_id.innerHTML = text_box;
+        return;
+      }
+      let option = '';
+      if (states.length > 0) {
+        option = '<select id="state">\n';
+        for (let i = 0; i < states.length; i++) {
+          option += '<option value="' + states[i].code + '">' + states[i].name + '</option>';
+        }
+        option += '</select>';
+      } else {
+        // create input textbox if no states
+        option = text_box
+      }
+      state_code_id.innerHTML = option;
+    }
+
+    // country select change event
+    const country_select = document.getElementById("country");
+    country_select.addEventListener('change', create_states_dropdown);
+
+    create_states_dropdown();
+  })();
+
+</script>
+<!-- End Country State -->
+
+<!-- Modal Submit Button -->
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+  (function () {
+    'use strict';
+    window.addEventListener('load', function () {
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.getElementsByClassName('needs-validation');
+      // Loop over them and prevent submission
+      var validation = Array.prototype.filter.call(forms, function (form) {
+        form.addEventListener('submit', function (event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $("#id_req_ward_type").change(function () {
+      const ward_type_id = $(this).val();
+      const url = $("#admission_form_id").attr("data-cities-url");  
+  
+      $.ajax({             
+          url: url,   
+          data: {
+              'ward_type_id':ward_type_id 
+          },
+          success: function (data) { 
+              $("#id_req_ward_cate").html(data);  
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (ward_type) {
+              console.log(ward_type)
+                  html_data += `<option value="${ward_type.id}">${ward_type.category_name}</option>`
+              });
+              console.log(html_data);
+              $("#id_req_ward_cate").html(html_data);
+  
+  
+          }
+      });
+  
+  });
+  </script>
+
+<script>
+  $("#id_req_ward_cate").change(function () {
+      const ward_cat_id = $(this).val();
+      const ward_type_id = $("#id_req_ward_type").val(); 
+      const url = $("#admission_form_id").attr("data-cities-url");
+      $.ajax({             
+          url: url,   
+          data: {
+              'ward_type_id':ward_type_id,
+              'ward_cat_id':ward_cat_id 
+          },
+          success: function (data) { 
+              $("#id_bed_no").html(data);  
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (bed_no) {
+              console.log(bed_no)
+                  html_data += `<option value="${bed_no.id}">${bed_no.bed_no}</option>`
+              });
+              console.log(html_data);
+              $("#id_bed_no").html(html_data);
+          }
+      });
+  
+  });
+  </script>
+
+<!-- bed transfer drop-down script -->
+<script>
+  $("#id_to_ward_type").change(function () {
+      const ward_type_id = $(this).val();
+      const url = $("#bed_transfer_id").attr("data-cities-url");  
+  
+      $.ajax({             
+          url: url,   
+          data: {
+              'ward_type_id':ward_type_id 
+          },
+          success: function (data) { 
+              $("#id_to_ward_cat").html(data);  
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (ward_type) {
+              console.log(ward_type)
+                  html_data += `<option value="${ward_type.id}">${ward_type.category_name}</option>`
+              });
+              console.log(html_data);
+              $("#id_to_ward_cat").html(html_data);
+  
+  
+          }
+      });
+  
+  });
+  </script>
+
+
+<script>
+  $("#id_to_ward_cat").change(function () {
+      const ward_cat_id = $(this).val();
+      const ward_type_id = $("#id_to_ward_type").val(); 
+      const url = $("#bed_transfer_id").attr("data-cities-url");  
+  
+      $.ajax({             
+          url: url,   
+          data: {
+              'ward_type_id':ward_type_id,
+              'ward_cat_id':ward_cat_id 
+          },
+          success: function (data) { 
+              $("#id_to_bed_no").html(data);  
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (bed_no) {
+              console.log(bed_no)
+                  html_data += `<option value="${bed_no.id}">${bed_no.bed_no}</option>`
+              });
+              console.log(html_data);
+              $("#id_to_bed_no").html(html_data);
+  
+  
+          }
+      });
+  
+  });
+  </script>
+
+{% endblock %}

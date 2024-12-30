@@ -1,0 +1,47 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px; overflow: auto;" >
+            
+            <h2><img src="{% static 'images/discharge.png' %}" alt="" style="width: 50px;">  <b>Result Validation</b></h2><br><br>
+            <div>
+                <table class="datatable table table-stripped">
+                    <thead>
+                      <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Test Id</th>
+                        <th scope="col">Unid</th>
+                        <th scope="col">PHID</th>
+                        <th scope="col">Patient Name</th>
+                        <th scope="col">Date & Time</th>
+                        <th scope="col">Action</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in collected_records %}
+                        {% ifchanged data.PTID %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.test_id}}</td>
+                            <td>{{data.uhid}}</td>
+                            <td>{{data.PTID}}</td>
+                            <td>{{data.first_name}} {%if data.middle_name %}{{data.middle_name}}{% endif %} {{data.last_name}}</td>
+                            <td>{{data.date_time}}</td>
+                            <td id="pop_up"><a href="/ipd/result_validation_view_ipd/{{data.PTID}}"><button type="button" class="btn btn-primary">Validation</button></a></td>
+                          </tr>
+                          {% endifchanged %}
+                          {% endfor %}
+                  </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

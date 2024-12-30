@@ -1,0 +1,222 @@
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+.card {
+    box-shadow: 0 0 10px #c2c0c0
+}
+
+</style>
+{% endblock %}
+{% block body_block %}
+
+<!-- content -->
+<div class="page-wrapper" style="background-color: white;">
+    <div class="content">
+        <!-- Main Dashboard -->
+       
+
+        
+        <h3 style="font-weight: bold;">Dashboard</h3>
+        <div class="row" >
+           
+            <div class="col-md-3">
+               
+                <div class="card text-white mb-4" style="background-color: #5dabb6ce;">
+                    <div class="card-body"><i class='fas fa-first-aid'></i> &nbsp;&nbsp; Visit Patients <b style="float: right;">{{records}}</b></div>
+                    <div class="card-footer d-flex align-items-center justify-content-between" >
+                        <a class="small text-white stretched-link" href="#" onclick="openNav()" >View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                    
+            
+               </div>
+            </div>
+            <div class=" col-md-3">
+                <div class="card text-white mb-4" style="background-color: #5dabb6ce;">
+                    <div class="card-body"> <i class='fas fa-first-aid'></i> &nbsp;&nbsp; Consultant Patient <b style="float: right;">{{total_p}}</b></div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+               
+             </div>
+             <div class=" col-md-3">
+                <div class="card text-white mb-4" style="background-color: #5dabb6ce;">
+                    <div class="card-body"><i class='fas fa-first-aid'></i>  &nbsp;&nbsp; Doctors <b style="float: right;">{{Doctor}}</b></div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+             
+             </div>
+             <div class="col-md-3">
+                <div class="card text-white mb-4" style="background-color: #5dabb6ce;">
+                    <div class="card-body"><i class='fas fa-first-aid'></i> &nbsp;&nbsp;  Dialysis discharged Patient <b style="float: right;">{{discharged_patient}}</b></div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+             </div>
+     
+    </div>
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-area me-1"></i>
+                  Weekly Visited Patient 
+                </div>
+                <div class="card-body"><canvas id="areaChart" width="100%" height="50"></canvas></div>
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar me-1"></i>
+                    Monthly Dialysis Patients Chart
+                </div>
+                 <canvas id="myChart" style="max-width:500px" height="300"></canvas>
+         
+            </div>
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Today Visied Patients
+        </div>
+        <div class="card-body">
+            <table class="table dataTable" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>SI.NO</th>
+                        <th>Reg.No</th>
+                        <th>Visit ID</th>
+                        <th>Bill No</th>
+                        <th>Patient Name</th>
+                        <th>DateTime</th>
+                        <th>Clinic Department</th>
+                        <th>Doctor Name</th>
+                        <th>Status</th>
+                        
+                     
+                    </tr>
+                </thead>
+          
+                <tbody>
+                    {% for data in pending_visited_list %}
+                    <tr>
+                      <td>{{forloop.counter}}</td>
+                      <td>{{dat.uhid}}</td>
+                      <td><a href="/cm/{{dat.uhid}}~{{dat.visit_no}}~{{dat.bill_id}}">{{dat.visit_no}}</a></td>
+                      <td>{{dat.bill_id}}</td>
+                      <td>{{dat.pat_name}}</td>
+                      <td>{{dat.bill_date_time}}</td>
+                      <td>{{dat.department}}</td>
+          
+                      <td>{{dat.doctor_name}}</td>
+                      <td>{{dat.status}}</td>
+                     
+                       
+                    </tr>
+                   {% endfor %}
+               
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <script>
+    var xValues = ["Visited", "Consultant", "Dialysis","Pending Visits"];
+    var yValues = [{{Monthly_visited|safe}}, {{monthly_consultant|safe}},{{monthly_discharged_patient|safe}},{{pending_visited_count|safe}}];
+    var barColors = [
+      "#B0E0E6",
+      "#00aba9",
+      "#FA8072",
+      "#BDB76B"
+
+    ];
+    
+    new Chart("myChart", {
+      type: "doughnut",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+       
+        }
+      }
+    });
+    </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+    // Get a reference to the canvas element
+var ctx = document.getElementById("areaChart").getContext("2d");
+
+var data = {
+  labels: {{ week_dates|safe }},
+  datasets: [
+    {
+      label: "Dialysis Patients",
+      data: {{ date_visited_lst|safe }},
+      backgroundColor: "rgba(75, 192, 192, 0.2)",
+      borderColor: "rgba(75, 192, 192, 1)",
+      borderWidth: 1,
+      fill: true,
+    },
+  ],
+};
+
+
+// Create the area chart
+var areaChart = new Chart(ctx, {
+  type: "line", // Use 'line' type to create an area chart
+  data: data,
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  },
+});
+</script>
+<!-- bar chart js -->
+
+
+<script>
+    $(document).ready(function() {
+  $('#dataTable').DataTable();
+});
+
+window.addEventListener('DOMContentLoaded', event => {
+    // Simple-DataTables
+    // https://github.com/fiduswriter/Simple-DataTables/wiki
+
+    const datatablesSimple = document.getElementById('dataTable');
+    if (datatablesSimple) {
+        new simpleDatatables.DataTable(datatablesSimple);
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% block body_block %}
+<div class="title_master">
+<div class="container-fluid">
+<a class="btn btn-primary" href="add-new-hospital">Add</a>
+<a class="btn btn-secondary" href="edit-hospital-master">Edit</a>
+<a class="btn btn-success disabled" href="save-title">save</a>
+<button onClick="window.location.reload();" class="btn btn-danger">Refresh</button>
+<a class="btn btn-warning" href="/">Exit</a><br><br>
+{% if add %}
+<form method="POST">
+  {% csrf_token %}
+  <table >
+    {{form}}
+  </table>
+  <input type="submit" name="submit" value="submit">
+  <a href="/hospital-master">Cancel</a>
+</form>
+{% else %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">S.No</th>
+      <th scope="col">Hospital Name</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for data in hospital_master %}
+    <tr>
+      <th scope="row">{{data.id}}</th>
+      <td>{{data.hospital_name}}</td>
+      <td>{{data.status}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+</div>
+<div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}

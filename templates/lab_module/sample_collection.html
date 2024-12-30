@@ -1,0 +1,145 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+    #header {
+        width: 100%;
+    }
+
+
+    .field_set{
+        border: 1px solid black;
+        padding: 10px;
+        padding-left: 40px;
+        }
+    .sample{
+        border: 1px solid black;
+        padding: 10px;
+        }
+</style>
+{% endblock %}
+{% block body_block %}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="btn-primary" style="padding:5px; padding-left: 30px; ">
+       <h3>Sample Colletion</h3>
+    </div>
+        <div class="card" style="overflow: auto;" >
+            <div class="card-body">
+                <fieldset  class="field_set">
+                    <legend style="width: fit-content;">Patient Details</legend>
+                <table id="header" >
+                    <tr>
+                        <td><b>Name</b></td>
+                        <td>: {{patient_record.first_name|upper}} {{patient_record.middle_name|upper}} {{patient_record.last_name|upper}}</td>
+                        <td><b>Bill</b></td>
+                        <td>: {{records.0.bill_no}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Age/Gender</b></td>
+                        <td>: {{patient_record.age}}Y/{{patient_record.gender}}</td>
+                        <td><b>Registered Date</b></td>
+                        <td>: {{patient_record.registration_date_and_time}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Address</b></td>
+                        <td>: {{patient_record.address}}</td>
+                        <td><b>MR. No.</b></td>
+                        <td>: {{patient_record.uhid}}</td>
+
+                    </tr>
+                    <tr>
+                        <td><b>Location</b></td>
+                        <td>: {{patient_record.location}}</td>
+                        <td><b>Visit ID</b></td>
+                        <td>: {{records.0.visit_no}}</td>
+                    </tr>
+                </table>
+            </fieldset>
+            <fieldset  class="field_set">
+                <legend style="width: fit-content;">Collection Details</legend>
+                <div class="row">
+                    <div class="col-md-6">
+                        <span><b>Collection Center:</b></span>  <span>  Inhouse</span>
+                    </div>
+                    <div class="col-md-6">
+                        <span><b>Collected by:</b></span>  <span>  Laboratory</span>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset  class="sample">
+                <legend style="width: fit-content;">Tests</legend>
+                <div >
+                <form method="post" id="sample_form">
+                    {% csrf_token %}
+                <table class="table ">
+                    <thead>
+                        <tr>
+                            <td colspan="3"></td>
+
+                            <td colspan="2">
+                                <div class="row">
+                                    <div class="col-md-8">
+
+                                    </div>
+                                    <div class="col-md-4">
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                      <tr>
+                        <th>Sample for</th>
+                        <th>Order Date Time</th>
+                        <th>Patient Test Id</th>
+                        <th>Department</th>
+                        <th>Sample Type</th>
+                        <th>Test name</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for data in records %}
+                        <tr>
+                            <td style="text-align: center;"><input type="checkbox" id="checkbox" class='form-comtrol' style="border: none; text-align:center;" value="{{data.id}}" name="sample_id" onclick="toggleRequired(this)"></td>
+                            <td><input type="text" id="id" class='form-comtrol' style="border: none; text-align:center;" value="{{data.date_time}}" readonly></td>
+                            <td><input type="text" id="id" class='form-comtrol' style="border: none; text-align:center;" value="{{data.test_id}}" readonly></td>
+                            <td><input type="text" id="id" class='form-comtrol' style="border: none; text-align:center;" value="{{data.department}}" readonly></td>
+                           <td><select name="sample_type" id="sample_type_id" class="form-control" >
+                                <option disabled selected value>Sample Type</option>
+                                {% for sample in sample_records %}
+                                <option value="{{sample.sample_name}}">{{sample.sample_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                            <td><input type="text" id="id" class='form-comtrol' style="border: none; text-align:center;" value="{{data.profile_name}}" readonly></td>
+                          </tr>
+                         {% endfor %}
+                    </tbody>
+                  </table>
+                </form>
+                </div>
+                </fieldset><br>
+                <button type="submit" class="btn btn-success" form="sample_form">Save</button>
+                <!-- <a href="{% url 'lab_service_temp' ptid %}" class="btn btn-primary">Add</a> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+ <script >
+    function toggleRequired(checkbox) {
+        var row = checkbox.parentNode.parentNode; // Get the parent row of the checkbox
+        var fields = row.getElementsByTagName('select'); // Get all input elements within the row
+
+        for (var i = 0; i < fields.length; i++) {
+          if (checkbox.checked) {
+            fields[i].setAttribute('required', 'required'); // Add the 'required' attribute to make the field required
+          } else {
+            fields[i].removeAttribute('required'); // Remove the 'required' attribute
+          }
+        }
+      }
+   </script>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Attendance Report</h4>
+            </div>
+          
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                <div class="row filter-row">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus mb-0">
+                            <label class="focus-label">Employee Name</label>
+                            <input type="text" class="form-control floating" list="text_editors" name="emp">
+                            <datalist id="text_editors">
+                                {% for data in employee_name %}
+                                <option value="{{data.id}}.{{data.first_name}}{{data.last_name}}"></option>
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus mb-0">
+                            <label class="focus-label">Department</label>
+                            <select class="select floating" name="dept_id" id="dept_id">
+                                <option value="">-</option>
+                                {% for data in dept_detail %}
+                                <option value="{{data.id}}">{{data.department_name}}</option>
+                               {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6 col-md-3">
+                        <button type="submit" class="btn btn-success btn-block"> Search </button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="datatable table table-stripped ">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Employee ID</th>
+                                        <th>Employee Name</th>
+                                        <th>Email</th>
+                                        <th>Department</th>
+                                        <th>DOB</th>
+                                        <th>Mob No</th>
+                                        <th>Gender</th>
+                                        <th>View</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data,data1 in employee_details %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{data.employee_id}}</td>
+                                        <td>{{data.first_name}}{{data.last_name}}</td>
+                                        <td>{{data.email_id}}</td>
+                                        <td>{{data1}}</td>
+                                        <td>{{data.dob}}</td>
+                                        <td>{{data.mobile_no}}</td>
+                                        <td>{{data.gender}}</td>
+                                        <td><a href="{% url 'employee_attendance' data.id %}" class="btn btn-primary"><i class="fa fa-hand-pointer" aria-hidden="true"></i></a></td>
+                                      </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</div>
+<!--/ content-->
+
+{% endblock %}

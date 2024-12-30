@@ -1,0 +1,143 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+<!--This for payment receipt print function-->
+<div id="hello">
+<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+				<tr>
+					<td>
+						<div class="">
+							<center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+							</center>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr >
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td colspan="4" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;">Summarize Bill</h3></td>
+				</tr>
+
+				<tr>
+					<th>Reg. No.</th>
+					<td>:{{reg_detail.uhid}}</td>
+					<th>Admission Id</th>
+					<td>:{{records.admission_ID}}</td>
+				</tr>
+				<tr>
+					<th>Patient Name</th>
+					<td>:{{reg_detail.first_name}} {{reg_detail.middle_name}} {{reg_detail.last_name}}</td>
+					<th>Admission Date</th>
+					<td>:{{records.admission_datetime}}</td>
+				</tr>
+				<tr>
+					<th>Mobile</th>
+					<td>:{{reg_detail.mobile_number}}</td>
+					<th>Age.</th>
+					<td>:{{reg_detail.age}}</td>
+				</tr>
+				<tr>
+					<th>Address</th>
+					<td>:{{reg_detail.address}}</td>
+					<th>Sex</th>
+					<td>:{{reg_detail.gender}}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%"id="example">
+
+                <tr>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">S.No </th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Item </th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Total Amount </th>
+                </tr>
+                <tbody>
+                    <tr >
+                        <td>1</td>
+                        <td style="font-weight: bold;">Medication</td>
+<!--                        <td >{{no_of_medication}}</td>-->
+                        <td>{{medication_amt|floatformat:2|intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td style="font-weight: bold;">Investigation</td>
+<!--                        <td>{{no_of_investigation}}</td>-->
+                        <td>{{investigation_amt|floatformat:2|intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td style="font-weight: bold;">Procedure</td>
+<!--                        <td>{{no_of_procedure}}</td>-->
+                        <td>{{procedure_amt|floatformat:2|intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td style="font-weight: bold;">Consulation</td>
+<!--                        <td>{{no_of_consultation}}</td>-->
+                        <td>{{consultation_amt|floatformat:2|intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td style="font-weight: bold;">Bed Charge</td>
+<!--                        <td>{{no_of_bed_slip}}</td>-->
+                        <td>{{bed_charge_amt|floatformat:2|intcomma}}</td>
+                    </tr>
+                <tr>
+                    <td style="border-top: 1px solid#333; border-bottom: 1px solid#333; "></td>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "><b>Toatal Amont</b></th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "><b>{{tot_net_amt|floatformat:2|intcomma}}</b></th>
+                </tr>
+            </table>
+		</td>
+	</tr>
+	
+</table>
+</div><br><br>
+<button type="button"  onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;">Print</button>
+
+<script type="text/javascript">
+        
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+</body>
+</html>

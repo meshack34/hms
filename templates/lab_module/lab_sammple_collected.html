@@ -1,0 +1,98 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block %}
+	<!-- Toatr CSS -->		
+  <link rel="stylesheet" href="{% static 'assets/plugins//toastr/toatr.css' %}">
+{% endblock %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+      <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>Sample Collected</b>
+        </div>
+        <div class="">
+          <a onClick="toggleVisibility()" class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+          <a type="button" class="text-light px-1" onClick="window.location.reload();" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" onclick="codespeedy()" href="#">PDF</a>
+            <a class="dropdown-item" id="download-button" href="#">CSV</a>
+          </div>
+        </div>
+      </div>
+      <div class="alert" role="alert" style="height:20px; width:40%; right: 0px; position: absolute;">
+        {% if messages %}
+        <div class="alert alert-warning" role="alert" style="float: right;">
+        <ul class="messages">
+            {% for message in messages %}
+            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> <h4>{{ message }}</h4> </li>
+            {% endfor %}
+        </ul>
+    </div>
+        {% endif %}
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="table-responsive">
+            <table class="datatable table table-stripped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">S.No</th>
+                  <th scope="col">Test Id</th>
+                  <th scope="col">Unid</th>
+                  <th scope="col">PHID</th>
+                  <th scope="col">Service Name</th>
+                  <th scope="col">Date & Time</th>
+                  <th scope="col">Action</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                  {% for data in collected_records %}
+                  {% ifchanged data.PTID %}
+                  <tr>
+                      <td>{{forloop.counter}}</td>
+                      <td>{{data.test_id}}</td>
+                      <td>{{data.uhid}}</td>
+                      <td>{{data.PTID}}</td>
+                      <td>{{data.first_name}} {%if data.middle_name %}{{data.middle_name}}{% endif %} {{data.last_name}}</td>
+                      <td>{{data.date_time}}</td>
+                      <td id="pop_up"><a href="/lab_result_entry/{{data.PTID}}"><button type="button" class="btn btn-primary">Result Entry</button></a></td>
+                    </tr>
+                    {% endifchanged %}
+                    {% endfor %}
+            </table>
+            <p id="demo"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script>
+    function myFunction() {
+      var txt;
+      if (confirm("Press a button!")) {
+        txt = "You pressed OK!";
+      } else {
+        txt = "You pressed Cancel!";
+      }
+      document.getElementById("demo").innerHTML = txt;
+    }
+    </script>
+
+    <script>
+      window.setTimeout(function() {
+      $(".alert").fadeTo(500, 0).slideUp(500, function(){
+          $(this).remove(); 
+      });
+  }, 5000);
+  </script>
+{% endblock %}

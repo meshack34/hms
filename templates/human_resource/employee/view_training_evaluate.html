@@ -1,0 +1,174 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+  .form {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+  <div class="content">
+    <button type="menu" style="font-family: monospace; width: 100%; text-align: left;"
+      class="btn btn-primary m-t-15 waves-effect"> <b>Training Evaluation Form</b></button>
+    <br><br>
+    
+      <div class="icon-button-demo">&nbsp;
+        <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+            class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+        <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>&nbsp;
+        <a href="/training_evaluation" class="btn btn-primary">Back</a>&nbsp;
+        <button class="btn btn-warning" role="button"
+            onclick="codespeedy()">PDF</button>&nbsp;
+            <button class="btn btn-sucess" style="background-color: green;" onclick="exportTableToCSV()"
+            role="button">CSV</button>&nbsp;
+      </div>
+      <br>
+      <div id="hello">
+        <style>
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+
+            }
+            #button2{
+            font-size: larger;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+            </style>
+      <div class="card" style="padding: 10px;background-color:#ebebf8;">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-md-3">
+              <label>Evaluator Name</label>
+              <input type="text" name="evaluate_name" id="evaluate_name" class="form-control" value="{{training_evaluation.evaluator_name}}">
+            </div>
+            <div class="col-md-3">
+              <label>Department</label>
+              <input type="text" name="dept_name" id="dept_name" class="form-control" value="{{training_evaluation.dept_id}}">
+            </div>
+            <div class="col-md-3">
+              <label>Candidate Name</label>
+              <input type="text" name="candidate_name" id="candidate_name" class="form-control" value="{{training_evaluation.candidate_name}}">
+            </div>
+          </div>
+          <hr>
+          <div class="card mb-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped table-bordered dt-responsive nowrap w-100">
+                                <thead>
+                                    <tr>
+                                        <th style="width:30%;">Interviewed on what Aspects</th>
+                                        <th>Evaluator Review(%)</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Connection</td>
+                                        <td style="width:30%;">{% for data in training_evaluation.evaluator_review %}{% if forloop.counter == 1 %}{{data}}{% endif %}{% endfor %}</td>
+                                        <td>{% for data in training_evaluation.remarks %}{% if forloop.counter == 1 %}{{data}}{% endif %}{% endfor %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>DisConnection</td>
+                                        <td style="width:30%;">{% for data in training_evaluation.evaluator_review %}{% if forloop.counter == 2 %}{{data}}{% endif %}{% endfor %}</td>
+                                        <td>{% for data in training_evaluation.remarks %}{% if forloop.counter == 2 %}{{data}}{% endif %}{% endfor %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Patient Handling</td>
+                                        <td style="width:30%;">{% for data in training_evaluation.evaluator_review %}{% if forloop.counter == 3 %}{{data}}{% endif %}{% endfor %}</td>
+                                        <td>{% for data in training_evaluation.remarks %}{% if forloop.counter == 3 %}{{data}}{% endif %}{% endfor %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Knowledge of Work</td>
+                                        <td style="width:30%;">{% for data in training_evaluation.evaluator_review %}{% if forloop.counter == 4 %}{{data}}{% endif %}{% endfor %}</td>
+                                        <td>{% for data in training_evaluation.remarks %}{% if forloop.counter == 4 %}{{data}}{% endif %}{% endfor %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Technical Knowledge</td>
+                                        <td style="width:30%;">{% for data in training_evaluation.evaluator_review %}{% if forloop.counter == 5 %}{{data}}{% endif %}{% endfor %}</td>
+                                        <td>{% for data in training_evaluation.remarks %}{% if forloop.counter == 5 %}{{data}}{% endif %}{% endfor %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dependability</td>
+                                        <td style="width:30%;">{% for data in training_evaluation.evaluator_review %}{% if forloop.counter == 6 %}{{data}}{% endif %}{% endfor %}</td>
+                                        <td>{% for data in training_evaluation.remarks %}{% if forloop.counter == 6 %}{{data}}{% endif %}{% endfor %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Speed & Quality of Work</td>
+                                        <td style="width:30%;">{% for data in training_evaluation.evaluator_review %}{% if forloop.counter == 7 %}{{data}}{% endif %}{% endfor %}</td>
+                                        <td>{% for data in training_evaluation.remarks %}{% if forloop.counter == 7 %}{{data}}{% endif %}{% endfor %}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+<!--/ content-->
+<script>
+    $('example').margetable({
+      type: 1,
+      colindex: [{
+        index: 1,
+        dependent: [0]
+      }]
+    });
+  </script>
+  <script type="text/javascript">
+  
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+  var print_area = window.open();
+  print_area.document.write(print_div.innerHTML);
+  print_area.document.close();
+  print_area.focus();
+  print_area.print();
+  print_area.close();
+  // This is the code print a particular div element
+    }
+  </script>
+  
+  <script>
+      function exportTableToCSV() {
+  var csv = [];
+  var rows = document.querySelectorAll("table tr");
+  
+  for (var i = 0; i < rows.length; i++) {
+  var row = [], cols = rows[i].querySelectorAll("td, th");
+  
+  for (var j = 0; j < cols.length; j++) {
+  var cellText = cols[j].innerText;
+  cellText = cellText.replace(/"/g, '""');  // Escape double quotes within cell value
+  row.push('"' + cellText + '"');
+  }
+  
+  csv.push(row.join(","));
+  }
+  
+  // Create a download link
+  var csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+  var link = document.createElement("a");
+  link.setAttribute("href", encodeURI(csvContent));
+  link.setAttribute("download", "training_evaluate.csv");
+   link.click();
+  }</script>
+{% endblock %}

@@ -1,0 +1,1810 @@
+{% extends 'user_management/base.html' %}
+{% load static %}
+{% block head_block %}
+
+{% endblock %}
+{% block body_block %}
+<div class="page-wrapper">
+  <div class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="card" style="padding: 20px;">
+            <div>
+              <h3><b>User Access</b></h3>
+            </div>
+            <div class="col-12">
+
+              <div>
+                <form method="post">
+                  {% csrf_token %}
+                  <div>
+
+                    <br>
+                    <div class="icon-button-demo">&nbsp;
+                      <button type="submit" class="btn btn-success" aria-label="Close"> <i
+                          class="fas fa-save">Save</i></button></a>&nbsp;
+                      <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+                          class="fas fa-sync-alt">Refresh</i></button></a>&nbsp;
+                      <a href="/dashboard" class="red_bg"><button type="button" class="btn btn-danger"> <i
+                            class="fas fa-times-circle">Exit</i></button></a>
+                    </div><br><br>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-5">
+                        <label>Profile Name</label>
+                        <input type="text" name="group_name" id="group_name" class="form-control" requried>
+                      </div>
+
+                    </div>
+
+                  </div>
+                  <div><br>
+                    <h3 style="color: blue;"><b>Access</b></h3>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="patient_reg"
+                        value="patient_registration" onclick="myFunction('patient_reg','patient_button')">
+                      <label class="form-check-label btn btn-primary" for="patient_reg">Patient Registration</label>
+                    </div>
+
+                  </div><br>
+
+                  <div style="padding-left: 40px; display:none;" id="patient_button">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="patient_registration_add"
+                        value="patient_registration_add">
+                      <label class="form-check-label btn btn-info" for="patient_registration_add">Patient registartion
+                        add</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="patient_registration_edit"
+                        value="patient_registration_edit">
+                      <label class="form-check-label btn btn-info" for="patient_registration_edit">Patient registartion edit</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="patient_registration_delete"
+                        value="patient_registration_delete">
+                      <label class="form-check-label btn btn-info" for="patient_registration_delete">Patient registartion delete</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="registration_card"
+                        value="registration_card">
+                      <label class="form-check-label btn btn-info" for="registration_card">Registartion Card</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="visitor_add"
+                        value="visitor_add">
+                      <label class="form-check-label btn btn-info" for="visitor_add">Vistisor Add</label>
+                    </div>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_dashboard"
+                        value="doctor_dashboard"  onclick="myFunction('doctor_dashboard','doctor_dashboard_screen')">
+                      <label class="form-check-label btn btn-primary" for="doctor_dashboard">Admin</label>
+                    </div>
+
+                  </div><br>
+                  <div style="padding-left: 40px; display:none;" id="doctor_dashboard_screen">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="appointment_creation"
+                        value="appointment_creation">
+                      <label class="form-check-label btn btn-info" for="appointment_creation">Appointment Creation
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_creation"
+                        value="doctor_creation">
+                      <label class="form-check-label btn btn-info" for="doctor_creation">Doctor Creation</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_schedule_creation"
+                        value="doctor_schedule_creation">
+                      <label class="form-check-label btn btn-info" for="doctor_schedule_creation">Doctor Schedule Creation</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="admin_report"
+                        value="admin_report">
+                      <label class="form-check-label btn btn-info" for="admin_report">Admin Report</label>
+                    </div>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_dashbord" value="doctor_dashbord">
+                      <label class="form-check-label btn btn-primary" for="doctor_dashbord">Doctor Dashbord</label>
+                    </div>
+
+                  </div><br><br>
+
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="opd_billing" value="opd_billing"
+                        onclick="myFunction('opd_billing','opd_bill_button')">
+                      <label class="form-check-label btn btn-primary" for="opd_billing">Opd Billing</label>
+                    </div>
+
+                  </div><br>
+                  <div style="padding-left: 40px; display:none;" id="opd_bill_button">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="finalized_bill"
+                        value="finalized_bill">
+                      <label class="form-check-label btn btn-info" for="finalized_bill">Finalized Bill</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="closed_bill"
+                        value="closed_bill">
+                      <label class="form-check-label btn btn-info" for="closed_bill">Closed Bill</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="cancel_bill"
+                        value="cancel_bill">
+                      <label class="form-check-label btn btn-info" for="cancel_bill">Cancel Bill</label>
+                    </div>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="qms" value="qms"
+                        onclick="myFunction('qms','qms_screen')">
+                      <label class="form-check-label btn btn-primary" for="qms">QMS</label>
+                    </div>
+
+                  </div><br>
+                  <div style="padding-left: 40px; display:none;" id="qms_screen">
+                    <!-- token msaster configuration-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="token_master_configuration"
+                        value="token_master_configuration"
+                        onclick="myFunction('token_master_configuration','token_master_configuration_button')">
+                      <label class="form-check-label btn btn-info" for="token_master_configuration">Token Master
+                        Configuration</label>
+                    </div><br>
+                    <div id="token_master_configuration_button"
+                      style="padding-left: 40px; padding-top:20px; display:none">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="token_master_configuration_save" value="token_master_configuration_save">
+                        <label class="form-check-label btn btn-success"
+                          for="token_master_configuration_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="token_master_configuration_replicate" value="token_master_configuration_replicate">
+                        <label class="form-check-label btn btn-success"
+                          for="token_master_configuration_replicate">Replicate<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="token_master_configuration_view" value="token_master_configuration_view">
+                        <label class="form-check-label btn btn-success"
+                          for="token_master_configuration_view">view<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="token_master_configuration_update" value="token_master_configuration_update">
+                        <label class="form-check-label btn btn-success"
+                          for="token_master_configuration_update">Update<label>
+                      </div>
+                    </div><br>
+                    <!-- Token Creation -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="token_creation"
+                        value="token_creation" onclick="myFunction('token_creation','token_creation_button')">
+                      <label class="form-check-label btn btn-info" for="token_creation">Token Creation</label>
+                    </div><br>
+                    <div id="token_creation_button" style="padding-left: 40px; padding-top:20px; display:none">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="create_token"
+                          value="create_token">
+                        <label class="form-check-label btn btn-success" for="create_token">Create Token<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="token_get_slip"
+                          value="token_get_slip">
+                        <label class="form-check-label btn btn-success" for="token_get_slip">Get Slip<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="view_token"
+                          value="view_token">
+                        <label class="form-check-label btn btn-success" for="view_token">View<label>
+                      </div>
+                    </div><br>
+                    <!--  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="token_slip_generation"
+                        value="token_slip_generation"
+                        onclick="myFunction('token_slip_generation','token_slip_generation_button')">
+                      <label class="form-check-label btn btn-info" for="token_slip_generation">Tokaen Slip
+                        Generation</label>
+                    </div><br>
+                    <div id="token_slip_generation_button" style="padding-left: 40px; padding-top:20px; display:none">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="tokrn_slip_generation_get_slip" value="tokrn_slip_generation_get_slip">
+                        <label class="form-check-label btn btn-success" for="tokrn_slip_generation_get_slip">Get
+                          Slip<label>
+                      </div>
+                    </div><br>
+                    <!--  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="token_admin_view"
+                        value="token_admin_view" onclick="myFunction('token_admin_view','token_admin_view_button')">
+                      <label class="form-check-label btn btn-info" for="token_admin_view">Tokaen Admin View</label>
+                    </div><br>
+                    <div id="token_admin_view_button" style="padding-left: 40px; padding-top:20px; display:none">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="token_in_out"
+                          value="token_in_out">
+                        <label class="form-check-label btn btn-success" for="token_in_out">In & Out<label>
+                      </div>
+                    </div><br>
+                    <!--  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="centralized_view"
+                        value="centralized_view" onclick="myFunction('token_creation','token_creation_button')">
+                      <label class="form-check-label btn btn-info" for="centralized_view">Centralized View</label>
+                    </div><br>
+                  </div><br>
+
+
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="opd_advance"
+                        value="opd_advance">
+                      <label class="form-check-label btn btn-primary" for="opd_advance">Opd Advance</label>
+                    </div>
+                  </div><br><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="opd_bill_settlement"
+                        value="opd_bill_settlement">
+                      <label class="form-check-label btn btn-primary" for="opd_bill_settlement">Opd Bill
+                        Settlement</label>
+                    </div>
+                  </div><br><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="nephrology" value="nephrology"
+                        onclick="myFunction('nephrology','nephrology_screen')">
+                      <label class="form-check-label btn btn-primary" for="nephrology">Nephrology</label>
+                    </div>
+
+                  </div><br>
+                  <div style="padding-left: 40px;display:none;" id="nephrology_screen">
+                    <!-- pre_dialysis-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="pre_dialysis"
+                        value="pre_dialysis" onclick="myFunction('pre_dialysis','pre_dialysis_button')">
+                      <label class="form-check-label btn btn-info" for="pre_dialysis">Pre dialysis</label>
+                    </div><br>
+                    <div id="pre_dialysis_button" style="padding-left: 40px; padding-top:20px; display:none">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="pre_dialysis_save"
+                          value="pre_dialysis_save">
+                        <label class="form-check-label btn btn-success" for="pre_dialysis_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="pre_dialysis_view"
+                          value="pre_dialysis_view">
+                        <label class="form-check-label btn btn-success" for="pre_dialysis_view">View<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="pre_dialysis_print"
+                          value="pre_dialysis_print">
+                        <label class="form-check-label btn btn-success" for="pre_dialysis_print">Print<label>
+                      </div>
+                    </div><br>
+                    <!-- post_dialysis-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="post_dialysis"
+                        value="post_dialysis" onclick="myFunction('post_dialysis','post_dialysis_button')">
+                      <label class="form-check-label btn btn-info" for="post_dialysis">Post dialysis</label>
+                    </div><br>
+                    <div id="post_dialysis_button" style="padding-left: 40px; padding-top:20px; display:none">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="post_dialysis_save"
+                          value="post_dialysis_save">
+                        <label class="form-check-label btn btn-success" for="post_dialysis_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="post_dialysis_view"
+                          value="post_dialysis_view">
+                        <label class="form-check-label btn btn-success" for="post_dialysis_view">View<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="post_dialysis_print"
+                          value="post_dialysis_print">
+                        <label class="form-check-label btn btn-success" for="post_dialysis_print">Print<label>
+                      </div>
+                    </div><br>
+                    <!-- dialysis_details-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="dialysis_details"
+                        value="dialysis_details" onclick="myFunction('dialysis_details','dialysis_details_button')">
+                      <label class="form-check-label btn btn-info" for="dialysis_details">Dialysis Details</label>
+                    </div><br>
+                    <div id="dialysis_details_button" style="padding-left: 40px; padding-top:20px; display:none">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="dialysis_details_print"
+                          value="dialysis_details_print">
+                        <label class="form-check-label btn btn-success" for="dialysis_details_print">Print<label>
+                      </div>
+                    </div><br>
+                    <!-- chemotherapy_treatment-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="chemotherapy_treatment"
+                        value="chemotherapy_treatment"
+                        onclick="myFunction('chemotherapy_treatment','chemotherapy_treatment_button')">
+                      <label class="form-check-label btn btn-info" for="chemotherapy_treatment">Chemotherapy
+                        Treatment</label>
+                    </div><br>
+                    <div id="chemotherapy_treatment_button" style="padding-left: 40px; padding-top:20px; display:none">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="chemotherapy_treatment_save"
+                          value="chemotherapy_treatment_save">
+                        <label class="form-check-label btn btn-success" for="chemotherapy_treatment_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="chemotherapy_treatment_view"
+                          value="chemotherapy_treatment_view">
+                        <label class="form-check-label btn btn-success" for="chemotherapy_treatment_view">View<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="chemotherapy_treatment_print"
+                          value="chemotherapy_treatment_print">
+                        <label class="form-check-label btn btn-success" for="chemotherapy_treatment_print">Print<label>
+                      </div>
+                    </div><br>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_accounting"
+                        value="doctor_accounting" onclick="myFunction('doctor_accounting','doctor_accounting_screen')">
+                      <label class="form-check-label btn btn-primary" for="doctor_accounting">Doctor Accounting</label>
+                    </div>
+
+                  </div><br>
+                  <div style="padding-left: 40px; display:none;" id="doctor_accounting_screen">
+                    <!-- doctor_accounting_services-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_accounting_services"
+                        value="doctor_accounting_services"
+                        onclick="myFunction('doctor_accounting_services','doctor_accounting_services_button')">
+                      <label class="form-check-label btn btn-info"
+                        for="doctor_accounting_services">doctor_accounting_services</label>
+                    </div><br>
+                    <div id="doctor_accounting_services_button"
+                      style="padding-left: 40px; padding-top:20px; display:none">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="doctor_accounting_services_save" value="doctor_accounting_services_save">
+                        <label class="form-check-label btn btn-success"
+                          for="doctor_accounting_services_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="doctor_accounting_services_view" value="doctor_accounting_services_view">
+                        <label class="form-check-label btn btn-success"
+                          for="doctor_accounting_services_view">View<label>
+                      </div>
+                    </div><br>
+                    <!-- doctor_accounting_packages-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_accounting_packages"
+                        value="doctor_accounting_packages"
+                        onclick="myFunction('doctor_accounting_packages','doctor_accounting_packages_button')">
+                      <label class="form-check-label btn btn-info"
+                        for="doctor_accounting_packages">doctor_accounting_packages</label>
+                    </div><br>
+                    <div id="doctor_accounting_packages_button"
+                      style="padding-left: 40px; padding-top:20px; display:none">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="doctor_accounting_packages_save" value="doctor_accounting_packages_save">
+                        <label class="form-check-label btn btn-success"
+                          for="doctor_accounting_packages_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="doctor_accounting_packages_view" value="doctor_accounting_packages_view">
+                        <label class="form-check-label btn btn-success"
+                          for="doctor_accounting_packages_view">View<label>
+                      </div>
+                    </div><br>
+                    <!-- doctor_accounting_profile-->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="doctor_accounting_profile"
+                        value="doctor_accounting_profile"
+                        onclick="myFunction('doctor_accounting_profile','doctor_accounting_profile_button')">
+                      <label class="form-check-label btn btn-info"
+                        for="doctor_accounting_profile">doctor_accounting_profile</label>
+                    </div><br>
+                    <div id="doctor_accounting_profile_button"
+                      style="padding-left: 40px; padding-top:20px; display:none">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="doctor_accounting_profile_save" value="doctor_accounting_profile_save">
+                        <label class="form-check-label btn btn-success" for="doctor_accounting_profile_save">Save<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access"
+                          id="doctor_accounting_profile_view" value="doctor_accounting_profile_view">
+                        <label class="form-check-label btn btn-success" for="doctor_accounting_profile_view">View<label>
+                      </div>
+                    </div><br>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="clinical_managements"
+                        value="clinical_managements"
+                        onclick="myFunction('clinical_managements','clinical_management_screen')">
+                      <label class="form-check-label btn btn-primary" for="clinical_managements">Clinical
+                        Management</label>
+                    </div>
+
+                  </div><br>
+                  <div style="padding-left: 40px;display:none;" id="clinical_management_screen">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="visitor_dashboard"
+                        value="visitor_dashboard">
+                      <label class="form-check-label btn btn-info" for="visitor_dashboard">Visitor Dashboard</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="consultant_dashboard"
+                        value="consultant_dashboard">
+                      <label class="form-check-label btn btn-info" for="consultant_dashboard">Consultant Dashboard</label>
+                    </div>
+                    <!--<div class="form-check form-check-inline">-->
+                    <!--  <input class="form-check-input" type="checkbox" name="access" id="clinical_management"-->
+                    <!--    value="clinical_management">-->
+                    <!--  <label class="form-check-label btn btn-info" for="clinical_management">Clinical management</label>-->
+                    <!--</div>-->
+                    <!--<div class="form-check form-check-inline">-->
+                    <!--  <input class="form-check-input" type="checkbox" name="access" id="nurse_station"-->
+                    <!--    value="nurse_station">-->
+                    <!--  <label class="form-check-label btn btn-info" for="nurse_station">Nurse Station</label>-->
+                    <!--</div>-->
+                   <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="clinical_patient_report"
+                        value="clinical_patient_report">
+                      <label class="form-check-label btn btn-info" for="clinical_patient_report">Patient Report</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="oncology"
+                        value="oncology">
+                      <label class="form-check-label btn btn-info" for="oncology">Oncology</label>
+                    </div>
+                  </div><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="user_managemnet"
+                        value="user_managemnet">
+                      <label class="form-check-label btn btn-primary" for="user_managemnet">User management</label>
+                    </div>
+
+                  </div><br><br>
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="master" value="all_master"
+                        onclick="myFunction('master','master_screen')">
+                      <label class="form-check-label btn btn-primary" for="master">Master</label>
+                    </div>
+
+                  </div><br><br>
+<!--
+                  <div style="padding-left: 40px;display:none;" id="master_screen">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="general_master"
+                        value="general_master" onclick="myFunction('general_master','general_master_screen')">
+                      <label class="form-check-label btn btn-info" for="general_master">General master<label>
+                    </div><br>
+                    <div style="padding-left: 40px; padding-top:20px; display:none;" id="general_master_screen">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="title_master"
+                          value="title_master" onclick="myFunction('title_master','title_curd')">
+                        <label class="form-check-label btn btn-warning" for="title_master">Title Master<label>
+                      </div><br>
+                      <div id="title_curd" style="padding-left: 40px; padding-top:20px; display:none">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="title_master_add"
+                            value="title_master_add">
+                          <label class="form-check-label btn btn-success" for="title_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="title_master_edit"
+                            value="title_master_edit">
+                          <label class="form-check-label btn btn-success" for="title_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="title_master_view"
+                            value="title_master_view">
+                          <label class="form-check-label btn btn-success" for="title_master_view">View<label>
+                        </div>
+                      </div><br>
+                      <!-- hospital msaster -->
+                      <!-- <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="hosptial_master"
+                          value="hosptial_master" onclick="myFunction('hosptial_master','hospital_curd')">
+                        <label class="form-check-label btn btn-warning" for="hosptial_master">Hospital Master<label>
+                      </div><br>
+                      <div id="hospital_curd" style="padding-left: 40px; padding-top:20px; display:none">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="hosptial_master_add"
+                            value="hosptial_master_add">
+                          <label class="form-check-label btn btn-success" for="hosptial_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="hosptial_master_edit"
+                            value="hosptial_master_edit">
+                          <label class="form-check-label btn btn-success" for="hosptial_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="hosptial_master_view"
+                            value="hosptial_master_view">
+                          <label class="form-check-label btn btn-success" for="hosptial_master_view">View<label>
+                        </div>
+                      </div><br> -->
+                      <!-- holiday msaster -->
+                      <!-- <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="holiday_master"
+                          value="holiday_master" onclick="myFunction('holiday_master','holiday_curd')">
+                        <label class="form-check-label btn btn-warning" for="holiday_master">Holiday Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="holiday_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="holiday_master_add"
+                            value="holiday_master_add">
+                          <label class="form-check-label btn btn-success" for="holiday_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="holiday_master_edit"
+                            value="holiday_master_edit">
+                          <label class="form-check-label btn btn-success" for="holiday_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="holiday_master_view"
+                            value="holiday_master_view">
+                          <label class="form-check-label btn btn-success" for="holiday_master_view">View<label>
+                        </div>
+                      </div><br> -->
+
+                      <!-- gender msaster -->
+                      <!-- <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="gender_master"
+                          value="gender_master" onclick="myFunction('gender_master','gender_curd')">
+                        <label class="form-check-label btn btn-warning" for="gender_master">gender Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="gender_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="gender_master_add"
+                            value="gender_master_add">
+                          <label class="form-check-label btn btn-success" for="gender_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="gender_master_edit"
+                            value="gender_master_edit">
+                          <label class="form-check-label btn btn-success" for="gender_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="gender_master_view"
+                            value="gender_master_view">
+                          <label class="form-check-label btn btn-success" for="gender_master_view">View<label>
+                        </div>
+                      </div><br> -->
+                      <!-- district msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="district_master"
+                          value="district_master" onclick="myFunction('district_master','district_curd')">
+                        <label class="form-check-label btn btn-warning" for="district_master">district Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="district_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="district_master_add"
+                            value="district_master_add">
+                          <label class="form-check-label btn btn-success" for="district_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="district_master_edit"
+                            value="district_master_edit">
+                          <label class="form-check-label btn btn-success" for="district_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="district_master_view"
+                            value="district_master_view">
+                          <label class="form-check-label btn btn-success" for="district_master_view">View<label>
+                        </div>
+                      </div><br>
+                      country msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="country_master"
+                          value="country_master" onclick="myFunction('country_master','country_curd')">
+                        <label class="form-check-label btn btn-warning" for="country_master">country Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="country_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="country_master_add"
+                            value="country_master_add">
+                          <label class="form-check-label btn btn-success" for="country_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="country_master_edit"
+                            value="country_master_edit">
+                          <label class="form-check-label btn btn-success" for="country_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="country_master_view"
+                            value="country_master_view">
+                          <label class="form-check-label btn btn-success" for="country_master_view">View<label>
+                        </div>
+                      </div><br>
+                     city msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="city_master"
+                          value="city_master" onclick="myFunction('city_master','city_curd')">
+                        <label class="form-check-label btn btn-warning" for="city_master">city Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="city_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="city_master_add"
+                            value="city_master_add">
+                          <label class="form-check-label btn btn-success" for="city_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="city_master_edit"
+                            value="city_master_edit">
+                          <label class="form-check-label btn btn-success" for="city_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="city_master_view"
+                            value="city_master_view">
+                          <label class="form-check-label btn btn-success" for="city_master_view">View<label>
+                        </div>
+                      </div><br>
+                     most_document_typer
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="most_document_type"
+                          value="most_document_type"
+                          onclick="myFunction('most_document_type','most_document_type_curd')">
+                        <label class="form-check-label btn btn-warning"
+                          for="most_document_type">most_document_type<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="most_document_type_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="most_document_type_add"
+                            value="most_document_type_add">
+                          <label class="form-check-label btn btn-success" for="most_document_type_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="most_document_type_edit"
+                            value="most_document_type_edit">
+                          <label class="form-check-label btn btn-success" for="most_document_type_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="most_document_type_view"
+                            value="most_document_type_view">
+                          <label class="form-check-label btn btn-success" for="most_document_type_view">View<label>
+                        </div>
+                      </div><br>
+                     martial msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="martial_master"
+                          value="martial_master" onclick="myFunction('martial_master','martial_curd')">
+                        <label class="form-check-label btn btn-warning" for="martial_master">martial Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="martial_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="martial_master_add"
+                            value="martial_master_add">
+                          <label class="form-check-label btn btn-success" for="martial_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="martial_master_edit"
+                            value="martial_master_edit">
+                          <label class="form-check-label btn btn-success" for="martial_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="martial_master_view"
+                            value="martial_master_view">
+                          <label class="form-check-label btn btn-success" for="martial_master_view">View<label>
+                        </div>
+                      </div><br>
+                     relation msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="relation_master"
+                          value="relation_master" onclick="myFunction('relation_master','relation_curd')">
+                        <label class="form-check-label btn btn-warning" for="relation_master">relation Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="relation_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="relation_master_add"
+                            value="relation_master_add">
+                          <label class="form-check-label btn btn-success" for="relation_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="relation_master_edit"
+                            value="relation_master_edit">
+                          <label class="form-check-label btn btn-success" for="relation_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="relation_master_view"
+                            value="relation_master_view">
+                          <label class="form-check-label btn btn-success" for="relation_master_view">View<label>
+                        </div>
+                      </div><br>
+                     group msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="group_master"
+                          value="group_master" onclick="myFunction('group_master','group_curd')">
+                        <label class="form-check-label btn btn-warning" for="group_master">group Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="group_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="group_master_add"
+                            value="group_master_add">
+                          <label class="form-check-label btn btn-success" for="group_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="group_master_edit"
+                            value="group_master_edit">
+                          <label class="form-check-label btn btn-success" for="group_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="group_master_view"
+                            value="group_master_view">
+                          <label class="form-check-label btn btn-success" for="group_master_view">View<label>
+                        </div>
+                      </div><br>
+                     room msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="room_master"
+                          value="room_master" onclick="myFunction('room_master','room_curd')">
+                        <label class="form-check-label btn btn-warning" for="room_master">room Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="room_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="room_master_add"
+                            value="room_master_add">
+                          <label class="form-check-label btn btn-success" for="room_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="room_master_edit"
+                            value="room_master_edit">
+                          <label class="form-check-label btn btn-success" for="room_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="room_master_view"
+                            value="room_master_view">
+                          <label class="form-check-label btn btn-success" for="room_master_view">View<label>
+                        </div>
+                      </div><br>
+                     branch msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="branch_master"
+                          value="branch_master" onclick="myFunction('branch_master','branch_curd')">
+                        <label class="form-check-label btn btn-warning" for="branch_master">branch Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="branch_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="branch_master_add"
+                            value="branch_master_add">
+                          <label class="form-check-label btn btn-success" for="branch_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="branch_master_edit"
+                            value="branch_master_edit">
+                          <label class="form-check-label btn btn-success" for="branch_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="branch_master_view"
+                            value="branch_master_view">
+                          <label class="form-check-label btn btn-success" for="branch_master_view">View<label>
+                        </div>
+                      </div><br>
+                     visit_type msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="visit_type_master"
+                          value="visit_type_master" onclick="myFunction('visit_type_master','visit_type_curd')">
+                        <label class="form-check-label btn btn-warning" for="visit_type_master">visit_type Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="visit_type_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="visit_type_master_add"
+                            value="visit_type_master_add">
+                          <label class="form-check-label btn btn-success" for="visit_type_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="visit_type_master_edit"
+                            value="visit_type_master_edit">
+                          <label class="form-check-label btn btn-success" for="visit_type_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="visit_type_master_view"
+                            value="visit_type_master_view">
+                          <label class="form-check-label btn btn-success" for="visit_type_master_view">View<label>
+                        </div>
+                      </div><br>
+                     service_category msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="service_category_master"
+                          value="service_category_master"
+                          onclick="myFunction('service_category_master','service_category_curd')">
+                        <label class="form-check-label btn btn-warning" for="service_category_master">service_category
+                          Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="service_category_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="service_category_master_add"
+                            value="service_category_master_add">
+                          <label class="form-check-label btn btn-success" for="service_category_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="service_category_master_edit" value="service_category_master_edit">
+                          <label class="form-check-label btn btn-success" for="service_category_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="service_category_master_view" value="service_category_master_view">
+                          <label class="form-check-label btn btn-success" for="service_category_master_view">View<label>
+                        </div>
+                      </div><br>
+                     service_sub_category msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="service_sub_category_master"
+                          value="service_sub_category_master"
+                          onclick="myFunction('service_sub_category_master','service_sub_category_curd')">
+                        <label class="form-check-label btn btn-warning"
+                          for="service_sub_category_master">service_sub_category Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="service_sub_category_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="service_sub_category_master_add" value="service_sub_category_master_add">
+                          <label class="form-check-label btn btn-success"
+                            for="service_sub_category_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="service_sub_category_master_edit" value="service_sub_category_master_edit">
+                          <label class="form-check-label btn btn-success"
+                            for="service_sub_category_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="service_sub_category_master_view" value="service_sub_category_master_view">
+                          <label class="form-check-label btn btn-success"
+                            for="service_sub_category_master_view">View<label>
+                        </div>
+                      </div><br>
+                     service_department msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="service_department_master"
+                          value="service_department_master"
+                          onclick="myFunction('service_department_master','service_department_curd')">
+                        <label class="form-check-label btn btn-warning"
+                          for="service_department_master">service_department Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="service_department_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="service_department_master_add" value="service_department_master_add">
+                          <label class="form-check-label btn btn-success" for="service_department_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="service_department_master_edit" value="service_department_master_edit">
+                          <label class="form-check-label btn btn-success"
+                            for="service_department_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="service_department_master_view" value="service_department_master_view">
+                          <label class="form-check-label btn btn-success"
+                            for="service_department_master_view">View<label>
+                        </div>
+                      </div><br>
+                     service_sub_department msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="service_sub_department_master"
+                          value="service_sub_department_master"
+                          onclick="myFunction('service_sub_department_master','service_sub_department_curd')">
+                        <label class="form-check-label btn btn-warning"
+                          for="service_sub_department_master">service_sub_department Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="service_sub_department_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="service_sub_department_master_add" value="service_sub_department_master_add">
+                          <label class="form-check-label btn btn-success"
+                            for="service_sub_department_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="service_sub_department_master_edit" value="service_sub_department_master_edit">
+                          <label class="form-check-label btn btn-success"
+                            for="service_sub_department_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="service_sub_department_master_view" value="service_sub_department_master_view">
+                          <label class="form-check-label btn btn-success"
+                            for="service_sub_department_master_view">View<label>
+                        </div>
+                      </div><br>
+                     ward_type msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="ward_type_master"
+                          value="ward_type_master" onclick="myFunction('ward_type_master','ward_type_curd')">
+                        <label class="form-check-label btn btn-warning" for="ward_type_master">ward_type Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="ward_type_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="ward_type_master_add"
+                            value="ward_type_master_add">
+                          <label class="form-check-label btn btn-success" for="ward_type_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="ward_type_master_edit"
+                            value="ward_type_master_edit">
+                          <label class="form-check-label btn btn-success" for="ward_type_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="ward_type_master_view"
+                            value="ward_type_master_view">
+                          <label class="form-check-label btn btn-success" for="ward_type_master_view">View<label>
+                        </div>
+                      </div><br>
+                     ward_category msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="ward_category_master"
+                          value="ward_category_master"
+                          onclick="myFunction('ward_category_master','ward_category_curd')">
+                        <label class="form-check-label btn btn-warning" for="ward_category_master">ward_category
+                          Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="ward_category_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="ward_category_master_add"
+                            value="ward_category_master_add">
+                          <label class="form-check-label btn btn-success" for="ward_category_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="ward_category_master_edit"
+                            value="ward_category_master_edit">
+                          <label class="form-check-label btn btn-success" for="ward_category_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="ward_category_master_view"
+                            value="ward_category_master_view">
+                          <label class="form-check-label btn btn-success" for="ward_category_master_view">View<label>
+                        </div>
+                      </div><br>
+                     blood msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="blood_master"
+                          value="blood_master" onclick="myFunction('blood_master','blood_curd')">
+                        <label class="form-check-label btn btn-warning" for="blood_master">blood Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="blood_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="blood_master_add"
+                            value="blood_master_add">
+                          <label class="form-check-label btn btn-success" for="blood_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="blood_master_edit"
+                            value="blood_master_edit">
+                          <label class="form-check-label btn btn-success" for="blood_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="blood_master_view"
+                            value="blood_master_view">
+                          <label class="form-check-label btn btn-success" for="blood_master_view">View<label>
+                        </div>
+                      </div><br>
+                     clinical_department msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="clinical_department_master"
+                          value="clinical_department_master"
+                          onclick="myFunction('clinical_department_master','clinical_department_curd')">
+                        <label class="form-check-label btn btn-warning"
+                          for="clinical_department_master">clinical_department Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="clinical_department_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="clinical_department_master_add" value="clinical_department_master_add">
+                          <label class="form-check-label btn btn-success"
+                            for="clinical_department_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="clinical_department_master_edit" value="clinical_department_master_edit">
+                          <label class="form-check-label btn btn-success"
+                            for="clinical_department_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access"
+                            id="clinical_department_master_view" value="clinical_department_master_view">
+                          <label class="form-check-label btn btn-success"
+                            for="clinical_department_master_view">View<label>
+                        </div>
+                      </div><br>
+                     designation msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="designation_master"
+                          value="designation_master" onclick="myFunction('designation_master','designation_curd')">
+                        <label class="form-check-label btn btn-warning" for="designation_master">designation
+                          Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="designation_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="designation_master_add"
+                            value="designation_master_add">
+                          <label class="form-check-label btn btn-success" for="designation_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="designation_master_edit"
+                            value="designation_master_edit">
+                          <label class="form-check-label btn btn-success" for="designation_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="designation_master_view"
+                            value="designation_master_view">
+                          <label class="form-check-label btn btn-success" for="designation_master_view">View<label>
+                        </div>
+                      </div><br>
+                     payment_mode msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="payment_mode_master"
+                          value="payment_mode_master" onclick="myFunction('payment_mode_master','payment_mode_curd')">
+                        <label class="form-check-label btn btn-warning" for="payment_mode_master">payment_mode
+                          Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="payment_mode_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="payment_mode_master_add"
+                            value="payment_mode_master_add">
+                          <label class="form-check-label btn btn-success" for="payment_mode_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="payment_mode_master_edit"
+                            value="payment_mode_master_edit">
+                          <label class="form-check-label btn btn-success" for="payment_mode_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="payment_mode_master_view"
+                            value="payment_mode_master_view">
+                          <label class="form-check-label btn btn-success" for="payment_mode_master_view">View<label>
+                        </div>
+                      </div><br>
+                     bamk msaster
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="bamk_master"
+                          value="bamk_master" onclick="myFunction('bamk_master','bamk_curd')">
+                        <label class="form-check-label btn btn-warning" for="bamk_master">bamk Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px; display:none" id="bamk_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="bamk_master_add"
+                            value="bamk_master_add">
+                          <label class="form-check-label btn btn-success" for="bamk_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="bamk_master_edit"
+                            value="bamk_master_edit">
+                          <label class="form-check-label btn btn-success" for="bamk_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="bamk_master_view"
+                            value="bamk_master_view">
+                          <label class="form-check-label btn btn-success" for="bamk_master_view">View<label>
+                        </div>
+                      </div><br>
+                    </div>
+                    <br>
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="service_master_menu"
+                        value="service_master_menu"
+                        onclick="myFunction('service_master_menu','service_master_menu_screen')">
+                      <label class="form-check-label btn btn-info" for="service_master_menu">Service master<label>
+                    </div><br>
+                    <div style="padding-left: 40px; padding-top:20px;display:none" id="service_master_menu_screen">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="service_master"
+                          value="service_master" onclick="myFunction('service_master','service_master_curd')">
+                        <label class="form-check-label btn btn-warning" for="service_master">Service Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px;display:none" id="service_master_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="service_maste_add"
+                            value="service_maste_add">
+                          <label class="form-check-label btn btn-success" for="service_maste_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="service_maste_edit"
+                            value="service_maste_edit">
+                          <label class="form-check-label btn btn-success" for="service_maste_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="service_maste_view"
+                            value="service_maste_view">
+                          <label class="form-check-label btn btn-success" for="service_maste_view">View<label>
+                        </div>
+                      </div>
+                    </div><br>
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="lab_master_menu" value="lab_master_menu" onclick="myFunction('lab_master_menu','lab_master_menu_screen')">
+                      <label class="form-check-label btn btn-info" for="lab_master_menu">Lab Master<label>
+                    </div><br>
+                   sample_master
+                    <div style="padding-left: 40px; padding-top:20px;display:none" id="lab_master_menu_screen">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="sample_master" value="sample_master" onclick="myFunction('sample_master','sample_master_curd')">
+                        <label class="form-check-label btn btn-warning" for="sample_master">Sample Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px;display:none" id="sample_master_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="sample_master_add"
+                            value="sample_master_add">
+                          <label class="form-check-label btn btn-success" for="sample_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="sample_master_edit"
+                            value="sample_master_edit">
+                          <label class="form-check-label btn btn-success" for="sample_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="sample_master_view"
+                            value="sample_master_view">
+                          <label class="form-check-label btn btn-success" for="sample_master_view">View<label>
+                        </div>
+                      </div><br>
+                     volume_master
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="volume_master" value="volume_master" onclick="myFunction('volume_master','volume_master_curd')">
+                        <label class="form-check-label btn btn-warning" for="volume_master">volume Master<label>
+                      </div><br>
+                      <div style="padding-left: 40px; padding-top:20px;display:none" id="volume_master_curd">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="volume_master_add"
+                            value="volume_master_add">
+                          <label class="form-check-label btn btn-success" for="volume_master_add">Add<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="volume_master_edit"
+                            value="volume_master_edit">
+                          <label class="form-check-label btn btn-success" for="volume_master_edit">Edit<label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="access" id="volume_master_view"
+                            value="volume_master_view">
+                          <label class="form-check-label btn btn-success" for="volume_master_view">View<label>
+                        </div>
+                      </div>
+                    </div><br>
+                  </div><br>  -->
+            <!--  pharmacy  -->
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="pharamacy" value="pharamacy"  onclick="myFunction('pharamacy','pharamacy_screen')">
+                      <label class="form-check-label btn btn-primary" for="pharamacy">Pharamacy</label>
+                    </div>
+                  </div><br>
+                  <div id="pharamacy_screen" style="padding-left: 40px;display:none">
+                     <!--procurement  -->
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="access" id="procurement" value="procurement" onclick="myFunction('procurement','procurement_screen')">
+                    <label class="form-check-label btn btn-info" for="procurement">procurement<label>
+                  </div><br>
+
+                  <div style="padding-left: 40px; padding-top:20px;display:none" id="procurement_screen">
+                    <!--purchase_order  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="purchase_order" value="purchase_order" onclick="myFunction('purchase_order','purchase_order_curd')">
+                      <label class="form-check-label btn btn-warning" for="purchase_order">purchase_order<label>
+                    </div><br>
+                    <div style="padding-left: 40px; padding-top:20px;display:none" id="purchase_order_curd">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="purchase_order_delete"
+                          value="purchase_order_delete">
+                        <label class="form-check-label btn btn-success" for="purchase_order_delete">purchase order delete<label>
+                      </div>
+                    </div>
+                    <br>
+                     <!--po_approval  -->
+                     <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="po_approval" value="po_approval" onclick="myFunction('po_approval','po_approval_curd')">
+                      <label class="form-check-label btn btn-warning" for="po_approval">po_approval<label>
+                    </div><br>
+                    <div style="padding-left: 40px; padding-top:20px;display:none" id="po_approval_curd">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="approval_po"
+                          value="approval_po">
+                        <label class="form-check-label btn btn-success" for="approval_po"> Approval Po<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="pending_po"
+                          value="pending_po">
+                        <label class="form-check-label btn btn-success" for="pending_po">Pending Po<label>
+                      </div>
+                    </div><br>
+                    <!--po_approval  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="stock_entry" value="stock_entry" onclick="myFunction('stock_entry','stock_entry_curd')">
+                      <label class="form-check-label btn btn-warning" for="stock_entry">stock_entry<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="vendor_payment" value="vendor_payment" onclick="myFunction('vendor_payment','vendor_payment_curd')">
+                      <label class="form-check-label btn btn-warning" for="vendor_payment">vendor_payment<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="material_indent" value="material_indent" onclick="myFunction('material_indent','material_indent_curd')">
+                      <label class="form-check-label btn btn-warning" for="material_indent">material_indent<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="indent_inbox" value="indent_inbox" onclick="myFunction('indent_inbox','indent_inbox_curd')">
+                      <label class="form-check-label btn btn-warning" for="indent_inbox">indent_inbox<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="item_issuse" value="item_issuse" onclick="myFunction('item_issuse','item_issuse_curd')">
+                      <label class="form-check-label btn btn-warning" for="item_issuse">item_issuse<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="return_to_mainstore" value="return_to_mainstore" onclick="myFunction('return_to_mainstore','return_to_mainstore_curd')">
+                      <label class="form-check-label btn btn-warning" for="return_to_mainstore">return_to_mainstore<label>
+                    </div><br><br>
+                     <!--item_return_to_supplier  -->
+                     <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="item_return_to_supplier" value="item_return_to_supplier" onclick="myFunction('item_return_to_supplier','item_return_to_supplier_curd')">
+                      <label class="form-check-label btn btn-warning" for="item_return_to_supplier">item_return_to_supplier<label>
+                    </div><br>
+                    <br>
+                    <!--purchase_indent  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="purchase_indent" value="purchase_indent" onclick="myFunction('purchase_indent','purchase_indent_curd')">
+                      <label class="form-check-label btn btn-warning" for="purchase_indent">purchase_indent<label>
+                    </div><br><br>
+                    <!--purchase_indent_approval  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="purchase_indent_approval" value="purchase_indent_approval" onclick="myFunction('purchase_indent_approval','purchase_indent_approval_curd')">
+                      <label class="form-check-label btn btn-warning" for="purchase_indent_approval">purchase_indent_approval<label>
+                    </div><br>
+                    <div style="padding-left: 40px; padding-top:20px;display:none" id="purchase_indent_approval_curd">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="approval_pi_view"
+                          value="approval_pi_view">
+                        <label class="form-check-label btn btn-success" for="approval_pi_view">approval PI view<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="pending_pi"
+                          value="pending_pi">
+                        <label class="form-check-label btn btn-success" for="pending_pi">pending PI<label>
+                      </div>
+                    </div><br>
+                    <!--make_po_for_pi  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="make_po_for_pi" value="make_po_for_pi" onclick="myFunction('make_po_for_pi','make_po_for_pi_curd')">
+                      <label class="form-check-label btn btn-warning" for="make_po_for_pi">Make PO for PI<label>
+                    </div><br><br>
+                    <!--manual_stock_ajustment  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="manual_stock_ajustment" value="manual_stock_ajustment" onclick="myFunction('manual_stock_ajustment','manual_stock_ajustment_curd')">
+                      <label class="form-check-label btn btn-warning" for="manual_stock_ajustment">Manual Stock Ajustment<label>
+                    </div><br><br>
+                     <!--department_consumption  -->
+                     <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="department_consumption" value="department_consumption" onclick="myFunction('department_consumption','department_consumption_curd')">
+                      <label class="form-check-label btn btn-warning" for="department_consumption">Department Consumption<label>
+                    </div><br><br>
+                    <!--material_indent_approval  -->
+                    <div class="form-check form-check-inline">
+                     <input class="form-check-input" type="checkbox" name="access" id="material_indent_approval" value="material_indent_approval" onclick="myFunction('material_indent_approval','material_indent_approval_curd')">
+                     <label class="form-check-label btn btn-warning" for="material_indent_approval">material_indent_approval<label>
+                   </div><br><br>
+                   <!--item_issue_to_mainstore  -->
+                   <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="access" id="item_issue_to_mainstore" value="item_issue_to_mainstore" onclick="myFunction('item_issue_to_mainstore','item_issue_to_mainstore_curd')">
+                    <label class="form-check-label btn btn-warning" for="item_issue_to_mainstore">item_issue_to_mainstore<label>
+                  </div><br><br>
+                  <!--item_return_to_CPC  -->
+                  <div class="form-check form-check-inline">
+                   <input class="form-check-input" type="checkbox" name="access" id="item_return_to_CPC" value="item_return_to_CPC" onclick="myFunction('item_return_to_CPC','item_return_to_CPC_curd')">
+                   <label class="form-check-label btn btn-warning" for="item_return_to_CPC">item_return_to_CPC<label>
+                 </div><br><br>
+                     <!--transfer_indent  -->
+                     <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="transfer_indent" value="transfer_indent" onclick="myFunction('transfer_indent','transfer_indent_curd')">
+                      <label class="form-check-label btn btn-warning" for="transfer_indent">transfer_indent<label>
+                    </div><br><br>
+                    <!--transfer_request_to_mainstore  -->
+                    <div class="form-check form-check-inline">
+                     <input class="form-check-input" type="checkbox" name="access" id="transfer_request_to_mainstore" value="transfer_request_to_mainstore" onclick="myFunction('transfer_request_to_mainstore','transfer_request_to_mainstore_curd')">
+                     <label class="form-check-label btn btn-warning" for="transfer_request_to_mainstore">transfer_request_to_mainstore<label>
+                   </div><br><br>
+                  </div><br>
+                  <!-- end porucument -->
+                  <!--pharamacy_sales  -->
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="access" id="pharamacy_sales" value="pharamacy_sales" onclick="myFunction('pharamacy_sales','pharamacy_sales_screen')">
+                    <label class="form-check-label btn btn-info" for="pharamacy_sales">pharamacy_sales<label>
+                  </div><br>
+                  <!--add_counter_sales  -->
+                  <div style="padding-left: 40px; padding-top:20px;display:none" id="pharamacy_sales_screen">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="add_counter_sales" value="add_counter_sales" onclick="myFunction('add_counter_sales','add_counter_sales_curd')">
+                      <label class="form-check-label btn btn-warning" for="add_counter_sales">add_counter_sales<label>
+                    </div><br><br>
+                     <!--sales_return  -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="sales_return" value="sales_return" onclick="myFunction('sales_return','sales_return_curd')">
+                      <label class="form-check-label btn btn-warning" for="sales_return">sales_return<label>
+                    </div><br><br>
+                  </div><br>
+                   <!--pharamacy_report  -->
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="access" id="pharamacy_report" value="pharamacy_report" onclick="myFunction('pharamacy_report','pharamacy_report_screen')">
+                    <label class="form-check-label btn btn-info" for="pharamacy_report">pharamacy_report<label>
+                  </div><br>
+                  <!--item_status_report  -->
+                  <!--<div style="padding-left: 40px; padding-top:20px;display:none" id="pharamacy_report_screen">-->
+                  <!--  <div class="form-check form-check-inline">-->
+                  <!--    <input class="form-check-input" type="checkbox" name="access" id="item_status_report" value="item_status_report">-->
+                  <!--    <label class="form-check-label btn btn-warning" for="item_status_report">item_status_report<label>-->
+                  <!--  </div>-->
+                     <!--item_status_with_particulars_report  -->
+                    <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="item_status_with_particulars_report" value="item_status_with_particulars_report">
+                      <label class="form-check-label btn btn-warning" for="item_status_with_particulars_report">item_status_with_particulars_report<label>
+                    </div>
+                     <!--po_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="po_report" value="po_report">
+                      <label class="form-check-label btn btn-warning" for="po_report">po_report<label>
+                    </div>
+                     <!--batch_wise_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="batch_wise_report" value="batch_wise_report">
+                      <label class="form-check-label btn btn-warning" for="batch_wise_report">batch_wise_report<label>
+                    </div>
+                     <!--po_supplier_wise_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="po_supplier_wise_report" value="po_supplier_wise_report">
+                      <label class="form-check-label btn btn-warning" for="po_supplier_wise_report">po_supplier_wise_report<label>
+                    </div>
+                     <!--po_aging_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="po_aging_report" value="po_aging_report">
+                      <label class="form-check-label btn btn-warning" for="po_aging_report">po_aging_report<label>
+                    </div>
+                     <!--po_status_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="po_status_report" value="po_status_report">
+                      <label class="form-check-label btn btn-warning" for="po_status_report">po_status_report<label>
+                    </div>
+                     <!--item_issuse_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="item_issuse_report" value="item_issuse_report">
+                      <label class="form-check-label btn btn-warning" for="item_issuse_report">item_issuse_report<label>
+                    </div>
+                     <!--item_return_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="item_return_report" value="item_return_report">
+                      <label class="form-check-label btn btn-warning" for="item_return_report">item_return_report<label>
+                    </div>
+                     <!--op_sales_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="op_sales_report" value="op_sales_report">
+                      <label class="form-check-label btn btn-warning" for="op_sales_report">op_sales_report<label>
+                    </div>
+                    <!--pharmacysale_summary_report  -->
+                    <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="pharmacysale_summary_report" value="pharmacysale_summary_report">
+                      <label class="form-check-label btn btn-warning" for="pharmacysale_summary_report">pharmacysale_summary_report<label>
+                    </div>
+                    <!--pharmacysale_detail_report  -->
+                    <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="pharmacysale_detail_report" value="pharmacysale_detail_report">
+                      <label class="form-check-label btn btn-warning" for="pharmacysale_detail_report">pharmacysale_detail_report<label>
+                    </div>
+                    <!--stock_transfer_report  -->
+                    <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="stock_transfer_report" value="stock_transfer_report">
+                      <label class="form-check-label btn btn-warning" for="stock_transfer_report">stock_transfer_report<label>
+                    </div>
+                     <!--op_sales_return_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="op_sales_return_report" value="op_sales_return_report">
+                      <label class="form-check-label btn btn-warning" for="op_sales_return_report">op_sales_return_report<label>
+                    </div>
+                     <!--vendor_paymet_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="vendor_paymet_report" value="vendor_paymet_report">
+                      <label class="form-check-label btn btn-warning" for="vendor_paymet_report">vendor_paymet_report<label>
+                    </div>
+                     <!--expiry_item_list_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="expiry_item_list_report" value="expiry_item_list_report">
+                      <label class="form-check-label btn btn-warning" for="expiry_item_list_report">expiry_item_list_report<label>
+                    </div>
+                     <!--department_consumption_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="department_consumption_report" value="department_consumption_report">
+                      <label class="form-check-label btn btn-warning" for="department_consumption_report">department_consumption_report<label>
+                    </div>
+                    <!--grn_report  -->
+                    <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="grn_report" value="grn_report">
+                      <label class="form-check-label btn btn-warning" for="grn_report">grn_report<label>
+                    </div>
+                    <!--stock_adjustement_report  -->
+                    <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="stock_adjustement_report" value="stock_adjustement_report">
+                      <label class="form-check-label btn btn-warning" for="stock_adjustement_report">stock_adjustement_report<label>
+                    </div>
+                     <!--stock_movement_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="stock_movement_report" value="stock_movement_report">
+                      <label class="form-check-label btn btn-warning" for="stock_movement_report">stock_movement_report<label>
+                    </div>
+                     <!--item_wise_purchase_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="item_wise_purchase_report" value="item_wise_purchase_report">
+                      <label class="form-check-label btn btn-warning" for="item_wise_purchase_report">item_wise_purchase_report<label>
+                    </div>
+                     <!--detailed_item_status_report  -->
+                     <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                      <input class="form-check-input" type="checkbox" name="access" id="detailed_item_status_report" value="detailed_item_status_report">
+                      <label class="form-check-label btn btn-warning" for="detailed_item_status_report">detailed_item_status_report<label>
+                    </div>
+                  </div><br>
+                </div><br>
+                <!-- pharmacy end -->
+
+                <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="insurance_claim_module" value="insurance_claim_module" onclick="myFunction('insurance_claim_module','insurance_claim_module_screens')">
+                      <label class="form-check-label btn btn-primary" for="insurance_claim_module">Insurance Claim</label>
+                    </div>
+                  </div><br>
+                    <!--checklist_master  -->
+                    <div id="insurance_claim_module_screens" style="padding-left: 40px; padding-top:20px; display:none;">
+                      <div class="form-check form-check-inline" style="padding-bottom: 20px;">
+                        <input class="form-check-input" type="checkbox" name="access" id="checklist_master" value="checklist_master" >
+                        <label class="form-check-label btn btn-info" for="checklist_master">checklist_master<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="insurance_claim" value="insurance_claim" >
+                        <label class="form-check-label btn btn-info" for="insurance_claim">insurance_claim<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="checklisted_bill" value="checklisted_bill" >
+                        <label class="form-check-label btn btn-info" for="checklisted_bill">checklisted_bill<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="acknowledged_claim" value="acknowledged_claim" >
+                        <label class="form-check-label btn btn-info" for="acknowledged_claim">acknowledged_claim<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="raising_queries_list" value="raising_queries_list" >
+                        <label class="form-check-label btn btn-info" for="raising_queries_list">raising_queries_list<label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="access" id="settled_queries_list" value="settled_queries_list" >
+                        <label class="form-check-label btn btn-info" for="settled_queries_list">settled_queries_list<label>
+                      </div>
+                    </div>
+
+
+                  <br>
+                  <!--  end  -->
+
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="lab_module" value="lab_module" onclick="myFunction('lab_module','lab_module_button')">
+                      <label class="form-check-label btn btn-primary" for="lab_module">Lab Module</label>
+                    </div>
+                  </div><br>
+                  <div style="padding-left: 40px;display:none;" id="lab_module_button">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="pending_investigation"
+                        value="pending_investigation">
+                      <label class="form-check-label btn btn-info" for="pending_investigation">Pending
+                        Investigation<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="sample_collection"
+                        value="sample_collection">
+                      <label class="form-check-label btn btn-info" for="sample_collection"> Sample collection<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="result_validation"
+                        value="result_validation">
+                      <label class="form-check-label btn btn-info" for="result_validation">Result validation <label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="department_lab_report"
+                        value="department_lab_report">
+                      <label class="form-check-label btn btn-info" for="department_lab_report">Department Report <label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="lab_report" value="lab_report">
+                      <label class="form-check-label btn btn-info" for="lab_report">Lab Report <label>
+                    </div><br>
+                  </div><br>
+
+                  <div class="row">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="RIS" value="RIS" onclick="myFunction('RIS','RIS_button')">
+                      <label class="form-check-label btn btn-primary" for="RIS">RIS</label>
+                    </div>
+                  </div><br>
+                  <div style="padding-left: 40px;display:none;" id="RIS_button">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="RIS_pending_investigation"
+                        value="RIS_pending_investigation">
+                      <label class="form-check-label btn btn-info" for="RIS_pending_investigation">RIS Pending
+                        Investigation<label>
+                    </div><br><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="access" id="RIS_report"
+                        value="RIS_report">
+                      <label class="form-check-label btn btn-info" for="RIS_report">RIS Report<label>
+                    </div><br><br>
+
+                  </div><br>
+
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="Report" value="Report"
+                    onclick="myFunction('Report','Report_button')">
+                  <label class="form-check-label btn btn-primary" for="Report">Report</label>
+                </div>
+
+              </div><br>
+              <div style="padding-left: 40px;display:none;" id="Report_button">
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="daily_billing_report"
+                    value="daily_billing_report">
+                  <label class="form-check-label btn btn-info" for="daily_billing_report">daily_billing_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="detail_revenue_report"
+                    value="detail_revenue_report">
+                  <label class="form-check-label btn btn-info" for="detail_revenue_report">detail_revenue_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="doctor_wise_revenue_report"
+                    value="doctor_wise_revenue_report">
+                  <label class="form-check-label btn btn-info" for="doctor_wise_revenue_report">
+                    doctor_wise_revenue_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="doctor_wise_detail_report"
+                    value="doctor_wise_detail_report">
+                  <label class="form-check-label btn btn-info" for="doctor_wise_detail_report">
+                    doctor_wise_detail_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="department_wise_revenue_report"
+                    value="department_wise_revenue_report">
+                  <label class="form-check-label btn btn-info" for="department_wise_revenue_report">
+                    department_wise_revenue_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="collection_report"
+                    value="collection_report">
+                  <label class="form-check-label btn btn-info" for="collection_report">collection_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="outstanding_registration"
+                    value="outstanding_registration">
+                  <label class="form-check-label btn btn-info" for="outstanding_registration">
+                    outstanding_registration<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="payer_report" value="payer_report">
+                  <label class="form-check-label btn btn-info" for="payer_report"> payer_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="date_wise_report"
+                    value="date_wise_report">
+                  <label class="form-check-label btn btn-info" for="date_wise_report"> date_wise_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="partially_fully"
+                    value="partially_fully">
+                  <label class="form-check-label btn btn-info" for="partially_fully"> partially_fully<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="service_analysis_report"
+                    value="service_analysis_report">
+                  <label class="form-check-label btn btn-info" for="service_analysis_report">service_analysis_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="doctor_accounting_report"
+                    value="doctor_accounting_report">
+                  <label class="form-check-label btn btn-info" for="doctor_accounting_report">
+                    doctor_accounting_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="by_uhid_billing_details"
+                    value="by_uhid_billing_details">
+                  <label class="form-check-label btn btn-info" for="by_uhid_billing_details">
+                    by_uhid_billing_details<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="patient_registration_report"
+                    value="patient_registration_report">
+                  <label class="form-check-label btn btn-info" for="patient_registration_report">
+                    patient_registration_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="patient_registration_summary_report"
+                    value="patient_registration_summary_report">
+                  <label class="form-check-label btn btn-info" for="patient_registration_summary_report">
+                    patient_registration_summary_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="appointment_report"
+                    value="appointment_report">
+                  <label class="form-check-label btn btn-info" for="appointment_report"> appointment_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="patient_visit_report"
+                    value="patient_visit_report">
+                  <label class="form-check-label btn btn-info" for="patient_visit_report"> patient_visit_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="consultant_report"
+                    value="consultant_report">
+                  <label class="form-check-label btn btn-info" for="consultant_report">
+                    consultant_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="patient_admission_report"
+                    value="patient_admission_report">
+                  <label class="form-check-label btn btn-info" for="patient_admission_report">
+                    patient_admission_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="bed_traansfer_report"
+                    value="bed_traansfer_report">
+                  <label class="form-check-label btn btn-info" for="bed_traansfer_report">
+                    bed_traansfer_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="bed_occupancy_report"
+                    value="bed_occupancy_report">
+                  <label class="form-check-label btn btn-info" for="bed_occupancy_report">
+                    bed_occupancy_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="bed_charge_slip"
+                    value="bed_charge_slip">
+                  <label class="form-check-label btn btn-info" for="bed_charge_slip">
+                    bed_charge_slip<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="bed_view"
+                    value="bed_view">
+                  <label class="form-check-label btn btn-info" for="bed_view">
+                    bed_view<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="detail_ebd_occupancy_report"
+                    value="detail_ebd_occupancy_report">
+                  <label class="form-check-label btn btn-info" for="detail_ebd_occupancy_report">
+                    detail_ebd_occupancy_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="doctor_ability_report"
+                    value="doctor_ability_report">
+                  <label class="form-check-label btn btn-info" for="doctor_ability_report">
+                    doctor_ability_report<label>
+                </div>
+                <div class="form-check form-check-inline" style="padding-bottom: 30px;">
+                  <input class="form-check-input" type="checkbox" name="access" id="patient_feedback_report"
+                    value="patient_feedback_report">
+                  <label class="form-check-label btn btn-info" for="patient_feedback_report">
+                    patient_feedback_report<label>
+                </div>
+
+              </div><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="inventory" value="inventory">
+                  <label class="form-check-label btn btn-primary" for="inventory">Inventory</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="patient_feedback" value="patient_feedback">
+                  <label class="form-check-label btn btn-primary" for="patient_feedback">Patient FeedBack</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="estimate_bill" value="estimate_bill">
+                  <label class="form-check-label btn btn-primary" for="estimate_bill">Estimate Bill</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="medical_equipments" value="medical_equipments">
+                  <label class="form-check-label btn btn-primary" for="medical_equipments">Medical Equipments</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="ipd_admin" value="ipd_admin">
+                  <label class="form-check-label btn btn-primary" for="ipd_admin">IPD</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="ward_module" value="ward_module">
+                  <label class="form-check-label btn btn-primary" for="ward_module">Ward Module</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="ipd_billing" value="ipd_billing">
+                  <label class="form-check-label btn btn-primary" for="ipd_billing">IPD Billing</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="ot_module" value="ot_module">
+                  <label class="form-check-label btn btn-primary" for="ot_module">OT Module</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="mrd_module" value="mrd_module">
+                  <label class="form-check-label btn btn-primary" for="mrd_module">MRD Module</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="diet_module" value="diet_module">
+                  <label class="form-check-label btn btn-primary" for="diet_module">Diet Module</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="incident_module" value="incident_module">
+                  <label class="form-check-label btn btn-primary" for="incident_module">	Incident Management</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="blood_bank" value="blood_bank">
+                  <label class="form-check-label btn btn-primary" for="blood_bank">	Bloood Bank</label>
+                </div>
+              </div><br><br>
+              <div class="row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="access" id="employee_details" value="employee_details">
+                  <label class="form-check-label btn btn-primary" for="employee_details">	HR Module</label>
+                </div>
+              </div><br><br>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<script src="{% static 'assets/js/user_access.js' %}"></script>
+
+<script>
+
+</script>
+{% endblock %}

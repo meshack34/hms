@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+<a href="/dashboard"><button type="button" id="button2" style="background-color: rgb(255, 93, 93);">Exit</button></a>
+
+
+<!--This for payment receipt print function-->
+<div id="hello">
+<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+				<tr>
+					<td>
+						<div class="" >
+							<center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+							</center>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr >
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td colspan="4" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;">Estimate Bill</h3></td>
+				</tr>
+
+				<tr>
+					<th>Reg. No.</th>
+					<td>:{{id}}</td>
+					<th>Patient Name</th>
+					<td>:{{name}}</td>
+				</tr>
+				<tr>
+					<th>Age/Sex</th>
+					<td>:{{age}}Y/{{gender}}</td>
+					<th>Mobile</th>
+					<td>:{{contact_no}}</td>
+				</tr>
+				<tr>
+			</table>
+		</td>
+	</tr>
+	{% if datas %}
+<!--	FOR INDIVISUAL SERVICES -->
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%">
+				<tr>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">S. No</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Service</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Rate</th>
+				</tr>
+				<tr>
+			{% for data in datas %}
+				<tr>
+                  <td>{{forloop.counter}}</td>
+				<td><b>{{data.services}}</b></td>
+                  <td><b>{{data.services_rate}}</b></td>
+
+              </tr>
+				{% endfor %}
+				<tr style="">
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; "></td>
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; "><b>Total Amount</b></td>
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; "><b>{{total}}</b></td>
+              </tr>
+			</table>
+		</td>
+	</tr>
+	{% endif %}
+</table>
+</div><br><br>
+<button type="button"  onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;">Print</button>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+</body>
+</html>

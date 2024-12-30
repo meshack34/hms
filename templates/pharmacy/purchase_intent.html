@@ -1,0 +1,226 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    #id_indent_no,#id_indent_datetime,#id_sub_store,#id_priority,#id_item_name,#id_quantity,#id_item_code,#id_item_belongs_to,#id_remark{
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+       background-color: rgb(233, 233, 233);
+       border-bottom: 1px solid black;
+    }
+    </style>
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+<div class="content px-3 py-2">
+  <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+    <div>
+      <a href="/department_consump_search" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+      <b>Purchase Indent</b>
+    </div>
+    <div class="">
+      <button type="submit"class="btn text-light" id="material_indent" form="save" name="Saved_button"  value="Saved_button"> <i class="fas fa-save" ></i></button>
+      <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+      <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+        <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+        
+      </div>
+    </div>
+  </div>
+
+
+
+               <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" ><br>
+                    <form method="post" id="save">
+                     {% csrf_token %}
+                     <div class="form-row">
+                          <div class="form-group col-md-3 mb-0">
+                            <label>Main Store(From)</label>
+                            {% if main_store %}
+                            <input type="text" name="main_store_name" id="main_store_name" class="form-control" value="{{main_store.store_name}}">
+                            <input type="hidden" name="main_store" class="form-control" value="{{main_store.id}}">
+                            {% else %}
+                            <select name="main_store" id="main_store" class="form-control">
+                              <option value="{% if main_store_name %}{{main_store_name.id}} {% else %} select {% endif %}">{%if main_store_name %}{{main_store_name.store_name}} {% else %} Select {% endif %}</option>
+                              {% for data in mainstore %}
+                              <option value="{{data.id}}">{{data.store_name}}</option>
+                              {% endfor %}
+                            </select>
+                            {% endif %}
+                          </div>
+                          <div class="form-group col-md-3 mb-0">
+                            <label>CPC Store(To)</label>
+                            {% if cpc_store %}
+                            <input type="text" name="cpc_store" id="cpc_store" class="form-control" value="{{cpc_store.store_name}}">
+                            <input type="hidden" name="cpc_store_id" id="cpc_store_id" value="{{cpc_store.id}}">
+                            {% else %}
+                            <input type="text" name="cpc_store" id="cpc_store" class="form-control" value="{{cpcstore.store_name}}">
+                            <input type="hidden" name="cpc_store_id" id="cpc_store_id" value="{{cpcstore.id}}">
+                            {% endif %}
+
+                          </div>
+                          <div class="form-group col-md-3 mb-0">
+                            <label>Priority</label>
+                            <select name="priority" id="priority" class="form-control">
+                              <option value="{% if priority %}{{priority}} {% else %} select {% endif %}">{%if priority %}{{priority}} {% else %} Select {% endif %}</option>
+                              <option>Urgent</option>
+                              <option>Normal</option>
+                            </select>
+
+                          </div>
+                          <div class="form-group col-md-3 mb-0">
+                            <label>Item Name</label>
+                            <select name="item_name" id="material_intent" data-uhid-url="{% url 'meterial_intent_JS' %}" class="form-control">
+
+                              <option>select</option>
+                              {% for data in item_master %}
+                              <option value="{{data.id}}">{{data.item_name}}</option>
+                              {% endfor %}
+                            </select>
+
+                          </div>
+                          <div class="form-group col-md-3 mb-0">
+                            <label>Quantity</label>
+                          <input type="text" name="quantity" id="quantity" class="form-control">
+                        <input type="hidden" name="random_no" id="random_no" class="form-control" value="{% if randoms %} {{randoms}} {% endif %}">
+
+                          </div>
+                          <div class="form-group col-md-3 mb-0">
+                            <label>Department</label>
+                          <input type="text" name="department" id="department" class="form-control" readonly>
+                          <input type="hidden" name="department" id="departmentid" class="form-control" readonly>
+
+                          </div>
+                          <div class="form-group col-md-3 mb-0">
+                            <label>Item Code</label>
+                          <input type="text" name="item_code" id="item_code" class="form-control" readonly>
+
+                          </div>
+                          <div class="form-group col-md-3 mb-0">
+                            <label>Item Belongs To</label>
+                            <input type="text" name="item_belongs_to" id="item_belongs_to" class="form-control" readonly>
+
+                          </div>
+
+                            <input type="hidden" name="rate" id="rate" class="form-control">
+                            <input type="hidden" name="amount" id="amount" class="form-control">
+
+                          <!-- </div> -->
+                          <div class="form-group col-md-3 mb-0">
+                            <label>Remark</label>
+                          <input type="text" name="remark" id="remark" class="form-control">
+
+                          </div>
+                          <div class="form-group col-md-3 mb-0">                      <br>
+                          <label class="check_opt">InActive
+                            <input type="checkbox" name="InActive" >
+                            <span class="checkmark" ></span>
+                          </label>
+                          </div>
+
+                        <div class="form-group col-md-2 mb-0">                      <br>
+                        <input type="submit" name="insert" class="btn btn-warning" value="Insert">
+                        </div>
+                    </div>
+                    </form>
+
+                </div>
+           <div class="table-responsive">
+            <form method="POST">
+             <table class="datatable table table-bordered table-stripped ">
+
+
+                   <thead>
+                       <tr><th>S No</th>
+                           <th>Belongs To</th>
+                           <th>Item Name</th>
+                           <th>Item Code</th>
+                           <th>Indent Qty</th>
+                           <th>Inactive</th>
+                           <th>Remark</th>
+
+                       </tr>
+                   </thead>
+                   {% for data in purchase_intent_temp %}
+                   <tbody>
+
+                       <tr data-toggle="modal1" data-target=".bd-example1-modal-xl">
+                           <td>{{forloop.counter}}</td>
+                           <td>{{data.item_belongs_to}}</td>
+                           <td>{{data.item_id}}</td>
+                           <td>{{data.item_code}}</td>
+                           <td>{{data.quantity}}</td>
+                           <td>{{data.remark}}</td>
+                           <td>{{data.status}}</td>
+
+                       </tr>
+
+                    </tbody>
+                    {% endfor %}
+           </table>
+          </form>
+           </div>
+           <!-- <h3 align="center">Please Seach </h3> -->
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- #2 cilck one dropdown another 2 field got related value -->
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $("#material_intent").change(function () {
+      const item_name = $("#material_intent").val();
+      const url = $("#material_intent").attr("data-uhid-url");
+
+
+        $.ajax({
+          url: url,
+          type: "GET",
+          data: {
+              item_name:item_name
+          },
+
+          dataType : 'json',
+          success: function (data1) {
+            $("#item_belongs_to").val(data1['belongs_to1']);
+            $("#item_code").val(data1['shortcode1']);
+            $("#department").val(data1['department']);
+            $("#departmentid").val(data1['dept_id']);
+            $("#rate").val(data1['rate']);
+          },
+          error:function(data)
+            {
+                console.log(data);
+            }
+      });
+
+  });
+  </script>
+<script>
+  $(document).ready(function () {
+
+$(document).on('keyup', '#quantity', function () {
+  var qty = this.value;
+  var rate = $('#rate').val();
+  var amount = qty * rate;
+  $('#amount').val(amount);
+
+});
+});
+</script>
+
+
+{% endblock %}

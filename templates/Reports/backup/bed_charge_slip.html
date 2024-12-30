@@ -1,0 +1,52 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30;">
+            <h2>Bed Charge Slip</h2>
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+                        <div class="card">
+                            <div class="header">
+                                <div class="body">
+                                    <br>
+ 
+                                    <div class="table-responsive">
+                                        <table class="datatable table table-stripped ">
+    
+                                            <thead>
+                                                <tr style="background:#d1dae6;">
+                                                    <th>S.No</th>
+                                                    <th>UHID</th>
+                                                    <th>Patient Name</th>
+                                                    <th>Age/Gender</th>
+                                                    <th>Date Of Birth</th>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                   {% for data in records %}
+                                                   <tr>
+                                                    <td>{{forloop.counter}}</td>
+                                                     <td><a href="/bed_charge_slip_details/{{data.uhid}}">{{data.uhid}}</a></td>
+                                                     <td>{{data.title}}.{{data.first_name}}&nbsp;{{data.middle_name}}&nbsp;{{data.last_name}}</td>
+                                                     <td>{{data.gender}}</td>
+                                                     <td>{{data.dob}}</td>
+                                                   </tr>
+                                                   {% endfor %}
+                                            </tbody>
+    
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

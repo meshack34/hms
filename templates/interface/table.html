@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>dashbord</title>
+    <!-- Favicon-->
+    <!--  Core Css -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <!-- Favicon-->
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+  </head>
+  <body><br>
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <div class="card">
+                    <div class="header">
+            <div class="body">
+                <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover save-stage dataTable"
+                    style="width:100%;">
+                        <thead>
+                            <tr><th bgcolor= "ORANGERED">Reg.No.</th>
+                                <th bgcolor= "ORANGERED"><p>Old OPD/</p><p>Folder No.</p></th>
+                                <th bgcolor= "ORANGERED">Patient Name</th>
+                                <th bgcolor= "ORANGERED">Age/Gender</th>
+                                <th bgcolor= "ORANGERED">DoB</th>
+                                <th bgcolor= "ORANGERED">Mobile No.</th>
+                                <th bgcolor= "ORANGERED">Surburb</th>
+                                <th bgcolor= "ORANGERED">Payer</th>
+                                <th bgcolor= "ORANGERED">Serial No.</th>
+                                <th bgcolor= "ORANGERED">Membership No.</th>
+                                <th bgcolor= "ORANGERED"></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td></td>
+                                <td>aaa</td>
+                                <td>22y/M</td>
+                                <td>11/07/1998</td>
+                                <td>9095632541</td>
+                                <td>East</td>
+                                <td>NHIS</td>
+                                <td>45697541</td>
+                                <td>1111</td>
+                                <td><i class="far fa-hand-pointer"></i></td>
+
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td></td>
+                              <td>hgjk</td>
+                              <td>27y/M</td>
+                              <td>21/07/1992</td>
+                              <td>8095632541</td>
+                              <td>west</td>
+                              <td>NHIS</td>
+                              <td>75197541</td>
+                              <td>7965111</td>
+                              <td><i class="far fa-hand-pointer"></i></td>
+
+                          </tr>
+                         </tbody>
+
+                </table>
+                </div>
+            </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- javacripts -->
+<script src="{% static 'js/app.min.js' %}"></script>
+<script src="{% static 'js/table.min.js' %}"></script>
+<!-- Custom Js -->
+<script src="{% static 'js/admin.js' %}"></script>
+<script src="{% static 'js/tables/jquery-datatable.js' %}"></script>
+  </body>
+  </html>

@@ -1,0 +1,136 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+
+<style>
+    .browser-default {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <nav class="navbar navbar-light bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="color: white;" href="#">Service Charges Master</a>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+                    <div class="card">
+                        <div class="card-body">
+                            <br>
+                            <div class="icon-button-demo">
+                                <a href="{% url 'service_charge_edit' %}" class="btn btn-info"> Service Edit</a>
+                                <a href="{% url 'profile_charge_edit' %}" class="btn btn-success"> Profile Edit</a>
+                                <a href="{% url 'package_charge_edit' %}" class="btn btn-dark"> OPD Package Edit</a>
+                                <button type="button" class="btn btn-primary" onClick="window.location.reload();">
+                                    <i class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                                <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+                            </div><br>
+                            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"
+                                style="background-color:rgb(233, 233, 233);"><br>
+                                <form method="POST" id="MyForm">
+                                    {% csrf_token %}
+                                    <div class="row clearfix">
+                                        <div class="col-sm-3">
+                                            <b>Tariff Name</b>
+                                            <select class="browser-default" name="tariff_id" required>
+                                                <option></option>
+                                                {% for data in tariff_master %}
+                                                <option value="{{data.id}}">{{data.id}}.{{data.tariff_name}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <b>Category</b>
+                                            <select class="browser-default" name="service_cat">
+                                                <option></option>
+                                                {% for data in service_cat %}
+                                                <option value="{{data.id}}">{{data.service_category}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <b>Sub Category</b>
+                                            <select class="browser-default" name="service_sub_cat">
+                                                <option></option>
+                                                {% for data in service_sub_cat %}
+                                                <option value="{{data.id}}">{{data.service_sub_category}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-3">
+                                           <button type="submit" class="btn btn-warning" value="search" name="search">Search</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% if service_charge_master %}
+                    <div class="card">
+                        <div class="card-header"></div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div style="float: right;">
+                                        <button type="submit" class="btn btn-primary" name="save" value="save">Save</button>
+                                    </div>
+                                    <table class="datatable table table-stripped ">
+                                        <thead>
+                                            <tr>
+                                                <th>Service Name</th>
+                                                <th>Charges</th>
+                                                <th>Tariff</th>
+                                                <th>Service Category</th>
+                                                <th>Sub Category</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for data in service_charge_master %}
+                                            <tr>
+                                                <input type="hidden" name="ids" id="" value="{{data.id}}">
+                                                <td>{{data.package_id}}</td>
+                                                <td><input type="number " name="charge{{data.id}}" value="{{data.package_charge}}" class="form-control" style="background-color: whitesmoke;"></td>
+                                                <td>{{data.tariff_id}}</td>
+                                                <td>{{data.ward_type}}</td>
+                                                <td>{{data.ward_category}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+
+                                    </table>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function myFunction() {
+        var x = document.getElementById("myDiv");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
+
+{% endblock %}

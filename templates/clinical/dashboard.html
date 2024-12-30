@@ -1,0 +1,407 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+  .card-body {
+  height: 40px; /* Adjust the height as needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.zoomm:hover {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+  <div class="content">
+    <!-- Main Dashboard -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="">
+          <div class="container-fluid dashboard-content ">
+            <div class="ecommerce-widget">
+              <input type="hidden" name="screen_id" value="SCR0036">
+              <input type="hidden" name="message_id" value="MSG0036">
+              <div class="row">
+                {% if 'patient_registration' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                <div class="card text-center zoomm ">
+                  <a href="/appointment_table">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/schedule.gif' %}" class="img-fluid" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Appointment</h5>
+                    </div>
+                  </a>
+                </div>
+                </div>
+                {% endif %}
+                {% if 'patient_registration' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                  <div class=" text-center card zoomm">
+                  <a href="patient_search">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/register.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Patient Registration</h5>
+                    </div>
+                  </a>
+                </div>
+                </div>
+                {% endif %}
+                {% if 'opd_advance' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                     <div class=" text-center card zoomm">
+                  <a href="get_list_patient">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/advance.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">OPD Advance</h5>
+                    </div>
+                  </a>
+                </div>
+                </div>
+                {% endif %}
+                {% if 'opd_billing' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                  <div class=" text-center card zoomm">
+                  <a href="opd_billing_search">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/pay.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">OPD Billing</h5>
+                    </div>
+                  </a>
+                </div>
+                </div>
+                {% endif %}
+                {% if 'opd_bill_settlement' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                <div class=" text-center card zoomm">
+                  <a href="credit_bill">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/settle_bill.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">OPD Billing Settlement</h5>
+                    </div>
+                  </a>
+                </div>
+                </div>
+                {% endif %}
+                {% if 'qms' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                  <div class="text-center card zoomm">
+                  <a href="/qms_dashboard">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/que.jpg' %}" alt="" />
+                      <!-- <img src="../../static/images/his/pay.gif"> -->
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">QMS</h5>
+                    </div>
+                  </a>
+                </div>
+                </div>
+                {% endif %}
+                <!-- {% if 'doctor_accounting' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="doctor_accounting">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/dr acc.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Doctor Accounting</h5>
+                    </div>
+                  </a>
+                </div>
+              </div>
+                {% endif %} -->
+                {% if 'clinical_management' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="nurse_dashboard">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/clinical_management.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Clinical Managements</h5>
+                    </div>
+                  </a>
+                </div>
+              </div>
+                {% endif %}
+                {% if 'all_master' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="title_master">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/master.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Master </h5>
+                    </div>
+                  </a>
+                </div>
+              </div>
+                {% endif %}
+                {% if 'user_managemnet' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/create_userprofile">
+                  <div class="card_icon" >
+                    <img src="{% static 'images/his/user_manage.gif' %}" alt="" />
+                    <!-- <img src="../../static/images/blood-donation.gif"> -->
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">User Management</h5>
+                  </div>
+                </a>
+                </div>
+              </div>
+                {% endif %}
+                {% if 'pharamacy' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/pharmacy_dashboard">
+                  <div class="card_icon" >
+                    <img src="{% static 'images/his/pharmacyy.gif' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Pharmacy</h5>
+                  </div>
+                </a>
+                </div>
+              </div>
+                {% endif %}
+                {% if 'inventory' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/inventory_itemmaster">
+                  <div class="card_icon" >
+                    <img src="{% static 'images/his/inventory.gif' %}" alt="" />
+                    <!-- <img src="../../static/images/blood-donation.gif"> -->
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Inventory</h5>
+                  </div>
+                </a>
+                </div>
+              </div>
+                {% endif %}
+               {% if 'lab_module' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/lab_pending_investigation" onclick="makeIDCarsMenuShow()">
+                  <div class="card_icon" >
+                    <img src="{% static 'images/his/lab_module.gif' %}" alt="" />
+                    <!-- <img src="../../static/images/blood-donation.gif"> -->
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Lab Module</h5>
+                  </div>
+                </a>
+                </div>
+              </div>
+                {% endif %}
+                <!-- <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/ipd/ipd_front_desk">
+                  <div class="card_icon" >
+                    <img src="{% static 'images/his/inpatient.gif' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Ipd</h5>
+                  </div>
+                  </a>
+                </div>
+              </div>
+                <div class="col-12 col-md-2">
+                  <div class="text-center card zoomm">
+                  <a href="/paitent_ward">
+                  <div class="card_icon">
+                    <img src="{% static 'images/his/ward.gif' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Ward Module</h5>
+                  </div>
+                </a>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2">
+                  <div class="text-center card zoomm">
+                  <a href="/paitent_ward">
+                  <div class="card_icon">
+                    <img src="{% static 'images/his/settle_bill.gif' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">IPD Billing</h5>
+                  </div>
+                </a>
+                  </div>
+                </div>
+                {% if 'medical_equipments' in access.user_profile.screen_access or request.user.is_superuser or request.user.is_staff %}
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/medical_equipment">
+                  <div class="card_icon" >
+                    <img src="{% static 'images/his/dialysis1.jpg' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Medical Equipments</h5>
+                  </div>
+                </a>
+                </div>
+              </div>
+                {% endif %}
+                {% if 'estimate_bill' in access.user_profile.screen_access or request.user.is_superuser %}
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/estimate">
+                  <div class="card_icon" >
+                    <img src="{% static 'images/his/estimate_bill.gif' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Estimate Bill</h5>
+                  </div>
+                </a>
+                </div>
+              </div>
+                {% endif %} -->
+                <!-- <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/patient_feedback">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/feedback.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Patient FeedBack</h5>
+                    </div>
+                  </a>
+                </div>
+              </div>
+                {% if 'insurance_claim' in access.user_profile.screen_access or request.user.is_superuser %}
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/insurance_claim">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/insurance_claim.jpg' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Insurance Claim</h5>
+                    </div>
+                  </a>
+                </div>
+              </div>
+                {% endif %} -->
+                <!--                hello mantu add icon 01/02/2023 -->
+                <!-- <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/OT/OT_dashboard">
+                  <div class="card_icon">
+                    <img src="{% static 'images/his/chemotherapy.gif' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">OT Module</h5>
+                  </div>
+                </a>
+                </div>
+              </div>
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/MRD/MRD_dashboard">
+                  <div class="card_icon">
+                    <img src="{% static 'images/his/dialysis3.jpg' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">MRD Module</h5>
+                  </div>
+                </a>
+                </div>
+              </div>
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/diet/diet_dashboard">
+                  <div class="card_icon">
+                    <img src="{% static 'images/his/dialysis2.jpg' %}" class="img-fluid" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Diet Module</h5>
+                  </div>
+                </a>
+                </div>
+              </div>
+                <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/incident_dashboard">
+                  <div class="card_icon">
+                    <img src="{% static 'images/his/incident.gif' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Incident Management</h5>
+                  </div>
+                </a>
+                </div></div> -->
+                <!-- <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/bloodbank_dashboard">
+                  <div class="card_icon">
+                    <img src="{% static 'images/his/bloodbank.png' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Blood Bank</h5>
+                  </div>
+                </a>
+                </div>
+              </div>
+              <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="/employee_list">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/hr_image.jpg' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">HR</h5>
+                    </div>
+                  </a>
+                </div>
+              </div> 
+              <div class="col-12 col-md-2">
+                <div class="text-center card zoomm">
+                  <a href="#">
+                  <div class="card_icon">
+                    <img src="{% static 'images/mrd.png' %}" class="img-fluid" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Modularise Reports</h5>
+                  </div>
+                  </a>
+                </div>
+              </div> -->
+<!--                end mantu icon -->
+              </div>
+            </div>
+
+          </div>
+          <!--/ Latest Patients-->
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    function makeIDCarsMenuShow(){
+     $('#lab').click();
+     return false;
+    }
+ </script>
+        {% endblock %}

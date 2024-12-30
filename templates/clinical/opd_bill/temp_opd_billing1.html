@@ -1,0 +1,722 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style xmlns="http://www.w3.org/1999/html">
+   .table_form{
+    border:2px solid red;
+    color:red;
+    width:50% !important;
+  }
+  #id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_doctor{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_discount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_unit{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_net_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_co_pay{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_patient_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_receive_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_company_name{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_patient_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+background-color:white;
+  border:2px solid white;
+  #id_receive_amount{
+
+  width:100%;
+  }
+
+  #id_view{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+
+.table_form input{
+  border:2px solid white;
+  width:100%;
+  border-bottom:1px solid #eee;
+}
+.service_table tr th{
+}
+.service_table tr td{
+}
+ </style>
+ <link
+  rel="stylesheet"
+  href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"
+/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+{% endblock  %}
+{% block body_block %}
+  <!-- content -->
+  <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00041">
+<input type="hidden" name="message_id" value="MSG00041">
+<div class="row">
+<div class="col-12">
+<div class="card" style="padding: 30px;">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="page-header row">
+            <h3 class="pageheader-title col-sm-4">Out-Patient Billing </h3>
+            <div class="col-sm-8 text-right">
+           <a href="/temp_records"><button class="btn btn-info" name="button" type="button">Open Bill</button></a>
+                {% if 'finalized_bill' in access.user_profile.screen_access or request.user.is_superuser %}
+                <a href="/closed_bill"><button class="btn btn-success" name="button" type="button">Finalized Bill</button></a>
+                {% endif %}
+                {% if 'closed_bill' in access.user_profile.screen_access or request.user.is_superuser %}
+                <a href="/finalized_bill"><button class="btn btn-primary" name="button" type="button">Closed Bill</button></a>
+                {% endif %}
+                {% if 'cancel_bill' in access.user_profile.screen_access or request.user.is_superuser %}
+              <a href="/cancel_bill"><button class="btn btn-danger" name="button" type="button">Cancel</button></a>
+              {% endif %}
+              <button class="btn btn-primary dropdown-toggle p-2 icon-size" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+              <div class="dropdown-menu">
+<!--                data-toggle="modal" data-target="#payment_mode_popup"-->
+                <a class="dropdown-item" href="#" >Payment Modes</a>
+<!--                <a class="dropdown-item" href="/opd_payment_cash" >Payment Modes For Cash</a>-->
+<!--                <a class="dropdown-item" href="#">Another action</a>-->
+                <a class="dropdown-item" href="#">Patient Invoice</a>
+              </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal" id="payment_mode_popup" tabindex="-1" role="dialog" aria-labelledby="payment_mode_popup" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:80%;">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-white">
+                      <h5 class="modal-title" id="patient-registration-title">Payment Mode</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="Out-Patient_record">
+                      <form>
+                        <div class="row form_sec">
+                          <div class="col-md-12">
+                            <div class="today_visit" style="min-height: 300px;">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-save" aria-hidden="true"></i></button>
+                              </div>
+                              <form class="">
+                                <table class="table table-border ">
+                                  <tr style="background:#d1dae6;">
+                                    <th>Mode Type</th>
+                                    <th>Amount</th>
+                                    <th>Bank</th>
+                                    <th>Cheque/Card/DD No.</th>
+                                    <th>Expiry Date</th>
+                                    <th></th>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <div class="form-group">
+                                        <select name="cars">
+                                          <option value="Cash">Cash</option>
+                                          <option value="UPI">UPI</option>
+                                        </select>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <select name="cars" id="cars">
+                                          <option value="Bank">Bank</option>
+                                          <option value="UPI">UPI</option>
+                                        </select>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="butns">
+                                        <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                        <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </form>
+                            </div>
+                          </div>
+                        </div><!-- row -->
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form_sec">
+                              <form>
+                                <div class="input_filed d-flex align-items-center">
+                                  <label style="flex: 0 0 100px;" for="GCR">GCR No. <small>*</small></label>
+                                  <input type="text" class="form-control" placeholder="">
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div><!-- row -->
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="billing-form bg-white p-2 mt-2">
+           <div class="row" >
+            <div class="col-4" >
+               <form method="GET" class="row">
+                   <br><br>
+                  <div class="col-md-8">
+                    <label>UHID*</label><br>
+                    <input type="text" value="{{uhid_no.0}}" name="uhid" placeholder="Enter UHID" required>
+                  </div>
+<!--                  <div class="col-sm-1 p-0">-->
+<!--                    <button class="btn-primary border-0 p-2 icon-size" name="uhid_searching" type="submit" value="is_uhid"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>-->
+<!--                  </div>-->
+                   <div class="col-md-2">
+                    <a href="/opd_billing_search" style="color:white;">
+                        <br>
+                    <button class="btn-primary border-0 p-2 icon-size" type="button"  name="search" class="input-group-text" >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </button>
+                     </a>
+                   </div>
+                   <div class="col-sm-1 p-0">
+                       <br>
+                    <button class="btn-primary border-0 p-2 icon-size" name="uhid_searching" type="submit" value="is_uhid"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                  </div>
+                </form>
+            </div>
+            <div class="col-8">
+              <form method="GET" class="row">
+          <div class="col-md-5">
+            <label>Select Visit No*</label>
+             <select style="width:100%;" name="visit_no" required>
+               <option>{{visit_no.0}}</option>
+<!--              {% for data in visit_no %}-->
+<!--              <option value="{{data.id}}">{{data}}</option>-->
+<!--              {% endfor %}-->
+            </select>
+          </div>
+          <div class="col-md-2"><br>
+            <button class="btn-primary border-0 p-2 icon-size" name="billing_search" type="submit" value="is_opd_billing"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+          </div>
+<!--          <div class="col-sm-12 text-right"><br>-->
+<!--              <a href="/temp_records"><button class="btn btn-primary">Open Bill</button></a>-->
+<!--          </div>-->
+        </form>
+<!--          <div class="col-sm-12 text-right"><br>-->
+<!--              <a href="/temp_records"><button class="btn btn-primary">Open Bill</button></a>-->
+<!--          </div>-->
+            </div>
+          </div>
+
+
+        <div class="p-2 border mt-2">
+          <div class="row">
+            <div class="col-sm-6">
+              <h5>{{name}}</h5>
+              <p class="m-0">{{gender}} {{dob}} year ,  <strong>Mobile No.</strong>: {{mobile_number}}</p>
+            </div>
+            <div class="col-sm-3">
+              <p class="m-0"><strong> Payer</strong>: {{billing_groups1}}</p>
+            </div>
+              <div class="col-sm-3">
+              <p class="m-0"><strong>Corporate</strong>: {{corp_name}}</p>
+            </div>
+          </div>
+        </div>
+
+        <form class="form-inline row no-gutters pt-2 pb-2 alert-primary">
+          <div class="col-sm-1 p-0">
+            <label for="formGroupExampleInput">Activity</label>
+          </div>
+          <div class="col-sm-2">
+            <select class="form-control  w-100" name="card" value="">
+              <option>Discount</option>
+            </select>
+          </div>
+          <div class="col-sm-2 p-0">
+            <label for="formGroupExampleInput">Activity</label>
+          </div>
+          <div class="col-sm-2">
+            <select class="form-control  w-100" name="card" value="">
+              <option>select</option>
+              <option value="volvo">Percentage</option>
+              <option value="saab" selected>Amount</option>
+            </select>
+          </div>
+          <div class="col-sm-1 p-0">
+            <label for="formGroupExampleInput">Value</label>
+          </div>
+          <div class="col-sm-2">
+            <input class="form-control" type="value" name="value" placeholder="">
+          </div>
+            {% if temp_records %}
+          <div class="col-sm-2 text-right">
+              <a href="/for_open_bill_main_opd">
+                    <button class="btn-primary border-0 p-2 icon-size" name="form2" type="submit" form=""><i class="fa fa-save" aria-hidden="true"></i></button>
+              </a>
+<!--              <a href="/temp_records">-->
+<!--                  <button class="btn btn-primary" name="button" type="button">Open Bill List</button>-->
+<!--              </a>-->
+          </div>
+            {% endif %}
+        </form>
+        <form method="POST" id="MyForm_TEMP" onkeydown="return event.key != 'Enter';">
+          {% csrf_token %}
+                 <table class="table mt-2 table-border form-row service_table">
+          <tr style="background: #d1dae6;">
+            <th>Services Name</th>
+            <th>Rate</th>
+            <th>Discount</th>
+            <th>&nbsp;&nbsp;Unit&nbsp;&nbsp;</th>
+            <th>NetAmount</th>
+            <th>OutstdAmt</th>
+            <th>TotalAmt.</th>
+            <th>ReceiveAmt.</th>
+            <th>Add Services</th>
+          </tr>
+<!--              <tr>-->
+<!--                  <input type="hidden" name="uhid" value="{{searched_uhid}}">-->
+<!--            <input type="hidden" name="visit_id" value="{{visit_id}}">-->
+<!--              </tr>-->
+            <tr>
+               <td class="table_form" style="width:80%!important;">
+                 <div id="autocomplete" class="autocomplete">
+                    <input class="autocomplete-input" type="text"value="{{intell_search}}" style="background-color:white!important;height:1em;"/>
+                    <ul class="autocomplete-result-list" style="color:black;" ></ul>
+                </div>
+               </td>
+<!--            <td class="table_form"><input type="number" name="amount" readonly value="{{intell_search_ser_charges}}"></td>-->
+<!--            <td class="table_form"><input type="number" name="discount" value="{{discount}}" required title="please enter number"></td>-->
+<!--            <td class="table_form"><input type="number" name="unit" value="{{unit}}"  required></td>-->
+<!--            <td class="table_form"><input type="text" name="net_amount" value="{{intell_search_ser_charges}}" required></td>-->
+<!--            <td class="table_form"><input type="text" name="outstanding_amount" value="{{OutStandingAmount}}"  required></td>-->
+<!--            <td class="table_form"><input type="text" name="total_amount" value="{{intell_search_ser_charges}}" required></td>-->
+<!--            <td class="table_form"><input type="text" name="receive_amount" value="{{intell_search_ser_charges}}" required></td>-->
+
+<!--&lt;!&ndash;                <td><button type="submit" class="btn btn-primary" name="insert" form="MyForm">Insert</button> </td>&ndash;&gt;-->
+          </tr>
+          <tr>
+                  <input type="hidden" name="uhid" value="{{uhid_no}}">
+            <input type="hidden" name="visit_id" value="{{visit_no}}">
+            <input type="hidden" name="temp_bill_nos" value="{{temp_bill_no}}">
+              </tr>
+              {% for intell_search_ser_name,intell_search_ser_charges,intell_search_ser_disc,intell_search_ser_qty,intell_search_ser_total_amt in all_data %}
+
+            <tr>
+               <td class="table_form" style="width:80%!important;">
+                 <div id="autocomplete" class="autocomplete">
+                    <input class="autocomplete-input" type="text" name="service_name" value="{{intell_search_ser_name}}" style="background-color:white!important;height:1em;"/>
+                    <ul class="autocomplete-result-list" style="color:black;" ></ul>
+                </div>
+               </td>
+            <td class="table_form"><input type="number" name="amount" readonly value="{{intell_search_ser_charges}}"></td>
+            <td class="table_form"><input type="number" name="discount" value="{{intell_search_ser_qty}}" required title="please enter number"></td>
+            <td class="table_form"><input type="number" name="unit" value="{{intell_search_ser_disc}}"  required></td>
+            <td class="table_form"><input type="text" name="net_amount" value="{{intell_search_ser_charges}}" required></td>
+            <td class="table_form"><input type="text" name="outstanding_amount" value="{{OutStandingAmount}}"  required></td>
+            <td class="table_form"><input type="text" name="total_amount" value="{{intell_search_ser_total_amt}}" required></td>
+            <td class="table_form"><input type="text" name="receive_amount" value="{{intell_search_ser_total_amt}}" required></td>
+
+<!--                <td><button type="submit" class="btn btn-primary" name="insert" form="MyForm">Insert</button> </td>-->
+          </tr>
+                     {% endfor %}
+                                     <td><button type="submit" class="btn btn-primary" name="insert" form="MyForm_TEMP">Insert</button> </td>
+
+     <br>
+     <br>
+                     {% if name %}
+          {% for data in temp_records %}
+             <tr>
+                 <td class="table_form"><input type="text" name="service" readonly value="{{data.service_name}}"></td>
+                <td class="table_form"><input type="number" name="net_amount" readonly value="{{data.net_ammount}}"></td>
+                <td class="table_form"><input type="number" name="discount" readonly value="{{data.discount}}" required title="please enter number"></td>
+                <td class="table_form"><input type="number" name="pay_amount" readonly value="{{data.unit}}"  required></td>
+                <td class="table_form"><input type="number" name="paid_amount" readonly value="{{data.receive_amount}}" required></td>
+                <td class="table_form"><input type="text" name="outstanding_amount" readonly value="{{data.outstanding_amount}}" required></td>
+                <td class="table_form"><input type="text" name="" value="{{data.receive_amount}}" required></td>
+                <td class="table_form"><input type="text" name="" value="{{data.receive_amount}}" required></td>
+             </tr>
+                         {% endfor %}
+              <tr style="background-color:#eee;color:white!important;">
+                  <td></td>
+                  <td>{{nt_amt}}</td>
+                  <td></td>
+                  <td></td>
+                  <td>{{ttl_amt}}</td>
+                  <td></td>
+                  <td>{{ttl_amt}}</td>
+                  <td colspan="2">{{rcv_amt}}</td>
+              </tr>
+                     {% endif %}
+<!--                      <tr>-->
+<!--                            <td>-->
+<!--                                <section class="mainSection">-->
+<!--                                    <br>-->
+<!--                                    <div class="Dropdown">-->
+<!--                                        <center><input type="text" id="myInput" class="dropbtn"-->
+<!--                                                onkeypress="searchDrop()" onkeyup="mySearch()" placeholder="Search..."-->
+<!--                                                title="Type Series Title"></center>-->
+<!--                                        <div id="myDropdown" class="dropdown_content" style="width: 100px;">-->
+<!--                                            <ul id="myUL">-->
+<!--                                                {% for data in item %}-->
+<!--                                                <li><a href="/opd_package_service_temp/{{data}}">{{data}}</a></li>-->
+<!--                                                {% endfor %}-->
+<!--                                            </ul>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </section>-->
+<!--                            </td>-->
+<!--                            <form method="post">-->
+<!--                                {% csrf_token %}-->
+<!--                                <td style="padding-top: 30px;"><input type="text" id="UPservice_name" name="service_name"-->
+<!--                                        value="{{service_master.service_name}}" style="background-color: whitesmoke;"-->
+<!--                                        readonly></td>-->
+<!--                                <td style="padding-top: 30px;"><input type="number" id='UPquantity' name="quantity"-->
+<!--                                        required style="background-color: whitesmoke;"></td>-->
+<!--                                <td style="padding-top: 30px;"><input type="number" id="UPdiscount" name="discount"-->
+<!--                                        required style="background-color: whitesmoke;"></td>-->
+<!--                                <td style="padding-top: 30px;"><input type="number" id="UPrate" name="rate"-->
+<!--                                        value="{{service_master.Charges}}" readonly-->
+<!--                                        style="background-color: whitesmoke;"></td>-->
+<!--                                <td style="padding-top: 30px;"><input type="number" id="UP_net_amount" name="net_amount"-->
+<!--                                        required style="background-color: whitesmoke;" readonly> </td>-->
+
+<!--                                <td><button type="submit" class="btn btn-warning" name="save_temp" value="save_temp"><i-->
+<!--                                            class="fa fa-plus" aria-hidden="true"></i></button> </td>-->
+<!--                            </form>-->
+<!--                        </tr>-->
+        </table>
+        </form>
+<!--          here some things below-->
+
+          <script>
+    function searchDrop() {
+        if (this.value != '') {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+    }
+
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+    function mySearch() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+
+            }
+        }
+    }
+</script>
+
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+ <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+
+         <script>
+             new Autocomplete('#autocomplete', {
+                 searched : input =>{
+                     console.log(input)
+                     const url =`/searched?service_name=${input}`
+                     return new Promise(resolve =>{
+                         fetch(url)
+                         .then(response => response.json())
+                         .then(data =>{
+                             console.log(data)
+                             resolve(data.data)
+                         })
+                     })
+                 },
+                 onSubmit : result =>{
+                     console.log(result)
+                     window.open(`/opd_billing_temp/?searched=${result}`,'_self')
+                 }
+             })
+         </script>
+<!--Editible table and add and remove row -->
+
+<script>
+    var arrHead = new Array();  // array for header.
+    arrHead = ['', 'Employee Name', 'Designation', 'Age'];
+
+    // first create TABLE structure with the headers.
+    function createTable() {
+        var empTable = document.createElement('table');
+        empTable.setAttribute('id', 'empTable'); // table id.
+
+        var tr = empTable.insertRow(-1);
+        for (var h = 0; h < arrHead.length; h++) {
+            var th = document.createElement('th'); // create table headers
+            th.innerHTML = arrHead[h];
+            tr.appendChild(th);
+        }
+
+        var div = document.getElementById('cont');
+        div.appendChild(empTable);  // add the TABLE to the container.
+    }
+
+    // now, add a new to the TABLE.
+    function addRow() {
+        var empTab = document.getElementById('empTable');
+
+        var rowCnt = empTab.rows.length;   // table row count.
+        var tr = empTab.insertRow(rowCnt); // the table row.
+        tr = empTab.insertRow(rowCnt);
+
+        for (var c = 0; c < arrHead.length; c++) {
+            var td = document.createElement('td'); // table definition.
+            td = tr.insertCell(c);
+
+            if (c == 0) {      // the first column.
+                // add a button in every new row in the first column.
+                var button = document.createElement('input');
+
+                // set input attributes.
+                button.setAttribute('type', 'button');
+                button.setAttribute('value', 'Remove');
+
+                // add button's 'onclick' event.
+                button.setAttribute('onclick', 'removeRow(this)');
+
+                td.appendChild(button);
+            }
+            else {
+                // 2nd, 3rd and 4th column, will have textbox.
+                var ele = document.createElement('input');
+                ele.setAttribute('type', 'text');
+                ele.setAttribute('value', '');
+
+                td.appendChild(ele);
+            }
+        }
+    }
+
+    // delete TABLE row function.
+    function removeRow(oButton) {
+        var empTab = document.getElementById('empTable');
+        empTab.deleteRow(oButton.parentNode.parentNode.rowIndex); // button -> td -> tr.
+    }
+
+    // function to extract and submit table data.
+    function submit() {
+        var myTab = document.getElementById('empTable');
+        var arrValues = new Array();
+
+        // loop through each row of the table.
+        for (row = 1; row < myTab.rows.length - 1; row++) {
+            // loop through each cell in a row.
+            for (c = 0; c < myTab.rows[row].cells.length; c++) {
+                var element = myTab.rows.item(row).cells[c];
+                if (element.childNodes[0].getAttribute('type') == 'text') {
+                    arrValues.push("'" + element.childNodes[0].value + "'");
+                }
+            }
+        }
+
+        // The final output.
+        l=document.getElementById('output').innerHTML = arrValues;
+        alert(l)
+        //console.log (arrValues);   // you can see the array values in your browsers console window. Thanks 🙂
+    }
+</script>
+
+<!-- Adding Multiple data -->
+
+<script type="text/javascript">
+     $(function(){
+    $(".addButton").click(function(){
+        $('.clonetr:last').clone(true).appendTo("#addrow");
+    });
+
+    $(".deleteButton").click(function(){
+        if($('.deleteButton').length > 1){
+
+           $(this).closest("tr").remove();
+        }
+
+    });
+});
+
+</script>
+       <script type="text/javascript">
+        $(document).on('click','.delete',function(){
+
+            var id = $(this).attr('uid');
+
+            $('#user_id').val(id);
+
+            $('#modal_popup').modal({backdrop: 'static', keyboard: true, show: true});
+        });
+
+        function call()
+        {
+            alert("You has been deleted Successfully");
+        }
+
+    </script>
+<script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+
+         <script>
+             new Autocomplete('#autocomplete', {
+                 search : input =>{
+                     console.log(input)
+                     const url =`/search?service_name=${input}`
+                     return new Promise(resolve =>{
+                         fetch(url)
+                         .then(response => response.json())
+                         .then(data =>{
+                             console.log(data)
+                             resolve(data.data)
+                         })
+                     })
+                 },
+                 onSubmit : result =>{
+                     console.log(result)
+                     window.open(`/opd_billing_temp/?search=${result}`,'_self')
+                 }
+             })
+         </script>
+<!--Editible table and add and remove row -->
+<!--Script for removing services Start  -->
+<script>
+     var url="/temp_service_removing";
+    function delete_pack(id)
+    {
+
+      var r=confirm("SURE,You Want To Remove This Service mantu")
+        if (r==true)
+          window.location = url+"/"+id;
+        else
+          return false;
+    }
+</script>
+
+<!--Script for removing services Ends -->
+<!--Scripts for confirm Save  START-->
+<script>
+    function confirmSave(){
+    alert('Really You Want To Add All These Services..')
+    }
+</script>
+<!--<script>-->
+<!--    document.getElementById('service_name').addEventListener('keypress', function(event) {-->
+<!--        if (event.keyCode == 13) {-->
+<!--            event.preventDefault();-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+
+<!--Scripts for confirm Save  END-->
+<!--<script>-->
+<!--    (function() {-->
+<!--var button=document.getElementById("add-user");-->
+<!--button.addEventListener('click', function(event) {-->
+<!--  event.stopPropagation();-->
+<!--  event.preventDefault();-->
+<!--  var cln = document.getElementsByClassName("MyForms")[0].cloneNode(true);-->
+<!--  document.getElementById("MyForm").insertBefore(cln,this);-->
+<!--  return false;-->
+<!--});-->
+<!--})(-->
+<!--);-->
+<!--   </script>-->
+{% endblock  %}

@@ -1,0 +1,71 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <button type="menu" style="font-family: monospace; width: 100%; text-align: left;"
+            class="btn btn-primary m-t-15 waves-effect"> <b>Service Test</b></button><br><br>
+        <div class="card" style="padding: 30px;">
+            <div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label> Department</label>
+                            <select name="department" id="department" class="form-control">
+                                <option value="">--- select ----</option>
+                                {% for data in service_department %}
+                                <option value="{{data.id}}">{{data.service_department}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>Sub Department</label>
+                            <select name="sub_department" id="sub_department" class="form-control">
+                                <option value="">--- select ----</option>
+                                {% for data in service_sub_department %}
+                                <option value="{{data.id}}">{{data.service_sub_department}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-4" style="padding-top: 25px;">
+                            <button type="submit" class="btn btn-primary" style="width: 150px;">Search</button>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div><br><br>
+            {% if sevice_records %}
+            <div class="table-responsive">
+                <table class="datatable table table-stripped ">
+
+                    <thead>
+                        <tr>
+                            <th>S.no</th>
+                            <th>Test Name</th>
+                            <th>Service Department</th>
+                            <th>Service sub Department</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in sevice_records %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.service_name}}</td>
+                            <td>{{data.service_department}}</td>
+                            <td>{{data.ServiceSubDepartment}}</td>
+                            <td><a href="/service_test_range/{{data.id}}"><button class="btn btn-info">Edit</button></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

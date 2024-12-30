@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+
+<div id="hello">
+<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td><img src="../images/heartbeat-iconic.png" alt="logo Image" width="180px"></td>
+					<td style="text-align: center;">
+						<div class="">
+							<h2 style="margin: 0 0 10px;">GAUTENG PROVINCE HEALTH REPUBLIC OF SOUTH AFRICA</h2>
+							<P>GHANA HEALTH SERVICE</P>
+							<P>P.O. BOX-23, PEKI V/R</P>
+							<P>E-mail:</P>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td colspan="4" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;">Invoice</h3></td>
+				</tr>
+
+				<tr>
+					<th>Reg. No.</th>
+					<td>:116</td>
+					<th>Bill</th>
+					<td>:144</td>
+				</tr>
+				<tr>
+					<th>Patient Name</th>
+					<td>:Mr. Good Luck</td>
+					<th>Bill Date</th>
+					<td>:13/07/2019</td>
+				</tr>
+				<tr>
+					<th>Mobile</th>
+					<td>:9009900909</td>
+					<th>Visit No.</th>
+					<td>:181</td>
+				</tr>
+				<tr>
+					<th>Address</th>
+					<td>:L90, vakpo-lowcost</td>
+					<th>Visit Time</th>
+					<td>:13/07/2019 10:36 AM</td>
+				</tr>
+				<tr>
+					<th>Patient Type</th>
+					<td>:Private Cash</td>
+					<th>Lab No.</th>
+					<td>:</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%">
+
+				<tr>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">SN</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Description</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Rate</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Unit</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Discount</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Amount</th>
+				</tr>
+				<tr>
+					<th colspan="2">CONSUMBAL</th>
+					<td colspan="4"></td>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>CONSUMBAL</td>
+					<td>5.00</td>
+					<td>1.00</td>
+					<td>0.00</td>
+					<td>5.00</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</div><br><br>
+<button type="button"  onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;">Print</button>
+
+
+
+<script type="text/javascript">
+        
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+</body>
+</html>

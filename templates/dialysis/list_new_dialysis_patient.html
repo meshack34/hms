@@ -1,0 +1,183 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"> </script>-->
+
+{% endblock  %}
+{% block body_block %}
+ <!-- content -->
+    <style>
+        /* Style the search box */
+        .input-box {
+            width: 250px;
+            padding: 8px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            outline: 2px;
+        }
+    </style>
+<style>
+    div.dataTables_wrapper div.dataTables_filter label{
+    display:none;
+    }
+</style>
+ <div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+      <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>CURRENT DIALYSIS PATIENTS</b>
+        </div>
+        <div class="">
+      
+          <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <!-- <a class="dropdown-item" onclick="codespeedy()" href="#">PDF</a>
+            <a class="dropdown-item" id="download-button" href="#">CSV</a> -->
+          </div>
+        </div>
+      </div>
+<!-- Main Dashboard -->
+        <div class="row">
+            <div class="col-12">                       
+                {% if success_search %}
+        
+                <h5>Already Registerd</h5>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="register_record">
+                      <table class="table border" id="tabledialysis1">
+                        <tr style="background:#d1dae6;">
+                          <th>UHID</th>
+                          <th>Visit ID</th>
+                          <th>Patient Name</th>
+                          <th>Ordered Date</th>
+                          <th>Machine</th>
+                          <th>Status</th>
+                        </tr>
+                        {% for data in records1 %}
+                          <tr>
+                            <td>{{data.uhid}}</td>
+                            <td><a href="/prescription_dialysis/{{data.uhid}}-{{data.visit_id}}">{{data.visit_id}}</a></td>
+                            <td>{{data.pat_f_name}}&nbsp;{{data.pat_m_name}}&nbsp;{{data.pat_l_name}}</td>
+                            <td>{{data.visit_date_time}}</td>
+                            <td>{{data.pat_dob}}</td>
+                            <td>{{data.claim_no}}</td>
+                          </tr>
+                          {% endfor %}
+                      </table>
+                      <nav aria-label="Page navigation example" class="d-flex align-items-center justify-content-end">
+                        <ul class="pagination">
+                          <li class="page-item">
+                            <a class="page-link" href="#!" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                              <span class="sr-only">Previous</span>
+                            </a>
+                          </li>
+                          <li class="page-item"><a class="page-link" href="#!">1</a></li>
+                          <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                          <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                          <li class="page-item">
+                            <a class="page-link" href="#!" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                              <span class="sr-only">Next</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              {% else %}
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="register_record  ">
+                    <div class="table-responsive">
+                        <div class="mb-3">
+                            <input type="text"  id="myinputv" class="input-box float-right" placeholder="Search Here...." >
+                        </div>
+                        <table class="table table-stripped" id="tableIDv">
+                            <thead>
+                              <tr>
+                                <th>S.no</th>
+                                <th>UHID</th>
+                                <th>Visit ID</th>
+                                <th>Patient Name</th>
+                                <th>Ordered Date</th>
+                                <th>Machine</th>
+                                <th>Attendant</th>
+                                <th>Status</th>
+                                <th>Start</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in records1 %}
+                                <tr>
+                                  <td>{{forloop.counter}}</td>
+                                  <td>{{data.uhid}}</td>
+                                    {% if data.claim_no == "Not Initiated" and data.description == "Re-visit" %}
+                                  <td><a href="/pre_dialysis_details/{{data.uhid}}-{{data.visit_id}}">{{data.visit_id}}</a></td>
+                                    {% elif data.claim_no == 'Not Initiated' %}
+                                  <td><a href="/prescription_dialysis/{{data.uhid}}-{{data.visit_id}}">{{data.visit_id}}</a></td>
+                                    {% elif data.claim_no == 'Prepared' %}
+                                  <td><a href="/pre_dialysis_details/{{data.uhid}}-{{data.visit_id}}">{{data.visit_id}}</a></td>
+                                    {% elif data.claim_no == 'Inprogres' %}
+                                  <td><a href="/dialysis_details/{{data.uhid}}-{{data.visit_id}}">{{data.visit_id}}</a></td>
+                                    {% elif data.claim_no == 'Completed' %}
+                                    <td><a href="/post_dialysis_details/{{data.uhid}}-{{data.visit_id}}">{{data.visit_id}}</a></td>
+                                    {% elif data.claim_no == 'Closed' %}
+                                    <td><a href="/post_dialysis_discharge/{{data.uhid}}-{{data.visit_id}}">{{data.visit_id}}</a></td>
+                                    {% elif data.claim_no == 'discharged' %}
+                                    <td><a href="/dialysis_dishcharge_report/{{data.uhid}}-{{data.visit_id}}">{{data.visit_id}}</a></td>
+                                    {% else %}
+                                        <td><a href="">{{data.visit_id}}</a></td>
+                                    {% endif %}
+                                      <td>{{data.pat_f_name}}&nbsp;{{data.pat_m_name}}&nbsp;{{data.pat_l_name}}</td>
+                                      <td>{{data.visit_date_time}}</td>
+                                          {% if data.pat_machine_name == None %}
+                                      <td></td>
+                                          {% else %}
+                                      <td>{{data.pat_machine_name}}</td>
+                                          {% endif %}
+                                          {% if data.pat_attendant_name == None %}
+                                          <td></td>
+                                          {% else %}
+                                      <td>{{data.pat_attendant_name}}</td>
+                                          {% endif %}
+                                      <td>{{data.claim_no}}</td>
+                                          {% if data.pat_created_at == None %}
+                                      <td></td>
+                                          {% else %}
+                                      <td>{{data.pat_created_at}}</td>
+                                          {% endif %}
+                                  </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+          </div>
+      </div>
+  </div>
+</div>
+
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src=
+"https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js">
+    </script>
+    <script>
+    var table = $('#tableIDv').DataTable();
+
+        // #myInput is a <input type="text"> element
+        $('#myinputv').on( 'keyup', function () {
+            table.search( this.value ).draw();
+        } );
+</script>
+{% endblock  %}

@@ -1,0 +1,81 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+<style>
+    .form-control {
+        border: 2px solid white;
+        width: 100%;
+        background-color: white;
+        border-bottom: 1px solid black;
+    }
+
+    #id_vendors_name,
+    #id_transaction_id,
+    #id_amount,
+    #id_cheque_no,
+    #id_date,
+    #id_amount {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+
+    /* For text inside Border */
+    fieldset {
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+
+    p#innerPara {
+        padding: 20px;
+    }
+
+    legend {
+        width: 400px;
+        padding: 10px 20px;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card">
+            <div class="card-header btn">
+                <h3> Ward Request</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+                        <thead>
+                            <tr>
+                                <th>s.no</th>
+                                <th>Order ID</th>
+                                <th>UHID</th>
+                                <th>Admission ID</th>
+                                <th>Date & time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td><a href="{% url 'ward_sales' data.medication_id %}">{{data.medication_id}}</a></td>
+                                <td>{{data.uhid}}</td>
+                                <td>{{data.admission_ID}}</td>
+                                <td>{{data.date_time}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

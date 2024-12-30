@@ -1,0 +1,784 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block %}
+<script src="{% static 'js/country-states.js' %}"></script>
+{% endblock  %}
+{% block body_block %}
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00037">
+<input type="hidden" name="message_id" value="MSG00037">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="box-outer">
+                        <div id="Patient_R" class="h-100">
+                            <div class="patient-registration">
+                              <div class="top-heading lightgreen_bg">
+                                <h3 class="section_title"> Patient Registration</h3>
+                              </div>
+                              <div class="container-fluid">
+                                <div class="row">
+                                  <div class="col-10">
+                                    <ul class="file-list">
+                                      <li><a href="/patient_registration" class="green_bg"><i class="fa fa-plus" aria-hidden="true"></i></a></li>
+                                      <li><a href="#" class="gray_bg"><i class="fa fa-pen" aria-hidden="true"></i></a></li>
+                                      <li><button type="submit" form="my_form" style="background-color:#5584AC;border:2px solid #5584AC;height:2.5em;width:2.5em;color:white;border-radius:0.3em;" class="save_bg"><i style="font-size: px;" class="fa fa-save" aria-hidden="true"></i></button></li>
+                                      <li onClick="window.location.reload();"><a href="#" class="reload"><i class="fa fa-undo" aria-hidden="true"></i></a></li>
+                                      <li><a href="/register_card" class="slyblue_bg"><i class="fa fa-qrcode" aria-hidden="true"></i></a></li>
+                                      <li><a href="/out_paient_visit" class="slyblue_bg"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a></li>
+                                        <!--data-toggle="modal" data-target="#out-patient-visit"-->
+                                      <li><a href="/dashboard" class="red_bg"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+                                    </ul>
+                                  </div>
+                                  <div class="col-2">
+                                    <div class="patient-img text-right">
+                                      <div class="profile-img-wrap" >
+                                          <img class="inline-block" src="{% static 'assets/images/user.jpg' %}" id="output" alt="user">
+                                          <div class="fileupload btn" >
+                                              <span class="btn-text" >Upload</span>
+                                              <input name="patient_profile" class="upload" type="file" onchange="loadFile(event)" required/>
+                                          </div>
+                                    </div>
+                                  </div>
+                                  </div>
+                                </div>  <br><br> <br><br>
+
+                                <div class="form_sec">
+                                  <form method="GET">
+                                    <div class="form-group">
+                                      <label for="Appoints">Appointment Id</label>
+                                      <div class="flexContainer">
+                                        <input type="text" name="appointment_id"  class="form-control" id="Appoints" placeholder="">
+                                        <!-- data-toggle="modal" data-target="#patient-registration-modal" -->
+                                         <button type="button"  name="search_app_id"  value="IsAppointmentId" class="input-group-text" data-toggle="modal" data-target="#patient-registration-modal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                     </div>
+                                   </div>
+                                   <div class="form-group">
+                                    <label for="UHID">UHID</label>
+                                    <div class="flexContainer">
+                                      <input type="text" name="uhid" class="form-control" id="UHID" placeholder="" value="{{uhid}}">
+                                      <!--  data-toggle="modal" data-target="#patient-registration-modal" -->
+
+                                          <button type="button" name="search_uhid" value="IsUHID" class="input-group-text"  ><a href="/patient_search"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></a></button>
+
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="DateTime">Registration Date Time</label>
+                                    <input type="text" class="form-control" id="DateTime" placeholder="" value="{{registration_date_and_time}}" readonly>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Patient Name</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" value="{{first_name}}" readonly>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Mobile Number</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" value="{{mobile_number}}" readonly>
+                                  </div>
+                                  </form><hr>
+                                  <form method="POST" id="my_form" enctype="multipart/form-data">
+                                    {% csrf_token %}
+
+                                      <!-- <div class="form-group" >
+                                        <div class="patient-img text-right" >
+                                        <div class="profile-img-wrap" style="margin-top:-4em;">
+                                            <img class="inline-block" src="{% static 'assets/images/user.jpg' %}" id="output" alt="user">
+                                            <div class="fileupload btn">
+                                                <span class="btn-text" >Upload</span>
+                                                <input name="patient_profile" class="upload" type="file" onchange="loadFile(event)" required/>
+                                            </div>
+                                      </div>
+                                      </div>
+                                      </div> -->
+
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Title*</label>
+                                    <select name="title" id="cars" required>
+                                      <option value="Mr">Mr.</option>
+                                      <option value="Ms">Ms.</option>
+                                      <option value="Mrs">Mrs</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">First Name*</label>
+                                    <input type="text" name="first_name" class="form-control" value="{{first_name}}" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Middle Name</label>
+                                    <input type="text" name="middle_name" class="form-control" value="{{middle_name}}" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Last Name*</label>
+                                    <input type="text" name="last_name" class="form-control" value="{{last_name}}" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Age*</label>
+                                  <h3  id="result" placeholder="" style="border:1px solid #CED4DA;height:1.6em;border-radius:0.2em;margin-top:0.3em;"></h3>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">DOB*</label>
+                                    <input type="date" name="dob" class="form-control" value="{{dob}}"  onchange = "ageCalculator()" id="DOB" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Gender*</label>
+                                    <select name="gender" id="gender">
+                                      <option value="Male">Male</option>
+                                      <option value="Female">Female</option>
+                                      <option value="Other">Other</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Blood Group*</label>
+                                    <select name="blood_group" id="gender">
+                                      <option value="NA">N/A</option>
+                                      <option value="A">O+</option>
+                                      <option value="B">O-</option>
+                                      <option value="C">A+</option>
+                                      <option value="C">A-</option>
+                                      <option value="C">B+</option>
+                                      <option value="C">B-</option>
+                                      <option value="C">AB+</option>
+                                      <option value="C">AB-</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Marital Status*</label>
+                                    <select name="marital_status" id="gender">
+                                      <option value="Married ">Married</option>
+                                      <option value="Unmarried">Unmarried</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Father's/Husband Name*</label>
+                                    <input type="text" name="father_or_husband_name" value="{{father_or_husband_name}}" class="form-control" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Mother Name</label>
+                                    <input type="text" name="mother_name" value="{{mother_name}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Mobile Number*</label>
+                                    <input type="text" name="mobile_number" value="{{mobile_number}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Email ID</label>
+                                    <input type="text" name="email_id" value="{{email_id}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Address*</label>
+                                    <input type="text" name="address" value="{{address}}" class="form-control" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Referred by*</label>
+                                    <select name="referred_by" id="gender">
+                                      <option value="AAA ">AAA</option>
+                                      <option value="BBB">BBB</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="country">Country*</label>
+                                  <select id="country" name="country">
+                                      <option>select country</option>
+                                  </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="state-code">State*</label>
+                                    <select id="state-code" name="state">
+                                        <option>select country</option>
+                                    </select>
+                                    <!-- <span id="state-code"><input type="text" id="state" name="state"></span> -->
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">City*</label>
+                                    <input type="text" name="city" value="{{city}}">
+                                    <!-- <select name="gender" id="gender">
+                                      <option value="City">City</option>
+                                      <option value="City2">City2</option>
+                                    </select> -->
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Pin Code*</label>
+                                    <input type="text" name="pin_code" value="{{pin_code}}" class="form-control" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Aadhar Number</label>
+                                    <input type="text" name="aadhar_number" value="{{aadhar_number}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">PAN Card Number</label>
+                                    <input type="text" name="pan_number" value="{{pan_number}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Emergency Contact Person</label>
+                                    <input type="text" name="emergency_contact_person" value="{{emergency_contact_person}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Emergency Contact Number</label>
+                                    <input type="text" name="emergency_contact_num" value="{{emergency_contact_num}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Alternate Contact Number</label>
+                                    <input type="text" name="alternate_contact_number" value="{{alternate_contact_number}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Nationality</label>
+                                    <select name="nationality">
+                                      <option value="Indian">Indian</option>
+                                      <option value="Indian">Others</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Staff Member</label>
+                                    <select name="staff_member">
+                                      <option value="Yes">Yes</option>
+                                      <option value="No">No</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Relationship</label>
+                                    <select name="relationship">
+                                      <option value="Father">Father</option>
+                                      <option value="Husband">Husband</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="check_opt" >Allow Photo At Nursing Station
+                                      <input type="checkbox" name="allow_photo_at_nursing_station" >
+                                      <span class="checkmark"></span>
+                                    </label>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="check_opt">Notable
+                                      <input type="checkbox" name="notable" >
+                                      <span class="checkmark"></span>
+                                    </label>
+                                  </div>
+                                  <div class="attech_doc w100 border ptb20">
+                                    <div class="form-group">
+                                      <label class="check_opt">Cash
+                                        <input type="checkbox" name="cash" value="{{cash}}" >
+                                        <span class="checkmark"></span>
+                                      </label>
+                                    </div>
+                                    <div class="form-group">
+                                      <label class="check_opt">Senior Citizen
+                                        <input type="checkbox" name="senior_citizen">
+                                        <span class="checkmark"></span>
+                                      </label>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Billing Group*</label>
+                                      <select name="billing_group" required>
+                                        <option value="Billing">Billing</option>
+                                        <option value="Billing">Billing</option>
+                                      </select>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Corporate Name</label>
+                                      <select name="corporate_name">
+                                        <option value="Corporate Name">Corporate Name</option>
+                                        <option value="Corporate Name">Corporate Name</option>
+                                      </select>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Card Holder Name</label>
+                                      <input type="text" name="card_holder_name" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Card Number</label>
+                                      <input type="text" name="card_number" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Relation</label>
+                                      <select name="relation">
+                                        <option value="Relation1">Relation1</option>
+                                        <option value="Relation2">Relation2</option>
+                                      </select>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Valid Upto</label>
+                                      <input type="date" name="valid_upto" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="formGroupExampleInput2">Sum Insured Amount</label>
+                                      <input type="number" name="sum_insured_amount" value="{{sum_insured_amount}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                      <label class="check_opt">InActive
+                                        <input type="checkbox" name="InActive" >
+                                        <span class="checkmark"></span>
+                                      </label>
+                                      <div class="alert-warning mt-3"><i class="fa fa-plus" aria-hidden="true"></i> Insert</div>
+                                    </div>
+                                  </div>
+                                </form>
+                                <div class="table-responsive">
+                                  <table class="table border">
+                                    <tr style="background: #76aeb3;">
+                                      <th style="color: #fff;">Billing Group</th>
+                                      <th style="color: #fff;">Corporate Name</th>
+                                      <th style="color: #fff;">Card Holder Name</th>
+                                      <th style="color: #fff;">Card Name</th>
+                                      <th style="color: #fff;">Reletion</th>
+                                      <th style="color: #fff;">Valid Upto</th>
+                                      <th style="color: #fff;">Sum Insured Amt</th>
+                                      <th style="color: #fff;">Active  </th>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="8">&nbsp;</td>
+                                    </tr>
+                                  </table>
+                                </div>
+                                <form>
+                                  <div class="row w-100">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label for="Remark">Remark</label>
+                                        <input type="text" class="form-control" id="Remark" placeholder="">
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                      <div class="form-group ">
+                                        <label for="formGroupExampleInput2">Last Modified</label>
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                      <div class="form-group ">
+                                        <label for="formGroupExampleInput2">Last Modified Date</label>
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal" id="patient-registration-modal" tabindex="-1" role="dialog" aria-labelledby="patient-registration-modal" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90%;">
+                            <div class="modal-content">
+                              <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="patient-registration-title">Patient Registration Search</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <form class="needs-validation">
+                                  <div class="row">
+                                    <div class="col-md-4 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="reg-no" class="col-sm-3 col-form-label">UHID</label><br>
+                                        <div class="col-sm-8">
+                                          <input type="text" class="form-control" id="reg-no" placeholder="" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="patient-name" class="col-sm-3 col-form-label">Patient Name</label>
+                                        <div class="col-sm-7">
+                                          <input type="text" class="form-control" id="patient-name" placeholder="" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="mobile-no" class="col-sm-3 col-form-label">Mobile No.</label>
+                                        <div class="col-sm-7">
+                                          <input type="number" class="form-control" id="mobile-no" placeholder="" required>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-md-4 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="DOB" class="col-sm-3 col-form-label">DOB</label>
+                                        <div class="col-sm-7">
+                                          <input type="date" class="form-control" id="DOB" placeholder="" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4 mr-0 ml-auto pl-2 pr-2">
+                                      <div class="form-group butns text-right">
+                                       <button type="submit" class="bg-primary border-0 p-2 text-white" name="button"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                                       <button type="button" class="bg-primary border-0 p-2 text-white" name="button"><i class="fas fa-paint-brush"></i></button>
+                                     </div>
+                                   </div>
+                                 </div>
+                                 </form>
+                                 <div class="row">
+                                  <div class="col-md-12">
+                                    <ul class="patient_record">
+                                      <li class="d-flex align-items-center ml30"><span class="yellow_bg"></span>Admitted Patient</li>
+                                      <li class="d-flex align-items-center ml30"><span class="red_bg"></span>Emergency Patient</li>
+                                      <li class="d-flex align-items-center ml30"><span class="green_bg"></span>Expired Patient</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="register_record">
+                                      <table class="table border">
+                                        <tr style="background:#d1dae6;">
+                                          <th>UHID/Reg No.</th>
+                                          <th>Registration date and time</th>
+                                          <th>Patient Name</th>
+                                          <th>Gender</th>
+                                          <th>DOB</th>
+                                          <th>Mobile No.</th>
+                                          <th></th>
+                                        </tr>
+                                        {% for data in records1 %}
+                                        <tr>
+                                          <td>{{data.uhid}}</td>
+                                          <td></td>
+                                          <td>{{data.title}}.&nbsp;{{data.first_name}}&nbsp;{{data.middle_name}}&nbsp;{{data.last_name}}</td>
+                                          <td>{{data.gender}}</td>
+                                          <td>{{data.dob}}</td>
+                                          <td>9009900909</td>
+                                        </tr>
+                                        {% endfor %}
+                                            <!-- <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div> -->
+
+                                      </table>
+                                      <nav aria-label="Page navigation example" class="d-flex align-items-center justify-content-end">
+                                        <ul class="pagination">
+                                          <li class="page-item">
+                                            <a class="page-link" href="#!" aria-label="Previous">
+                                              <span aria-hidden="true">&laquo;</span>
+                                              <span class="sr-only">Previous</span>
+                                            </a>
+                                          </li>
+                                          <li class="page-item"><a class="page-link" href="#!">1</a></li>
+                                          <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                                          <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                                          <li class="page-item">
+                                            <a class="page-link" href="#!" aria-label="Next">
+                                              <span aria-hidden="true">&raquo;</span>
+                                              <span class="sr-only">Next</span>
+                                            </a>
+                                          </li>
+                                        </ul>
+                                      </nav>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+
+
+                        <!-- Modal -->
+                        <div class="modal" id="out-patient-visit" tabindex="-1" role="dialog" aria-labelledby="out-patient-visit" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90%;">
+                            <div class="modal-content">
+                              <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="patient-registration-title">Out-Patient Visit</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="Out-Patient_record">
+                                  <div class="col-sm-12 text-right">
+                                      <button  type="submit" form="VisitForm" class="btn-primary border-0 p-2 icon-size" name="visit_form"><i class="fa fa-save"></i></button>
+                                      <button class="btn btn-primary dropdown-toggle p-2 icon-size" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+                                      <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#" >Edit</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+
+                                      </div>
+                                    </div><hr>
+
+                                    <form method="POST" id="VisitForm">
+                                      {{form_visit}}
+                                    <div class="alert-primary patient-visit mb-3">
+                                      <div class="row no-gutters">
+                                        <div class="col-md-3 pl-2 pr-2">
+                                          <div class="form-group">
+                                            <label for="reg-no" class=" col-form-label">Visit Type</label>
+                                            <select class="custom-select" required>
+                                              <option >select</option>
+                                              <option value="Visit">General Visit</option>
+                                              <option value="Visit">Antenatal Visit</option>
+                                              <option value="Visit">Day Surgery Visit</option>
+                                              <option value="Visit">General Visit</option>
+                                              <option value="Visit">Mental Health Visit</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-3 pl-2 pr-2">
+                                          <div class="form-group ">
+                                            <label for="page-size" class="col-form-label">Description</label>
+                                            <input type="text" class="form-control" id="page-size" placeholder="" required>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-3 pl-2 pr-2">
+                                          <div class="form-group">
+                                            <label for="reg-no" class="col-form-label">Clinic/Department</label>
+                                            <select class="custom-select">
+                                              <option >select</option>
+                                              <option value="General">General OPD</option>
+                                              <option value="General">Ortho</option>
+                                              <option value="General">ENT</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-3 pl-2 pr-2">
+                                          <div class="form-group">
+                                            <label for="reg-no" class="col-form-label">Doctor/Nurse</label>
+                                            <select class="custom-select">
+                                              <option >select</option>
+                                              <option value="select">Dr.Raju</option>
+                                              <option value="select">Dr.Yusuf</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div><!-- row -->
+                                    </div>
+                                    </form>
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                        <div class="today_visit">
+                                          <h5>Today's Visit</h5>
+                                          <hr>
+                                        </div>
+                                      </div>
+                                    </div><!-- row -->
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                        <div class="today_visit">
+                                          <h5> <i class="fa fa-minus-square-o" aria-hidden="true"></i>  Previous Visits</h5>
+                                          <form>
+                                            <table class="table table-border ">
+                                              <tr style="background:#d1dae6;">
+                                                <th>SN</th>
+                                                <th>Visit No.</th>
+                                                <th>Visit Date</th>
+                                                <th>Patent Name</th>
+                                                <th>Clinic/Department</th>
+                                                <th>Doctor/Nurse Name</th>
+                                              </tr>
+                                              <tr>
+                                                <td>1</td>
+                                                <td>180</td>
+                                                <td>11/07/2019</td>
+                                                <td>Mr. Good Luck</td>
+                                                <td>General OPD</td>
+                                                <td></td>
+                                              </tr>
+                                            </table>
+                                          </form>
+                                        </div>
+                                      </div>
+                                    </div><!-- row -->
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                    </div>
+                    <!--end chat overlay-->
+                </div>
+            </div>
+        </div>
+        <!--end page wrapper -->
+    </div>
+        </div>
+        <!--/ Latest Patients-->
+    </div>
+    <script>
+      var loadFile = function (event) {
+var image = document.getElementById("output");
+image.src = URL.createObjectURL(event.target.files[0]);
+};
+
+  </script>
+  <script>
+
+  function ageCalculator() {
+      //collect input from HTML form and convert into date format
+      var userinput = document.getElementById("DOB").value;
+      var dob = new Date(userinput);
+
+      //check user provide input or not
+      if(userinput==null || userinput==''){
+        document.getElementById("message").innerHTML = "**Choose a date please!";
+        return false;
+      }
+
+      //execute if the user entered a date
+      else {
+      //extract the year, month, and date from user date input
+      var dobYear = dob.getYear();
+      var dobMonth = dob.getMonth();
+      var dobDate = dob.getDate();
+
+      //get the current date from the system
+      var now = new Date();
+      //extract the year, month, and date from current date
+      var currentYear = now.getYear();
+      var currentMonth = now.getMonth();
+      var currentDate = now.getDate();
+
+      //declare a variable to collect the age in year, month, and days
+      var age = {};
+      var ageString = "";
+
+      //get years
+      yearAge = currentYear - dobYear;
+
+      //get months
+      if (currentMonth >= dobMonth)
+        //get months when current month is greater
+        var monthAge = currentMonth - dobMonth;
+      else {
+        yearAge--;
+        var monthAge = 12 + currentMonth - dobMonth;
+      }
+
+      //get days
+      if (currentDate >= dobDate)
+        //get days when the current date is greater
+        var dateAge = currentDate - dobDate;
+      else {
+        monthAge--;
+        var dateAge = 31 + currentDate - dobDate;
+
+        if (monthAge < 0) {
+          monthAge = 11;
+          yearAge--;
+        }
+      }
+      //group the age in a single variable
+      age = {
+      years: yearAge,
+      months: monthAge,
+      days: dateAge
+      };
+
+
+      if ( (age.years > 0) && (age.months > 0) && (age.days > 0) )
+         ageString = age.years + "Y " + age.months + "M  " + age.days + "D";
+      else if ( (age.years == 0) && (age.months == 0) && (age.days > 0) )
+         ageString = "Only " + age.days + " days old!";
+      //when current month and date is same as birth date and month
+      else if ( (age.years > 0) && (age.months == 0) && (age.days == 0) )
+         ageString = age.years +  " years old. Happy Birthday!!";
+      else if ( (age.years > 0) && (age.months > 0) && (age.days == 0) )
+         ageString = age.years + " years and " + age.months + " months old.";
+      else if ( (age.years == 0) && (age.months > 0) && (age.days > 0) )
+         ageString = age.months + " months and " + age.days + " days old.";
+      else if ( (age.years > 0) && (age.months == 0) && (age.days > 0) )
+         ageString = age.years + " years, and" + age.days + " days old.";
+      else if ( (age.years == 0) && (age.months > 0) && (age.days == 0) )
+         ageString = age.months + " months old.";
+      //when current date is same as dob(date of birth)
+      else ageString = "Welcome to Earth! <br> It's first day on Earth!";
+
+      //display the calculated age
+      return document.getElementById("result").innerHTML = ageString;
+
+    }
+  }
+  </script>
+<!-- Start Country State -->
+<script>
+// user country code for selected option
+let user_country_code = "IN";
+
+(function () {
+    // script https://www.html-code-generator.com/html/drop-down/country-region
+
+    // Get the country name and state name from the imported script.
+    let country_list = country_and_states['country'];
+    let states_list = country_and_states['states'];
+
+    // creating country name drop-down
+    let option =  '';
+    option += '<option>select country</option>';
+    for(let country_code in country_list){
+        // set selected option user country
+        let selected = (country_code == user_country_code) ? ' selected' : '';
+        option += '<option value="'+country_code+'"'+selected+'>'+country_list[country_code]+'</option>';
+    }
+    document.getElementById('country').innerHTML = option;
+
+    // creating states name drop-down
+    let text_box = '<input type="text" class="input-text" id="state">';
+    let state_code_id = document.getElementById("state-code");
+
+    function create_states_dropdown() {
+        // get selected country code
+        let country_code = document.getElementById("country").value;
+        let states = states_list[country_code];
+        // invalid country code or no states add textbox
+        if(!states){
+            state_code_id.innerHTML = text_box;
+            return;
+        }
+        let option = '';
+        if (states.length > 0) {
+            option = '<select id="state">\n';
+            for (let i = 0; i < states.length; i++) {
+                option += '<option value="'+states[i].code+'">'+states[i].name+'</option>';
+            }
+            option += '</select>';
+        } else {
+            // create input textbox if no states
+            option = text_box
+        }
+        state_code_id.innerHTML = option;
+    }
+
+    // country select change event
+    const country_select = document.getElementById("country");
+    country_select.addEventListener('change', create_states_dropdown);
+
+    create_states_dropdown();
+})();
+
+</script>
+<!-- End Country State -->
+
+<!-- Modal Submit Button -->
+<script>
+   // Example starter JavaScript for disabling form submissions if there are invalid fields
+   (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.getElementsByClassName('needs-validation');
+      // Loop over them and prevent submission
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+
+</script>
+    {% endblock  %}

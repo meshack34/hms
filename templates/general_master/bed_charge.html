@@ -1,0 +1,184 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<style>
+.card {
+    margin: 0 auto;
+    float: none;
+    margin-bottom: 10px;
+}
+</style>
+
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px;">
+            <h3>Bed charge</h3><br><br><br>
+            <form method="POST" id="form_id" data-cities-url="{% url 'test_app_bed_load' %}">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="inputEmail4">Ward Type</label>
+                        <select class="custom-select mr-sm-2" id="ward_name" name="ward_name">
+                            <option selected>Choose...</option>
+                            {% for data in ward_type_records %}
+                            <option value="{{data.ward_type}}">{{data.ward_type}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group col-md-3">
+                        <label for="inputPassword4">Ward Category</label>
+                        <select class="custom-select mr-sm-2" id="ward_cat" name="ward_cat">
+                            <option selected>Choose...</option>
+                            <!-- {% for data in ward_cat %}
+                            <option value="{{data.category_name}}">{{data.category_name}}</option>
+
+                            {% endfor %} -->
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6" style="padding-top: 25px;">
+                        <button type="submit" class="btn btn-primary"
+                            style="margin-left: 70%; width: 150px; height: 40px;">Search</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        {% if before_charge %}
+        <div class="card" style="padding: 30px; width: 80%; ">
+            <form method="post" action="/single_bed_charge_load">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Ward Type     : <b>{{ward_name}}</b> </p>
+                        <p>Ward Category : <strong>{{ward_cat}}</strong></p>
+                    </div>
+                    <div class="col-md-4">
+                        Bed Charge <input type="number" class="form-control" id="Total_charge" name="Total_charge" style="background-color: whitesmoke;">    
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btm btn-warning" id="charge_btn" name="charge_btn"  style="margin-top: 20px; font-size: 20px;"><i class="fas fa-save" ></i> </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card" style="padding: 30px; width: 80%; border-radius: 30px; ">
+            <div class="row">
+                {% for data in bed_master %}
+                <div class="col-md-3">
+                    <i class="fa fa-bed" style="font-size:60px ; color: rgb(51, 175, 232);" ></i>
+                            <P><b>{{data.bed_no}}</b> </P>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% if after_charge %}
+        <div class="card" style="padding: 30px; width: 80%; ">
+            <form method="post" action="/Bed_charge_edit">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Ward Type     : <b>{{ward_name}}</b> </p>
+                        <p>Ward Category : <strong>{{ward_cat}}</strong></p>
+                    </div>
+                    <div class="col-md-4">
+                        <!-- Bed Charge <input type="number" class="form-control" id="Total_charge" name="Total_charge" style="background-color: whitesmoke;">     -->
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btm btn-danger" id="edit_btn" name="edit_btn" value="edit_btn"  style="margin-top: 20px; font-size: 17px; width: 100px;">Edit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card" style="padding: 30px; width: 80%; border-radius: 30px; ">
+            <div class="row">
+                {% for data in bed_master %}
+                <div class="col-md-3">
+                    <i class="fa fa-bed" style="font-size:60px ; color: rgb(51, 175, 232);" ></i>
+                    <P><b>{{data.bed_no}}</b> <input type="number" class="form-control" style="background-color: whitesmoke; border-radius: 8px " id="single_charge" name="single_charge" value="{{data.bed_charge}}"></P>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% if charge %}
+        <div class="card" style="padding: 30px; width: 80%; ">
+            <form method="post">
+                {% csrf_token %}
+            <div class="row">
+                <div class="col-md-9">
+                    <p>Ward Type     : <b>{{ward_name}}</b> </p>
+                    <p>Ward Category : <strong>{{ward_cat}}</strong></p>
+                </div>
+                
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-warning" style="margin-left: 90px; margin-top: 30px;"> Save</button>
+                </div>
+            </div>
+        </div>
+            <div class="card" style="padding: 30px; width: 80%; ">
+            <div class="row">
+                {% for data in bed_master %}
+                <div class="col-md-3">
+                    <i class="fa fa-bed" style="font-size:60px ; color: rgb(51, 175, 232);" ></i>
+                        <P><b>{{data.bed_no}}</b> <input type="number" class="form-control" style="background-color: whitesmoke; border-radius: 8px " id="single_charge" name="single_charge" value="{{charge}}"></P>
+                </div>
+                {% endfor %}
+            </div>
+        </form>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $("#ward_name").change(function () {
+      const ward_type_id = $(this).val();
+      const url = $("#form_id").attr("data-cities-url");
+      $.ajax({             
+          url: url,   
+          data: {
+              'ward_type_id':ward_type_id 
+          },
+          success: function (data) { 
+              $("#ward_cat").html(data);  
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (cat) {
+                  html_data += `<option value="${cat.category_name}">${cat.category_name}</option>`
+              });
+              console.log(html_data);
+              $("#ward_cat").html(html_data);
+  
+  
+          }
+      });
+  
+  });
+  </script>
+<script>
+    $("#charge_btn").click(function () {
+        const amount = $('#Total_charge').val();
+        const url = $("#charge_form_id").attr("data-cities-url");  
+    
+        $.ajax({             
+            url: url,   
+            data: {
+                'amount':amount 
+            },
+            success: function (data) { 
+                console.log(amount);
+                $("#single_charge").val(amount);
+    
+    
+            }
+        });
+    
+    });
+</script>
+
+
+{% endblock %}

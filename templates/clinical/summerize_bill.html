@@ -1,0 +1,112 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="card-box mb-0">
+          <div class="header">
+            <div class="body">
+                      <form method="POST">
+        {% csrf_token %}
+        <div class="row filter-row">
+            <div class="col-sm-8 col-md-2">
+                <div class="form-group form-focus mb-0">
+                    <label class="focus-label">Addmission Date</label>
+                    <input type="date"  class="form-control" name="adm_date" required>
+                </div>
+            </div>
+            <div class="col-sm-8 col-md-2">
+                <div class="form-group form-focus mb-0">
+                    <label class="focus-label">Ward</label>
+                    <input type="text" class="form-control" name="ward" required>
+                </div>
+            </div>
+            <div class="col-sm-8 col-md-2">
+                <div class="form-group form-focus mb-0">
+                    <label class="focus-label">Department</label>
+                    <input type="text" class="form-control" name="department" required>
+                </div>
+            </div>
+            <div class="col-sm-8 col-md-2">
+                <div class="form-group form-focus mb-0">
+                    <label class="focus-label">Floor</label>
+                    <input type="text" class="form-control" name="floor" required>
+                </div>
+            </div>
+            <div class="col-sm-8 col-md-2" >
+              <input type="submit" class="form-control btn btn-info"  placeholder="Last name" value="Search">
+            </div>
+<!--            <div class="col-sm-8 col-md-2" >-->
+<!--                <a href="/reports" class="form-control btn btn-primary" style="background-color:#006778">Go Back</a>-->
+<!--            </div>-->
+        </div>
+        </form>
+                <hr>
+                <div class="table-responsive">
+<!--                  <a href="/new-appointment">-->
+<!--                    <button type="button" class="btn btn-info" style="float: right;">Create New Appointment</button>-->
+<!--                </a>-->
+                <table class="datatable table table-stripped ">
+                        <thead>
+                            <tr>
+                              <th>Investigation Order</th>
+                                <th>Service Header</th>
+                                 <th>Medicine</th>
+                                <th>Nursing</th>
+                                <th></th>
+<!--                                <th>Patient Mob No</th>-->
+<!--                                <th>Patient address</th>-->
+                                <!-- <th>doctor_department</th> -->
+                                <!-- <th>Status</th> -->
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in get_data %}
+                          <tr>
+                            <td>{{data.uhid}}</td>
+                            <td>{{data.first_name|upper}}</td>
+                            <td>{{data.age}}</td>
+                            <!-- <td>{{data.patient_mobile_number}}</td> -->
+                            <td>{{data.gender}}</td>
+                            <td>{{data.registration_date_and_time}}</td>
+                            <td>{{data.mobile_number}}</td>
+                            <td>{{data.address}}</td>
+<!--                            <td>{{data.doctor_name}}</td>-->
+                            <!-- <td>{{data.doctor_department}}</td> -->
+                            <!-- <td><button type="button" name="button" class="btn btn-success" align="center">{{data.doctor_status}}</button></td> -->
+                          </tr>
+                          {% endfor %}
+                         </tbody>
+                </table>
+                </div>
+            </div>
+</div>
+</div>
+</div>
+</div>
+  </div>
+</div>
+{% endblock %}
+{% block script_block %}
+<script>
+    var deleteLinks = document.querySelectorAll('.delete');
+
+    for(var i=0;i<deleteLinks.length;i++) {
+        deleteLinks[i].addEventListener('click',function(event) {
+            event.preventDefault();
+            var choice = confirm(this.getAttribute('data-confirm'));
+            if(choice){
+                window.location.href = this.getAttribute('href')
+            }
+            });
+    }
+
+</script>
+
+{% endblock  %}

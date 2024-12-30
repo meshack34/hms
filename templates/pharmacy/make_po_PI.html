@@ -1,0 +1,359 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+  .form-control {
+    border: 2px solid white;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+      <div>
+        <a href="/department_consump_search" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+        <b>Make PO for PI</b>
+      </div>
+      <div class="">
+        <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+        <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+        <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+          <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+          
+        </div>
+      </div>
+    </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4">
+                  <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-row">
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b>Item Category</b></label>
+                        <select name="item_cat" id="item_cat" class="form-control">
+                          <option value="">select</option>
+                          {% for data in item_cate %}
+                          <option value="{{data.id}}">{{data.item_category}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b>Item Name</b></label>
+                        <input type="text" name="item_name" list="items" class="form-control">
+                      </div>
+
+                      <datalist id="items">
+                        {% for data in items %}
+                        <option value="{{data.id}}.{{data.item_name}}"></option>
+                        {% endfor %}
+                      </datalist>
+
+                      <div class=" col-md-1"><br>
+                        <button type="submit" class="btn btn-warning w-100 mt-2" name="Search" value="Search"><i
+                            class="fa fa-search pr-2"></i>Search</button>
+                      </div>
+                      <div class=" col-md-1"><br>
+                        <button type="button" class="btn btn-primary w-100 mt-2" data-toggle="modal"
+                          data-target=".bd-example-modal-lg"><i class="fa fa-search pr-2"></i>Make Po</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                
+          {% if records %}
+              <div class="table-responsive">
+                <table class="datatable table table-stripped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Indent No</th>
+                      <th>Date Time</th>
+                      <th>Main Store</th>
+                      <th>Location</th>
+                      <th>Department Name</th>
+                      <th>View</th>
+                    </tr>
+                  </thead>
+                  {% for data in records %}
+                  <tbody>
+
+                    <tr>
+                      <td>{{forloop.counter}}</td>
+                      <td>{{data.intent_id}}</td>
+                      <td>{{data.intent_datetime}}</td>
+                      <td>{{data.main_store}}</td>
+                      <td>{{data.location_id}}</td>
+                      <td>{{data.department}}</td>
+                      <td><a class="btn btn-primary" href="/PI_items_details/{{data.intent_id}}"><i
+                            class="fa fa-hand-pointer" aria-hidden="true"></i></a>
+                      </td>
+
+                    </tr>
+                  </tbody>
+                  {% endfor %}
+                </table>
+              </div>
+{% endif %}
+
+</div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="demo-masked-input">
+          <div class="row clearfix">
+            <div class="col-12">
+              <div class="form-group">
+                <div class="form-line">
+                  <form method="post">
+                    {% csrf_token %}
+
+                    <button type="submit" name="Make_PO" value="Make_PO" class="btn btn-primary"> <i
+                        class="fas fa-save">&nbsp;Make PO</i></button>&nbsp;
+                    <br><br>
+                    <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"><br>
+                      <div class="form-row">
+                        <div class="form-group col-md-3 mb-0">
+                          <label>Vendor Name</label>
+                          <select name="vendor_id" id="vendor_id" class="form-control">
+                            <option>select</option>
+                            {% for data in vendor%}
+                            <option value="{{data.id}}">{{data.vendor_name}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group col-md-2 mb-0">
+                          <label><b>Department</b></label>
+                          <select name="department" id="department" class="form-control">
+                            <option>Select</option>
+                            {% for data in dept_detail %}
+                            <option value="{{data.id}}">{{data.service_department}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group col-md-2 mb-0">
+                          <label><b>Location</b></label>
+                          <select name="po_location" id="po_location" class="form-control">
+                            <option>Select</option>
+                            {% for data in location_detail %}
+                            <option value="{{data.id}}">{{data.location_name}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <input type="hidden" name="location" id="location" class="form-control" value="{{store_detail.location_id_id}}">
+                        <div class="form-group col-md-2 mb-0">
+                          <label><b>Store</b></label>
+                          <input type="text" name="store_name" id="store_name" class="form-control" value="{{store_detail.store_name}}">
+                          <input type="hidden" name="store_id" id="store_id" class="form-control" value="{{store_detail.id}}">
+                          </div>
+                        <div class="form-group col-md-3 mb-0">
+                          <label>Basic Amount</label>
+                          <input type="text" name="basic_amount" id="basic_amount" class="form-control"
+                            value="{{basic_amt}}">
+                        </div>
+
+                      </div>
+                    </div>
+                    <br><br>
+                    <div class="table-responsive">
+                      <table class="datatable table table-stripped" id="model_table">
+                        <thead class="text-nowrap">
+                          <tr>
+                            <th>Item_Name</th>
+                            <th>Qty</th>
+                            <th>Unit</th>
+                            <th>Free Qty</th>
+                            <th>Stock Qty</th>
+                            <th>Rate</th>
+                            <th>Schema%</th>
+                            <th>Dis%</th>
+                            <th>Dis Amt</th>
+                            <th>Amount</th>
+                            <th>Tax Details</th>
+                          </tr>
+
+                        </thead>
+                        {% for data in PI_Temp_1%}
+                        <tbody>
+
+                          <tr>
+                            <td><input type="text" name="item_name" id="item_name1" value="{{data.item_id}}"
+                                class="form-control"><input type="hidden" name="item_name1" id="item_name" value="{{data.item_id_id}}"
+                                ></td>
+                            <td><input type="text" name="qty1" id="qty" class="form-control" value="{{data.total_qty}}">
+                            </td>
+                            <td><input type="text" name="unit_name" id="unit_name" class="form-control" value="{{data.unit_id}}">
+                              <input type="hidden" name="unit1" id="unit" value="{{data.unit_id_id}}">
+                            </td>
+                            <td><input type="text" name="free_qty1" id="free_qty" class="form-control"></td>
+                            <td><input type="text" name="stock_qty1" id="stock_qty" class="form-control"
+                                value="{{data.stock_qty}}"></td>
+                            <td><input type="text" name="rate1" id="rate" class="form-control" value="{{data.rate}}">
+                            </td>
+                            <td><input type="text" name="schema1" id="schema" class="form-control"></td>
+                            <td><input type="text" name="discount1" id="discount" class="form-control"></td>
+                            <td><input type="text" name="discount_amt1" id="discount_amt" class="form-control"></td>
+                            <td><input type="text" name="amount1" id="amount" class="form-control total_amount"
+                                value="{{data.total_amount}}"></td>
+                            <td><input type="text" name="tax_details1" id="tax_details" class="form-control"></td>
+
+                          </tr>
+                          {% endfor %}
+
+
+                          <tr></tr>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><span style="font-weight:bold">Net Amt: </span></td>
+                            <td><input type="text" name="net_amount" id="net_amount" value="{{basic_amt}}"
+                                class="form-control"></td>
+                            <td></td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Footer -->
+          <!-- <div class="modal-footer">
+                    <hr style="border: 10%; color: aqua;"><br>
+               <button type="button"class="btn btn-success" > <i class="fas fa-save" >&nbsp;Save</i></button>
+                    </div> -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+
+    $(document).on('keyup', '#rate', function () {
+      var dumy = this;
+      var rate = this.value;
+      var qty = $(dumy).closest('tr').find('#qty').val();
+      var net_amount = $('#net_amount').val();
+      var amount = qty * rate;
+      $(dumy).closest('tr').find('#amount').val(amount);
+
+      var calculated_total_sum = 0;
+      $("#model_table .total_amount").each(function () {
+        var get_textbox_value = $(this).val();
+        if ($.isNumeric(get_textbox_value)) {
+          calculated_total_sum += parseFloat(get_textbox_value);
+        }
+      });
+      $("#net_amount").val(calculated_total_sum);
+
+    });
+
+    $(document).on('keyup', '#schema', function () {
+      var dumy = this;
+      var qty = $(dumy).closest('tr').find('#qty').val();
+      var rate = $(dumy).closest('tr').find('#rate').val();
+      var schema = $(dumy).closest('tr').find('#schema').val();
+      var amount = $(dumy).closest('tr').find('#amount').val();
+      var amount1 = qty * rate
+      var schema_cal = (amount1 * schema) / 100;
+      var amount1 = amount - schema_cal;
+
+      $(dumy).closest('tr').find('#amount').val(amount1);
+
+      var calculated_total_sum = 0;
+      $("#model_table .total_amount").each(function () {
+        var get_textbox_value = $(this).val();
+        if ($.isNumeric(get_textbox_value)) {
+          calculated_total_sum += parseFloat(get_textbox_value);
+        }
+      });
+      $("#net_amount").val(calculated_total_sum);
+
+    });
+
+    $(document).on('keyup', '#discount', function () {
+      var dumy = this;
+      var amount = $(dumy).closest('tr').find('#amount').val();
+      var discount = $(dumy).closest('tr').find('#discount').val();
+      var qty = $(dumy).closest('tr').find('#qty').val();
+      var rate = $(dumy).closest('tr').find('#rate').val();
+      var discount1 = qty * rate * discount
+      var discount_amount = parseInt(parseFloat(discount1 / 100));
+      var amount1 = amount - discount_amount;
+      var amount3 = parseFloat(amount1);
+      var amount2 = parseInt(amount3);
+
+      $(dumy).closest('tr').find('#discount_amt').val(discount_amount);
+      $(dumy).closest('tr').find('#amount').val(amount2);
+
+      var calculated_total_sum = 0;
+      $("#model_table .total_amount").each(function () {
+        var get_textbox_value = $(this).val();
+        if ($.isNumeric(get_textbox_value)) {
+          calculated_total_sum += parseFloat(get_textbox_value);
+        }
+      });
+      $("#net_amount").val(calculated_total_sum);
+
+    });
+
+    $(document).on('keyup', '#tax_details', function () {
+      var dumy = this;
+      var tax = $(dumy).closest('tr').find('#tax_details').val();
+      var qty = $(dumy).closest('tr').find('#qty').val();
+      var amount1 = $(dumy).closest('tr').find('#amount').val();
+      var rate = $(dumy).closest('tr').find('#rate').val();
+      var amount = qty * rate;
+      var tax_amount = (amount * tax) / 100;
+      var tax_detail = parseInt(amount1) + parseInt(tax_amount);
+      $(dumy).closest('tr').find('#amount').val(tax_detail);
+
+      var calculated_total_sum = 0;
+      $("#model_table .total_amount").each(function () {
+        var get_textbox_value = $(this).val();
+        if ($.isNumeric(get_textbox_value)) {
+          calculated_total_sum += parseFloat(get_textbox_value);
+        }
+      });
+      $("#net_amount").val(calculated_total_sum);
+
+    });
+
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+  .form-control {
+    border: 2px solid white;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+      <div>
+        <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+        <b>Item Issue to MainStore</b>
+      </div>
+      <div class="">
+        <!-- <button type="button" class="btn"> <i class="fas fa-save" style="color: white;"></i></button> -->
+ 
+        <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+        <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a href="/view_cpcstore_stock" class="dropdown-item btn-primary">View</a>
+          <a href='/without_po_entry' class="dropdown-item btn-primary" name="without_po_entry" value="without_po_entry">Without-PO Issue</i></a> 
+          <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+          <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+        </div>
+      </div>
+    </div>
+ 
+      <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"><br>
+        <form method="post" action="">
+          {% csrf_token %}
+          <div class="form-row">
+            <div class="form-group col-md-3 mb-0">
+              <label>Indent No</label>
+              <input type="text" name="indent_no" id="indent_no" class="form-control">
+            </div>
+            <div class="form-group col-md-0"><br>
+              <button type="submit" class="btn btn-warning py-1"> <i
+                  class="fas fa-search">Search</i></button>&nbsp;
+            </div>
+          </div>
+        </form>
+      </div>
+      {% if po_parent %}
+        <div class="table-responsive">
+          <table class="datatable table-bordered table table-stripped ">
+            <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>PO No.</th>
+                  <th>Date Time</th>
+                  <th>PO Location</th>
+                  <th>Vendor Name</th>
+                  <th>Department Name</th>
+                  <th>Net Amount</th>
+                  <th>Basic Amount</th>
+                  <th>View</th>
+          
+                </tr>
+              </thead>
+              
+              <tbody>
+                {% for data in po_parent %}
+                <tr>
+                  <td>{{forloop.counter}}</td>
+                  <td><b>{{data.PO_id}}</b></td>
+                  <td>{{data.PO_datetime}}</td>
+                  <td>{{data.po_location}}</td>
+                  <td>{{data.vendar_id}}</td>
+                  <td>{{data.Department}}</td>
+                  <td>{{data.net_amount}}</td>
+                  <td>{{data.basic_amt}}</td>
+                  <td><a class="btn btn-primary" href="/item_issue_tomainstore/{{data.PO_id}}"><i class="fa fa-hand-pointer"
+                        aria-hidden="true"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              
+          </table>
+        </div>
+        {% endif %}
+
+</div>
+</div>
+{% endblock %}

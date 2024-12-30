@@ -1,0 +1,107 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+    #id_from_date,
+    #id_to_date,
+    #id_store {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="color: white;" href="#">Item Return to Supplier</a>
+            </div>
+        </nav><br>
+        <div class="container-fluid">
+            <div class="icon-button-demo">&nbsp;
+
+                <a href="" class="btn btn-info"> <i class="fas fa-times-circle">&nbsp;&nbsp;Back</i></a>
+                <button type="reset" class="btn btn-primary"> <i class="fas fa-sync-alt">&nbsp;&nbsp;Refresh</i></button>&nbsp;
+                        
+                <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">&nbsp;&nbsp;Exit</i></a>
+            </div>
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <br>
+                            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"><br>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3 mb-0">
+                                            <label><b>Item Category</b></label>
+                                            <select name="item_cat" id="item_cat" class="form-control">
+                                                <option>select</option>
+                                                {% for data in item_category %}
+                                                <option value="{{data.id}}">{{data.item_category}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-3 mb-0">
+                                            <label><b>Item Name</b></label>
+                                            <input type="text" name="item_name" list="items" class="form-control">
+                                        </div>
+                                        <datalist id="items">
+                                            {% for data in item_Name%}
+                                            <option value="{{data.item_name}}"></option>
+                                            {% endfor %}
+                                        </datalist>
+                                        <div class="form-group col-md-2 mb-0"><br>
+                                            <button type="submit" class="btn btn-warning" name="Search"
+                                                value="Search"><i class="fa fa-search">Search</i></button>&nbsp;
+                                            <a href='/STV_makereturn' class="btn btn-primary" name="WO_intent"
+                                                value="WO_intent">&nbsp;Make Return</i></a>&nbsp;
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="table-responsive">
+                                        <table class="datatable table table-stripped ">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Return No</th>
+                                                    <th>Date</th>
+                                                    <th>Store Name</th>
+                                                    <th>View</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for data in item_return_parent %}
+                                                <tr>
+                                                    <td>{{forloop.counter}}</td>
+                                                    <td><input type="hidden" name="return_parent_no" id="return_parent_no" value="{{data.item_return_no}}">{{data.item_return_no}}</td>
+                                                    <td><input type="hidden" name="item_id" id="item_id">{{data.return_date}}</td>       
+                                                    <td><input type="hidden" name="expiry_date" id="expiry_date" value="{{data.receiving_store}}">{{data.receiving_store}}</td>  
+                                                    <td><button type="submit" class="btn btn-primary" name="view_detail" value="view_detail"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button></td>     
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                                </form>
+
+                            </div><br><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,314 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+
+<!--This for payment receipt print function-->
+<div id="hello">
+    <style>
+        #charge{
+            text-align: center;
+        }
+        body, p,table {
+            font-family: arial;
+            font-size: 14px;
+        }
+    </style>
+<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+				<tr>
+					<td>
+						<div class="">
+							<center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+							</center>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr >
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td colspan="4" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;">Detail Bill</h3></td>
+				</tr>
+
+				<tr>
+					<th style="text-align: left;">Reg. No.</th>
+					<td>:{{reg_detail.uhid}}</td>
+					<th style="text-align: left;">Admission Id</th>
+					<td>:{{records.admission_ID}}</td>
+				</tr>
+				<tr>
+					<th style="text-align: left;">Patient Name</th>
+					<td>:{{reg_detail.title }} {{reg_detail.first_name | upper}} {{reg_detail.middle_name | upper}} {{reg_detail.last_name | upper}}</td>
+					<th style="text-align: left;">Admission Date</th>
+					<td>:{{records.admission_datetime}}</td>
+				</tr>
+				<tr>
+					<th style="text-align: left;">Mobile</th>
+					<td>:{{reg_detail.mobile_number}}</td>
+					<th style="text-align: left;">Age.</th>
+					<td>:{{reg_detail.age}}</td>
+				</tr>
+				<tr>
+					<th style="text-align: left;">Address</th>
+					<td>:{{reg_detail.address}}</td>
+					<th style="text-align: left;">Sex</th>
+					<td>:{{reg_detail.gender}}</td>
+				</tr>
+
+				<tr>
+					<th style="text-align: left;">Ward</th>
+					<td>:{{bed_charge_records.0.ward_type}}</td>
+					<th style="text-align: left;">Bed No</th>
+					<td>:{{bed_charge_records.0.bed_no}}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%" id="example">
+                <tr>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:center; ">Category </th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:center;">Sub Category </th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:center;" >Description</th>
+                    <th colspan="2" style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:center;">Date </th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:center;">Qty </th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:center;">Amount </th>
+                </tr>
+                    {% if records.admission_charge %}
+                    <tr>
+                        <td colspan="6"><h3>Admission Charge</h3></td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td style="text-align: center;">1</td>
+                        <td>{{records.admission_charge.service_name|floatformat:2|intcomma}}</td>
+                        <td colspan="2">{{records.admission_datetime|date:"M d, Y"}}</td>
+                        <td style="text-align: center;">1</td>
+                        <td id="charge">{{records.admission_charge.Charges|floatformat:2|intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"></td>
+                        <td colspan="2" style="font-size:17px; text-align:right;" ><b>Sub Total:</b></td>
+                        <td id="charge"><b>{{records.admission_charge.Charges|floatformat:2|intcomma}}</b></td>
+                    </tr>
+                    {% endif %}
+                    {% if procedure_records %}
+                    <tr>
+                        <td colspan="6" ><h3>Procedure</h3></td>
+                    </tr>
+                    {% regroup procedure_records by service_sub_category as report_list %}
+                    {% for group in report_list %}
+
+                    <tr>
+                        <td></td>
+                        <td colspan="4"><strong>{{group.grouper}}</strong></td>
+                        <td></td>
+                    </tr>
+                    {% for data in group.list %}
+                    <tr>
+                        <td></td>
+                        <td style="text-align: center;">{{forloop.counter}}</td>
+                        <td>{{data.service_name}}</td>
+                        <td colspan="2">{{data.pro_date}}</td>
+                        <td style="text-align: center;">1</td>
+                        <td id="charge">{{data.service_charge|floatformat:2|intcomma}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endfor %}
+                    <tr>
+                        <td colspan="6"></td>
+                    </tr>
+                    <tr style="border-top: 1px solid#333; border-bottom: 1px solid#333;">
+                        <td colspan="4"></td>
+                        <td colspan="2" style="font-size:17px; text-align:right;" ><b>Sub Total:</b></td>
+                        <td id="charge"><b>{{sub_total.0|floatformat:2|intcomma}}</b></td>
+                    </tr>
+                    {% endif %}
+
+                    {% if investigation_records %}
+                    <tr>
+                        <td colspan="6"><h3>Investigation</h3></td>
+                    </tr>
+                    {% regroup investigation_records by service_sub_category as report_list %}
+                    {% for group in report_list %}
+                    <tr>
+                        <td></td>
+                        <td colspan="4"><strong>{{group.grouper}}</strong></td>
+                        <td></td>
+                    </tr>
+                    {% for data in group.list %}
+                    <tr>
+                        <td></td>
+                        <td style="text-align: center;">{{forloop.counter}}</td>
+                        <td>{{data.service_name}}</td>
+                        <td colspan="2">{{data.date_time}}</td>
+                        <td style="text-align: center;">1</td>
+                        <td id="charge">{{data.service_charge|floatformat:2|intcomma}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endfor %}
+                    <tr>
+                        <td colspan="6"></td>
+                    </tr>
+                    <tr style="border-top: 1px solid#333; border-bottom: 1px solid#333;">
+                        <td colspan="4"></td>
+                        <td colspan="2" style="font-size:17px; text-align:right;" ><b>Sub Total:</b></td>
+                        <td id="charge"><b>{{sub_total.1|floatformat:2|intcomma}}</b></td>
+                    </tr>
+                    {% endif %}
+
+                    {% if ps_sales_record %}
+                    <tr>
+                        <td colspan="6"><h3>Medication</h3></td>
+                    </tr>
+                    {% for data in ps_sales_record %}
+
+                    <tr>
+                        <td></td>
+                        <td colspan="4"><strong>{{data.0.Op_sales_no}}</strong></td>
+                        <td></td>
+                    </tr>
+                    {% for record in data %}
+                    <tr>
+                        <td></td>
+                        <td style="text-align: center;">{{forloop.counter}}</td>
+                        <td>{{record.item_id}}</td>
+                        <td colspan="2">{{record.sales_date|date}}</td>
+                        <td style="text-align: center;">{{record.qty}}</td>
+                        <td id="charge">{{record.amount|floatformat:2|intcomma}}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr >
+                        <td colspan="5"></td>
+                    </tr>
+
+                    {% endfor %}
+                    <tr style="border-top: 1px solid#333; border-bottom: 1px solid#333;">
+                        <td colspan="4"></td>
+                        <td colspan="2" style="font-size:17px; text-align:right;" ><b>Sub Total:</b></td>
+                        <td id="charge"><b>{{ps_sales_total|floatformat:2|intcomma}}</b></td>
+                    </tr>
+                    {% endif %}
+
+                    {% if consultation_records %}
+                    <tr>
+                        <td colspan="6"><h3>Consulation</h3></td>
+                    </tr>
+                    {% regroup consultation_records by service_sub_category as report_list %}
+                    {% for group in report_list %}
+
+                    <tr>
+                        <td></td>
+                        <td colspan="4"><strong>{{group.grouper}}</strong></td>
+                        <td></td>
+                    </tr>
+                    {% for data in group.list %}
+                    <tr>
+                        <td></td>
+                        <td style="text-align: center;">{{forloop.counter}}</td>
+                        <td>{{data.service_name}}</td>
+                        <td colspan="2">{{data.cons_date}}</td>
+                        <td style="text-align: center;">1</td>
+                        <td id="charge">{{data.service_charge|floatformat:2|intcomma}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endfor %}
+                    <tr>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr style="border-top: 1px solid#333; border-bottom: 1px solid#333;">
+                        <td colspan="4"></td>
+                        <td colspan="2" style="font-size:17px; text-align:right;" ><b>Sub Total:</b></td>
+                        <td id="charge"><b>{{sub_total.2|floatformat:2|intcomma}}</b></td>
+                    </tr>
+                    {% endif %}
+
+                    {% if bed_charge_records_zip %}
+                    <tr>
+                        <td colspan="6"><h3>Room Charges</h3></td>
+                    </tr>
+                    {% for data,date in bed_charge_records_zip %}
+                   <tr>
+                    <td></td>
+                    <td style="text-align: center;">{{forloop.counter}}</td>
+                    <td>Room Charge</td>
+                    <td colspan="2">{{date}}</td>
+                    <td style="text-align: center;">1</td>
+                    <td id="charge">{{data.bed_charge|floatformat:2|intcomma}} </td>
+                   </tr>
+
+                    {% endfor %}
+                    <tr>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr style="border-top: 1px solid#333;">
+                        <td colspan="4"></td>
+                        <td colspan="2" style="font-size:17px; text-align:right;" ><b>Sub Total:</b></td>
+                        <td id="charge"><b>{{sub_total.3|floatformat:2|intcomma}}</b></td>
+                    </tr>
+                    {% endif %}
+
+                <tr style="border-top: 1px solid#333; border-bottom: 1px solid#333;">
+                    <td colspan="2"></td>
+                    <td colspan="4" style="font-size:17px; text-align:right;" ><b> Total Bill Amount</b></td>
+                    <td style="font-size:17px;"><b>{{tot_net_amt|floatformat:2|intcomma}}</b></td>
+                    <td></td>
+                </tr>
+            </table>
+		</td>
+	</tr>
+
+</table><br><br><br>
+<footer >
+   <center> <b>This is a computer-generated bill and does not require a signature.</b></center>
+</footer>
+</div><br><br>
+<button type="button"  onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;">Print</button>
+
+<script type="text/javascript">
+        
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+</body>
+</html>

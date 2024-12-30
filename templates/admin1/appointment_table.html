@@ -1,0 +1,144 @@
+{% extends 'admin1/base.html' %}
+{% block body_block %}
+<!--Main Content-->
+<div class="page-wrapper">
+  <div class="content">
+    <!-- Main Dashboard -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="icon-button-demo">&nbsp;
+            <a href="/new-appointment"><button type="button" class="btn btn-success">Create New Appointment</button></a>
+            <button type="reset" class="btn btn-primary" onClick="window.location.reload();">
+                <i class="fas fa-sync-alt">&nbsp;Refresh</i></button>&nbsp;
+            <a href="/dashboard" class="btn btn-danger"> <i class="fas fa-times-circle">&nbsp;Exit</i></a>
+            <form method="post" style="float:right;">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-8">
+                  <input type="text" name="patient_name"  class="form-control border border-secondary" placeholder="Patient Name.....">
+                </div>
+                <div class="col-4">
+                  <button type="submit" for="mySelector" class="btn btn-info">Search</button>
+                </div>
+              </div>
+            </form>
+        </div>
+            <div class="header">
+              <div class="body">
+                <div class="table-responsive">
+                  {% for message in messages %}
+                  <div class="container-fluid p-0">
+                    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="True">&times;</span>
+                      </button>
+                      <b>{{ message }}</b>
+                    </div>
+                  {% endfor %}
+                  <table class="datatable table table-stripped" id="myTable">
+                      <thead style="background-color:rgb(213, 213, 244);">
+                        <tr>
+                          <th>SI.No</th>
+                          <th>Appointment Id</th>
+                          <th>Patient Id</th>
+                          <th name="patient">Patient Name</th>
+                          <th>Doctor Name</th>
+                          <th>Gender</th>
+                          <th>Schedule Date</th>
+                          <th>Payment Mode</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% if records%}
+                        {% for data in records %}
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td>{{data.patient_appointment_id}}</td>
+                          <td>{{data.patient_id}}</td>
+                          <td id="value">{{data.first_name|upper}} {{data.middle_name|upper}} {{data.last_name|upper}}</td>
+                          <td>{{data.doctor_name}}</td>
+                          <td>{{data.patient_gender}}</td>
+                          <td>{{data.patient_schedule_date_and_time}}</td>
+                          <td>{{data.patient_payment_mode}}</td>
+                          <td>
+                            <div class="content">
+                              <a href="detail-appointment/{{data.patient_id}}"><i class="fa fa-user"
+                                  style="font-size: 24px;color:green"></i></a>
+                              <a href="cancel-appointment/{{data.patient_id}}" class="delete"
+                                data-confirm="Really, You Want To Cancel The Appointment...."><i
+                                  class="fas fa-times-circle" style="font-size: 24px;color:red"></i></a>
+                            </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        {% for data in patient_details %}
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td>{{data.patient_appointment_id}}</td>
+                          <td>{{data.patient_id}}</td>
+                          <td id="value">{{data.first_name|upper}} {{data.middle_name|upper}} {{data.last_name|upper}}</td>
+                          <td>{{data.doctor_name}}</td>
+                          <td>{{data.patient_gender}}</td>
+                          <td>{{data.patient_schedule_date_and_time}}</td>
+                          <td>{{data.patient_payment_mode}}</td>
+                          <td>
+                            <div class="content">
+                              <a href="detail-appointment/{{data.patient_id}}"><i class="fa fa-user"
+                                  style="font-size: 24px;color:green"></i></a>
+
+                              <a href="cancel-appointment/{{data.patient_id}}" class="delete"
+                                data-confirm="Really, You Want To Cancel The Appointment...."><i
+                                  class="fas fa-times-circle" style="font-size: 24px;color:red"></i></a>
+                            </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+  {% block script_block %}
+  <script>
+    var deleteLinks = document.querySelectorAll('.delete');
+
+    for (var i = 0; i < deleteLinks.length; i++) {
+      deleteLinks[i].addEventListener('click', function (event) {
+        event.preventDefault();
+        var choice = confirm(this.getAttribute('data-confirm'));
+        if (choice) {
+          window.location.href = this.getAttribute('href')
+        }
+      });
+    }
+
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function($) {
+    $('#mySelector').change(function() {
+      var selection = $(this).val(),
+        row = $('#myTable tbody tr');
+      row.show(); // show all rows to ensure no row remains hidden
+
+      if (selection) {
+        // hide the row that doesn't contain selected val td:eq(1)
+        row.filter(function(index, item) {
+          return $(item).find('td:eq(1)').text().indexOf(selection) === -1;
+        }).hide();
+      }
+    });
+  });
+
+</script>
+  {% endblock %}

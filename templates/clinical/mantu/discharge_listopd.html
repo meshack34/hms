@@ -1,0 +1,183 @@
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+{% block head_block %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"> </script>-->
+
+{% endblock  %}
+{% block body_block %}
+ <!-- content -->
+    <style>
+        /* Style the search box */
+        .input-box {
+            width: 250px;
+            padding: 8px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            outline: 2px;
+        }
+    </style>
+<style>
+    div.dataTables_wrapper div.dataTables_filter label{
+    display:none;
+    }
+</style>
+ <div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+      <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>Patients Search</b>
+        </div>
+        <div class="">
+          <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+          <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a href="/OT/clinical_notes_records" class="dropdown-item btn-primary"> Records</a> 
+            <a class="dropdown-item btn-primary" id="download-button " href="#">CSV</a>
+          </div>
+        </div>
+      </div>
+<!-- Main Dashboard -->
+        <div class="row">
+            <div class="col-12"> 
+              <div class="row">
+                <div class="col-md-12">
+                  <ul class="patient_record">
+                    <li class="d-flex align-items-center ml30"><span class="yellow_bg"></span>Admitted Patient</li>
+                    <li class="d-flex align-items-center ml30"><span class="red_bg"></span>Emergency Patient</li>
+                    <li class="d-flex align-items-center ml30"><span class="green_bg"></span>Expired Patient</li>
+                  </ul>
+                </div>
+              </div>               
+                {% if success_search %}
+                  <h5>Already Registerd</h5>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="register_record">
+                          <table class=" table table-bordered" id="tabledialysis1">
+                            <tr style="background:#d1dae6;">
+                              <th>UHID</th>
+                              <th>Bill No</th>
+                              <th>Visit ID</th>
+                              <th>Bill Date/time</th>
+                            </tr>
+                            {% for data in records1 %}
+                            <tr>
+                              <td>{{data.uhid}}</td>
+                              <td><a href="/discharge_reportopd/{{data.uhid}}-{{data.biil_no}}">{{data.biil_no}}</a></td>
+                              <td>{{data.visit_no}}</td>
+                              <td>{{data.bill_date_time}}</td>
+                          </tr>
+                              {% endfor %}
+                          </table>
+                        
+                          <nav aria-label="Page navigation example" class="d-flex align-items-center justify-content-end">
+                            <ul class="pagination">
+                              <li class="page-item">
+                                <a class="page-link" href="#!" aria-label="Previous">
+                                  <span aria-hidden="true">&laquo;</span>
+                                  <span class="sr-only">Previous</span>
+                                </a>
+                              </li>
+                              <li class="page-item"><a class="page-link" href="#!">1</a></li>
+                              <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                              <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                              <li class="page-item">
+                                <a class="page-link" href="#!" aria-label="Next">
+                                  <span aria-hidden="true">&raquo;</span>
+                                  <span class="sr-only">Next</span>
+                                </a>
+                              </li>
+                            </ul>
+                          </nav>
+                        </div>
+                      </div>
+                    </div>
+                {% else %}
+                  <div class="row ">
+                    <div class="col-md-12">                                                 
+                        <table class="table table-bordered " id="tabledialysis" >
+                            <thead class="text-nowrap">
+                              <tr style="background:#d1dae6;">
+                                <th>UHID</th>
+                                <th>Bill No</th>
+                                <th>Visit ID</th>
+                                <th>Bill Date/time</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in records1 %}
+                                <tr>
+                                  <td>{{data.uhid}}</td>
+                                <td><a href="/discharge_reportopd/{{data.uhid}}-{{data.bill_no}}">{{data.bill_no}}</td>
+                                <td>{{data.visit_no}}</td>
+                                <td>{{data.bill_date_time}}</td>
+                              </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+      
+                    </div>
+                  </div>
+                  {% endif %}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+              <!-- Filter Start model -->
+
+        <div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <!-- Header -->
+                  <div class="modal-header" style="background: skyblue;">
+                      <h5 class="modal-title" id="exampleModalLabel1"><b>Search</b></h5>
+                  </div>
+                  <!-- Main block -->
+                  <div class="modal-body">
+                      <form method="POST">
+                          {% csrf_token %}
+                          <DIV id="myDiv1">
+                              <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"
+                                  style="background-color:rgb(233, 233, 233);"><br>
+                                  <div class="row clearfix">
+                                      <div class="col-sm-6">
+                                          <b>Bill No <b style="color: red;">*</b></b>
+                                          <div class="form-group">
+                                            <input type="text" class="form-control" id="reg-no" placeholder="" name="bill_no">
+                                          </div>
+                                      </div>
+                                      
+                                      <div class="col-sm-2"><br>
+                                        <button type="submit" class="bg-primary border-0 p-2 text-white" name="button"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+
+                                      </div> 
+                                  </div>
+                              </div>
+                          </DIV>                               
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  
+      <!-- end model -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src=
+"https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js">
+    </script>
+    <script>
+    var table = $('#tabledialysis').DataTable();
+
+        // #myInput is a <input type="text"> element
+        $('#myinputv').on( 'keyup', function () {
+            table.search( this.value ).draw();
+        } );
+</script>
+{% endblock  %}

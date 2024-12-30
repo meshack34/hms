@@ -1,0 +1,123 @@
+
+{% extends "mainapp/base.html" %}
+{% load static %}
+{% block body_block %}
+
+
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Branch Restrictions</b>
+            </div>
+            <div class="">
+                <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+                <a type="button" class="text-light" onClick="window.location.reload();"> <i class="fas fa-sync-alt pr-2"></i></a>
+
+              <a onClick="" class="text-light px-1"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    
+              </div>
+            </div>
+          </div>
+
+                <div class="table-responsive" id="hello">
+                    <table class="datatable table table-bordered">
+                        <thead>
+                            <tr style="background-color: rgb(174, 196, 238); white-space: nowrap;">
+                                <th>SI.No</th>
+                                <th>Branches</th>
+                                <th>Sub Branch Count</th>
+                                <th>User Count</th>                 
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{data.branch_name}}</td>
+                                <td>{{data.branch_limit}}</td>
+                                <td>{{data.user_limit}}</td>
+                                     
+                        </tr>
+                        {% endfor %}                        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+<!-- start model -->
+<div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel1"><b>Filters</b></h5>
+            </div>
+            <!-- Main block -->
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <DIV id="myDiv1">
+                        
+                        {{ form }}
+                                
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-success" name="save_btn"
+                                value="Save"><i class='fas fa-filter'>&nbsp;Save</i></button>&nbsp;
+                        </div> <br>
+                            </div>
+                        </div>
+                    </DIV>                               
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- end model -->
+  <script type="text/javascript">
+  
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+  var print_area = window.open();
+  print_area.document.write(print_div.innerHTML);
+  print_area.document.close();
+  print_area.focus();
+  print_area.print();
+  print_area.close();
+  // This is the code print a particular div element
+    }
+  </script>
+  
+<script>
+    function exportTableToCSV() {
+    var csv = [];
+    var rows = document.querySelectorAll("table tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+
+        for (var j = 0; j < cols.length; j++) {
+            var cellText = cols[j].innerText;
+            cellText = cellText.replace(/"/g, '""');  // Escape double quotes within cell value
+            row.push('"' + cellText + '"');
+        }
+
+        csv.push(row.join(","));
+    }
+
+    // Create a download link
+    var csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+    var link = document.createElement("a");
+    link.setAttribute("href", encodeURI(csvContent));
+    link.setAttribute("download", "confirmed_ot_list.csv");
+    link.click();
+}
+</script>
+
+
+{% endblock %}

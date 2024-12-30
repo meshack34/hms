@@ -1,0 +1,393 @@
+{% extends 'incident/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<script src="{% static 'js/country-states.js' %}"></script>
+
+
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <!-- Main Dashboard -->
+        <div class="row">
+            <div class="col-lg-8">
+                <h4 class="admin_title">DASHBOARD</h4>
+                <div class="row bg-white m-0 mb-4">
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3 pr-0">
+                        <div class="dash-widget">
+                            <span class="dash-widget-bg1">
+                                <img src="{% static 'assets/images/icons/icon-1.png' %}" alt="Icon" width="25">
+                            </span>
+                            <div class="dash-widget-info float-left pl-2">
+                                <p>Total Open</p>
+                                <h4>{{incident_open}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3 pr-0">
+                        <div class="dash-widget">
+                            <span class="dash-widget-bg2"><img src="{% static 'assets/images/icons/icon-3.png' %}" alt="Icon" width="25"></span>
+                            <div class="dash-widget-info float-left pl-2">
+                                <p>Total Close</p>
+                               <h4>{{incident_closed}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3 pr-0">
+                        <div class="dash-widget">
+                            <span class="dash-widget-bg4"><img src="{% static 'assets/images/icons/icon-4.png' %}" alt="Icon" width="25"></span>
+                            <div class="dash-widget-info float-left pl-2">
+                                <p>Total Incident</p>
+                               <h4>{{total_incident}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+                </div>
+                </div>
+                <h4 class="admin_title">Incidents By Types</h4>
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                        <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+                    </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive ">
+                                    <table class="table bg-white mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Incident Name</th>
+                                        <th>Count of Incident ID</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data,data1 in incident_count_detail %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{data.incident_type}}</td>
+                                        <td>{{data1}}</td>
+
+                                    </tr>
+                                    {% endfor %}
+
+                                    <tr>
+                                        <td></td>
+                                        <td><span style="font-weight:bold">Grand Total</span></td>
+                                        <td><span style="font-weight:bold">{{grand_total}}</span></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+                <h4 class="admin_title">Incidents By Status</h4>
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                    </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                        <div class="table-responsive ">
+                            <table class="table bg-white mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>Count</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Closed</td>
+                                        <td>{{incident_closed}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Open</td>
+                                        <td>{{incident_open}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="font-weight:bold">Grand Total</span></td>
+                                        <td><span style="font-weight:bold">{{count_total}}</span></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    </div>
+                    <h4 class="admin_title">Incidents By Types & Status</h4>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                            <div id="chartContainer2" style="height: 300px; width: 100%;"></div>
+                        </div>
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table bg-white mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Incident Name</th>
+                                            <th>Open</th>
+                                            <th>Close</th>
+                                            <th>Grand Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for data,data1,data2,data3 in incident_detail %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{data.incident_type}}</td>
+                                            <td>{{data2}}</td>
+                                            <td>{{data1}}</td>
+                                            <td>{{data3}}</td>
+                                        </tr>
+                                        {% endfor %}
+    
+                                        <tr>
+                                            <td></td>
+                                            <td><span style="font-weight:bold">Grand Total</span></td>
+                                            <td><span style="font-weight:bold">{{incident_open}}</span></td>
+                                            <td><span style="font-weight:bold">{{incident_closed}}</span></td>
+                                            <td><span style="font-weight:bold">{{grand_total}}</span></td>
+                                        </tr>
+    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    </div><br>
+                    
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                            <div id="chartContainer1" style="height: 300px; width: 100%;"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-6">
+                    <div  id="chart-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+ 
+  <script>
+        var xValues = {{ incident_list| safe}};
+        var yValues = {{ incident_count| safe}};
+        var barColors = ["#2b5797",'#00aba9'];
+
+        new Chart("myChart", {
+            type: "bar",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: "Number of incidents by types"
+                }
+            }
+        });
+    </script>
+
+    <script>
+        window.onload = function () {
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                exportEnabled: true,
+                animationEnabled: true,
+                title: {
+                    text: "Number of incidents by status"
+                },
+                legend: {
+                    cursor: "pointer",
+                    itemclick: explodePie
+                },
+                data: [{
+                    type: "pie",
+                    showInLegend: true,
+                    toolTipContent: "{name}: <strong>{y}%</strong>",
+                    indexLabel: "{name} - {y}%",
+                    dataPoints: [
+                        { y: {{ incident_closed| safe}}, name: "Closed", exploded: true },
+            { y: {{ incident_open | safe }}, name: "Open" },
+                   
+                ]
+            }]
+        });
+
+        var chart1 = new CanvasJS.Chart("chartContainer1", {
+            animationEnabled: true,
+            title: {
+                text: "Number of incidents by Responsible Dept"
+            },
+            toolTip: {
+                shared: true
+            },
+            legend: {
+                reversed: true,
+                verticalAlign: "center",
+                horizontalAlign: "right"
+            },
+            data: [{
+                type: "stackedColumn100",
+                name: "Closed",
+                showInLegend: true,
+                dataPoints: [
+                    { x: new Date(2010, 0), y: 40 },
+                    { x: new Date(2011, 0), y: 50 },
+                    { x: new Date(2012, 0), y: 60 },
+                    { x: new Date(2013, 0), y: 61 },
+                    { x: new Date(2014, 0), y: 63 },
+                    { x: new Date(2015, 0), y: 65 },
+                    { x: new Date(2016, 0), y: 67 }
+                ]
+            },
+            {
+                type: "stackedColumn100",
+                name: "Open",
+                showInLegend: true,
+                dataPoints: [
+                    { x: new Date(2010, 0), y: 28 },
+                    { x: new Date(2011, 0), y: 18 },
+                    { x: new Date(2012, 0), y: 12 },
+                    { x: new Date(2013, 0), y: 10 },
+                    { x: new Date(2014, 0), y: 10 },
+                    { x: new Date(2015, 0), y: 7 },
+                    { x: new Date(2016, 0), y: 5 }
+                ]
+            }]
+        });
+        
+        function toggleDataSeries(e) {
+            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+            }
+            else {
+                e.dataSeries.visible = true;
+            }
+            chart.render();
+        }
+        chart1.render();
+        chart.render();
+        
+    var chart2 = new CanvasJS.Chart("chartContainer2", {
+	animationEnabled: true,
+	title:{
+		text: "Number of incidents by types and status"
+	},
+	axisY: {
+		title: "Status",
+		includeZero: true
+	},
+	legend: {
+		cursor:"pointer",
+		itemclick : toggleDataSeries
+	},
+	toolTip: {
+		shared: true,
+		content: toolTipFormatter
+	},
+	data: [{
+		type: "column",
+		showInLegend: true,
+		name: "Closed",
+		color: "orange",
+		dataPoints: [
+        {% for data,data2 in js1 %}
+        { y: {{data2| safe}}, label: "{{data| safe}}" },
+        {% endfor %}
+			
+		]
+	},
+	{
+		type: "column",
+		showInLegend: true,
+		name: "Open",
+		color: "#2b5797",
+		dataPoints: [
+        {% for data,data2 in js %}
+        { y: {{data2| safe}}, label: "{{data| safe}}" },
+        {% endfor %}
+			
+		]
+	}]
+});
+chart2.render();
+
+function toolTipFormatter(e) {
+	var str = "";
+	var total = 0 ;
+	var str3;
+	var str2 ;
+	for (var i = 0; i < e.entries.length; i++){
+		var str1 = "<span style= \"color:"+e.entries[i].dataSeries.color + "\">" + e.entries[i].dataSeries.name + "</span>: <strong>"+  e.entries[i].dataPoint.y + "</strong> <br/>" ;
+		total = e.entries[i].dataPoint.y + total;
+		str = str.concat(str1);
+	}
+	str2 = "<strong>" + e.entries[0].dataPoint.label + "</strong> <br/>";
+	str3 = "<span style = \"color:Tomato\">Total: </span><strong>" + total + "</strong><br/>";
+	return (str2.concat(str)).concat(str3);
+}
+
+function toggleDataSeries(e) {
+	if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	}
+	else {
+		e.dataSeries.visible = true;
+	}
+	chart2.render();
+}
+
+
+        function explodePie(e) {
+            if (typeof (e.dataSeries.dataPoints[e.dataPointIndex].exploded) === "undefined" || !e.dataSeries.dataPoints[e.dataPointIndex].exploded) {
+                e.dataSeries.dataPoints[e.dataPointIndex].exploded = true;
+            } else {
+                e.dataSeries.dataPoints[e.dataPointIndex].exploded = false;
+            }
+            e.chart.render();
+
+        }
+    }
+    </script>
+    {% endblock %}

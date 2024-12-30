@@ -1,0 +1,73 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <!-- <button type="menu" style="font-family: monospace; width: 100%; text-align: left;" class="btn btn-primary m-t-15 waves-effect"> <b>Tariff Master</b></button> -->
+        <nav class="navbar navbar-light bg-primary" >
+            <div class="container-fluid">
+                <a class="navbar-brand" style="color: white;" href="#">Template Master</a>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+                    <div class="card">
+                        <div class="header">
+                            <div class="body">
+                                <br>
+                                <div class="icon-button-demo">&nbsp;
+                                    <a href="{% url 'radiology_template_master' %}"><button type="button" class="btn btn-info" >  service add</i></button></a>
+                                    <a href="{% url 'lab_template_master' %}"><button type="button" class="btn btn-info" >  profile add</i></button></a>
+                                    &nbsp;
+                                    
+                                   
+                                    <button type="button" class="btn btn-primary" onClick="window.location.reload();">
+                                        <i class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                                    <a href="/" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+                                </div><br>
+                                <div class="table-responsive">
+                                    <table class="datatable table table-stripped ">
+
+
+                                        <thead>
+                                            <tr>
+                                                <th>S.No.</th>
+                                                <th>service Name</th>
+                                                <th>status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for data in records %}
+                                            <tr>
+                                                <td>{{forloop.counter}}</td>
+                                                <td>{{data.profile_name}}</td>
+                                                <td>{{data.status}}</td>
+                                                <td><a href="{% url 'lab_template_master_edit' data.id %}"><button class="btn btn-primary">Edit</button></a></td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% for data in records1 %}
+                                            <tr>
+                                                <td>{{forloop.counter}}</td>
+                                                <td>{{data.service}}</td>
+                                                <td>{{data.status}}</td>
+                                                <td><a href="{% url 'radiology_template_master_edit' data.id %}"><button class="btn btn-primary">Edit</button></a></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

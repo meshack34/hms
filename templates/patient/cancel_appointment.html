@@ -1,0 +1,41 @@
+{% extends 'patient/base.html' %}
+{% block body_block %}
+{% load crispy_forms_tags%}
+<!--Main Content-->
+
+        <div class="main_content"  style="background-image: linear-gradient(white,#9AD0EC);">
+            <h4>&nbsp;Cancel Appointment</h4>
+            <a href="#">
+                <button type="button" class="btn btn-info" style="float: right;">Create New Appointment</button>
+            </a><br><br>
+            <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <div class="card" align="center">
+                    <div class="header">
+                      <!-- <h5>Please Write Reason For Cancellation Process</h5> -->
+                      <hr>
+                      <form method="POST">
+                        {% csrf_token %}
+                        <table>
+                          <tr>
+                            <td><span style="font-size:20px;">Please Write Reason For Cancellation Process</span></td>
+                            <td>{{form.patient_scheduled_id}}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                             <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" name="cancel" value="Submit" class="btn btn-danger">Cancel Appointment</button>
+                              <a href="/appointment_table" class="btn btn-primary" style="float:left">Go Back</a>
+                            </td>
+                          </tr>
+                        </table>
+                        <br>
+                      </form><br>
+
+</div>
+</div>
+</div>
+</div>
+</div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+{% endblock %}

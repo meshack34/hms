@@ -1,0 +1,49 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+          <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;">Investigation Order</a>
+      </div>
+      </nav>
+        <div class="row">
+<div class="col-12">
+<div class="card">
+                <div class="table-responsive">
+                <table class="datatable table table-stripped ">
+                        <thead>
+                            <tr>
+                              <th>S.No</th>
+                              <th>Investgation Order</th>
+                                <th>Investigation Name</th>
+                                 <th>Rate</th>
+                                <th>Discount</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+<!--                        <tbody>-->
+<!--                          {% for data in get_data %}-->
+<!--                          <tr>-->
+<!--                            <td>{{data.uhid}}</td>-->
+<!--                            <td>{{data.first_name|upper}}</td>-->
+<!--                            <td>{{data.age}}</td>-->
+<!--                              <td>{{data.gender}}</td>-->
+<!--                            <td>{{data.registration_date_and_time}}</td>-->
+<!--                            <td>{{data.mobile_number}}</td>-->
+<!--                            <td>{{data.address}}</td>-->
+<!--                          </tr>-->
+<!--                          {% endfor %}-->
+<!--                         </tbody>-->
+                </table>
+                </div>
+            </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,590 @@
+
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en" dir="ltr">
+<head>
+	<meta charset="UTF-8">
+        <title> Sidebar </title>
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<!--  Core Css -->
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	<link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+	<!-- Favicon-->
+	<!-- <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}"> -->
+<!-- Demo CSS -->
+ <link rel="stylesheet" href="{% static 'css/demo.css' %}">
+ <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+
+	<script>
+		$(document).ready(function(){
+			$(".hamburger .hamburger__inner").click(function(){
+			  $(".wrapper").toggleClass("active")
+			})
+
+			$(".top_navbar .fas").click(function(){
+			   $(".profile_dd").toggleClass("active");
+			});
+		})
+	</script>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="top_navbar">
+    <div class="hamburger">
+       <div class="hamburger__inner">
+         <div class="one"></div>
+         <div class="two"></div>
+         <div class="three"></div>
+       </div>
+    </div>
+    <div class="menu">
+      <div class="logo">
+      <b>Patient Registration</b>
+      </div>
+      <div class="right_menu">
+        <ul>
+          <li><i class="fas fa-user"></i>
+            <div class="profile_dd">
+               <div class="dd_item">Profile</div>
+               <div class="dd_item">Change Password</div>
+               <div class="dd_item">Logout</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="main_container">
+      <div class="sidebar">
+          <div class="sidebar__inner">
+
+            <ul>
+              <li>
+                <a href="interface_dashboard">
+                  <span class="icon"><i class="fas fa-dice-d6"></i></span>
+                  <span class="title">Home</span>
+                </a>
+              </li>
+              <li>
+                <a href="#"  class="active">
+                  <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                  <span class="title">Patient Registration</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-hospital-user"></i></span>
+                  <span class="title">Client Management</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-ambulance"></i></span>
+                  <span class="title">Emergency</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-user-injured"></i></span>
+                  <span class="title">Procedure Room</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-procedures"></i></span>
+                  <span class="title">Operation Theatre</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">In-Patient Management</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-user-nurse"></i></span>
+                  <span class="title">Nurse Station</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-brain"></i></span>
+                  <span class="title">Mental Health</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-baby"></i></span>
+                  <span class="title">Antenatal Care</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                  <span class="title">Accounts And Revenue</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-file-medical"></i></span>
+                  <span class="title">Insurance And E-Claim</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Phlebotomy</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-flask"></i></span>
+                  <span class="title">Laboratory</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Blood Bank</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Radiology</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Linen And Laundry</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Discharge Summary</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Mortuary Management</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Feedback Management</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Inventory</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">MRD</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">MIS Reports</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Inventory Setup</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Custom Template</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">System Control</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Security And Audit</span>
+                </a>
+              </li>
+
+
+            </ul>
+          </div>
+      </div>
+
+      <style>
+        img{
+          border-radius: 50%;
+        }
+      </style>
+     <!--Side Nav Bar Ends-->
+
+
+<!--Main Content-->
+
+<div class="container">
+    <div class="row ">
+
+                <div class="icon-button-demo">
+                    <button><i class="fas fa-plus" style="font-size: 24px;color:rgb(45, 192, 16)"></i></button>&nbsp; &nbsp;
+                    <button> <i class="fas fa-edit" style="font-size: 24px;color:blue"></i></button>&nbsp; &nbsp;
+                    <button> <i class="fas fa-save"style="font-size: 24px;color: red"></i></button>&nbsp; &nbsp;
+                    <button> <i class="fas fa-sync-alt"style="font-size: 24px;color:blue"></i></button>&nbsp; &nbsp;
+                    <button> <i class="fas fa-redo-alt"style="font-size: 24px;color:green"></i></button>&nbsp; &nbsp;
+                    <button> <i class="fas fa-times-circle"style="font-size: 24px;color:red"></i></button>
+
+                </div>
+    </div>
+
+        <div class="container-fluid">
+            <div class="body" style="border:0px solid red;">
+                <div class="demo-masked-input">
+                    <div class="row clearfix">
+                        <div class="col-sm-3">
+                            <b>Appointment Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="search" class="form-control" placeholder="Appointment Number &nbsp; &nbsp;&#x1F50e" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>UHID</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="search" class="form-control " placeholder="Enter UHID Id &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &#x1F50e" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Registration Date Time</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="datetime" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Patient Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Mobile Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="number" class="form-control mobile-phone-number" required>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-sm-3">
+                                <b>Title </b>
+                                <div class="form-group">
+                                    <select class="browser-default">
+                                        <option value="" disabled selected>Choose your option</option>
+                                        <option value="1">Mr.</option>
+                                        <option value="2">Ms.</option>
+                                        <option value="3">Mx.</option>
+                                    </select>
+                                    </div>
+                                </div>
+                        <div class="col-sm-3">
+                            <b>First Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Middle Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control " >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Last Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Age</b>
+                            <div class="form-group">
+                                <div class="form-line"><br>
+                                    <h3  id="result" align="center" style="text-decoration: underline;"></h3>   </u>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <b>DOB</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="date" onclick = "ageCalculator()" id = "DOB" class="form-control">
+                                    <!-- <button type="submit" onclick = "ageCalculator()"> Calculate</button> <br><br> -->
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <b>Gender</b>
+                            <select class="browser-default">
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="1">Mr.</option>
+                                <option value="2">Ms.</option>
+                                <option value="3">Mx</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Blood Group </b>
+                            <select class="browser-default">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">O+</option>
+                                    <option value="2">O-</option>
+                                    <option value="3">A+</option>
+                                    <option value="3">A-</option>
+                                    <option value="3">B+</option>
+                                    <option value="3">B-</option>
+                                    <option value="3">AB+</option>
+                                    <option value="3">AB-</option>
+                                </select>
+                                </div>
+                        <div class="col-sm-3">
+                            <b>Martial Status </b>
+                            <div class="form-group">
+                                <select class="browser-default">
+                                        <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">Married</option>
+                                    <option value="2">Unmarried.</option>
+                                </select>
+                                </div>
+                            </div>
+                        <div class="col-sm-3">
+                            <b>Father's Husband's Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Mothers's Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Mobile Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="number" class="form-control key" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Address</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Refferred By </b>
+                            <div class="form-group">
+                                <select class="browser-default" required>
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">aaa</option>
+                                    <option value="2">bbb</option>
+                                </select>
+                                </div>
+                            </div>
+                        <div class="col-sm-3">
+                            <b>City</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>State</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Country</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Pin Code</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="number" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Aadhar Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="number" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>PAN Card Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="number" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Emergency Contact Person</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Emergency Contact Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="number" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Alternate Contact Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Nationality </b>
+                            <div class="form-group">
+                                <select class="browser-default">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">Indian</option>
+                                    <option value="2">Others</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <b>Email Id</b>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="email" class="form-control key" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <b>Staff Member </b>
+                                <div class="form-group">
+                                    <select class="browser-default">
+                                        <option value="" disabled selected>Choose your option</option>
+                                        <option value="1">aaa</option>
+                                        <option value="2">bbb</option>
+                                    </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <b>Relationship </b>
+                                    <div class="form-group">
+                                        <select class="browser-default">
+                                            <option value="" disabled selected>Choose your option</option>
+                                            <option value="1">Father</option>
+                                            <option value="2">Mother</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 ">
+                                        <form action="#">
+                                            <p>
+                                                <label>
+                                                    <input id="indeterminate-checkbox" type="checkbox" />
+                                                    <span>Allow Photos At Nursing Station</span>
+                                                </label>
+                                            </p>
+                                        </form>
+                                    </div>
+                        <div class="col-sm-3 ">
+                            <form action="#">
+                                <p>
+                                    <label>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Notable</span>
+                                    </label>&nbsp;
+                                </p>
+
+                            </form>
+                        </div>
+                        <button type="button"  class="btn btn-info  waves-effect" >Attach Document</button>
+
+                    </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+{% block body_block %}
+
+{% endblock %}
+
+<!-- javacripts -->
+<script src="{% static 'js/app.min.js' %}"></script>
+<script src="{% static 'js/table.min.js' %}"></script>
+<!-- Custom Js -->
+<script src="{% static 'js/admin.js' %}"></script>
+<script src="{% static 'js/pages/tables/jquery-datatable.js' %}"></script>{% load static %}
+</body>
+</html>

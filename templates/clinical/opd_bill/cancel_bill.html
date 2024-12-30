@@ -1,0 +1,231 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js" xmlns="http://www.w3.org/1999/html"></script>
+<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+    <!--<nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">-->
+    <!--  <div class="container-fluid">-->
+    <!--      <a class="navbar-brand" style="color: white;">Cancel Bill Details</a>-->
+    <!--  </div>-->
+    <!--</nav>-->
+    <div class="top-heading lightgreen_bg">
+        <h3 class="section_title" style="text-align:center; color:white; padding:10px;"> Cancel Bill Details</h3>
+    </div>
+        <div class="row">
+        <div class="col-12">
+        <div class="card">
+        <div class="card-box mb-0">
+             <br>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-3">
+                        <input type="text" name="bill_nos" class="form-control" placeholder="Bill No.....">
+                    </div>
+                    <div class="col-3">
+                        <input type="text" name="name" class="form-control" placeholder="Name.....">
+                    </div>
+                    <div class="col-3">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+                <br>
+
+            {% if data %}
+            <table class=" table table-stripped">
+                <thead>
+                <tr>
+                    <th>UHID</th>
+                    <th>Patient Name</th>
+                    <th>Visit ID </th>
+                    <th>Department </th>
+                    <th>Bill No </th>
+                    <th>Date/Time</th>
+                    <th>Cancel</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{data.uhid}}</td>
+                    <td>{{data.pst_title}} {{data.pat_first_name}} {{data.pat_middle_name}} {{data.pat_last_name}}</td>
+                    <td>{{data.visit_no}}</td>
+                    <td>{{data.department}}</td>
+                    <td>{{data.bill_no}}</td>
+                    <td>{{data.bill_date_time}}</td>
+<!--                    <td><a href="/cancel_bill_store/{{data.id}}"><button type="submit" class="btn btn-danger">Cancel</button></a></td>-->
+                    <td><button type="submit" class="btn btn-danger">Cancel</button></td>
+                </tr>
+                </tbody>
+            </table>
+            {% else %}
+            <table class=" table table-stripped" id="tableIDS">
+                <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>UHID</th>
+                    <th>Patient Name</th>
+                    <th>Visit ID </th>
+                    <th>Department </th>
+                    <th>Bill No </th>
+                    <th>Date/Time</th>
+                    <th>Cancel</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for data in all_result %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{data.uhid}}</td>
+                    <td>{{data.pst_title}} {{data.pat_first_name}} {{data.pat_middle_name}} {{data.pat_last_name}}</td>
+                    <td>{{data.visit_no}}</td>
+                    <td>{{data.department}}</td>
+                    <td>{{data.bill_no}}</td>
+                    <td>{{data.bill_date_time}}</td>
+                    <!--<td><a href="/cancel_bill_store/{{data.id}}"><button type="submit" class="btn btn-danger">Cancel</button></a></td>-->
+                    <td><button type="button" class="btn btn-danger" data-toggle="modal" onclick="to_cancel_bill({{data.id}})"
+                                data-target=".pre_equipments_preapration">Cancel</button></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+<a href="/opd_billing"><button type="button" class="btn btn-primary">Back</button></a>
+</div>
+</div>
+</div>
+        <!-- Add Modal -->
+<!--pre_equipments_preapration-->
+<div class="modal fade pre_equipments_preapration" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h3 class="modal-title" id="exampleModalLabel1"><b>Cancel Bill</b></h3>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <div class="form-line">
+                                              <form method="POST" >
+                                                {% csrf_token %}
+                                                     <div class="form-group col-md-4 mb-0">
+                                                        <input type="hidden" name="bill_nod" class="form-control" id="bill_id"></div>
+                                                    <div class="form-rows card">
+                                                      <div class="form-row card-body">
+                                                        <div class="form-box">
+                                                        {{ cancel_bill.reason.label }}
+                                                        {{ cancel_bill.reason }}
+                                                        </div>
+                                                        <div class="form-box">
+                                                        {{ cancel_bill.comment.label }}
+                                                        {{ cancel_bill.comment }}
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  <button type="submit"class="btn btn-success"  name="get_submit" value="Cance_Form"> <i class="fas fa-save" >&nbsp;Save</i></button>
+                                                  <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" style="color-red;">Cancel</button>
+                                              </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src=
+"https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js">
+    </script>
+<script>
+
+    var table = $('#tableIDS').DataTable();
+
+        // #myInput is a <input type="text"> element
+        $('#myinputs').on( 'keyup', function () {
+            table.search( this.value ).draw();
+        } );
+</script>
+<script>
+   $(document).ready(function () {
+
+        $(document).on('keyup', '#doctorr_share', function () {
+
+            var dis = this.value;
+
+            for (i = 1; i < {{id_count}}+1; i++) {
+
+                var amount = $('#service_rate'+i).val();
+                var dr_share = amount*dis/100;
+                alert()
+                $('#dR_Share'+i).val(dr_share);
+
+            }
+        });
+
+    });
+
+    </script>
+<!--     FOR SEARCHABLE DROP DOWN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+           $(document).ready(function ()
+            {
+                $('#doctorlist').select2();
+            });
+    </script>
+<!--    END SEARCHABLE DROPDOWN-->
+<script>
+  function deleteData(event,id) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    // Display the confirmation message
+    var confirmation = confirm("Are you sure you want to cancel the data?");
+
+    // Check user's choice
+    if (confirmation) {
+      window.location.href = "/cancel_bill_store/" + id;
+    }
+  }
+</script>
+<!--        for getting bill id -->
+<script>
+      function to_cancel_bill(id){
+  $('#bill_id').val(id);
+<!--alert(id);-->
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+    <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;">OPD Package Link</a>
+      </div>
+    </nav>
+        <br>
+        <br>
+        <div class="row">
+        <div class="col-12">
+        <div class="card">
+        <div class="card-box mb-0">
+              <div class="header">
+                <div class="body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row filter-row">
+                    <div class="col-sm-8 col-md-2">
+                        <div class="form-group form-focus mb-0">
+                            <label>Tariff Name </label>
+<!--                            <input type="text"  class="form-control" name="tariff_name">-->
+                            <select name="tariff_name" class="form-control">
+                                <option value="">select...</option>
+                                {% for data in tariff_data %}
+                                <option value="{{data.id}}">{{data.tariff_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-md-2">
+                        <div class="form-group form-focus mb-0">
+                            <label>OPD Package </label>
+<!--                            <input type="text"  class="form-control" name="opdpackage_name">-->
+                            <select name="profile_id" class="form-control">
+                                <option value="">select...</option>
+                                {% for data in profile_data %}
+                                <option value="{{data.id}}">{{data.profile_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-md-2">
+                        <div class="form-group form-focus mb-0">
+                            <label>Apply From </label>
+                            <input type="date"  class="form-control" name="apply_from">
+                        </div>
+                    </div>
+                        <div class="col-sm-8 col-md-2" >
+                          <input type="submit" class="form-control btn btn-info" value="Search">
+                        </div>
+                    </div>
+              </div>
+            </form>
+                  <hr>
+                  <br><br>
+                      <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                          <thead>
+                          <tr>
+                              <th>S No</th>
+                              <th>Tariff Name</th>
+                              <th>Profile Name</th>
+                              <th>Apply Date</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          {% for dat in profile_link_data %}
+                          <tr>
+                              <td>{{forloop.counter}}</td>
+                              <td>{{dat.tariff_id}}</td>
+                              <td>{{dat.profile_id}}</td>
+                              <td>{{dat.apply_date}}</td>
+                          </tr>
+                          {% endfor %}
+                          </tbody>
+                      </table>
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+{% endblock %}

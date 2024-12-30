@@ -1,0 +1,248 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+  <div class="content">
+    <!-- Main Dashboard -->
+    <div class="row">
+      <div class="col-12">
+        <div class="">
+          <div class="container-fluid dashboard-content ">
+            <div class="ecommerce-widget">
+              <input type="hidden" name="screen_id" value="SCR0036">
+              <input type="hidden" name="message_id" value="MSG0036">
+              <div class="box-outer">
+                <div class="box text-center card">
+                  <a href="/appointment_report">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/schedule.gif' %}" alt="" />
+                      <!-- <img src="../../static/images/his/pay.gif"> -->
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Appointment Report</h5>
+                    </div>
+                  </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="/Patient_registration_report">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/que.jpg' %}" alt="" />
+                      <!-- <img src="../../static/images/his/pay.gif"> -->
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Patient Registration Report</h5>
+                    </div>
+                  </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="patient_registration">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/register.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Patient Registration Summery Report</h5>
+                    </div>
+                  </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="patient_registration">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/advance.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">OPD Advance</h5>
+                    </div>
+                  </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="opd_billing">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/pay.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">OPD Billing</h5>
+                    </div>
+                  </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="credit_bill">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/settle_bill.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">OPD Billing Settlement</h5>
+                    </div>
+                  </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="doctor_accounting">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/dr acc.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Doctor Accounting</h5>
+                    </div>
+                  </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="nurse_login">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/clinical_management.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Clinical Managements</h5>
+                    </div>
+                  </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="title_master">
+                    <div class="card_icon">
+                      <img src="{% static 'images/his/master.gif' %}" alt="" />
+                    </div>
+                    <div class="card-body">
+                      <h5 class="text-muted">Master </h5>
+                    </div>
+                  </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="/create_userprofile">
+                  <div class="card_icon" style="height: 50%;">
+                    <img src="{% static 'images/his/user_manage.gif' %}" alt="" />
+                    <!-- <img src="../../static/images/blood-donation.gif"> -->
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">User Management</h5>
+                  </div>
+                </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="/indent_inbox">
+                  <div class="card_icon" style="height: 50%;">
+                    <img src="{% static 'images/his/pharmacyy.gif' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Pharmacy</h5>
+                  </div>
+                </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="/#">
+                  <div class="card_icon" style="height: 50%;">
+                    <img src="{% static 'images/his/inventory.gif' %}" alt="" />
+                    <!-- <img src="../../static/images/blood-donation.gif"> -->
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Inventory</h5>
+                  </div>
+                </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="/create_userprofile">
+                  <div class="card_icon" style="height: 50%;">
+                    <img src="{% static 'images/his/lab_module.gif' %}" alt="" />
+                    <!-- <img src="../../static/images/blood-donation.gif"> -->
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Lab Module</h5>
+                  </div>
+                </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="/paitent_ward">
+                  <div class="card_icon" style="height: 50%;">
+                    <img src="{% static 'images/his/ward.gif' %}" alt="" />
+                    <!-- <img src="../../static/images/blood-donation.gif"> -->
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">ward module</h5>
+                  </div>
+                </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="/opdbill_all">
+                  <div class="card_icon" style="height: 50%;">
+                    <img src="{% static 'images/his/bill_view.gif' %}" alt="" />
+                    <!-- <img src="../../static/images/blood-donation.gif"> -->
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">View Patient bill</h5>
+                  </div>
+                </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="">
+                  <div class="card_icon" style="height: 50%;">
+                    <img src="{% static 'images/his/akka report.gif' %}" alt="" />
+                    <!-- <img src="../../static/images/blood-donation.gif"> -->
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Report</h5>
+                  </div>
+                </a>
+                </div>&nbsp;&nbsp;
+                <div class="box text-center card">
+                  <a href="/ipd/ipd_front_desk">
+                  <div class="card_icon" style="height: 50%;">
+                    <img src="{% static 'images/his/inpatient.gif' %}" alt="" />
+                    <!-- <img src="../../static/images/blood-donation.gif"> -->
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Ipd</h5>
+                  </div>
+                </a>
+                </div>&nbsp;&nbsp;
+<!--                hello mantu add icon 01/02/2023 -->
+                 <div class="box text-center card">
+                  <a href="/chemotherapy_treatment_sheet">
+                  <div class="card_icon" style="height: 50%;">
+                    <img src="{% static 'images/his/chemotherapy.gif' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Chemotherapy Treatment Sheet</h5>
+                  </div>
+                </a>
+                </div>&nbsp;&nbsp;
+                 <div class="box text-center card">
+                  <a href="/pre_dialysis_details">
+                  <div class="card_icon" style="height: 50%;">
+                    <img src="{% static 'images/his/dialysis3.jpg' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Pre Dialysis Details</h5>
+                  </div>
+                </a>
+                </div>&nbsp;&nbsp;
+                 <div class="box text-center card">
+                  <a href="/post_dialysis_details">
+                  <div class="card_icon" style="height: 50%;">
+                    <img src="{% static 'images/his/dialysis2.jpg' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Post Dialysis Details</h5>
+                  </div>
+                </a>
+                </div>&nbsp;&nbsp;
+                 <div class="box text-center card">
+                  <a href="/dialysis_details">
+                  <div class="card_icon" style="height: 50%;">
+                    <img src="{% static 'images/his/dialysis1.jpg' %}" alt="" />
+                  </div>
+                  <div class="card-body">
+                    <h5 class="text-muted">Detail Dialysis</h5>
+                  </div>
+                </a>
+                </div>&nbsp;&nbsp;
+<!--                end mantu icon -->
+              </div>
+            </div>
+            
+          </div>
+          <!--/ Latest Patients-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+        {% endblock %}

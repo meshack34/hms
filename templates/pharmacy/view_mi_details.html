@@ -1,0 +1,208 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+    .form-control {
+    border: 2px solid white;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid black;
+  }
+  
+    </style>
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+   <div class="container-fluid">
+       <a class="navbar-brand" style="color: white;" href="#">Edit Material Indent</a>
+   </div>
+ </nav><br>
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+           <div class="card">
+               <div class="header">
+       <div class="body">
+               <br><div class="icon-button-demo">&nbsp;
+                <a href="/view_mi_edit" class="btn btn-success"><i class="fas fa-save" >Save</i></a>&nbsp;
+                   <button type="button" class="btn btn-primary"  onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+                   <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+                   <a href="/view_mi_edit" class="btn btn-primary"><i class="fa fa-arrow-circle-left">&nbsp;Back</i></a>
+               </div><br>
+               <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color: whitesmoke;"><br>
+                    <form method="post" id="save">
+                     {% csrf_token %}
+                     <div class="form-row">
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b>Main Store(To)</b></label>
+                        <input type="text" name="main_store_name" id="main_store_name" class="form-control" value="{{mi_parent.main_store}}">
+                      </div>
+
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b>Sub Store</b></label>
+                        <input type="text" name="sub_store_name" id="sub_store_name" class="form-control" value="{{mi_parent.substore_id}}">
+                        
+                      </div>
+                          <div class="form-group col-md-3 mb-0" >
+                            <label><b>Priority</b></label>
+                            <input type="text" name="priority" id="priority" class="form-control" value="{{priority.priority}}">
+                          </div>
+                          <div class="form-group col-md-3 mb-0">
+                            <label><b>Item Name</b></label>
+                            <input name="item_name" id="material_intent" list="item_name" data-uhid-url="{% url 'meterial_intent_JS' %}" class="form-control" style="width:100%">
+                            
+                          </div>
+                          <datalist id="item_name">
+                            {% for data in item_master %}
+                            <option value="{{data.id}}.{{data.item_name}} {{data.unit}} {{data.item_subcategory}}"></option>
+                            {% endfor %}
+                          </datalist>
+                          <div class="form-group col-md-3 mb-0" required>
+                            <label><b>Quantity</b></label>
+                          <input type="text" name="quantity" id="quantity" class="form-control">
+                          <input type="hidden" name="random_no" id="random_no" class="form-control" value="{% if randoms %} {{randoms}} {% endif %}">
+                          </div>
+                          <div class="form-group col-md-3 mb-0" required>
+                            <label><b>Department</b></label>
+                          <input type="text" name="department" id="department" class="form-control" readonly>
+                          <input type="hidden" name="department_id" id="department_id" class="form-control" readonly>
+
+                          </div>
+                          <div class="form-group col-md-3 mb-0" required>
+                            <label><b>Item Code</b></label>
+                          <input type="text" name="item_code" id="item_code" class="form-control" readonly>
+
+                          </div>
+                          <div class="form-group col-md-3 mb-0" required>
+                            <label><b>Item Belongs To</b></label>
+                            <input type="text" name="item_belongs_to" id="item_belongs_to" class="form-control" readonly>
+
+                          </div>
+
+                          <div class="form-group col-md-3 mb-0" required>
+                            <label><b>Remark</b></label>
+                          <input type="text" name="remark" id="remark" class="form-control">
+
+                          </div>
+                          
+
+                        <div class="form-group col-md-3 mb-0">                      <br>
+                        <input type="submit" name="insert" class="btn btn-warning" value="Insert">
+                        </div>
+                    </div>
+
+                </div><br><br>
+           <div class="table-responsive">
+             <table class="datatable table table-stripped ">
+
+
+                   <thead>
+                       <tr><th>S No</th>
+                           <th>Item Name</th>
+                           <th>Department</th>
+                           <th>Belongs To</th>
+                           <th>Item Code</th>
+                           <th>Indent Qty</th>
+                           <th>Remark</th>
+                           <th colspan="2">Action</th>
+                       </tr>
+                   </thead>
+                   {% for data in mi_child %}
+                   <tbody>
+
+                       <tr data-toggle="modal1" data-target=".bd-example1-modal-xl">
+                           <td>{{forloop.counter}}</td>
+                           <td>{{data.item_id}} {{data.item_id.unit}} {{data.item_id.item_subcategory.itemsubcategory}}</td>
+                           <td>{{data.department}}</td>
+                           <td>{{data.item_belongs_to}}</td>
+                           <td>{{data.item_code}}</td>
+                           <td><input type="text" class="form-control" value="{{data.quantity}}" name="qty" id="qty"></td>
+                           <td>{{data.remark}}</td>
+                           <td>
+                            <input type="hidden" name="temp_id" id="temp_id" value="{{data.id}}">
+                            <button type="submit" style="background-color:rgb(231, 41, 41)" class="btn btn-danger" name="delete_temp" value="delete_temp"><i class="fas fa-trash-alt"></i></button>
+                       </td>
+                       <td><input type="hidden" name="indent_id" id="indent_id" value="{{data.intent_id}}"> <button type="button" class="btn btn-info" id="edit_child"><i class="fas fa-edit"></i></button>
+                       </td>
+                       </tr>
+
+                    </tbody>
+                    {% endfor %}
+           </table>
+          </form>
+           </div>
+           <!-- <h3 align="center">Please Seach </h3> -->
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- #2 cilck one dropdown another 2 field got related value -->
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+  $(document).on('keyup', '#material_intent', function () {
+      const item_name = $("#material_intent").val();
+        const url = $("#material_intent").attr("data-uhid-url");
+
+        $.ajax({
+          url: url,
+          type: "GET",
+          data: {
+              item_name:item_name
+          },
+
+          dataType : 'json',
+          success: function (data1) {
+            $("#item_belongs_to").val(data1['belongs_to1']);
+            $("#item_code").val(data1['shortcode1']);
+            $("#department").val(data1['department']);
+            $("#department_id").val(data1['dept_id']);
+          },
+          error:function(data)
+            {
+                console.log(data);
+            }
+      });
+    });
+
+      $(document).on('click', '#edit_child', function () {
+        var dumy = this;
+        var qty = $(dumy).closest('tr').find('#qty').val();
+        var temp_id = $(dumy).closest('tr').find('#temp_id').val();
+        var indent_id = $(dumy).closest('tr').find('#indent_id').val();
+        var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+        const url = "{% url 'edit_single_michild' %}";
+        var redirectUrl = '/view_mi_details/' + indent_id;
+
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {
+                qty: qty,
+                temp_id: temp_id,
+            },
+            dataType: 'json',
+            headers: headers,
+            success: function (data) {
+                window.location.href=redirectUrl;
+            },
+            error: function (data) {
+            // console.log(data);
+            window.location.href=redirectUrl;
+            }
+        });
+      });
+
+  });
+  </script>
+
+
+
+{% endblock %}

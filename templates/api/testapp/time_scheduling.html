@@ -1,0 +1,64 @@
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<div class="hero">
+  <div class="outer" >
+<div class="container" >
+  <div class="col-xs-10 col-sm-10 col-md-8 col-lg-8">
+    <div class="center" style="background-color: white; ">
+  <h1 align='center'>Scheduled Time</h1><hr>
+  <h3 align='center'>This is You Availability Dates</h3>
+  <div class="row">
+    {% for date in scheduled_date_list %}
+    <div class="col-lg-2 col-md-3 col-sm-3  schedule-design">
+        {{date}} <br>
+        <span>{{start_time}}-{{end_time}}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% if final_time %}<br>
+  <h1 align='center'>This Is Final Time Slots</h1><hr>
+  <div class="row">
+    {% for times in get_time_list %}
+    <div class="col-lg-2 col-md-3 col-sm-3  schedule-design">
+      <span style="margin:1em;">{{times}}</span>
+    </div>
+    {% endfor %}
+    <a href="/doctor-schedule" class="btn btn-info" align="center">Schedule Another Doctor</a>
+  </div><br>
+  <h3>ThanksYOU</h3>
+  <!-- <div class="btn-work" align="center">
+    <a href="#"><button name="hold" class="btn btn-primary btn-lg"><span>Hold</span></button></a>
+    <a href="#"><button name="cancel" class="btn btn-primary btn-lg"><span>Cancel</span></button></a>
+    <button type="submit" name="submit" class="btn btn-primary btn-lg"><span>Submit</span></button> -->
+  </div><br><br><br><br>
+  {% else %}
+  <div class="Schedule_time" align='center'>
+    <h3>Schedule Time</h3>
+    {{slots}} Slots Are There
+    <form method="POST" action='scheduled_time'>
+      {% csrf_token %}
+      <div class="row">
+        {% for times in actual_time_schedule %}
+        <div class="col-lg-2 col-md-3 col-sm-3  schedule-design">
+          <span style="margin:1em;">{{times}}</span>
+          <input type="checkbox" name="{{times}}" value="{{times}}" checked >
+        </div>
+        {% endfor %}<br>
+      </div>
+      <p>Kindly Un-chacked For UnAvailable Time</p>
+      <div class="btn-work" align="center">
+        <!-- <a href="#"><button name="hold" class="btn btn-primary btn-lg"><span>Hold</span></button></a>
+        <a href="#"><button name="cancel" class="btn btn-primary btn-lg"><span>Cancel</span></button></a> -->
+        <button type="submit" name="submit" class="btn btn-primary btn-block"><span>Go Next</span></button>
+      </div>
+    </form>
+  </div>
+  {% endif %}
+</div><br><br><br><br><br>
+</div>
+</div>
+</div>
+
+{% endblock %}

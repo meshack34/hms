@@ -1,0 +1,316 @@
+{% extends 'ipd/base.html' %}
+{% load static %}
+{% block body_block %}
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/bed_charge_slip" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Bed Charge Slip</b>
+            </div>
+            <div class="">
+                <a type="button" data-toggle="modal" data-toggle="modal" data-target=".bd-example-modal-xl" title="Add"><i class="fas fa-plus"></i></a>
+                
+              <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item btn-primary" id="download-button " type="button" onclick="printDiv('hello')">Print</a>
+              </div>
+            </div>
+          </div>
+        <div class="table-responsive">
+            <table class="datatable table table-stripped table-bordered">
+
+                <thead>
+                    <tr style="background:#d1dae6;">
+                        <th>S.No</th>
+                        <th>UHID</th>
+                        <th>Ward Type</th>
+                        <th>Ward Cate</th>
+                        <th>Bed No</th>
+                        <th>Bed Charge</th>
+                        <th>Date</th>
+                        <th>Edit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for data in records %}
+                        <tr>
+                        <td>{{forloop.counter}}</td>
+                            <td>{{data.uhid}}</a></td>
+                            <td>{{data.ward_type}}</td>
+                            <td>{{data.ward_cat}}</td>
+                            <td>{{data.bed_no}}</td>
+                            <td>{{data.bed_charge}}</td>
+                            <td>{{data.datetime}}</td>
+                            <td><button type="button" data-toggle="modal" data-toggle="modal" data-target=".bd-example-modal-xl1"  class="btn btn-primary" title="Edit"><i class="fas fa-edit"></i></button></td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+    <!-- Add Modal -->
+
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel"><b>Bed Charge slip</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body" style="border:0px solid red;">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <form method="POST" id="form_id" data-cities-url="{% url 'charge_slip_load' %}">
+                                    {% csrf_token %}
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                            <label for="">Ward Type</label>
+                                            <select class="custom-select mr-sm-2" id="ward_name" name="ward_name" required>
+                                                <option selected>Choose...</option>
+                                                {% for data in ward_type_records %}
+                                            <option value="{{data.ward_type}}">{{data.ward_type}}</option>
+                                            {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            <label for="">Ward Category</label>
+                                            <select class="custom-select mr-sm-2" id="ward_cat" name="ward_cat" required>
+                                                <option selected>Choose...</option>
+                                                 {% for data in ward_cat_records %}
+                                                <option value="{{data.category_name}}">{{data.category_name}}</option>
+
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                            
+                                        <div class="form-group col-md-6 mb-0">
+                                            <label for="">Bed Number</label>
+                            
+                                            <select class="custom-select mr-sm-2" id="id_to_bed_no" name="id_to_bed_no" required>
+                                                <option selected>Choose...</option>
+                                            </select>
+                                        </div>
+                                  
+                                        <div class="form-group col-md-6 mb-0">
+                                            <label for="">Bed Charge</label>
+                                            <input type="number" class="form-control" name="charge_slip" id="charge_slip" required>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            <label for="">Date</label>
+                                            <input type="datetime-local" class="form-control" name="date_time" id="date_time" value="{{date_time}}" required>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0 py-4">
+                                            <button type="submit" class="btn btn-success"> <i
+                                                class="fas fa-save">&nbsp;Save</i></button>
+                                        </div>
+                                    </div>
+                                 
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <!-- Edit Modal -->
+
+ <div class="modal fade bd-example-modal-xl1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2"
+ aria-hidden="true">
+ <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+         <!-- Header -->
+         <div class="modal-header" style="background: skyblue;">
+             <h5 class="modal-title" id="exampleModalLabel"><b>Bed Charge slip</b></h5>
+             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+         </div><br>
+         <!-- Main block -->
+         <div class="modal-body">
+             <div class="container-fluid">
+                 <div class="body" style="border:0px solid red;">
+                     <div class="demo-masked-input">
+                         <div class="row clearfix">
+                             <form method="POST" id="form_id" data-cities-url="{% url 'charge_slip_load' %}">
+                                 {% csrf_token %}
+                                 <div class="form-row">
+                                     <div class="form-group col-md-6 mb-0">
+                                         <label for="">Ward Type</label>
+                                         <select class="custom-select mr-sm-2" id="ward_name" name="ward_name" required>
+                                             <option selected>Choose...</option>
+                                             {% for data in ward_type_records %}
+                                         <option value="{{data.ward_type}}">{{data.ward_type}}</option>
+                                         {% endfor %}
+                                         </select>
+                                     </div>
+                                     <div class="form-group col-md-6 mb-0">
+                                         <label for="">Ward Category</label>
+                                         <select class="custom-select mr-sm-2" id="ward_cat" name="ward_cat" required>
+                                             <option selected>Choose...</option>
+                                              {% for data in ward_cat_records %}
+                                             <option value="{{data.category_name}}">{{data.category_name}}</option>
+
+                                             {% endfor %}
+                                         </select>
+                                     </div>
+                         
+                                     <div class="form-group col-md-6 mb-0">
+                                         <label for="">Bed Number</label>
+                         
+                                         <select class="custom-select mr-sm-2" id="id_to_bed_no" name="id_to_bed_no" required>
+                                             <option selected>Choose...</option>
+                                         </select>
+                                     </div>
+                               
+                                     <div class="form-group col-md-6 mb-0">
+                                         <label for="">Bed Charge</label>
+                                         <input type="number" class="form-control" name="charge_slip" id="charge_slip" required>
+                                     </div>
+                                     <div class="form-group col-md-6 mb-0">
+                                         <label for="">Date</label>
+                                         <input type="datetime-local" class="form-control" name="date_time" id="date_time" value="{{date_time}}" required>
+                                     </div>
+                                     <div class="form-group col-md-6 mb-0 py-4">
+                                         <button type="submit" class="btn btn-success"> <i
+                                             class="fas fa-save">&nbsp;Save</i></button>
+                                     </div>
+                                 </div>
+                              
+                                 
+                             </form>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+</div>
+
+  <!-- Filter Start model -->
+
+  <div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel1"><b>Filter</b></h5>
+            </div>
+            <!-- Main block -->
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <DIV id="myDiv1">
+                        <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"
+                            style="background-color:rgb(233, 233, 233);"><br>
+                            <div class="row clearfix">
+                                <div class="col-sm-3">
+                                    <b>From Date <b style="color: red;">*</b></b>
+                                    <div class="form-group">
+                                        <input type="datetime-local" name="fromdate" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <b>To Date <b style="color: red;">*</b></b>
+                                    <div class="form-group">
+                                        <input type="datetime-local" name="todate" class="form-control" >
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-sm-0"><br>
+                                    <button type="submit" class="btn btn-primary" name="search_btn"
+                                        value="Search"><i class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                                </div> 
+                            </div>
+                        </div>
+                    </DIV>                               
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- end model -->
+<!-- +===================== end model =================== -->
+<script>
+function printDiv(divName) {
+var printContents = document.getElementById(divName).innerHTML;
+var originalContents = document.body.innerHTML;
+
+document.body.innerHTML = printContents;
+
+window.print();
+
+document.body.innerHTML = originalContents;
+}
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $("#ward_name").change(function () {
+      const ward_type_id = $(this).val();
+      const url = $("#form_id").attr("data-cities-url");  
+  
+      $.ajax({             
+          url: url,   
+          data: {
+              'ward_type_id':ward_type_id 
+          },
+          success: function (data) { 
+              $("#ward_cat").html(data);  
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (cat) {
+              console.log(cat)
+                  html_data += `<option value="${cat.category_name}">${cat.category_name}</option>`
+              });
+              console.log(html_data);
+              $("#ward_cat").html(html_data);
+  
+  
+          }
+      });
+  
+  });
+  </script>
+  <script>
+    $("#ward_cat").change(function () {
+        const ward_cat_id = $(this).val();
+        const ward_type_id = $("#ward_name").val(); 
+        const url = $("#form_id").attr("data-cities-url");  
+    
+        $.ajax({             
+            url: url,   
+            data: {
+                'ward_type_id':ward_type_id,
+                'ward_cat_id':ward_cat_id 
+            },
+            success: function (data) { 
+                $("#id_to_bed_no").html(data);  
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (bed_no) {
+                console.log(bed_no)
+                    html_data += `<option value="${bed_no.bed_no}">${bed_no.bed_no}</option>`
+                });
+                console.log(html_data);
+                $("#id_to_bed_no").html(html_data);
+    
+    
+            }
+        });
+    
+    });
+    </script>
+{% endblock %}

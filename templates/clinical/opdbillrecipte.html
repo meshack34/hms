@@ -1,0 +1,219 @@
+{% load static %}
+<html>
+<head>
+		<style>
+		.disclaimer {
+			font-size: 12px;
+			color: #888;
+			text-align: center;
+			margin-top: 50px;
+		}
+	</style>
+		<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+#button1{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+#button2{
+	font-size: larger;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+}
+</style>
+</head>
+<body>
+
+
+
+<!--This for payment receipt print function-->
+<a href="/opd_billing_search"><button type="button" id="button2" style="background-color: rgb(255, 93, 93);">Exit</button></a>
+
+<div id="hello">
+<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td>
+						<div class="" >
+							<center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:700px;height:100px;"></h2>
+							</center>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr >
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td colspan="4" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;">Invoice</h3></td>
+				</tr>
+
+				<tr>
+					<th>Reg. No.</th>
+					<td>:{{pay_m_uhid}}</td>
+					<th>Bill</th>
+					<td>:{{exact_bill_no}}</td>
+				</tr>
+				<tr>
+					<th>Patient Name</th>
+					<td>:{{patinet_name}}</td>
+					<th>Bill Date</th>
+					<td>:{{date_time}}</td>
+				</tr>
+				<tr>
+					<th>Mobile</th>
+					<td>:{{mobile_number}}</td>
+					<th>Visit No.</th>
+					<td>:{{pay_m_visit_id}}</td>
+				</tr>
+				<tr>
+					<th>Address</th>
+					<td>:{{address}}</td>
+					<th>Visit Time</th>
+					<td>:{{visit_date_time}}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<!--				for package name and package amount -->
+	{% if tatol_package_amt %}
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%">
+				<tr>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Package Name</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "></th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "></th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Package Amount</th>
+				</tr>
+				<tr>
+					<td colspan="4"></td>
+				</tr>
+				<tr>
+					<td>{{intell_search}}</td>
+					<td></td>
+					<td></td>
+					<td>{{tatol_package_amt}}</td>
+				</tr>
+				<tr>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">SN</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "></th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Services</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "></th>
+				</tr>
+				<tr>
+			{% for data in temp_records %}
+              <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>{{data.net_amount}}</td>
+              </tr>
+				<tr>
+                  <td>{{forloop.counter}}</td>
+                  <td></td>
+                  <td>{{data.service_id}}</td>
+              </tr>
+				{% endfor %}
+				<tr style="background-color:#eee;color:grey!important;">
+                  <td>Total Amount</td>
+                  <td></td>
+                  <td></td>
+					<td>{{net_amount}}</td>
+              </tr>
+				<tr style="background-color:#eee;color:grey!important;">
+                  <td>Net Payable Amount</td>
+                  <td></td>
+                  <td></td>
+					<td>{{net_amount}}</td>
+              </tr>
+					<tr style="background-color:#eee;color:grey!important;">
+                  <td>Total Paid Amount</td>
+                  <td></td>
+                  <td></td>
+					<td style="background-color:#eee;color:black!important;">{{net_amount}}</td>
+              </tr>
+			</table>
+		</td>
+	</tr>
+	{% else %}
+<!--	FOR INDIVISUAL SERVICES -->
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%">
+				<tr>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">SN</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Service</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Rate</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Discount</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Amount</th>
+				</tr>
+				<tr>
+			{% for data in temp_records %}
+				<tr>
+                  <td>{{forloop.counter}}</td>
+                  <td>{{data.service_id}}</td>
+                  <td>{{data.charges}}</td>
+				  <td>{{data.discount}}</td>
+                  <td>{{data.paid_amount}}</td>
+              </tr>
+				{% endfor %}
+				<tr style="background-color:#eee;color:grey!important;">
+                  <td>Total Amount</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+					<td>{{net_amount}}</td>
+              </tr>
+				<tr style="background-color:#eee;color:grey!important;">
+                  <td>Net Payable Amount</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+					<td>{{net_amount}}</td>
+              </tr>
+					<tr style="background-color:#eee;color:grey!important;">
+                  <td>Total Paid Amount</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+					<td style="background-color:#eee;color:black!important;">{{net_amount}}</td>
+              </tr>
+			</table>
+		</td>
+	</tr>
+	{% endif %}
+</table>
+	<p class="disclaimer"><b>This is a computer-generated bill and does not require a signature.</b></p>
+
+</div><br><br>
+<button type="button" id="button1" onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;">Print</button>
+
+
+<script type="text/javascript">
+        
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+</body>
+</html>

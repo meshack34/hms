@@ -1,0 +1,180 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+{% endblock %}
+{% block body_block %}
+
+
+<style>
+    .form-control {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+<!-- content -->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Patient Registration Summary Report</b>
+            </div>
+            <div class="">
+              <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+                <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+                
+              </div>
+            </div>
+          </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" id="filter_card"><br>       
+                    <div class="form-row">
+                        <div class="form-group col-md-3 mb-0">
+                            <label style="font-weight: bold;" >From Date<b style="color: red;">*</b> </label>
+                            <input type='datetime-local' name='start_date' id='from_date' style="background-color: white;" class='form-control' required>         
+                        </div>
+
+                        <div class="form-group col-md-3 mb-0">
+                            <label style="font-weight: bold;">To Date<b style="color: red;">*</b></label>
+                            <input type='datetime-local' name='end_date' style="background-color: white;" id='to_date' class='form-control' required>
+                                
+                        </div>
+
+                        
+                        <div class="col-sm-0"><br>
+                            <button type="submit" class="btn btn-warning w-100 mt-2" name="search_btn"
+                                value="Search"><i class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                        </div>   
+                                                                
+                    </div>                               
+                </div>
+            </form>             
+            <div id="hello">
+                {% if all_records %}                                
+                <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                    <tr>
+                        <div class="" >
+                            <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                            </center>
+                        </div>                                          
+                    </tr>
+                </table>                                   
+                <style>
+                    table, th, td {
+                        border: 1px solid black;
+                        border-collapse: collapse;                      
+                    }
+                    #button2{
+                    font-size: larger;
+                    padding: 10px;
+                    border: none;
+                    border-radius: 5px;
+                }
+                    </style>
+                    <center><h3> Patient Registration Summary Report</h3></center>
+                <table class="table table-bordered" style="border-style: solid;font-size:x-small;" align="center">
+                    <thead>
+                        <tr>
+                            <th scope="col">S.No</th>
+                            <th scope="col">Reg.Date</th>
+                            <th scope="col">Number of Registrations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for list,number_of_registrations in all_records %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td scope="row" style="padding-left: 15px;padding-right: 15px;">{{list}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{number_of_registrations}}</td>
+                        </tr>
+                        {% endfor %}                                          
+                        <tr>
+                            <td></td>
+                            <td style="font-weight: bold;">Total Registrations:</td>
+                            <td style="font-weight: bold;">{{total_registration}}</td>
+                        </tr>                       
+                    </tbody>
+                </table>
+                {% endif %}
+                </div>
+    </div>
+</div>
+<script>
+    function toggleVisibility() {
+      var demoElement = document.getElementById('filter_card');
+      
+      if (demoElement.style.display === 'none') {
+        demoElement.style.display = 'block'; // Show the element
+      } else {
+        demoElement.style.display = 'none';  // Hide the element
+      }
+    }
+  </script>
+<script src="../assets/js/app.js"></script>
+<script type="text/javascript">
+
+  function codespeedy(){
+    var print_div = document.getElementById("hello");
+    var print_area = window.open();
+    print_area.document.write(print_div.innerHTML);
+    print_area.document.close();
+    print_area.focus();
+    print_area.print();
+    print_area.close();
+    // This is the code print a particular div element
+  }
+</script>
+
+<!-- Export csv -->
+
+<script>
+    function htmlToCSV(html, filename) {
+        var data = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText);
+            }
+
+            data.push(row.join(","));
+        }
+
+        downloadCSVFile(data.join("\n"), filename);
+    }</script>
+<script>
+    function downloadCSVFile(csv, filename) {
+        var csv_file, download_link;
+
+        csv_file = new Blob([csv], { type: "text/csv" });
+
+        download_link = document.createElement("a");
+
+        download_link.download = filename;
+
+        download_link.href = window.URL.createObjectURL(csv_file);
+
+        download_link.style.display = "none";
+
+        document.body.appendChild(download_link);
+
+        download_link.click();
+    }</script>
+
+<script>document.getElementById("download-button").addEventListener("click", function () {
+        var html = document.querySelector("table").outerHTML;
+        htmlToCSV(html, "itemwise_purchase.csv");
+    });</script>
+
+{% endblock %}

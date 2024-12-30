@@ -1,0 +1,268 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		.disclaimer {
+			font-size: 10px;
+			color: #888;
+			text-align: center;
+			margin-top: 50px;
+		}
+	</style>
+</head>
+<body>
+	<style type="text/css">
+body, p{font-family: arial; font-size: 12px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+#button1{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+#button2{
+	font-size: larger;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+}
+
+</style>
+<a href="/ipd/list_admitted_patient"><button type="button" id="button2" style="background-color: rgb(255, 93, 93);">Exit</button></a>
+<!--This for payment receipt print function-->
+<div id="hello">
+    	<style>
+        body, p,table {
+            font-family: arial;
+            font-size: 12px;
+        }
+        #table2 {
+            font-family: arial;
+            font-size: 11px;
+        }
+    </style>
+<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+				<tr>
+					<td>
+						<div class="" >
+							<center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+							</center>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td colspan="4" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;">Bill Cum Receipt</h3></td>
+				</tr>
+				<tr>
+					<td><b>Name</b></td>
+					<td><b>:{{pat_reg_record.title|upper}} {{pat_reg_record.first_name}} {{pat_reg_record.last_name}}</b></td>
+					{% if adv_pay_record %}
+					<td><b>Receipt No.</b></td>
+					<td><b>:{{adv_pay_record.receipt_no}}</b></td>
+					{% endif %}
+				</tr>
+				<tr>
+					<td><b>Age/Gender</b></td>
+					<td><b>:{{pat_reg_record.age}}Y/{{pat_reg_record.gender}}</b></td>
+					<td><b>Admission Date</b></td>
+					<td><b>:{{adm_record.admission_datetime}}</b></td>
+				</tr>
+				<tr>
+					<td><b>Address</b></td>
+					<td><b>:{{pat_reg_record.address}}</b></td>
+					<td><b>Admission ID</b></td>
+					<td><b>:{{adm_record.admission_ID}}</b></td>
+				</tr>
+				<tr>
+					<td><b>Location</b></td>
+					<td><b>:{{pat_reg_record.location}}</b></td>
+					<td><b>UHID</b></td>
+					<td><b>:{{pat_reg_record.uhid}}</b></td>
+				</tr>
+				<tr>
+					<td><b>Primary Doctor</b></td>
+					<td><b>:{{adm_record.primary_doctor}}</b></td>
+					<td><b>Registered Date</b></td>
+					<td><b>:{{pat_reg_record.registration_date_and_time}}</b></td>
+				</tr>
+				<tr>
+					<td><b>Department</b></td>
+					<td><b>:{{adm_record.department}}</b></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse; solid; " width="100%">
+				<tr>
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; "><b>Date</b></td>
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:left;"><b>Head</b></td>
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:left;"><b>Description</b></td>
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:left;"><b>Rate</b></td>
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:center;"><b>Qty</b></td>
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:right;"><b>Amount</b></td>
+				</tr>
+				{% regroup sub_bill_detail by service_category as record %}
+				{% for group in record %}
+				<tr>
+					<th colspan="6" style="text-align:left;">{{ group.grouper }}</th>
+				</tr>
+				{% for data in group.list %}
+					<tr>
+						<td style="text-align:left;"><b>{{ data.created_at | date }}</b></td>
+						<td style="text-align:left;"><b>{{ data.service_sub_category }}</b></td>
+						<td style="text-align:left;"><b>{{ data.service_name }}</b></td>
+						<td style="text-align:left;"><b>{{ data.service_rate | floatformat:2|intcomma }}</b></td>
+						<td style="text-align:center;"><b>1</b></td>
+						<td style="text-align:right;"><b>{{ data.net_amt | floatformat:2|intcomma }}</b></td>
+					</tr>
+				{% endfor %}
+				{% endfor %}
+<!--				<tr>-->
+<!--                  <td></td>-->
+<!--                  <td></td>-->
+<!--                  <td></td>-->
+<!--                  <td style="text-align:right;"><b>Sub Total</b></td>-->
+<!--					<td></td>-->
+<!--					<td style="text-align:right;"><b>{{sub|floatformat:2|intcomma}}</b></td>-->
+<!--				</tr>-->
+				<tr>
+                  <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "></th>
+                  <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "></th>
+                  <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "></th>
+                  <td style="border-top: 1px solid#333; border-bottom: 1px solid#333; "><b>Total Bill Amount</b></td>
+                  <td style="border-top: 1px solid#333; border-bottom: 1px solid#333; "></td>
+                  <td style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:right "><b>{{main_bill_detail.net_amt|floatformat:2|intcomma}}</b></td>
+              	</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td style="text-align:right;"><b>Less Discount</b></td>
+					<td style="text-align:right;"><b>{{main_bill_detail.discount|floatformat:2|intcomma}}</b></td>
+				</tr>
+				<tr>
+					<td ></td>
+					<td ></td>
+					<td></td>
+					<td></td>
+					<td style="text-align:right;"><b>Net Amount</b></td>
+					<td style="text-align:right;"><b>{{main_bill_detail.net_amt|floatformat:2|intcomma}}</b></td>
+				<tr>
+				<tr>
+					<td ></td>
+					<td ></td>
+					<td></td>
+					<td></td>
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:right;"><b>Paid By Patient</b></td>
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:right; "><b>{{main_bill_detail.paid_amt|floatformat:2|intcomma}}</b></td>
+				</tr>
+				<tr>
+					<td ></td>
+					<td ></td>
+					<td></td>
+					<td></td>
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:right;"><b>Patient Amt Due</b></td>
+					<td style="border-top: 1px solid#333; border-bottom: 1px solid#333; text-align:right; "><b>{{main_bill_detail.outstanding_amt|floatformat:2|intcomma}}</b></td>
+				</tr>
+				<tr>
+					<th></th>
+					<th style="border-top: 1px solid#404040; text-align:right; ">Receipt No.</th>
+					<th style="border-top: 1px solid#404040; text-align:right; ">Date</th>
+					<th style="border-top: 1px solid#404040; text-align:right; ">Payment Mode</th>
+					<th style="border-top: 1px solid#404040; text-align:right; ">Paid By</th>
+					<th style="border-top: 1px solid#404040; text-align:right; ">Paid Amount</th>
+				</tr>
+				{% if adv_pay_record %}
+				<tr>
+					<th></th>
+					<th style=" border-bottom: 1px solid#333; text-align:right; "><b>{{adv_pay_record.receipt_no}}</b></th>
+					<th style=" border-bottom: 1px solid#333; text-align:right; "><b>{{adv_pay_record.created_at}}</b></th>
+					<th style=" border-bottom: 1px solid#333; text-align:right; "><b>{{adv_pay_record.mode_type|upper}}</b></th>
+					<th style=" border-bottom: 1px solid#333; text-align:right; "><b>{{adv_pay_record.paid_by|upper}}</b></th>
+					<th style=" border-bottom: 1px solid#333; text-align:right; "><b>{{adv_pay_record.paid_amt|floatformat:2|intcomma}}</b></th>
+				</tr>
+				{% else %}
+				{% for adv_pay_record in get_all_record %}
+				<tr>
+					<th><b>{{adv_pay_record.receipt_no}}</b></th>
+					<th><b>{{adv_pay_record.created_at}}</b></th>
+					<th><b>{{adv_pay_record.mode_type|upper}}</b></th>
+					<th><b>{{adv_pay_record.paid_by|upper}}</b></th>
+					<th><b>{{adv_pay_record.adv_amt|floatformat:2|intcomma}}</b></th>
+					{% if adv_pay_record.remark == None %}
+					<th></th>
+					{% else %}
+					<th><b>{{adv_pay_record.remark}}</b></th>
+					{% endif %}
+				</tr>
+				{% endfor %}
+				<tr>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333;"></th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333;"></th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333;"></th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333;"><b>Total Amount</b></th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333;"><b>{{adv_total_amt|floatformat:2|intcomma}}</b></th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333;"></th>
+				</tr>
+				{% endif %}
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align:left;" width="50%;"><h3>This is a computer-generated bill and does not require a signature.</h3></td>
+	</tr>
+</table>
+
+
+</div><br><br>
+	<div style="text-align:center;"><input type="button" onclick="printDiv('hello')" value="Get Invoice" /></div>
+
+<!--<script type="text/javascript">-->
+
+<!--    function codespeedy(){-->
+<!--      var print_div = document.getElementById("hello");-->
+<!--var print_area = window.open();-->
+<!--print_area.document.write(print_div.innerHTML);-->
+<!--print_area.document.close();-->
+<!--print_area.focus();-->
+<!--print_area.print();-->
+<!--print_area.close();-->
+<!--// This is the code print a particular div element-->
+<!--    }-->
+<!--  </script>-->
+<!-- print -->
+
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</body>
+</html>

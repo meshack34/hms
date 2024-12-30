@@ -1,0 +1,108 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+  .form-control {
+    border: 2px solid white;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid white;
+  }
+</style>
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+  <div class="content">
+    <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+        <a class="navbar-brand" style="color: white;" href="#">View of Stock in CPC Store</a>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+          <div class="card">
+            <div class="header">
+              <div class="body">
+                <br>
+                <div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  
+                  <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+                      class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                  <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>&nbsp;
+                  <a href="/item_issue_to_mainstore" class="btn btn-primary"> <i
+                    class="fa fa-arrow-circle-left">&nbsp;Back</i></a>&nbsp;
+                </div>
+                <br>
+                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                  <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-row">
+                      <div class="form-group col-md-3 mb-0">
+                        <label>From Date</label>
+                        <input type="date" name="from_date" id="from_date" class="form-control">
+                      </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label>To Date</label>
+                        <input type="date" name="to_date" id="to_date" class="form-control">
+                      </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label>Item Name</label>
+                        <input type="text" name="item_id" id="item_id" class="form-control" list="item_name">
+                      </div>
+                      <datalist id="item_name">
+                        {% for data in item_detail %}
+                        <option value="{{data.id}}.{{data.item_name}} {{data.unit}} {{data.item_subcategory}}"></option>
+                        {% endfor %}
+                      </datalist>
+                      <div class="form-group col-md-0"><br>
+                        <button type="submit" class="btn btn-warning"> <i
+                            class="fas fa-search">Search</i></button>&nbsp;
+                      </div>
+                       
+                    </div>
+                  </form>
+                </div><br>
+
+                <div class="table-responsive">
+                  <table class="datatable table table-stripped ">
+                    <thead>
+                        <tr>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Item Name</th>
+                                <th>Batch No</th>
+                                <th>Expiry Date</th>
+                                <th>Qty In-hand</th>
+                            </tr>
+                        </tr>
+                      </thead>
+                      
+                      <tbody>
+                        {% for data in stock_detail %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.item_id}} {{data.item_id.unit}} {{data.item_id.item_subcategory.itemsubcategory}}</td>
+                            <td>{{data.batch_no}}</td>
+                            <td>{{data.expiry_date}}</td>
+                            <td>{{data.available_qty}}</td>
+                        </tr>         
+                        {% endfor %}        
+                      </tbody>
+                      
+                  </table>
+                </div>
+              </div><br>
+
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}

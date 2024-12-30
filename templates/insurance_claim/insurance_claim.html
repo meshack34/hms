@@ -1,0 +1,283 @@
+{% extends 'insurance_claim/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+  div.dataTables_wrapper div.dataTables_filter label{
+  display:none;
+  }
+</style>
+    <style>
+        /* Style the search box */
+        .input-box {
+            width: 250px;
+            padding: 8px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            outline: 2px;
+        }
+    </style>
+{% endblock  %}
+{% block body_block %}
+
+<link rel="alternate" type="application/json+oembed" href="https://www.jotform.com/oembed/?format=json&amp;url=https%3A%2F%2Fform.jotform.com%2F223321786800453" title="oEmbed Form">
+<link rel="alternate" type="text/xml+oembed" href="https://www.jotform.com/oembed/?format=xml&amp;url=https%3A%2F%2Fform.jotform.com%2F223321786800453" title="oEmbed Form">
+<link rel="shortcut icon" href="https://cdn.jotfor.ms/assets/img/favicons/favicon-2021.svg">
+<link rel="canonical" href="https://form.jotform.com/223321786800453" />
+<style type="text/css">@media print{.form-section{display:inline!important}.form-pagebreak{display:none!important}.form-section-closed{height:auto!important}.page-section{position:initial!important}}</style>
+<link type="text/css" rel="stylesheet" href="https://cdn01.jotfor.ms/themes/CSS/5e6b428acc8c4e222d1beb91.css?themeRevisionID=5f30e2a790832f3e96009402"/>
+<link type="text/css" rel="stylesheet" href="https://cdn02.jotfor.ms/css/styles/payment/payment_styles.css?3.3.37546" />
+<link type="text/css" rel="stylesheet" href="https://cdn03.jotfor.ms/css/styles/payment/payment_feature.css?3.3.37546" />
+<!-- content -->
+<div class="page-wrapper bg-white">
+<div class="content px-3 py-2">
+  <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+    <div>
+      <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+      <b>Insurance Claim</b>
+    </div>
+    <div class="">
+   
+      <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+      <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <!-- <a class="dropdown-item" onclick="codespeedy()" href="#">PDF</a>
+        <a class="dropdown-item" id="download-button" href="#">CSV</a> -->
+      </div>
+    </div>
+  </div>
+
+           <div class="table-responsive">
+                <div class="mb-3">
+                    <input type="text"  id="myinputs" class="input-box float-right" placeholder="Search Here...." >
+                </div>
+             <table class="table table-stripped table-bordered" id="tableIDS">
+
+                   <thead>
+                       <tr><th>S.No.</th>
+                           <th>Bill NO</th>
+                           <th>Bill Date</th>
+                           <th>LOU No</th>
+                           <th>Claim No</th>
+                           <th>Patient</th>
+                           <th>UHID</th>
+                           <th>Bill Amount</th>
+                           <th>Net Amount</th>
+                           <th>CheckList</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                    {% for data in record %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{data.bill_no}}</td>
+                      <td>{{data.bill_date_time}}</td>
+                      <td>{{data.lou_no}}</td>
+                      <td>{{data.claim_no}}</td>
+                      <td>{{data.pst_title}} {{data.pat_first_name}} {{data.pat_middle_name}} {{data.pat_last_name}}</td>
+                      <td>{{data.uhid}}</td>
+                      <td>{{data.net_amount}}</td>
+                      <td>{{data.paid_amount}}</td>
+                      <td><button type="button" class="btn btn-primary width" style="margin-right: 5px;margin-bottom: 5px;" data-toggle="modal" data-target="#checklist_details"
+                           data-bill_no="{{data.bill_no}}"
+                           data-bill_date_time="{{data.bill_date_time}}"
+                           data-lou_no="{{data.lou_no}}"
+                           data-claim_no="{{data.claim_no}}"
+                           data-uhid="{{data.uhid}}"
+                           data-net_amount="{{data.net_amount}}"
+                           data-paid_amount="{{data.paid_amount}}">
+                            <i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                       </td>
+                  </tr>
+                  {% endfor %}
+                    </tbody>
+
+           </table>
+           </div>
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="checklist_details" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl">
+ <div class="modal-content">
+     <!-- Header -->
+     <div class="modal-header" style="background: skyblue;">
+         <h5 class="modal-title" id="checklist_details" ><b> CheckList Document</b></h5>
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+         </button>
+         </div><br>
+      <!-- Main block -->
+      <div class="modal-body">
+         <div class="container-fluid">
+             <div class="body">
+                 <div class="demo-masked-input">
+                     <div class="row clearfix">
+                       <div class="col-12">
+                           <div class="form-group">
+                               <div class="form-line">
+                               <form method="post">
+                                {% csrf_token %}
+                                   <input type="hidden" name="bill_no" id="bill_no">
+                                   <input type="hidden" name="bill_datetime" id="bill_datetime">
+                                   <input type="hidden" name="lou_no" id="lou_no">
+                                   <!--<input type="hidden" name="claim_no" id="claim_no">-->
+                                   <input type="hidden" name="uhid" id="uhid">
+                                   <input type="hidden" name="bill_amount" id="bill_amount">
+                                   <input type="hidden" name="net_amount" id="net_amount">
+
+                                    <div class="form-row">
+                                     <div class="form-group col-md-4 mb-0">
+                                       <label><b>Batch No</b></label>
+                                       <input type='text' name='batch_no' id='batch_no' class='form-control'>
+                                       </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                        <label><b>Claim No</b></label>
+                                        <input type='text' name='claim_no' id='claim_no' class='form-control'>
+                                        </div>
+                                       </div><br>
+                                <div id="cid_4" class="form-input-wide" data-layout="full">
+                                 <table summary="" aria-labelledby="label_4" cellPadding="4" cellSpacing="0" class="form-matrix-table" data-component="matrix">
+                                <tr class="form-matrix-tr form-matrix-header-tr">
+                                  <th scope="col" class="form-matrix-headers form-matrix-column-headers form-matrix-column_0">
+                                    <label id="label_4_col_0"> Checklist Document </label>
+                                  </th>
+                                  <th scope="col" class="form-matrix-headers form-matrix-column-headers form-matrix-column_0">
+                                    <label id="label_4_col_0"> Prepared </label>
+                                  </th>
+                                  <th scope="col" class="form-matrix-headers form-matrix-column-headers form-matrix-column_1">
+                                    <label id="label_4_col_1"> Not Prepared </label>
+                                  </th>
+
+                                </tr>
+                                {% for data in checklist %}
+                                <tr class="form-matrix-tr form-matrix-value-tr" aria-labelledby="label_4 label_4_row_0">
+                                  <th scope="row" class="form-matrix-headers form-matrix-row-headers">
+                                    <input type="hidden" name="checklist_name" id="checklist_name" value="{{data.id}}">
+                                    <label id="label_4_row_0"> {{data.checklist_name}} </label>
+                                  </th>
+
+                                  <td class="form-matrix-values">
+                                    <input type="radio" id="input_4_0_0" class="form-choice" name="prepared_{{data.id}}" value='1'>
+                                    <label for="input_4_0_0" class="matrix-choice-label matrix-choice-label">  </label>
+                                  </td>
+                                  <td class="form-matrix-values">
+                                    <input type="radio" id="input_4_0_1" class="form-choice" name="prepared_{{data.id}}" value='0'>
+                                    <label for="input_4_0_1" class="matrix-choice-label matrix-choice-label">  </label>
+                                  </td>
+                                </tr>
+
+                                {% endfor %}
+                              </table>
+                            </div>
+
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <div class="form-group col-md-2 mb-0">
+
+                                   <button type="submit" class="btn btn-success" > <i class="fas fa-save" >&nbsp;Save</i></button>
+                               </div>
+                                   </div>
+                                 </form>
+                         <!-- Footer -->
+                     <!-- <div class="modal-footer">
+                         <hr style="border: 10%; color: aqua;"><br>
+                    <button type="button"class="btn btn-success" > <i class="fas fa-save" >&nbsp;Save</i></button>
+                         </div> -->
+                     </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+<!-- Add Modal -->
+
+
+
+</div>
+</div>
+<!--/ content -->
+</div>
+</div>
+</div>
+</div>
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script>
+  var table = $('#tableIDS').DataTable();
+
+      // #myInput is a <input type="text"> element
+      $('#myinputs').on( 'keyup', function () {
+          table.search( this.value ).draw();
+      } );
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+$('#checklist_details').on('show.bs.modal', function(e) {
+
+var link     = $(e.relatedTarget)
+
+  var bill_no = link.data("bill_no")
+  var bill_datetime = link.data("bill_date_time")
+  var lou_no = link.data("lou_no")
+  var claim_no = link.data("claim_no")
+  var uhid = link.data("uhid")
+  var net_amount = link.data("net_amount")
+  var bill_amount = link.data("paid_amount")
+  var modal    = $(this)
+   //alert(bill_no);
+
+modal.find(".modal-body #bill_no").val(bill_no);
+modal.find(".modal-body #bill_datetime").val(bill_datetime);
+modal.find(".modal-body #lou_no").val(lou_no);
+modal.find(".modal-body #claim_no").val(claim_no);
+modal.find(".modal-body #uhid").val(uhid);
+modal.find(".modal-body #net_amount").val(net_amount);
+modal.find(".modal-body #bill_amount").val(bill_amount);
+// modal.find(".modal-body #serial_batch").val(serial_batch);
+//modal.find(".modal-body #amount").val(amount);
+
+});
+});
+</script>
+
+<script>
+      function myFunction(){
+          var x = document.getElementById("myDiv");
+          if(x.style.display ==="none"){
+              x.style.display = "block";
+          }else{
+              x.style.display = "none";
+          }
+      }
+  </script>
+<script>
+  JotForm.showJotFormPowered = "new_footer";
+  </script>
+  <script>
+  JotForm.poweredByText = "Powered by Jotform";
+  </script>
+  <input type="hidden" class="simple_spc" id="simple_spc" name="simple_spc" value="223321786800453" />
+  <script type="text/javascript">
+  var all_spc = document.querySelectorAll("form[id='223321786800453'] .si" + "mple" + "_spc");
+for (var i = 0; i < all_spc.length; i++)
+{
+  all_spc[i].value = "223321786800453-223321786800453";
+}
+  </script>
+
+<script type="text/javascript">JotForm.ownerView=true;</script><script src="https://cdn.jotfor.ms//js/vendor/smoothscroll.min.js?v=3.3.37546"></script>
+<script src="https://cdn.jotfor.ms//js/errorNavigation.js?v=3.3.37546"></script>
+
+{% endblock  %}

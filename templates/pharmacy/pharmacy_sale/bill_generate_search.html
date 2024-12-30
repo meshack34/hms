@@ -1,0 +1,253 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+    .form-control {
+        border: 2px solid white;
+        width: 100%;
+        background-color: white;
+        border-bottom: 1px solid rgb(247, 247, 247);
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+
+<div class="page-wrapper">
+    <div class="content">
+        <nav class="navbar navbar-light bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="color: white;" href="#">Bill Search</a>
+            </div>
+        </nav><br>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                    <div class="card">
+                        <div class="header">
+                            <div class="body">
+                                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;">
+                                    <form class="p-3" method="post">
+                                        {% csrf_token %}
+                                        <div class="icon-button-demo">
+
+                                            <button type="button" class="btn btn-primary"
+                                                onClick="window.location.reload();"> <i
+                                                    class="fas fa-sync-alt pr-2"></i>Refresh</button>
+                                            <a href="" class="btn btn-danger"> <i
+                                                    class="fas fa-times-circle pr-2"></i>Exit</a>
+                                            <a href="{% url 'counter_saleout_patient' %}"
+                                                class="btn btn-primary">Back</a>
+                                            <button class="btn btn-danger" role="button"
+                                                onclick="codespeedy()">PDF</button>&nbsp;
+                                            <button class="btn btn-sucess" style="background-color: green;"
+                                                id="download-button" role="button">CSV</button>&nbsp;
+                                            <a href="/not_bill_generate_search" class="btn btn-primary"><i
+                                                class="fa fa-hand-pointer"></i>&nbsp;Not Generate</a>
+                                        </div>
+                                        <br><br>
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"
+                                                style="background-color:rgb(233, 233, 233);"><br>
+
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-3 mb-0">
+                                                        <label><b>Bill No</b></label>
+                                                        <input type='text' name='bill_no' id='bill_no'
+                                                            style="background-color: white;" class='form-control'
+                                                            value="">
+                                                    </div>
+                                                    
+                                                    <div class="form-group col-md-3 mb-0">
+                                                        <label for="patient-name"><b>Patient Name</b></label>
+                                                        <input type="text" name="patient_name" id="patient_name"
+                                                            list="patientname" class="form-control">
+                                                    </div>
+
+                                                    <datalist id="patientname">
+                                                        {% for data in patient_registration %}
+                                                        <option value="{{data.first_name}}-{{data.middle_name}}-{{data.last_name}}">
+                                                        </option>
+                                                        {% endfor %}
+                                                    </datalist>
+
+                                                    <div class="col-sm-0"><br>
+                                                        <button type="submit" class="btn btn-warning mt-2"
+                                                            name="search_btn" value="search_btn"><i
+                                                                class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                            </div>
+                                        </form><br>
+                                      
+
+                                        <div id="hello">
+
+                                           
+                                            <style>
+                                                table, th, td {
+                                                  border: 1px solid black;
+                                                  border-collapse: collapse;
+  
+                                                }
+                                                #button2{
+                                                font-size: larger;
+                                                padding: 10px;
+                                                border: none;
+                                                border-radius: 5px;
+                                            }
+                                                </style>
+                                                <center><h3> Sale Bill Detail</h3></center>
+                                            <table class="table table-bordered" style="border-style: solid;" align="center">
+                                                <thead>
+                                                    <tr>
+                                                      <th scope="col">S.No</th>
+                                                      <th scope="col">Sale No.</th>
+                                                      <th scope="col">Date Time</th>
+                                                      <th scope="col">Item Name </th>
+                                                      <th scope="col">Serial Batch</th>
+                                                      <th scope="col">Expiry Date</th>
+                                                      <th scope="col">Qty</th>
+                                                      <th scope="col">Rate</th>
+                                                      <th scope="col">Discount</th>
+                                                      <th scope="col">Amount</th>
+                                                      <th scope="col">Pay</th>
+                                                      <th scope="col">Bill</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% if p_name %}
+                                                    <tr>
+                                                        <td colspan="12"><span style="font-weight:bold;">Patient Name : {{p_name}}</span></td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% for data1,data2 in item_details %}
+                                                    
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>{{data1.Op_sales_no}}</td>
+                                                        <td colspan="8">{{data1.sales_date}}</td>
+                                                        <td>{% if data1.p_status == 'pending' or data1.p_status == 'partially completed' %}<a href="/payment_detail_sale/{{data1.Op_sales_no}}" class="btn btn-warning"><i
+                                                            class="fa fa-hand-pointer"></i>&nbsp;</a>{% endif %}</td>
+                                                        <td><a href="/generate_bill/{{data1.Op_sales_no}}" class="btn btn-primary"><i
+                                                            class="fa fa-hand-pointer"></i>&nbsp;</a></td>
+                                                    </tr>
+                                                      {% for data in data2 %}
+                                                    <tr>
+                                                      <td>{{forloop.counter}}</td>
+                                                      <td></td>
+                                                      <td></td>
+  
+                                                        <td scope="row" style="padding-left: 15px;padding-right: 15px;">{{data.item_id}}</td>
+                                                          <td style="padding-left: 15px;padding-right: 15px;">{{data.batch_no}}</td>
+                                                          <td style="padding-left: 15px;padding-right: 15px;">{{data.expiry_date}}</td>
+                                                          <td style="padding-left: 15px;padding-right: 15px;">{{data.qty}}</td>
+                                                          <td style="padding-left: 15px;padding-right: 15px;">{{data.rate}}</td>
+                                                          <td style="padding-left: 15px;padding-right: 15px;">{{data.discount}}</td>
+                                                          <td style="padding-left: 15px;padding-right: 15px;">{{data.amount}}</td>
+                                                          <td></td>
+                                                          <td></td>
+                                                    </tr>
+                                                    {% endfor %}
+  
+                                                    <tr>
+                                                          <td></td>
+                                                          <td></td>
+                                                          <td></td>
+                                                          <td></td>
+                                                          <td></td>
+                                                          <td></td>
+                                                          <td></td>
+                                                          <td></td>
+                                                          <td><span style="font-weight:bold;">Total Amt:</span></td>
+                                                          <td><span style="font-weight:bold;">{{data1.total_taxable_amount}}</span></td>
+                                                          <td></td>
+                                                          <td></td>
+                                                      </tr>
+                                                      {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <div class="col-sm-6 col-md-4" class="card">
+                                                <canvas id="myChart" width="10" height="50" class="card"></canvas>
+                                            </div>
+  
+  
+                                          </div><br><br>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom JS -->
+<script src="../assets/js/app.js"></script>
+
+<script type="text/javascript">
+
+    function codespeedy() {
+        var print_div = document.getElementById("hello");
+        var print_area = window.open();
+        print_area.document.write(print_div.innerHTML);
+        print_area.document.close();
+        print_area.focus();
+        print_area.print();
+        print_area.close();
+        // This is the code print a particular div element
+    }
+</script>
+
+<!-- Export csv -->
+
+<script>
+    function htmlToCSV(html, filename) {
+        var data = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText);
+            }
+
+            data.push(row.join(","));
+        }
+
+        downloadCSVFile(data.join("\n"), filename);
+    }</script>
+<script>
+    function downloadCSVFile(csv, filename) {
+        var csv_file, download_link;
+
+        csv_file = new Blob([csv], { type: "text/csv" });
+
+        download_link = document.createElement("a");
+
+        download_link.download = filename;
+
+        download_link.href = window.URL.createObjectURL(csv_file);
+
+        download_link.style.display = "none";
+
+        document.body.appendChild(download_link);
+
+        download_link.click();
+    }</script>
+
+<script>document.getElementById("download-button").addEventListener("click", function () {
+        var html = document.querySelector("table").outerHTML;
+        htmlToCSV(html, "bill_detail.csv");
+    });</script>
+
+{% endblock %}

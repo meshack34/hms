@@ -1,0 +1,117 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+ 
+    /* .form-control{
+        border-radius: 15px;
+    } */
+</style>
+<!--Main Content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card">
+            <div class="card-body">
+                <h2>Discharge Reports</h2><br>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row filter-row">
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                <label class="focus-label">Start Date</label>
+                                <input type="date" class="form-control" name="start_date">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                <label class="focus-label">End Date</label>
+                                <input type="date" class="form-control" name="end_date">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="focus-label">Primary Doctor</label>
+                                <select name="doctor_name" id="doctor_name" class="form-control">
+                                    <option value=''>----selete----</option>
+                                    {% for data in doctor_records %}
+                                    <option value="{{data.doctor_id}}">{{data.doctor_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class=" col-md-2">
+                            <div class="form-group ">
+                                <label class="focus-label">Ward category</label>
+                                <select name="ward_type" id="ward_type" class="form-control">
+                                    <option value=''>----selete----</option>
+                                    {% for data in ward_type_records %}
+                                    <option value="{{data.id}}">{{data.ward_type}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Ward Type</label>
+                                <select name="ward_cat" id="ward_cat" class="form-control">
+                                    <option value=''>----selete----</option>
+                                    {% for data in ward_cat_records %}
+                                    <option value="{{data.id}}">{{data.category_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input type="submit" class="form-control btn btn-info" placeholder="Last name"
+                                value="Search">
+
+                        </div>
+                        <div class=" col-md-2">
+                            <a href="/reports" class="form-control btn btn-primary" style="background-color:#006778">Go
+                                Back</a>
+                        </div>
+                    </div>
+
+                </form>
+
+                </form>
+            </div>
+
+        </div>
+        <div class="card" style="padding: 30px; ">
+            <table class="datatable table table-stripped">
+                <thead>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Admission Datetime</th>
+                    <th>Discharge Datetime</th>
+                    <th>Status</th>
+                    <th>Ward type</th>
+                    <th>ward cat</th>
+                    <th>bed_no</th>
+
+                </thead>
+                <tbody>
+                    {% for dis,pat,ad,type,cat,bed in records %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{pat.first_name}}</td>
+                        <td>{{ad.admission_datetime}}</td>
+                        <td>{{dis.discharge_datetime}}</td>
+                        <td>{{dis.status}}</td>
+                        <td>{{type}}</td>
+                        <td>{{cat}}</td>
+                        <td>{{bed}}</td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

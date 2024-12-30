@@ -1,0 +1,51 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px; overflow: auto;">
+            <h2 ><img src="{% static 'images/lab_test.png' %}" alt="" style="width: 50px;">  <b>Lab Report Send By Patient Email</b></h2><br><br>
+
+     <div class="col-12">
+        <div class="form-group">
+            <div class="form-line">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <div class="form-group col-md-6 mb-0">
+                            <label > Patient Name</label>
+                            <input type="text" name="user_name" value="{{name}}" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            <label >Subject</label>
+                            <input type="text" name="subject"  class="form-control">
+                        </div>
+                    <div class="form-group col-md-6 mb-0">
+                            <label > Message</label>
+                            <input type="text" name="msg" class="form-control">
+                        </div>
+                       <div class="form-group col-md-6 mb-0">
+                            <label > Patient Email</label>
+                            <input type="email" name="email_id" value="{{email_id}}" class="form-control">
+                        </div>
+                       <div class="form-group col-md-6 mb-0">
+                            <label >Upload Report</label>
+                            <input type="file" name="files" class="form-control">
+                        </div>
+<!--                       <div class="form-group col-md-6 mb-0">-->
+<!--                            <label > Profile Name</label>-->
+<!--                            <input type="text" name="user_name" class="form-controll">-->
+<!--                        </div>-->
+                    <br>
+                    <button type="submit" class="btn btn-success"  style="align-left: 50px;"> <i
+                            class="fas fa-save">&nbsp;Save</i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

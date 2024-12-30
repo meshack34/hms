@@ -1,0 +1,138 @@
+{% extends 'admin1/base.html' %}
+{% block body_block %}
+<!--Main Content-->
+<!--content-->
+ <div class="page-wrapper">
+    <div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7 col-4">
+                <h4 class="page-title">&nbsp;&nbsp;&nbsp;Patient Profile</h4>
+            </div>
+        </div>
+        <div class="card-box profile-header">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="profile-view">
+                        <div class="profile-img-wrap">
+                            <div class="profile-img">
+                                <img src="{{data.doctor_profile_image.url}}" class="avatar"  alt="N/F" >
+                            </div>
+                        </div>
+                        <div class="profile-basic">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="profile-info-left">
+                                        <h4 class="user-name m-t-0 m-b-0"><u>{{data.patient_name|upper}}</u></h4>
+                                        <!-- <h4 class="text-muted">Patient ID : {{data.patient_id}}</h4> -->
+                                        <ul class="personal-info">
+                                            <li>
+                                                <span class="title">Patient ID:</span>
+                                                <span class="text">{{data.patient_id}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Scheduled:</span>
+                                                <span class="text">{{data.patient_schedule_date_and_time}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Doctor Name:</span>
+                                                <span class="text">{{data.doctor_name}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Doctor Department:</span>
+                                                <span class="text">{{data.doctor_department}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-7">
+                                    <ul class="personal-info">
+                                        <li>
+                                            <span class="title">Phone:</span>
+                                            <span class="text">{{data.patient_mobile_number}}</span>
+                                        </li>
+                                        <li>
+                                            <span class="title">Age:</span>
+                                            <span class="text">{{data.patient_age}}</span>
+                                        </li>
+                                        <li>
+                                            <span class="title">Gender:</span>
+                                            <span class="text">{{data.patient_gender}}</span>
+                                        </li>
+                                        <li>
+                                            <span class="title">Payment Mode:</span>
+                                            <span class="text">{{data.patient_payment_mode}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><br>
+        <a href="/appointment_table" class="btn btn-primary">Go Back</a>
+    </div>
+</div>
+</div>
+
+{% endblock %}
+<!--
+<!--Main Content-->
+<!-- <div class="page-wrapper">
+  <div class="content">
+        <div class="main_content"  style="background-image: linear-gradient(white,#9AD0EC);">
+            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Doctor</h4>
+          <br><br>
+            <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <div class="card">
+                    <div class="header">
+
+            <div class="body">
+                <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover save-stage dataTable"
+                    style="width:100%;">
+                        <thead>
+                            <tr><th bgcolor= "ORANGERED">Patient Id</th>
+                                <th bgcolor= "ORANGERED">Patient Name</th>
+                                <th bgcolor= "ORANGERED">Patient Age</th>
+                                <th bgcolor= "ORANGERED">Patient Mobile no.</th>
+                                <th bgcolor= "ORANGERED">Gender</th>
+                                <th bgcolor= "ORANGERED">patient_schedule_date_and_time</th>
+                                <th bgcolor= "ORANGERED">patient_payment_mode</th>
+                                <th bgcolor= "ORANGERED">doctor_name</th>
+                                <th bgcolor= "ORANGERED">doctor_department</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                          <tr>
+                            <td>{{data.patient_id}}</td>
+                            <td>{{data.patient_name|upper}}</td>
+                            <td>{{data.patient_age}}</td>
+                            <td>{{data.patient_mobile_number}}</td>
+                            <td>{{data.patient_gender}}</td>
+                            <td>{{data.patient_schedule_date_and_time}}</td>
+                            <td>{{data.patient_payment_mode}}</td>
+                            <td>{{data.doctor_name}}</td>
+                            <td>{{data.doctor_department}}</td>
+
+                          </tr>
+                         </tbody>
+                </table>
+                <a href="/appointment_table" class="btn btn-primary">Go Back</a>
+                </div>
+            </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div> -->
+
+<!-- <td><button type="button" name="button" class="btn btn-success" align="center">{{data.doctor_status}}</button></td> -->

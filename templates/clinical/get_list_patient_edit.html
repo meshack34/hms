@@ -1,0 +1,61 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<script src="{% static 'js/country-states.js' %}"></script>
+{% endblock  %}
+{% block body_block %}
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+                  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;"> Advance Payment For Visit</a>
+      </div>
+      </nav>
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00037">
+<input type="hidden" name="message_id" value="MSG00037">
+     <div class="col-12">
+       <div class="card">
+           <div class="col-sm-12 text-right"><br>
+               <a href="/avd_pay_paient_visit">
+            <button class="btn btn-primary">Create Advance Visit </button>
+               </a>
+          </div>
+          <form method="post">
+            {% csrf_token %}
+            <div class="box-outer">
+                <div class="col-md-3 pl-2 pr-2">
+                  <div class="form-group">
+                    <label>Advance Payment</label>
+                    <input type="number" name="advance_pay" class="form-control">
+                  </div>
+                  <button type="submit" name="adv_pay" value="Pay" class="btn btn-primary">Pay</button>
+                </div>
+            </div>
+          </form>
+       </div>
+         <table class="table border">
+             <thead>
+             <th>S.no</th>
+             <th>UHID</th>
+             <th>Advance Amount</th>
+             <th>Craeted At</th>
+             <th>Updated At</th>
+             </thead>
+             <tbody>
+             {% for da in pay_details %}
+             <tr>
+                 <td>{{da.id}}</td>
+                 <td>{{da.uhid}}</td>
+                 <td>{{da.advance_pay}}</td>
+                 <td>{{da.created_at}}</td>
+                 <td>{{da.updated_at}}</td>
+             </tr>
+             {% endfor %}
+             </tbody>
+         </table>
+    </div>
+
+{% endblock  %}

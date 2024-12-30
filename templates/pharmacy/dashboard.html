@@ -1,0 +1,68 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <!-- Main Dashboard -->
+        <div class="row">
+            <div class="col-12">
+                <div class="box-outer">
+                    {% if 'procurement' in access.user_profile.screen_access or request.user.is_superuser %}
+                    <div class="box text-center card">
+                        <a href="#" onclick="makeIDCarsMenuShow()">
+                            <div class="card_icon">
+                                <img src="{% static 'images/his/register.gif' %}" alt="" />
+                            </div>
+                            <div class="card-body">
+                                <h5 class="text-muted">Procurements</h5>
+                            </div>
+                        </a>
+                    </div>&nbsp;&nbsp;
+                    {% endif %}
+                    {% if 'pharamacy_sales' in access.user_profile.screen_access or request.user.is_superuser %}
+                    <div class="box text-center card">
+                        <a href="#" onclick="makeIDCarsMenuShow1()">
+                            <div class="card_icon">
+                                <img src="{% static 'images/his/pharmacyy.gif' %}" alt="" />
+                            </div>
+                            <div class="card-body">
+                                <h5 class="text-muted">Pharmacy Sales</h5>
+                            </div>
+                        </a>
+                    </div>&nbsp;&nbsp;
+                    {% endif %}
+                    {% if 'pharamacy_report' in access.user_profile.screen_access or request.user.is_superuser %}
+                    <div class="box text-center card">
+                        <a href="#" onclick="makeIDCarsMenuShow2()">
+                            <div class="card_icon">
+                                <img src="{% static 'images/his/dialysis2.jpg' %}" alt="" />
+                            </div>
+                            <div class="card-body">
+                                <h5 class="text-muted">Report</h5>
+                            </div>
+                        </a>
+                    </div>&nbsp;&nbsp;
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function makeIDCarsMenuShow(){
+     $('#pro').click();
+     return false;
+    }
+    function makeIDCarsMenuShow1(){
+    $('#sales').click();
+    return false;
+    }
+    function makeIDCarsMenuShow2(){
+    $('#reports').click();
+    return false;
+    }
+ </script>
+{% endblock %}

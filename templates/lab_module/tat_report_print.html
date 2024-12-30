@@ -1,0 +1,192 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+	<!-- Fontawesome CSS  -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+	<style>
+		.form-control {
+			border: 2px solid rgb(233, 233, 233);
+			width: 100%;
+			background-color: rgb(233, 233, 233);
+			border-bottom: 1px solid black;
+		}
+	</style>
+</head>
+
+<body>
+
+
+	<!-- content -->
+	<div class="page-wrapper">
+		<div class="content">
+	
+
+			<div class="container-fluid">
+				<div class="row clearfix">
+					<div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+						<div class="card">
+							<div class="header">
+								<div class="card-body">
+									<br>
+									<div class="icon-button-demo">&nbsp;
+										<a href="/tat_lab_report_all" class="btn btn-info"> <i
+												class="fa fa-arrow-circle-left">&nbsp;Back</i></a>
+
+										<button class="btn btn-warning" role="button"
+											onclick="codespeedy()">&nbsp;PDF</button>&nbsp;
+										<button class="btn btn-sucess" style="background-color: green;"
+											id="download-button" role="button">&nbsp;CSV</button>&nbsp;
+
+									</div><br>
+
+									<div id="hello">
+
+										<table
+											style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;"
+											width="50%">
+											<tr>
+
+												<div class="">
+													<center>
+														<h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}"
+																alt="logo Image" style="width:300px;height:80px;"></h2>
+													</center>
+												</div>
+
+											</tr>
+										</table>
+
+										<style>
+											table,
+											th,
+											td {
+												border: 1px solid black;
+												border-collapse: collapse;
+
+											}
+
+											#button2 {
+												font-size: larger;
+												padding: 10px;
+												border: none;
+												border-radius: 5px;
+											}
+										</style>
+										<center>
+											<h3>TAT Report</h3>
+										</center>
+										<table class="table table-bordered" style="border-style: solid;" align="center">
+											<thead style="background-color:rgb(195, 188, 188);">
+
+												<tr>
+													<th scope="col"><b>Service name</b></th>
+													<th scope="col">Billing Date&time</th>
+													<th scope="col">Ordered Date&time</th>
+													<th scope="col">Sample Colletion Date&time</th>
+													<th scope="col">Result Entry Date&time</th>
+													<th scope="col">Validation Date&time</th>
+													<th scope="col">Time consume</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td scope="row" style="padding-left: 15px;padding-right: 15px;">{{collected.profile_name}}</td>
+													<td style="padding-left: 15px;padding-right: 15px;">{{billing}}</td>
+													<td style="padding-left: 15px;padding-right: 15px;">{{billing}}</td>
+													<td style="padding-left: 15px;padding-right: 15px;">{{sample_date_time}}</td>
+													<td style="padding-left: 15px;padding-right: 15px;">{{result_entry_date_time}}</td>
+													<td style="padding-left: 15px;padding-right: 15px;">{{validayion_date_time}}</td>
+													<td style="padding-left: 15px;padding-right: 15px;">{{consume}}</td>
+												</tr>
+
+
+											</tbody>
+										</table>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+
+	<script type="text/javascript">
+
+		function codespeedy() {
+			var print_div = document.getElementById("hello");
+			var print_area = window.open();
+			print_area.document.write(print_div.innerHTML);
+			print_area.document.close();
+			print_area.focus();
+			print_area.print();
+			print_area.close();
+			// This is the code print a particular div element
+		}
+	</script>
+
+
+	<!-- Export csv -->
+
+	<script>
+		function htmlToCSV(html, filename) {
+			var data = [];
+			var rows = document.querySelectorAll("table tr");
+
+			for (var i = 0; i < rows.length; i++) {
+				var row = [], cols = rows[i].querySelectorAll("td, th");
+
+				for (var j = 0; j < cols.length; j++) {
+					row.push(cols[j].innerText);
+				}
+
+				data.push(row.join(","));
+			}
+
+			downloadCSVFile(data.join("\n"), filename);
+		}</script>
+	<script>
+		function downloadCSVFile(csv, filename) {
+			var csv_file, download_link;
+
+			csv_file = new Blob([csv], { type: "text/csv" });
+
+			download_link = document.createElement("a");
+
+			download_link.download = filename;
+
+			download_link.href = window.URL.createObjectURL(csv_file);
+
+			download_link.style.display = "none";
+
+			document.body.appendChild(download_link);
+
+			download_link.click();
+		}</script>
+
+	<script>document.getElementById("download-button").addEventListener("click", function () {
+			var html = document.querySelector("table").outerHTML;
+			htmlToCSV(html, "TAT report.csv");
+		});</script>
+
+</body>
+
+</html>

@@ -1,0 +1,279 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+  .form-control {
+    border: 2px solid white;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid black;
+  }
+
+  #id_Date,
+  #id_s_no,
+  #id_po_no,
+  #id_vendor,
+  #id_tax,
+  #id_basic_amount,
+  #id_net_amount,
+  #item_name {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+
+<div class="page-wrapper">
+  <div class="content">
+    <nav class="navbar navbar-light bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" style="color: white;" href="#">Prescription Details</a>
+      </div>
+    </nav><br>
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+          <div class="card">
+            <div class="header">
+              <div class="body">
+                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;">
+                  <form class="p-3" method="post">
+                    {% csrf_token %}
+                    <div class="icon-button-demo">
+
+                      <button type="submit" class="btn btn-success" name="saved" value="saved" id="add_purchase_order">
+                        <i class="fas fa-save pr-2"></i>Save</button>
+                      <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+                          class="fas fa-sync-alt pr-2"></i>Refresh</button>
+                      <a href="" class="btn btn-danger"> <i class="fas fa-times-circle pr-2"></i>Exit</a>
+                      <!--<a href="/payment_detail_sale" class="btn btn-warning"><i class="fa fa-print pr-2"></i>Bill-->
+                      <!--  Generate</a>-->
+                      <!--<button class="btn btn-warning" id="forward_opd_billing" type="button">Forward to OPD</button>-->
+                      <a href="{% url 'prescription_list' %}" class="btn btn-primary">Back</a>
+                    </div>
+                    <br><br>
+                    <div class="form-row">
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b>Patient Name</b> </label>
+                        <input type="text" name="patient_name" id="patient_name" class="form-control"
+                          value="{{patient_details.first_name}} {{patient_details.middle_name}} {{patient_details.last_name}}">
+                        <input type="hidden" name="patient_id" id="patient_id" value="{{patient_details.id}}">
+                      </div>
+
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b>UHID</b></label>
+                        <input type="text" name="uhid" id="uhid" class="form-control" value="{{patient_details.uhid}}">
+                      </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b>Visit No</b></label>
+                        <input type="text" name="visit_id" id="visit_id" value="{{visit_id}}" class="form-control">
+                      </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b>Bill No</b></label>
+                        <input type="text" name="bill_id" id="bill_id" class="form-control" value="{{pk}}">
+                      </div>
+
+
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b> Mobile No</b></label>
+                        <input type="text" name="mob_no" id="mob_no" class="form-control"
+                          value="{{patient_details.mobile_number}}">
+                      </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b>Age</b></label>
+                        <input type="text" name="age" id="age" class="form-control" value="{{patient_details.age}}">
+                      </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b>Gender</b> </label>
+                        <input type="text" name="gender" id="gender" class="form-control"
+                          value="{{patient_details.gender}}">
+                      </div>
+                      <div class="form-group col-md-3 mb-0" style="padding-top: 8px;font-size: 15px;">
+                        <span> <input type="radio" name="consultant" id="consultant"
+                            value="Hospital Consultant"><b>Hospital Consultant</b> </span>
+                        <span><input type="radio" name="consultant" id="consultant"
+                            value="Other Consultant"><b>Other</b></span>
+                        <input type="text" name="consultant_name" class="form-control">
+                      </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label><b>Panel</b></label>
+                        <select name="panel" id="panel" class="form-control" required>
+                          <option value=''>Select</option>
+                          <option>Cash</option>
+                          <option>Insurence/Credit</option>
+                        </select>
+                      </div>
+                      <!--<div class="form-group col-md-3 mb-0">-->
+                      <!--<label><b>Payment Mode</b> </label>-->
+                      <!--<select name="type" id="type" class="form-control">-->
+                      <!--  <option>Select</option>-->
+                      <!--  <option>Cash</option>-->
+                      <!--  <option>Credit</option>-->
+                      <!--  <option>Debit</option>-->
+                      <!--  <option>Insurence</option>-->
+                      <!--</select>-->
+                      <!--</div>-->
+                      <!-- <div class="form-group col-md-3 mb-0">
+                                           <label><b> OPD No</b></label>
+                                           <input type="text" name="opd_no" id="opd_no" class="form-control">
+                                           </div> -->
+                      <!-- <div class="form-group col-md-2 mb-0" style="padding-top: 30px;font-size: 20px;">
+                                        <span><input type="radio" name="patient_type" id="patient_type" value="IPD">IPD</span>
+                                        <span><input type="radio" name="patient_type" id="patient_type" value="OPD">OPD</span>
+                                       </div> -->
+
+
+                    </div>
+                    <hr> <br>
+                    <div class="table-responsive">
+                      <table class="datatable table table-stripped auto-index">
+                        <thead style="background-color: cornflowerblue;">
+                          <tr>
+                            <th>SI.No</th>
+                            <th>Medicine Name</th>
+                            <th>Batch</th>
+                            <th>Expiry Date</th>
+                            <th>Inhand-Qty</th>
+                            <th>Qty</th>
+                            <th>Rate</th>
+                            <th>Dis%</th>
+                            <th>Amount</th>
+                            <!-- <th></th> -->
+                          </tr>
+                        </thead>
+
+                        {% for data,data1,data2,data3 in medicine_details %}
+                        <tbody style="background-color: white;">
+                          <tr class="clonetr" id="addrow">
+                            <td>{{forloop.counter}}</td>
+                            <td><input type="hidden" class="form-control" name="item_id" id="item_id"
+                                value="{{data.medicine.id}}">{{data.medicine}}</td>
+                            <td><select name="batch" id="batch_IDD1" class="form-control"
+                                data-uhid-url="{% url 'add_count_sale' %}">
+                                <option value="">Select</option>
+                                {% for batch in data1 %}
+                                <option value="{{batch}}">{{batch}}</option>
+                                {% endfor %}
+                              </select></td>
+                            <td><input type="text" class="form-control" name="expiry_date" id="expiry_date"></td>
+                            <td><input type="text" name="inhand" id="inhand" class="form-control"></td>
+                            <td><input type="text" class="form-control" name="qty" id="qty" value="{{data2}}"></td>
+                            <td><input type="text" class="form-control" name="rate" id="rate"></td>
+                            <td><input type="text" class="form-control" name="discount" id="discount"></td>
+                            <td><input type="hidden" name="before_disc_amount" id="before_disc_amount"><input
+                                type="text" class="form-control" name="amount" id="amount"><input
+                                type="hidden" name="purchase_rate" id="purchase_rate" value="{{data3}}"></td>
+                            <!-- <td>&nbsp;&nbsp;
+                                                             <div class="col-md-3"><button type="reset" style="background-color:rgb(231, 41, 41)" class="btn btn-danger" id="delete" ><i class="fas fa-trash-alt"></i></button></div></td> -->
+
+                          </tr>
+                        </tbody>
+                        {% endfor %}
+
+                      </table>
+
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(document).on('change', '#batch_IDD1', function () {
+      var dumy = this;
+      var serial_batch = $(dumy).closest('tr').find('#batch_IDD1').val();
+      var item_id = $(dumy).closest('tr').find('#item_id').val();
+      const url = $("#batch_IDD1").attr("data-uhid-url");
+      var headers = { 'X-CSRFToken': '{{ csrf_token }}' };
+
+      $.ajax({
+        url: url,
+        type: "post",
+        data: {
+          serial_batch: serial_batch,
+          item_id: item_id,
+
+        },
+        headers: headers,
+        dataType: 'json',
+        success: function (data) {
+          $(dumy).closest('tr').find('#expiry_date').val(data["expiry_date"]);
+          $(dumy).closest('tr').find('#rate').val(data["rate"]);
+          $(dumy).closest('tr').find('#inhand').val(data["inhand"]);
+          var qty = $(dumy).closest('tr').find('#qty').val();
+          var rate = data["rate"];
+          var amount = qty * rate;
+          $(dumy).closest('tr').find('#amount').val(amount);
+        },
+        error: function (data1) {
+          console.log(data1);
+        }
+      });
+    });
+
+    $(document).on('keyup', '#qty', function () {
+      var dumy = this;
+      var qty = $(dumy).closest('tr').find('#qty').val();
+      var rate = $(dumy).closest('tr').find('#rate').val();
+      var amount1 = qty * rate;
+      $(dumy).closest('tr').find('#amount').val(amount1);
+      $(dumy).closest('tr').find('#before_disc_amount').val(amount1);
+
+    });
+    $(document).on('keyup', '#discount', function () {
+      var dumy = this;
+      var discount = $(dumy).closest('tr').find('#discount').val();
+      var qty = $(dumy).closest('tr').find('#qty').val();
+      var rate = $(dumy).closest('tr').find('#rate').val();
+      var amount1 = qty * rate;
+      var disc_amount = (amount1 * discount) / 100
+      var after_disc = amount1 - disc_amount
+      $(dumy).closest('tr').find('#amount').val(after_disc);
+
+    });
+
+    $(document).on('click', '#forward_opd_billing', function () {
+      var dumy = this;
+      var values = "Forward to OPD"
+      var url = "{% url 'status_updatePSR' %}";
+      var headers = { 'X-CSRFToken': '{{ csrf_token }}' }
+      var uhid = $('#uhid').val();
+      var visit_id = $('#visit_id').val();
+
+      $.ajax({
+        url: url,
+        type: "post",
+        data: {
+          values: values,
+          visit_id: visit_id,
+          uhid: uhid,
+        },
+        headers: headers,
+        dataType: 'json',
+        success: function (data) {
+          alert(data);
+          window.location.href = '{% url "counter_saleout_patient" %}';
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

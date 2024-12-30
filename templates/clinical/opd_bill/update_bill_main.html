@@ -1,0 +1,412 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+ <style>
+  #id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_doctor{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_discount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_unit{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_net_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_co_pay{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_patient_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_receive_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_company_name{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_patient_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+background-color:white;
+  border:2px solid white;
+  #id_receive_amount{
+
+  width:100%;
+  }
+
+  #id_view{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+
+.table_form input{
+  border:2px solid white;
+  width:100%;
+  border-bottom:1px solid #eee;
+}
+.service_table tr th{
+}
+.service_table tr td{
+}
+ </style>
+ <link
+  rel="stylesheet"
+  href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"
+/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+{% endblock  %}
+{% block body_block %}
+  <!-- content -->
+  <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00041">
+<input type="hidden" name="message_id" value="MSG00041">
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="page-header row">
+              <h3 class="pageheader-title col-sm-4"><b>Out-Patient Billing</b></h3>
+            <div class="col-sm-8 text-right">
+              <button class="btn btn-primary dropdown-toggle p-2 icon-size" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+              <div class="dropdown-menu">
+<!--                data-toggle="modal" data-target="#payment_mode_popup"-->
+                {% if corp_name == 'Cash' %}
+                <a class="dropdown-item" href="/opd_payment_mode" >Payment - Cash</a>
+                {% else %}
+                <a class="dropdown-item" href="/opd_payment_credit" >Payment - Credit</a>
+                {% endif %}
+<!--                <a class="dropdown-item" href="#">Another action</a>-->
+                <a class="dropdown-item" href="/opdbillrecipte">Patient Invoice</a>
+              </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal" id="payment_mode_popup" tabindex="-1" role="dialog" aria-labelledby="payment_mode_popup" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:80%;">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-white">
+                      <h5 class="modal-title" id="patient-registration-title">Payment Mode</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="Out-Patient_record">
+                      <form>
+                        <div class="row form_sec">
+                          <div class="col-md-12">
+                            <div class="today_visit" style="min-height: 300px;">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-save" aria-hidden="true"></i></button>
+                              </div>
+                              <form class="">
+                                <table class="table table-border ">
+                                  <tr style="background:#d1dae6;">
+                                    <th>Mode Type</th>
+                                    <th>Amount</th>
+                                    <th>Bank</th>
+                                    <th>Cheque/Card/DD No.</th>
+                                    <th>Expiry Date</th>
+                                    <th></th>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <div class="form-group">
+                                        <select name="cars">
+                                          <option value="Cash">Cash</option>
+                                          <option value="UPI">UPI</option>
+                                        </select>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <select name="cars" id="cars">
+                                          <option value="Bank">Bank</option>
+                                          <option value="UPI">UPI</option>
+                                        </select>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="butns">
+                                        <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                        <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </form>
+                            </div>
+                          </div>
+                        </div><!-- row -->
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form_sec">
+                              <form>
+                                <div class="input_filed d-flex align-items-center">
+                                  <label style="flex: 0 0 100px;" for="GCR">GCR No. <small>*</small></label>
+                                  <input type="text" class="form-control" placeholder="">
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div><!-- row -->
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="billing-form bg-white p-2 mt-2">
+           <div class="row" >
+              <div class="col-md-4">
+                <label>UHID*</label><br>
+                <input type="text" value="{{dat.uhid}}" name="uhid" required readonly class='form-control'>
+              </div>
+              <div class="col-md-4">
+                <label>Visit No*</label>
+                  <input type="text" value="{{dat.visit_no}}" name="uhid" required readonly class='form-control'>
+              </div>
+               <div class="col-md-4">
+                <label>Bill No*</label>
+                  <input type="text" value="{{dat.bill_no}}" name="uhid" required readonly class='form-control'>
+              </div>
+               <br>
+               <div class="col-md-4">
+                <label>Patient Name</label><br>
+                <input type="text" value="{{dat.title|upper}} {{dat.f_name|upper}} {{dat.m_name|upper}} {{dat.l_name|upper}}" name="uhid" required readonly class='form-control'>
+              </div>
+              <div class="col-md-4">
+                <label>Tariff Name</label>
+                  <input type="text" value="{{dat.billing_group}}" name="uhid" required readonly class='form-control'>
+              </div>
+               <div class="col-md-4">
+                <label>Insurance Name</label>
+                   {% if dat.corporate_name != None %}
+                  <input type="text" value="{{dat.corporate_name}}" name="uhid" required readonly class='form-control'>
+                   {% else %}
+                  <input type="text" value="{{dat.corporate_id}}" name="uhid" required readonly class='form-control'>
+                   {% endif %}
+              </div>
+            </div>
+          <br>
+          <br>
+          <div class="container-fluid">
+<!--            <form method="POST" >-->
+
+                <table class="datatable table table-stripped">
+                  <tr style="background: #d1dae6;">
+                    <th style="width:30%">Services Name</th>
+                    <th>Rate</th>
+                    <th>Qty</th>
+                      <th>Discount</th>
+                    <th>NetAmount</th>
+                    <th>TotalAmt.</th>
+                  </tr>
+                    {% if records_temp %}
+                    {% for data in records_temp %}
+                    <tr>
+                        <td class="table_form"><input type="text" name="service" readonly value="{{data.service_name}}"></td>
+                        <td class="table_form"><input type="number" name="net_amount" class="rate" readonly value="{{data.rate|floatformat:0}}"></td>
+                        <td class="table_form"><input type="number" name="unit" class="quantity" value="{{data.unit}}" required></td>
+                        <td class="table_form"><input type="number" name="discount" class="discount" value="{{data.discount}}" required title="please enter number"></td>
+                        <td class="table_form"><input type="number" name="pay_amount" class="pay_amount" value="{{data.net_ammount|floatformat:0}}"  required></td>
+                        <td class="table_form"><input type="number" name="paid_amount" class="paid_amount" value="{{data.total_amount|floatformat:0}}" required></td>
+                        <td class="table_form"><input type="hidden" name="outstanding_amount" value="{{data.outstanding_amount|floatformat:0}}" required></td>
+                        <td class="table_form"  style="display:none;"><input type="text" name="temp_bill_no" value="{{data.temp_bill_no}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="text" name="package_profile_id" value="{{data.package_profile_id}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="text" name="package_profile_amt" value="{{data.package_profile_amt}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="text" name="service_category" value="{{data.service_category}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="text" name="service_sub_category" value="{{data.service_sub_category}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="text" name="order_id" value="{{data.order_id}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="text" name="Pr_Opd_sr_bill_no" value="{{data.Pr_Opd_sr_bill_no}}" required></td>
+<!--                        <td><a href="#" onclick="deleteDataTemp(event,'{{pk}}','{{data.id}}')"><button type="button" class="btn btn-danger"> <i class="fa fa-trash" aria-hidden="true"></i></button></a></td>-->
+                    </tr>
+                  {% endfor %}
+                    <tr style="background-color:#eee;color:white!important;">
+                        <td><b>New Bill Amount</b></td>
+                      <td class="table_form"><input type="number" name="total_net_amt" id="rate_amt" value="{{ttl_rate_temp|floatformat:0}}" required readonly></td>
+                        <td class="table_form"><input type="text" name="" id="total_qty" value="{{ttl_qty_temp}}" required readonly></td>
+                      <td class="table_form"><input type="text" name="total_disc" id="total_disc" class="total_disc"  value="{{ttl_dics_temp|floatformat:0}}" required></td>
+                      <td class="table_form"><input type="text" name="total_payable_amt" id="total_payable_amt" value="{{ttl_net_amt_temp|floatformat:0}}" required readonly></td>
+                      <td class="table_form"><input type="text" name="total_paid_amt" id="total_paid_amt" value="{{ttl_amt_temp|floatformat:0}}" required readonly></td>
+                      <td class="table_form"><input type="hidden" name="total_outstanding_amt" value="{{ttl_outstanding_amount|floatformat:0}}" readonly required></td>
+                  </tr>
+                    <tr style="background-color:powderblue;">
+                        <th colspan="7" style="text-align:center"><b>Previous Services</b></th>
+                    </tr>
+                    {% endif %}
+                  {% for data in records_sub %}
+                    <tr>
+                        <td class="table_form"><input type="text" name="service" readonly value="{{data.service_id}}"></td>
+                        <td class="table_form"><input type="number" name="net_amount" readonly value="{{data.charges|floatformat:0}}"></td>
+                        <td class="table_form"><input type="number" name="unit" value="{{data.unit}}" required></td>
+                        <td class="table_form"><input type="number" name="discount" value="{{data.discount}}" required title="please enter number"></td>
+                        <td class="table_form"><input type="number" name="pay_amount" value="{{data.pay_amount|floatformat:0}}"  required></td>
+                        <td class="table_form"><input type="number" name="paid_amount" value="{{data.paid_amount|floatformat:0}}" required></td>
+                        <td class="table_form"><input type="hidden" name="outstanding_amount" value="{{data.outstanding_amount|floatformat:0}}" required></td>
+                        <td class="table_form"  style="display:none;"><input type="text" name="temp_bill_no" value="{{data.temp_bill_no}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="text" name="package_profile_id" value="{{data.package_profile_id}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="text" name="package_profile_amt" value="{{data.package_profile_amt}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="text" name="service_category" value="{{data.service_category}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="text" name="service_sub_category" value="{{data.service_sub_category}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="text" name="order_id" value="{{data.order_id}}" required></td>
+                        <td class="table_form" style="display:none;"><input type="text" name="Pr_Opd_sr_bill_no" value="{{data.Pr_Opd_sr_bill_no}}" required></td>
+<!--                        <td><a href="#" onclick="deleteData(event,'{{pk}}','{{data.id}}')"><button type="button" class="btn btn-danger"> <i class="fa fa-trash" aria-hidden="true"></i></button></a></td>-->
+                    </tr>
+                  {% endfor %}
+
+                    <tr style="background-color:#eee;color:white!important;">
+                        <td><b>Previous Bill Amount</b></td>
+                      <td class="table_form"><input type="number" name="total_net_amt" value="{{dat.net_amount|floatformat:0}}" required readonly></td>
+                        <td class="table_form"><input type="text" name="" value="{{dat.unit}}" required readonly></td>
+                      <td class="table_form"><input type="text" name="total_disc" value="{{dat.discount|floatformat:0}}" required></td>
+                      <td class="table_form"><input type="text" name="total_payable_amt" value="{{dat.pay_amount|floatformat:0}}" required readonly></td>
+                      <td class="table_form"><input type="text" name="total_paid_amt" value="{{dat.paid_amount|floatformat:0}}" required readonly></td>
+                      <td class="table_form"><input type="hidden" name="total_outstanding_amt" value="{{ttl_outstanding_amount|floatformat:0}}" readonly required></td>
+                  </tr>
+                </table>
+<!--            </form>-->
+          </div>
+          <a href="/opd_billing"><button type="button" class="btn btn-primary">Back</button></a>
+      </div>
+</div>
+    <!-- calculation script -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(document).on('keyup', '#total_disc', function () {
+            var dico = this.value;
+            var payable_amt = $('#total_payable_amt').val();
+            var amount = payable_amt - dico;
+            // alert(qty);
+            $('#total_paid_amt').val(amount);
+        });
+    });
+</script>
+<script>
+  $(document).ready(function () {
+      $(document).on('keyup', '.discount', function () {
+          var dumy = this;
+          var discount = this.value;
+          var qty = $(dumy).closest('tr').find('.quantity').val();
+          var rate = $(dumy).closest('tr').find('.rate').val();
+          var bef_discount_amt = rate * qty;
+          var amount = ((rate * qty) - discount);
+<!--          var amount = (rate * qty) - discount_amt;-->
+          // alert(rate);
+          $(dumy).closest('tr').find('.paid_amount').val(parseInt(amount));
+          $(dumy).closest('tr').find('.pay_amount').val(parseInt(bef_discount_amt));
+          total_cal()
+      });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+      $(document).on('keyup', '.quantity', function () {
+          var dumy = this;
+          var qty = this.value;
+          var discount = $(dumy).closest('tr').find('.discount').val();
+          var rate = $(dumy).closest('tr').find('.rate').val();
+          var bef_discount_amt = rate * qty;
+          var amount = ((rate * qty) - discount);
+          alert(bef_discount_amt)
+          $(dumy).closest('tr').find('.paid_amount').val(parseInt(amount));
+          $(dumy).closest('tr').find('.pay_amount').val(parseInt(bef_discount_amt));
+          total_cal()
+      });
+  });
+</script>
+<script>
+function total_cal(){
+  var calculated_total_sum = 0;
+  var calculated_total_dis = 0;
+  var calculated_total_payableamt = 0;
+   $("#id_table .paid_amount").each(function () {
+     var get_textbox_value = $(this).val();
+     var qty = $(this).closest('tr').find('.quantity').val();
+     var rate = $(this).closest('tr').find('.rate').val();
+     if ($.isNumeric(get_textbox_value)) {
+        calculated_total_sum += parseFloat(get_textbox_value);
+        };
+        calculated_total_payableamt += parseInt(qty) * parseInt(rate);
+      });
+        $("#total_paid_amt").val(parseInt(calculated_total_sum));
+        $("#total_payable_amt").val(parseInt(calculated_total_payableamt));
+    $("#id_table .discount").each(function () {
+     var total_discount = $(this).val();
+     if ($.isNumeric(total_discount)) {
+        calculated_total_dis += parseFloat(total_discount);
+        };
+      });
+      $(".total_disc").val(parseInt(calculated_total_dis));
+}
+</script>
+{% endblock  %}

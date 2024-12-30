@@ -1,0 +1,115 @@
+{% extends 'pharmacy/base.html' %}
+{% block head_block %}
+{% load customfilter %}
+<style>
+  .form-control {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+
+
+
+<!-- content -->
+<div class="page-wrapper">
+  <div class="content">
+    <button type="menu" style="font-family: monospace; width: 100%; text-align: left;"
+      class="btn btn-primary m-t-15 waves-effect"> <b>PI Item Details</b></button>
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+          <div class="card">
+            <div class="header">
+              <div class="body">
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="submit" name="Insert" value="Insert" class="btn btn-primary"> <i
+                        class="fas fa-sync-alt">Insert</i></button>&nbsp;
+                    <button type="button" class="btn btn-warning" onclick="print_view()"><i
+                        class="fa fa-print">PreView</i></button>&nbsp;
+                    <div class="col-md-0">
+                      <button type="reset" class="btn btn-primary"> <i
+                          class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                    </div>
+                    <div class="col-md-0">
+                      <button type="button" class="btn btn-danger"><a href=''><i class="fas fa-times-circle"
+                            style="color:white;">Exit</i></a></button>
+                    </div> &nbsp;
+
+                  </div><br>
+
+                  <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+
+                      <thead>
+                        <tr>
+                          <th>SI.NO</th>
+                          <th>Item Name</th>
+                          <th>Intent No</th>
+                          <th>DateTime</th>
+                          <th>Priority</th>
+                          <th>Quantity</th>
+                          <th>Select</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for data1 in item_master %}
+                        <tr>
+                          <td></td>
+                          <td colspan="5"><span
+                            style="font-weight:bold">{{data1.item_name}}</span>
+                          </td>
+                          <td><input type="checkbox" id="check" name="check" value="{{data1.id}}"></td>
+                        </tr>      
+                        {% for data in PIchild2 %}
+                        {% if data.item_id_id == data1.id %}
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td><input type="text" name="intent_id" value="{{data.intent_id}}" class="form-control"
+                              readonly></td>
+                          <td><input type="text" name="intent_datetime" value="{{data.intent_datetime}}"
+                              class="form-control" readonly> </td>
+                          <td><input type="text" name="item_name" value="{{data.item_id}}" class="form-control"
+                              readonly><input type="hidden" name="item_id" value="{{data.item_id_id}}"></td>
+                          <td><input type="text" name="priority" value="{{data.priority}}" class="form-control"
+                              readonly></td>
+                          <td><input type="text" name="quantity" value="{{data.quantity}}" class="form-control"
+                              readonly></td>
+                          <input type="hidden" name="rate" value="{{data.rate}}" class="form-control" readonly>
+                          <input type="hidden" name="amount" value="{{data.amount}}" class="form-control" readonly>
+                          <td></td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+
+                        <tr></tr>
+                        
+                            <!-- <input type="hidden" name="total_qty" id="total_qty"
+                              value="{% for k,v in total_qty.items %} {{ v }} {% endfor %}"><span
+                              style="font-weight:bold">Total Qty :</span> -->
+                          
+                        {% endfor %}
+                      </tbody>
+
+                    </table>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+
+  {% endblock %}

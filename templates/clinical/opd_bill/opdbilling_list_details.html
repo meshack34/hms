@@ -1,0 +1,110 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+
+    </style>
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+<div class="content" id="hello">
+    <div class="top-heading lightgreen_bg">
+        <h3 class="section_title" style="text-align:center; color:white; padding:10px;"> OPD Billing Details View</h3>
+    </div>
+ <br>
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+           <div class="card">
+               <div class="header">
+       <div class="body">
+               <br>
+           <div class="table-responsive">
+             <table class="datatable table table-stripped ">
+                   <thead>
+                       <tr>
+                           <th>UHID</th>
+                           <th>Visit No</th>
+                           <th>Bill No</th>
+                           <th>Patient Name</th>
+                           <th>Age/Sex</th>
+                           <th>Doctor Name</th>
+                           <th>Department</th>
+                           <th>Created By</th>
+                           <th>Bill Date</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <tr>
+                           <td>{{dat.uhid}}</td>
+                           <td>{{dat.visit_no}}</td>
+                           <td>{{dat.bill_no}}</td>
+                           <td>{{dat.pst_title|upper}} {{dat.pat_first_name|upper}} {{dat.pat_middle_name|upper}} {{dat.pat_last_name|upper}}</td>
+                           <td>{{dat.pat_age}}Y/{{dat.pat_gender}}</td>
+                           <td>{{dat.doctor_name|upper}}</td>
+                           <td>{{dat.department|upper}}</td>
+                           <td>{{dat.created_by|upper}}</td>
+                           <td>{{dat.bill_date_time}}</td>
+                       </tr>
+                   <tr>
+                       <td colspan="9"></td>
+                   </tr>
+                   <tr>
+                       <th colspan="5"></th>
+                       <th colspan="3">Service Name</th>
+                       <th colspan="2">Amount</th>
+                   </tr>
+                   {% for data in opdbill_child %}
+                       <tr>
+                           <td colspan="5"></td>
+                           <td colspan="3">{{data.service_id}}</td>
+                           <td colspan="1">{{data.paid_amount}}</td>
+                       </tr>
+                   {% endfor %}
+                   <tr>
+                       <th colspan="5"></th>
+                       <th colspan="3"><b>Total Amount</b></th>
+                       <th colspan="1"><b>{{dat.paid_amount}}</b></th>
+                   </tr>
+                    </tbody>
+           </table>
+           </div>
+           <!-- <h3 align="center">Please Seach </h3> -->
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+    	<div style="text-align:center;">
+            {% if dat.billing_group_id == '1' %}
+            <a href="/opd_print_cash/{{pk}}"><input type="button" value="Get Receipt" class="btn btn-primary" /></a>
+            {% else %}
+            <a href="/opd_print_credit/{{pk}}"><input type="button" value="Get Receipt" class="btn btn-primary" /></a>
+            {% endif %}
+            <a href="/opdbilling_details"><input type="button" value="Back" class="btn btn-danger" /></a>
+        </div>
+
+
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+{% endblock %}

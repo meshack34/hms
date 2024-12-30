@@ -1,0 +1,441 @@
+
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+    {% block head_block %}
+
+    {% endblock  %}
+{% block body_block %}
+
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Intra Dialysis Detail</b>
+            </div>
+            <div class="">
+                <button type="submit" class="btn text-light" name="main_form_intra" value="MAIN_FORM_INTRA_DIA" form="intr_dialysis_main"><i class="fas fa-save" ></i></button>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% if 'dialysis_details_print' in access.user_profile.screen_access or request.user.is_superuser %}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a type="button" onclick="printDiv('hello')" value="Get Report"  class="dropdown-item btn-primary">Get Report</a>
+            {% endif %}
+                
+                <a href="/prescription_dialysis_update/{{pk}}" class="dropdown-item btn-primary"><button type="submit" class="btn" value="">Prescription</button></a>
+                <a href="/view_pre_dialysis_details/{{pk}}" class="dropdown-item btn-primary"><button type="submit" class="btn" value="">Pre Dialysis</button></a>
+              </div>
+            </div>
+          </div>
+    <div class="container-fluid" style="border: 1px solid rgb(121, 118, 118);padding: 10px;" id="hello">
+    
+        <div class=" col-md-12">
+            <h5><b>Patient Details</b></h5>
+            <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                <div class="col-md-4">
+                    <label>MR NO: <b>{{uhid_pat}}</b></label>
+
+                </div>
+                <div class="col-md-4">
+                    <label>NAME: <b>{{pat_name| upper}}</b></label>
+
+                </div>
+                <div class="col-md-4">
+                    <label> AGE/GENDER: <b>{{pat_age}}y/{{pat_sex}}</b></label>
+
+                </div>
+                <div class="col-md-4">
+                    <label>CONTACT NO: <b>{{pat_con_no}}</b></label>
+
+                </div>
+            </div>
+            <br>
+            <h5><b>Session Details</b></h5>
+            <form method="post" id="intr_dialysis_main">
+                {% csrf_token %}
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                    <div class="col-md-4">
+                        <label>Dialysis Start: <b>{{records.registration_date_and_time}}</b></label>
+
+                    </div>
+                    <div class="col-md-4">
+                        <label>Status:</label>
+                        <select name="status" class="form-control">
+                            {% if intra_dialysis_records %}
+                            <option>{{intra_dialysis_records.status}}</option>
+                            {% else %}
+                            <option>{{pre_dialysis_records.status}}</option>
+                            {% endif %}
+                                {% for dat in status %}
+                                <option>{{dat.status}}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Start Attendant:<b>{{pre_dialysis_details.cannulation_nurse}}</b></label>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Location: <b>{{pre_dialysis_records.location}}</b>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Machine: <b>{{pre_dialysis_records.machine_name}}</b></label>
+                    </div>
+                    <div class="col-md-4">
+                        <label> Machine Status: <b>{{pre_dialysis_records.machine_name}}</b></label>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Min BP Time: <b>{{pre_dialysis_records.bp_sitting_min}}</b></label>
+                    </div>
+                     <div class="col-md-4">
+                        <label> Min BP: <b>{{pre_dialysis_records.bp_standing_min}}</b></label>
+                     </div>
+                     <div class="col-md-4">
+                        <label> Average Pulse: <b>{{pre_dialysis_records.pulse_standing}}</b></label>
+                     </div>
+                     <div class="col-md-4">
+                        <label>Average VP: <b>{{pre_dialysis_records.pulse_sitting}}</b></label>
+                    </div>
+                     <div class="col-md-4">
+                        <label> Average Dialysis Pressure: <b>0</b></label>
+                     </div>
+                     <div class="col-md-4">
+                        <label> Server Time: <b>06:30</b></label>
+                     </div>
+                       <div class="col-md-4">
+                           <label> Post Equipment Preparation</label>
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                data-target=".bd-example-modal-xl"><i class="fas fa-ellipsis-h"></i></button>&nbsp;               </div>
+                     <div class="col-md-4">
+                        <label>Completion Status: <b>{{pre_dialysis_details.completion_status}}</b></label>
+                         <select name="completion_sataus" class="form-control">
+                             {% if intra_dialysis_records %}
+                             <option>{{intra_dialysis_records.completion_status}}</option>
+                             {% endif %}
+                             {% for dat in completion_sataus%}
+                             <option>{{dat.completion_Status}}</option>
+                             {% endfor %}
+                         </select>
+                     </div>
+                </div>
+            </form>
+            <br>
+        </div>
+        <br>
+                <h5><b> Session Notes</b></h5>
+                    <div class="col-md-12">
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                    <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+                       <thead>
+                       <tr>
+                           <th>Time</th>
+                           <th>Stuff Name</th>
+                           <th>Plan</th>
+                           <th>Intervention</th>
+                           <th>Evolution</th>
+                           <th>Discard</th>
+                           <th>Edit</th>
+                       </tr>
+                       </thead>
+                        <tbody>
+                        <tr>
+                            <td>Time</td>
+                           <td>Stuff Name</td>
+                           <td>Plan</td>
+                           <td>Intervention</td>
+                           <td>Evolution</td>
+                           <td>Discard</td>
+                            <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target=".sessionnoteform"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>&nbsp;</td>
+                        </tr>
+                        </tbody>
+                   </table>
+                </div>
+                </div>
+                    <br>
+                     <h5><b>Incidents</b></h5>
+                    <div class="col-md-12">
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                                   <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+                       <thead>
+                       <tr>
+                           <th>Time</th>
+                           <th>Type</th>
+                           <th>Author</th>
+                           <th>Description</th>
+                           <th>Unusal Event</th>
+                           <th>Discard</th>
+                           <th>Edit</th>
+                       </tr>
+                       </thead>
+                        <tbody>
+                        <tr>
+                           <td>Time</td>
+                           <td>Type</td>
+                           <td>Author</td>
+                           <td>Description</td>
+                           <td>Unusal Event</td>
+                           <td>Discard</td>
+                            <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>&nbsp;</td>
+                       </tr>
+                        </tbody>
+                   </table>
+                </div>
+                </div>
+        <div class="table-responsive">
+            <table class="datatable table table-stripped ">
+                <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>BP</th>
+                    <th>BP T</th>
+                    <th>Pulse</th>
+                    <th>TUF</th>
+                    <th>UF</th>
+                    <th>BPF</th>
+                    <th>HPI</th>
+                    <th>DT</th>
+                    <th>C </th>
+                    <th>VP</th>
+                    <th>DP</th>
+                    <th>TMP</th>
+                    <th>DT</th>
+                    <th>DF</th>
+                    <th>D</th>
+                    <th>F</th>
+                    <th>F By</th>
+                    <th>FT</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for dat in intra_records_per_hour %}
+                    <tr>
+                        <td> <input id="perm_id" value="{{dat.id}}" hidden>{{dat.time}}</td>
+                        <td>{{dat.bp_mmhg1}}/{{dat.bp_mmhg2}}</td>
+                        <td>{{dat.bp_time}}</td>
+                        <td>{{dat.pulse}}</td>
+                        <td>{{dat.total_uf_removal}}</td>
+                        <td>{{dat.uf_rate}}</td>
+                        <td>{{dat.blood_pump_flow_rate}}</td>
+                        <td>{{dat.heparine_pump_infusion_rate}}</td>
+                        <td>{{dat.dialysate_temp}}</td>
+                        <td>{{dat.conductivity}}</td>
+                        <td>{{dat.venus_pressure}}</td>
+                        <td>{{dat.dialysate_pressure}}</td>
+                        <td>{{dat.tmp}}</td>
+                        <td>{{dat.dialysis_time}}</td>
+                        <td>{{dat.dialysis_flow_rate}}</td>
+                        <td>{{dat.dialysis_flow_rate}}</td>
+                        <td>{{dat.dialysis_flow_rate}}</td>
+                        <td><a href="/per_hour_delete/{{pk}}/{{dat.id}}"><button type="button" id="permdelete_btn" class="btn btn-danger"> <i class="fa fa-trash" aria-hidden="true"></i></button></a></td>
+                        {% endfor %}
+                        <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target=".insert_data"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+   </div>
+</div>
+  
+<!-- Add Modal -->
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel"><b>Prev Post Dialysis</b></h5>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <div class="form-line">
+                                              <form  method="POST" id="pop_up_pre">
+                                                {% csrf_token %}
+                                                  {{form_post}}
+                                              </form>
+                                                <button type="submit"class="btn btn-success" name="post_equipment" value="POST_EQUIPMENT_PRAPARATION" form="pop_up_pre"> <i class="fas fa-save" >&nbsp;Save</i></button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" style="color-red;">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--        For Session Notes-->
+        <!-- Add Modal -->
+<div class="modal fade sessionnoteform" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel"><b>Session Notes </b></h5>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <div class="form-line">
+                                              <form  method="POST" id='session_notes_forms'>
+                                                {% csrf_token %}
+                                                  {{session_form.as_p}}
+                                                  <button type="submit"class="btn btn-success" name='note_session' value="INTRA_DIALYSIS_SESSION_NOTES"> <i class="fas fa-save" >&nbsp;Save</i></button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" style="color-red;">Cancel</button>
+                                              </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Add Modal -->
+<div class="modal fade insert_data" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel1"><b>Intra Dialysis</b></h5>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <div class="form-line">
+                                              <form  method="POST" id="pop_up_pre1">
+                                                {% csrf_token %}
+                                                <div class="form-row">
+<!--                                                    {{form}}-->
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="Time">Time: </label>
+                                                        <input type="time" name="time" id="Time" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-2 mb-0">
+                                                        <label for="BP">BP (mmHg): </label>
+                                                        <input type="number" name="bp_mmhg1" id="BP" class="form-control">
+                                                    </div>
+                                                      <div class="form-group col-md-2 mb-0">
+                                                        <label for="BP">.</label>
+                                                        <input type="number" name="bp_mmhg2" id="BP2" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="bp_time"> BP Time: </label>
+                                                        <input type="time" name="bp_time" id="bp_time" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Pulse (bpm): </label>
+                                                        <input type="text" name="pulse" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Total UF Removed (L): </label>
+                                                        <input type="text" name="total_uf_removal" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>UF Rate (L/hr): </label>
+                                                        <input type="text" name="uf_rate" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Blood Pump Flow Rate (mV/min):</label>
+                                                        <input type="number" name="blood_pump_flow_rate" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Heparin Pump Infusion Rate (ml/hr).</label>
+                                                        <input type="text" name="heparine_pump_infusion_rate" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Dialysate Temp (C):</label>
+                                                        <input type="text" name="dialysate_temp" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Conductivity (mS/cm):</label>
+                                                        <input type="text" name="conductivity" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Venous Pressure (mmHg)</label>
+                                                        <input type="text" name="venus_pressure" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Dialysate Pressure (malert(getStringmHg):</label>
+                                                        <input type="text" name="dialysate_pressure" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>TMP (mmHg):</label>
+                                                        <input type="text" name="tmp" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Dialysis Time (min):</label>
+                                                        <input type="text" name="dialysis_time" class="form-control">
+                                                    </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                        <label>Dialysate Flow Rate (ml/min)</label>
+                                                        <input type="text" name="dialysis_flow_rate" class="form-control">
+                                                    </div>
+                                                  </div>
+                                                  <button type="submit"class="btn btn-success" form="pop_up_pre1" name="intra_dialysis" value="INTRA_DIALYSIS"> <i class="fas fa-save" >&nbsp;Save</i></button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" style="color-red;">Cancel</button>
+                                              </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- print -->
+
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+
+<!--</body>-->
+{% endblock %}

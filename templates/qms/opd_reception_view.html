@@ -1,0 +1,201 @@
+{% extends 'qms/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+  .status {
+    border: 2px solid #312d2d;
+    background-color: #ffffff;
+    border-radius: 2em;
+  }
+</style>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("select").change(function () {
+      $(this).find("option:selected").each(function () {
+        var optionValue = $(this).attr("value");
+        if (optionValue) {
+          $(".box").not("." + optionValue).hide();
+          $("." + optionValue).show();
+        } else {
+          $(".box").hide();
+        }
+      });
+    }).change();
+  });
+
+  $(document).ready(function () {
+    $("select").change(function () {
+      $(this).find("option:selected").each(function () {
+        var optionValue = $(this).attr("value");
+        if (optionValue) {
+          $(".missed").not("." + optionValue).hide();
+          $("." + optionValue).show();
+        } else {
+          $(".missed").hide();
+        }
+      });
+    }).change();
+  });
+
+  $(document).ready(function () {
+    $("select").change(function () {
+      $(this).find("option:selected").each(function () {
+        var optionValue = $(this).attr("value");
+        if (optionValue) {
+          $(".out").not("." + optionValue).hide();
+          $("." + optionValue).show();
+        } else {
+          $(".out").hide();
+        }
+      });
+    }).change();
+  });
+</script>
+{% endblock %}
+
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <!-- Main Dashboard -->
+    <div class="row">
+      <div class="col-12">
+            <button type="menu" style="font-family: monospace; width: 100%; text-align: left;"
+              class="btn btn-primary m-t-15 waves-effect"> <b>Token Status</b></button>
+          </div>
+          <div class="container-fluid">
+            <div class="row clearfix">
+              <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <form method="POST">
+                  {% csrf_token %}
+                      <div class="table-responsive">
+                        {% if 'token_admin_view' in access.user_profile.screen_access or request.user.is_superuser %}
+                        <table class="datatable table table-bordered table-stripped ">
+                          <thead>
+                            <tr style="background-color: rgb(214, 214, 253);">
+                              <th>Date</th>
+                              <th>Doctor Name</th>
+                              <th>Speciality</th>
+                              <th>Patient ID</th>
+                              <th>Patient Name</th>
+                              <th>Token No</th>
+                              <th>Status</th>
+                              <th>In/Out Time</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for data in records %}                          
+                              <tr>
+                                <td>{{data.Date}}<input type="hidden" id="common_id" value="{{data.id}}"></td>
+                                <td>{{data.Doct_Name}} <input type="hidden" id="Doctor" value="{{data.Pt_Id}}"></td>
+                                <td>General Medicine</td>
+                                <td>{{data.Pt_Id}} <input type="hidden" id="patient_id" value="{{data.Pt_Id}}"></td>
+                                <td>{{data.Pt_Name}}</td>
+                                <td>{{data.Token_No}}</td>
+                                
+                                {% if 'token_in_out' in access.user_profile.screen_access or request.user.is_superuser %}
+                                <td>
+                                  <select class="status target" id="token_status" style="width:100%;height:100%;">
+                                    <option value="out{{data.id}}" {% if data.status == "Inside" %}selected{% endif %} >Out</option>
+                                    <option value="in{{data.id}}" >In</option>
+                                    <option value="Waiting{{data.id}}" {% if data.status == "Waiting" %}selected{% endif %}>Waiting</option>
+                                    <option value="Missed{{data.id}}" {% if data.status == "Missed Patient" %}selected{% endif %}>Missed</option>
+                                  </select>
+                                </td>
+                                {% endif %}
+                                <td>
+                                  <div class="in{{data.id}} box">
+                                    <form method="post">
+                                      {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary" name="Inside" value="Inside.{{data.id}}">IN</button>
+                                  </form>
+                                  </div>
+                                    
+                                  <div class="out{{data.id}} out">
+                                    <button type="button" class="btn btn-success" name="finished_button"
+                                      data-toggle="modal" id="finished_button" data-target=".bd-example-modal-sm" value="out.{{data.Pt_Id}}">Out</button>
+                                  </div>  
+                        
+                                  <div class="Missed{{data.id}} missed">
+                                    <!-- Button trigger modal -->
+                                    <button type="Submit" class="btn btn-danger" name="missing_button" id="missing_button" value="Missed.{{data.id}}">Missing</button>
+            
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                          {% endif %}
+                      </div>
+                      </form>
+                  </div>
+                </div>
+              </div>
+                            <!-- Suresh Model -->
+                            <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
+                              aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                              <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                  <div class="modal-header" style="background: skyblue;">
+                                    <h5 class="modal-title" id="exampleModalLabel"><b>In/Out Time Record</b></h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                      aria-hidden="true">×</button>
+                                  </div>
+
+                                  <div class="container" style="text-align: center;">
+                                    <div class="float-end">
+                                      <form method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                          <input type="hidden" name="commonid" id="commonid">
+                                          <input type="hidden" name="patient_id" id="patientid">
+                                          <input type="hidden" name="doctor_name" id="consultant">
+                                          <input type="hidden" name="status" id="status">
+                                          <label for="start_time">Start Time</label>
+                                          <input type="time" name="start_time" id="start_time" required><br>
+                                          <label for="end_time">End Time</label>
+                                          &nbsp; <input type="time" name="end_time" required>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                          <button type="submit" class="btn btn-primary" value="Patient_Out"
+                                            name='save'>Save</button>
+                                        </div>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+    </div>
+  </div>
+</div>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script type="text/javascript">
+   $(document).ready(function () {
+  $(document).on('click', '#finished_button', function () {
+    var dumy = this;
+      var PatientID = $(dumy).closest('tr').find('#patient_id').val();
+      var Doctor_name = $(dumy).closest('tr').find('#Doctor').val();
+      var Status = $(dumy).closest('tr').find('#token_status').val();
+      var common_id = $(dumy).closest('tr').find('#common_id').val();
+
+      $('#patientid').val(PatientID);
+      $('#consultant').val(Doctor_name);
+      $('#status').val(status);
+      $('#commonid').val(common_id);
+
+
+    });
+  });
+
+</script>
+
+{% endblock %}

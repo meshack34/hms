@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<div class="hero">
+
+  <div class="outer" align="left" >
+<div class="container" style="margin:auto;display:block;">
+  <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+    <div class="center" style="background-color: white; ">
+      <div class="card" style="padding: 20px;"><br>
+<br><br><br><br><br>
+  <h3>Cancellation Appointment details</h3>
+<table border="1">
+  <thead>
+    <th>patient_id</th>
+    <th>patient_name</th>
+    <th>patient_gender</th>
+    <th>patient_appointment_date</th>
+    <th>patient_mobile_number</th>
+    <th>Reason For Cancellation</th>
+  </thead>
+  <tbody>
+    {% for data in records %}
+      <tr>
+        <td>{{data.patient_id}}</td>
+        <td>{{data.patient_name}}</td>
+        <td>{{data.patient_gender}}</td>
+        <td>{{data.patient_appointment_date}}</td>
+        <td>{{data.patient_mobile_number}}</td>
+        <td>{{data.patient_scheduled_id}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+<a href="/reports">Go Back</a>
+</div>
+</div><br><br><br><br><br><br><br><br><br><br>
+</div>
+</div>
+</div>
+
+
+{% endblock %}

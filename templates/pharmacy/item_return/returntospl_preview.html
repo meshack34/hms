@@ -1,0 +1,351 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+    <!-- content -->
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="main-wrapper" style="padding-top:50px;padding-left:60px;">
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="row clearfix">
+                            <div class="col-lg-11 col-md-12 col-sm-8 col-xs-8">
+                                <div class="card">
+                                    <div class="header" id="hello">
+                                        <style>
+
+                                            body,
+                                            .card {
+                                                font-size: 5px !important;
+                                            }
+                                            #table1 {
+                                                border: 0.5px solid black;
+                                                border-collapse: collapse;
+                                            }
+                                            #table1 th {
+                                                border: 0.5px solid black;
+                                                border-collapse: collapse;
+                                            }
+                                            #table1, #table2{
+                                                border-spacing: 0px;
+
+                                            }
+                                            #table2{
+
+                                                border: 0.5px solid black;
+                                                border-collapse: collapse;
+                                            }
+                                        </style>
+
+                                        <div id="pat" class="container">
+
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td>
+                                                        <div class="">
+                                                            <center>
+                                                                <img src="{% static 'assets/images/nephromed_logo.jpg' %}"
+                                                                        alt="logo Image"
+                                                                        style="width:300px;height:80px;">
+                                                            </center>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 0px;"><hr style="padding: 0px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" style="text-align: center;">
+                                                        2ND FLOOR, WILLIAMSON HOUSE, 4th NGONG AVENUE, UPPERHILL NAIROBI
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" style="text-align: center;">
+                                                        P.O. BOX NO. 13898 00800
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" style="text-align: center;">
+                                                        TEL.. +254 737 787878 / +254 792 787878
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" style="text-align: center;">
+                                                        EMAIL:procurement@nephromed.co.ke website:www.nephromed.co.ke
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><br></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" style="text-align: center;">
+                                                        <h2>Item Return to Supplier</h2>
+                                                    </td>
+                                                </tr>
+                                               
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <table style="width: 100%;" id="table2">
+                                                            <tr>
+                                                                <td rowspan="2" style="border: solid 1px black;">&nbsp;<b>TO :</b>&nbsp;&nbsp;&nbsp;&nbsp;{{return_supplier_parent.vendor_id}}
+                                                                </td>
+                                                                <td style="border: solid 1px black;"> &nbsp; <b>DATE:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  {{return_supplier_parent.return_date}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border: solid 1px black;"> &nbsp;<B>RETURN ID:</B>&nbsp;&nbsp;&nbsp; {{return_supplier_parent.supplier_return_no}}</td>
+                                                            </tr>
+                                                           
+                                                            <tr>
+                                                                <td colspan="2" style="border: solid 1px black;">
+                                                                    &nbsp;<B>REASON:</B> &nbsp;&nbsp;&nbsp; {{reason.reason}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><br></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <table style="width: 100%;" id="table1">
+                                                            <tr>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    S.No.</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    Item Name</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    Batch No</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    Expiry Date</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    Return Amount</th>
+                                                                <th style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    Return Qty</th>
+                                                                
+                                                            </tr>
+                                                            {% for data in return_supplier_child %}
+                                                            <tr>
+                                                                <td style="border: solid 1px black;border-collapse: collapse;text-align: center; ">
+                                                                    {{forloop.counter}}</td>
+                                                                <td style="border: solid 1px black;border-collapse: collapse;text-align: center;  ">
+                                                                    {{data.item_id}}</td>
+                                                                <td style="border: solid 1px black;border-collapse: collapse;text-align: center;  ">
+                                                                    {{data.batch_no}}</td>
+                                                                <td style="border: solid 1px black;border-collapse: collapse;text-align: center;  ">
+                                                                    {{data.expiry_date}}</td>
+                                                                <td style="border: solid 1px black;border-collapse: collapse;text-align: center;  ">
+                                                                    {{data.return_amount}}</td>
+                                                                <td style="border: solid 1px black;border-collapse: collapse;text-align: center;  ">
+                                                                    {{data.return_qty}}</td>
+                                                                
+                                                               
+
+                                                            </tr>
+                                                            {% endfor %}
+                                                           
+                                                           
+                                                           
+
+
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td colspan="8"><br></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" style="text-align: left;">
+                                                        Hosptial Terms :
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="8"><br></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <table style="border: 1px solid black; width:100%;">
+                                                            <tr>
+                                                                <td>Price: ex wors /FOB/ C&F</td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Delivary Date :</td>
+                                                                <td style="text-align: center;">Authorized By</td>
+                                                                <td style="text-align: right;">for NephroMed Limited
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> Credit days:0</td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> Terms:</td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> </td>
+                                                                <td></td>
+                                                                <td style="text-align: right;">Authorized Signtory</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><br></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <table style="border: 1px solid black; width:100%;">
+                                                            <tr>
+                                                                <td colspan="3" style="text-align: center;">Acceptance
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Date:</td>
+                                                                <td style="text-align: center;">Name:</td>
+                                                                <td style="text-align: right;">Signature:</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                        <div class="row pad-top-botm" align="center">
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <hr>
+                                                <!-- {% if 'purchase_order_send_mail' in access.user_profile.screen_access or request.user.is_superuser %} -->
+                                                <button class="btn btn-primary btn-lg" onclick="codespeedy()">
+                                                    &nbsp;&nbsp;&nbsp;&nbsp; PDF
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                                <!-- {% if 'purchase_order_pdf' in access.user_profile.screen_access or request.user.is_superuser %}
+                                                {% endif %} -->
+                                                <button class="btn btn-primary" type="button">
+                                                    <form enctype="multipart/form-data">
+
+                                                        {% csrf_token %}
+                                                        <input type="file" id="mail" name="file"
+                                                            data-cities-url="{% url 'returntosupplier_sendmail' %}">
+                                                    </form>
+                                                </button>
+                                                <!-- {% endif %} -->
+
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript">
+
+            function codespeedy() {
+                var print_div = document.getElementById("hello");
+                var print_area = window.open();
+                print_area.document.write(print_div.innerHTML);
+                print_area.document.close();
+                print_area.focus();
+                print_area.print();
+                print_area.close();
+                // This is the code print a particular div element
+            }
+        </script>
+        <script type="text/javascript">
+
+            function sendmail() {
+                var doc = new jsPDF();
+
+                // get the HTML element
+                var element = document.getElementById('hello');
+
+                // get the div content as HTML
+                var html = element.innerHTML;
+
+                // remove any inline styles
+                html = html.replace(/(<[^>]+) style=".*?"/gi, '$1');
+
+                // add the HTML content to the PDF
+                doc.fromHTML(html);
+
+                // store the PDF as a variable
+                var pdfOutput = doc.output();
+
+                console.log("pdfOutput", pdfOutput);
+            }
+        </script>
+        <script>
+
+            // pdf preview
+
+            function printData() {
+                var mypage = document.getElementById("hello");
+                opening = window.open("");
+                opening.document.write(mypage.outerHTML);
+                opening.print();
+                opening.close();
+            }
+
+
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                $('#mail').on('change', function () {
+                    // var form_data = new FormData($('form')[0]);
+                    var file = this.files[0];
+                    var formData = new FormData();
+                    formData.append('file', file);
+                    url = $("#mail").attr("data-cities-url");
+                    var headers = { 'X-CSRFToken': '{{ csrf_token }}' }
+                    // alert(url)
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: headers,
+                        success: function (data) {
+
+                            alert('Mail send successfully!');
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                            alert('An error occurred while uploading the file.');
+                        }
+                    });
+
+
+                });
+            });
+        </script>
+{% endblock %}

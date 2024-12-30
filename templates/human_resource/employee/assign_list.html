@@ -1,0 +1,95 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    </style>
+{% endblock  %}
+{% block body_block %}
+
+
+
+<!-- content -->2
+<div class="page-wrapper">
+<div class="content">
+  <button type="menu" style="font-family: monospace; width: 100%; text-align: left;" class="btn btn-primary m-t-15 waves-effect"> <b>Assigned Shift List</b></button>
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+           <div class="card">
+               <div class="header">
+       <div class="body">
+        <div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            
+            <div class="col-md-0">
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fas fa-plus" >Add</i></button>&nbsp;
+            </div>
+            <div class="col-md-0">
+                <button type="button" class="btn btn-info"><a href=""><i class="fas fa-edit"  style="color:white;">Edit</i></a></button>&nbsp;
+            </div>
+            <div class="col-md-0">
+                <button type="button"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;
+            </div>
+            <div class="col-md-0">
+                <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+            </div>
+            <div class="col-md-0">
+                <button type="button" class="btn btn-danger"><a href='/'><i class="fas fa-times-circle" style="color:white;">Exit</i></a></button>&nbsp;
+            </div> 
+            <a class="btn btn-primary" href="{% url 'assign_shift' %}">Back</a>
+        </div><br>
+              
+           <div class="table-responsive">
+             <table class="datatable table table-stripped ">
+
+                   <thead>
+                       <tr><th>S.No.</th>
+                           <th>Assign ID</th>
+                           <th>From - To Date</th>
+                           <th>EMP ID</th>
+                           <th>EMP Name</th>
+                           <th>Shift Name(Time)</th>
+
+                       </tr>
+                   </thead>
+                   <tbody>
+                    {% for data,data1,data2,data3,data4,data5 in assign_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ data.assign_id }}</td>
+                        <td>{{ data.from_date }} - {{ data.to_date }} </td>
+                        <td>{{ data.emp_id }}</td>
+                        <td>{{ data1 }}{{ data2 }}</td>
+                        <td>{{ data3 }}({{ data4 }} - {{ data5 }})</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+
+           </table>
+           </div> 
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+<!--/ content -->
+</div>
+</div>
+</div>
+</div>
+
+<script>
+   
+
+</script>
+
+{% endblock  %}

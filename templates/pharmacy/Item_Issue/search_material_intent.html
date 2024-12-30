@@ -1,0 +1,559 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+    /*#indent_no,#issuing_store,#receiving_store,#datetime,#approved_by,#priority{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    #barcode,#item_name,#batch_serial,#expiry_date,#available_qty,#issue_qty,#remarks{
+      border: 2px solid white;
+      width: 100%;
+      background-color: white;
+      border-bottom: 1px solid black;
+    }*/
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    </style>
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;" href="#">Item Issue to SubStore</a>
+      </div>
+      </nav>
+    <div class="container-fluid">
+      <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+              <div class="card">
+                  <div class="header">
+          <div class="body">
+             <br><div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <!-- <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fas fa-plus" >Add</i></button>&nbsp;
+            <button type="button" class="btn btn-info"><a href="#"><i class="fas fa-edit"  style="color:white;">Edit</i></a></button>&nbsp; -->
+            <!--<button type="button"class="btn btn-success" data-toggle="modal" data-target="#item_issue_list"> <i class="fas fa-save" >Save</i></button>&nbsp;-->
+            <button type="button" class="btn btn-primary"  onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+            <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>&nbsp;
+            <a href="" class="btn btn-primary"> <i class="fas fa-sync-alt">Back</i></a>&nbsp;
+            <button type="submit" class="btn btn-success" name="save_all" value="save_all" form="tem_table"><i class="fas fa-save" >Save</i></button>&nbsp;
+        </div><br>
+
+        <form method="post" id="tem_table">
+          {% csrf_token %}
+               <br><br>
+               <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                            <div class="form-row">
+                            <div class="form-group col-md-2 mb-0">
+                          <label><b>Indent ID</b> </label>
+                          <input type="text" name="p_indent_no" id="pi_no" class="form-control" value='{{materialintent_parent.intent_id}}' readonly>
+                        </div>
+                            <div class="form-group col-md-2 mb-0">
+                          <label><b>Indent Date</b></label>
+                          <input type="text" name="p_indent_date" id="pi_date" class="form-control" value='{{materialintent_parent.intent_datetime}}' readonly>
+                        </div>
+
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b> Receiving Store</b></label>
+
+                          <input type="text" name="p_received_store" class="form-control" id="receiving_store" value='{{materialintent_parent.substore_id}}'>
+                          <input type="hidden" name="p_received_store_1" class="form-control" id="receiving_store" value='{{materialintent_parent.substore_id_id}}'>
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b> Location</b></label>
+
+                          <input type="text" name="location" class="form-control" id="location" value='{{materialintent_parent.location_id}}'>
+                          <input type="hidden" name="location_id" class="form-control" id="location_id" value='{{materialintent_parent.location_id_id}}'>
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        <label><b> Department</b></label>
+
+                          <input type="text" name="department" class="form-control" id="departmeny1" value='{{materialintent_parent.department}}'>
+                          <input type="hidden" name="department_1" class="form-control" id="departmeny1" value='{{materialintent_parent.department_id}}'>
+                      </div>
+
+                        <div class="form-group col-md-2 mb-0">
+                          <label><b> Approved By</b></label>
+                          <input type="text" name="p_approved_by" id="approved_by" class="form-control">
+                        </div>
+                    </div>
+               </div><br>
+        <div class="table-responsive">
+    <table class="table table-stripped ">
+                   <thead>
+                       <tr><th>S.No</th>
+                           <th>Item Name</th>
+                           <th>Barcode</th>
+                           <th>Serial/Batch No</th>
+                           <th>Expiry Date</th>
+                           <th>OutStanding Qty</th>
+                           <th>Issue Qty</th>
+                           <th>Indent Qty</th>
+                           <th>Available Qty</th>
+                           <th>Remark</th>
+                       </tr>
+                   </thead>
+
+                   <tbody>
+
+                    {% for data1,data2,data3 in records %}
+
+
+                       <tr>
+                           <td>{{forloop.counter}}</td>
+                           <!-- <td><button type="button" class="btn btn-primary width" style="margin-right: 5px;margin-bottom: 5px;" data-toggle="modal" data-target="#stock_entry_update"
+                            data-item_name=""
+                            data-po_id=""
+                            data-item_id="">
+                          *</button></td> -->
+                             <!-- <button type="button" class="btn btn-secondary width" style="margin-right: 5px;margin-bottom: 5px;" data-toggle="modal" data-target="#item_issue"
+                            data-item_name=""
+                            data-indent_no=""
+                            data-indent_date=""
+                            data-item_id=""
+                            data-priority=""
+                            data-quantity=""
+                            data-amount="">
+                             +</button>
+
+                           <button type="button" class="btn btn-success width" style="margin-right: 5px;margin-bottom: 5px;" data-toggle="modal" data-target="#item_issue"
+                            data-item_name=""
+                            data-indent_no=""
+                            data-indent_date=""
+                            data-item_id=""
+                            data-priority=""
+                            data-quantity=""
+                            data-amount="">
+                             +</button></td> -->
+
+                           <td><input type="hidden" class="form-control" name="child_id" id="child_id" value="{{data1.id}}"
+                            ><input type="hidden" style="background-color: white;" name="item_id_id" id="item_id_id" class="form-control" value="{{data1.item_id_id}}" readonly>{{data1.item_id}} {{data1.item_id.unit}} {{data1.item_id.item_subcategory.itemsubcategory}}</td>
+                           <td><input type="text" name="barcode" id="barcode" class="form-control"></td>
+
+                           <td><select name="serial_batch" id="serial_batch" data-uhid-url="{% url 'search_material_intent_JQ' %}" class="form-control">
+                            <option value=''>select</option>
+                            {% for batch in data3 %}
+                            <option value="{{batch}}">{{batch}}</option>
+                            {% endfor %}
+                           </select>
+                            </td>
+                           <td><input type="date" name="expiry_date" id="expiry_date" class="form-control"></td>
+                           <td><input type="text" name="outstand_qty" id="outstand_qty" class="form-control" value='{{data2}}'></td>
+                           <td><input type="text" name="issued_qty" id="issued_qty" class="form-control" value='{{data2}}'></td>
+                           <td><input type="hidden" name="indent_qty" id="indent_qty" class="form-control" style="background-color: white;" value="{{data1.quantity}}" readonly >{{data1.quantity}}</td>
+                           <td><input type="text" name="available_qty" id="available_qty" class="form-control" ></td>
+                           <input type="hidden" name="rate" id="rate" class="form-control" readonly>
+                           <input type="hidden" style="background-color: white;" name="amount" id="amount" class="form-control" value="{{data1.amount}}" readonly>
+                           <input type="hidden" style="background-color: white;" name="p_priority" id="priority" class="form-control" value="{{data1.priority}}" readonly>
+                           <td><input type="text" name="remark" id="remark" class="form-control"></td>
+                       </tr>
+                       {% endfor %}
+                    </tbody>
+
+           </table>
+           </div>
+
+  </div>
+</form>
+   <div class="modal fade" id="item_issue" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl">
+ <div class="modal-content">
+     <!-- Header -->
+     <div class="modal-header" style="background: skyblue;">
+         <h5 class="modal-title" id="item_issue" ><b> Stock Issue </b></h5>
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+         </button>
+         </div><br>
+      <!-- Main block -->
+      <div class="modal-body">
+         <div class="container-fluid">
+             <div class="body">
+                 <div class="demo-masked-input">
+                     <div class="row clearfix">
+                       <div class="col-12">
+                           <div class="form-group">
+                               <div class="form-line">
+                               <form method="post" action="">
+                                {% csrf_token %}
+
+                             <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                      <div class="form-row">
+                        <div class="form-group col-md-3 mb-0">
+                          <label>Indent No</label>
+                          <input type="text" name="indent_no" id="indent_no" class="form-control">
+                          <input type='hidden' class='form-control' name="indent_date" id="indent_date">
+                          </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label>Issuing Store</label>
+                        <input type='text' class='form-control' name="issuing_store_name" id="issuing_store_name" value=''>
+                        <input type='hidden' class='form-control' name="issuing_store" id="issuing_store" value=''>
+                      </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label>Receiving Store</label>
+                         <select name="receiving_store" id="receiving_store" class="form-control">
+                          <option>Select</option>
+
+                          <option value=""></option>
+
+                        </select>
+
+                      </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label>Date Time</label>
+                          <input type="datetime-local" name="datetime" id="datetime" class="form-control">
+                      </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label>Approved By</label>
+                          <input type="text" name="approved_by" id="approved_by" class="form-control">
+                      </div>
+                      <div class="form-group col-md-3 mb-0">
+                        <label>Priority</label>
+                         <input type="text" name="priority" id="priority" class="form-control">
+
+                      </div>
+
+        <div class="form-group col-md-3 mb-0">
+          <label>Barcode</label>
+          <input type="text" name="barcode" id="barcode" class="form-control">
+      </div>
+      <div class="form-group col-md-3 mb-0">
+        <label>Item Name</label>
+       <input type="text" name="item_name" id="item_name" class="form-control">
+       <input type="hidden" name="item_id" id="item_id1" class="form-control">
+      </div>
+
+      <div class="form-group col-md-3 mb-0">
+         <label>Batch Serial</label>
+          <input type="text" name="serial_batch" id="serial_batch1" class="form-control">
+      </div>
+      <div class="form-group col-md-3 mb-0">
+      <label>Expiry Date</label>
+          <input type="date" name="expiry_date" id="expiry_date1" class="form-control">
+      </div>
+      <div class="form-group col-md-3 mb-0">
+      <label>Available Qty</label>
+          <input type="text" name="available_qty" id="available_qty1" class="form-control">     </div>
+           <div class="form-group col-md-3 mb-0">
+      <label>Rate</label>
+          <input type="text" name="rate" id="rate1" class="form-control">
+           </div>
+
+    <div class="form-group col-md-3 mb-0">
+    <label>Issue Qty</label>
+          <input type="text" name="issued_qty" id="issued_qty1" class="form-control">
+    </div>
+    <div class="form-group col-md-3 mb-0">
+    <label>Indent Qty</label>
+          <input type="text" name="indent_qty" id="indent_qty" class="form-control">
+    </div>
+    <div class="form-group col-md-3 mb-0">
+         <label>Amount</label>
+          <input type="text" name="amount" id="amount1" class="form-control">
+      </div>
+    <div class="form-group col-md-3 mb-0">
+    <label>Remarks</label>
+          <input type="text" name="remark" id="remark" class="form-control">
+  </div>
+
+
+
+  </div>
+</div>
+                               </div>
+                           </div>
+                       </div>
+                     </div>
+                     <div class="col-md-0"><br>
+                               <button type="submit" class="btn btn-success" > <i class="fas fa-save" >Save</i></button>&nbsp;
+                               </div>
+                                </form>
+                         <!-- Footer -->
+                     <!-- <div class="modal-footer">
+                         <hr style="border: 10%; color: aqua;"><br>
+                    <button type="button"class="btn btn-success" > <i class="fas fa-save" >&nbsp;Save</i></button>
+                         </div> -->
+                     </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div class="modal fade" id="stock_entry_update" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl">
+ <div class="modal-content">
+     <!-- Header -->
+     <div class="modal-header" style="background: skyblue;">
+         <h5 class="modal-title" id="stock_entry_update" ><b> Edit Stock Entry </b></h5>
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+         </button>
+         </div><br>
+      <!-- Main block -->
+      <div class="modal-body">
+         <div class="container-fluid">
+             <div class="body">
+                 <div class="demo-masked-input">
+                     <div class="row clearfix">
+                       <div class="col-12">
+                           <div class="form-group">
+                               <div class="form-line">
+                               </div>
+                           </div>
+                       </div>
+                     </div>
+                         <!-- Footer -->
+                     <!-- <div class="modal-footer">
+                         <hr style="border: 10%; color: aqua;"><br>
+                    <button type="button"class="btn btn-success" > <i class="fas fa-save" >&nbsp;Save</i></button>
+                         </div> -->
+                     </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div class="modal fade" id="item_issue_list" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl">
+ <div class="modal-content">
+     <!-- Header -->
+     <div class="modal-header" style="background: skyblue;">
+         <h5 class="modal-title" id="item_issue_list" ><b> Item Issue List</b></h5>
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+         </button>
+         </div><br>
+      <!-- Main block -->
+      <div class="modal-body">
+         <div class="container-fluid">
+             <div class="body">
+                 <div class="demo-masked-input">
+                     <div class="row clearfix">
+                       <div class="col-12">
+                           <div class="form-group">
+                               <div class="form-line">
+                               <form method="post" action="">
+                                {% csrf_token %}
+                            <button type="submit" class="btn btn-success" > <i class="fas fa-save" >Save</i></button>&nbsp;
+                              <br><br>
+                            <div class="table-responsive">
+                  <table class="datatable table table-stripped ">
+                   <thead>
+                       <tr><th>S.No</th>
+                           <th>Indent No</th>
+                           <th>Item</th>
+                           <th>Issued Store</th>
+                           <th>Received Store</th>
+                           <th>Approved By</th>
+                           <th>Priority</th>
+                           <th>Available Qty</th>
+                           <th>Issued Qty</th>
+                           <th>Rate</th>
+                           <th>Amount</th>
+                           <th>Remark</th>
+                          </tr>
+                   </thead>
+                   <tbody>
+
+                       <tr>
+                           <td></td>
+                           <td>
+                            <input type="hidden" name="item_id1" id="item_id1" value="">
+                            <input type="hidden" name="indent_no1" id="indent_no1" value="">
+                            <input type="hidden" name="indent_date1" id="indent_date1" value="">
+                            <input type="hidden" name="issued_store1" id="issued_store1" value="">
+                            <input type="hidden" name="received_store1" id="received_store1" value="">
+                            <input type="hidden" name="item_issue_datetime1" id="item_issue_datetime1" value="">
+                            <input type="hidden" name="approved_by1" id="approved_by1" value="">
+                            <input type="hidden" name="priority1" id="priority1" value="">
+                            <input type="hidden" name="p_indent_no1" id="indent_no1" value="">
+                            <input type="hidden" name="p_indent_date1" id="indent_date1" value="">
+                            <input type="hidden" name="p_issued_store1" id="issued_store1" value="">
+                            <input type="hidden" name="p_received_store1" id="received_store1" value="">
+                            <input type="hidden" name="p_item_issue_datetime1" id="item_issue_datetime1" value="">
+                            <input type="hidden" name="p_approved_by1" id="approved_by1" value="">
+                            <input type="hidden" name="p_priority1" id="priority1" value="">
+                            <input type="hidden" name="barcode1" id="barcode1" value="">
+                            <input type="hidden" name="serial_batch1" id="serial_batch2" value="">
+                            <input type="hidden" name="expiry_date1" id="expiry_date1" value="">
+                            <input type="hidden" name="available_qty1" id="available_qty1" value="">
+                            <input type="hidden" name="issued_qty1" id="issued_qty1" value="">
+                            <input type="hidden" name="indent_qty1" id="indent_qty1" value="">
+                            <input type="hidden" name="remaining_qty1" id="remaining_qty1" value="">
+                            <input type="hidden" name="remark1" id="remark1" value="">
+                            <input type="hidden" name="amount1" id="amount1" value="">
+                            <input type="hidden" name="rate1" id="rate1" value="">
+                            </td>
+                           <td></td>
+                           <td>Main Store</td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                       </tr>
+
+                    </tbody>
+           </table>
+           </div>
+
+  </div>
+                          </form>
+                               </div>
+                           </div>
+                       </div>
+                     </div>
+                         <!-- Footer -->
+                     <!-- <div class="modal-footer">
+                         <hr style="border: 10%; color: aqua;"><br>
+                    <button type="button"class="btn btn-success" > <i class="fas fa-save" >&nbsp;Save</i></button>
+                         </div> -->
+                     </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('select').on('change', function() {
+        var dumy = this;
+        var serial_batch = $(dumy).closest('tr').find('#serial_batch').val();
+        var item_id = $(dumy).closest('tr').find('#item_id_id').val();
+        var location_id = $('#location_id').val();
+
+        const url = $("#serial_batch").attr("data-uhid-url");
+        var headers = {'X-CSRFToken': '{{ csrf_token }}' }
+
+
+        $.ajax({
+                url:url,
+                method:"POST",
+                data:{
+                   serial_batch: serial_batch,
+                   item_id: item_id,
+                   location_id: location_id,
+                 },
+                headers:headers,
+                dataType: 'json',
+                success:function(data){
+                    $(dumy).closest('tr').find('#available_qty').val(data['available_qty']);
+                    $(dumy).closest('tr').find('#expiry_date').val(data['expiry_date']);
+                    $(dumy).closest('tr').find('#rate').val(data['rate']);
+
+                    var avail = data['available_qty'];
+                    var issue = $(dumy).closest('tr').find('#issued_qty').val();
+                    if(parseInt(avail) >= parseInt(issue)){
+                      $(dumy).closest('tr').find('#issued_qty').val(issue);
+                    }
+                    else{
+                      alert('Issue Qty Exceeds From Available Qty');
+                      $(dumy).closest('tr').find('#issued_qty').val(avail);
+                    }
+                },
+                error:function(data)
+                {
+
+                    console.log(data);
+                }
+            });
+      });
+
+    // $(document).on('keyup', '#serial_batch1', function () {
+    //     var serial_batch = this.value;
+    //     var item_id = $('#item_id1').val();
+
+    //     $.ajax({
+    //             url:"",
+    //             type:"post",
+    //             data:{
+    //                serial_batch: serial_batch,
+    //                item_id: item_id,
+
+    //              },
+    //             dataType: 'json',
+    //             success:function(data1)
+    //             {
+    //                 $('#available_qty1').val(data.available_qty);
+    //                 $('#expiry_date1').val(data.expiry_date);
+    //                 $('#rate1').val(data.rate);
+    //             },
+    //             error:function(data1)
+    //             {
+    //                 console.log(data1);
+    //             }
+    //         });
+      });
+
+   $(document).on('keyup', '#issued_qty', function () {
+        var dumy = this;
+        var issue_qty = this.value;
+        var rate = $(dumy).closest('tr').find('#rate').val();
+        var amount = issue_qty * rate;
+        $(dumy).closest('tr').find('#amount').val(amount);
+      });
+
+   $(document).on('keyup', '#issued_qty1', function () {
+        var issue_qty = this.value;
+        var rate = $('#rate1').val();
+        var amount = issue_qty * rate;
+        $('#amount1').val(amount);
+      });
+
+$('#item_issue').on('show.bs.modal', function(e) {
+
+var link     = $(e.relatedTarget)
+
+  var item_name = link.data("item_name")
+  var indent_no = link.data("indent_no")
+  var indent_date = link.data("indent_date")
+  var priority = link.data("priority")
+  var item_id = link.data("item_id")
+  var quantity = link.data("quantity")
+  //var amount = link.data("amount")
+
+  var modal    = $(this)
+
+modal.find(".modal-body #item_name").val(item_name);
+modal.find(".modal-body #indent_no").val(indent_no);
+modal.find(".modal-body #priority").val(priority);
+modal.find(".modal-body #item_id1").val(item_id);
+modal.find(".modal-body #indent_qty").val(quantity);
+modal.find(".modal-body #indent_date").val(indent_date);
+//modal.find(".modal-body #amount").val(amount);
+
+});
+</script>
+
+
+{% endblock %}
+

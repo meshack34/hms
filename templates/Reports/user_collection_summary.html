@@ -1,0 +1,340 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block head_block %}
+<style>
+    .form-control {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Today Collection Report</b>
+            </div>
+            <div class="">
+              <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+                <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+                
+              </div>
+            </div>
+          </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" id="filter_card" ><br>                        
+                    <div class="form-row">
+                        <div class="form-group col-md-3 mb-0">
+                            <label style="font-weight: bold;" ><b>From Date*</b> </label>
+                            <input type='datetime-local' name='b_start_date' id='b_start_date' style="background-color: white;" class='form-control' required>
+                        </div>
+
+                        <div class="form-group col-md-3 mb-0">
+                            <label style="font-weight: bold"><b>To Date*</b></label>
+                            <input type='datetime-local' name='b_end_date' style="background-color: white;" id='b_end_date' class='form-control' required>
+                        </div>
+                            <div class="form-group col-md-3 mb-0">
+                            <label style="font-weight: bold"><b>Users*</b></label>
+                            <select name="users_ids" class="form-control" style="background-color: white;" >
+                                <option value="">----Select----</option>
+                                {% for data in users_names %}
+                                <option value="{{data.login_id.id}}">{{data.f_name}} {{data.middle_name}} {{data.last_name}}</option>
+                                {% endfor %}
+                            </select>                                            </div>
+
+                        <div class="col-sm-0"><br>
+                            <button type="submit" class="btn btn-warning w-100 mt-2" name="search_btn"
+                                value="Search"><i class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+                {% if records %}
+                <div id="hello" style="font-size: 10px;">
+                    <style>
+                        table, th, td {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                        }
+                        #button2{
+                        font-size: larger;
+                        padding: 10px;
+                        border: none;
+                        border-radius: 5px;
+                    }
+                        </style>
+                    <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                        <tr>
+
+                                <div class="" >
+                                    <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                                    </center>
+                                </div>
+                        </tr>
+                    </table>
+                    <center><h3><u>User Collection Summary</u></h3></center>
+                    <table class="table table-bordered" style="border-style: solid;font-size:x-small;" align="center">
+                        <thead>
+                            <tr>
+                                <th colspan="9" style="text-align:center"><b>Payment Mode</b></th>
+                            </tr>
+                            <tr>
+                                <th scope="col"><b>User Name </b></th>
+                                <th scope="col"><b>Cash</b></th>
+                                <th scope="col">Debit Card</th>
+                                <th scope="col">EFT Transfer</th>
+                                <th scope="col">M-PESA</th>
+                                <th scope="col">Bank</th>
+                                <th scope="col">Cheque</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Grand Total</th>
+                            </tr>
+                        </thead>
+                            <tbody>
+                            {% for dat,data,list_debit,list_eft,list_m_pesa,bank,cheque,list_sum_total in user_summary %}
+                            <tr>
+                                <td style="padding-left: 15px;padding-right: 15px;"><b>{{dat.f_name|upper}}</b></td>
+                                {% if data == None %}
+                                <td style="padding-left: 15px;padding-right: 15px;">0</td>
+                                {% else %}
+                                <td style="padding-left: 15px;padding-right: 15px;">{{data|floatformat:2|intcomma}}</td>
+                                {% endif %}
+                                {% if list_debit == None %}
+                                <td style="padding-left: 15px;padding-right: 15px;">0</td>
+                                {% else %}
+                                <td style="padding-left: 15px;padding-right: 15px;">{{list_debit|floatformat:2|intcomma}}</td>
+                                {% endif %}
+                                {% if list_eft == None %}
+                                <td style="padding-left: 15px;padding-right: 15px;">0</td>
+                                {% else %}
+                                <td style="padding-left: 15px;padding-right: 15px;">{{list_eft|floatformat:2|intcomma}}</td>
+                                {% endif %}
+                                {% if list_m_pesa == None %}
+                                <td style="padding-left: 15px;padding-right: 15px;">0</td>
+                                {% else %}
+                                <td style="padding-left: 15px;padding-right: 15px;">{{list_m_pesa|floatformat:2|intcomma}}</td>
+                                {% endif %}
+                                {% if bank == None %}
+                                <td style="padding-left: 15px;padding-right: 15px;">0</td>
+                                {% else %}
+                                <td style="padding-left: 15px;padding-right: 15px;">{{bank|floatformat:2|intcomma}}</td>
+                                {% endif %}
+                                {% if cheque == None %}
+                                <td style="padding-left: 15px;padding-right: 15px;">0</td>
+                                {% else %}
+                                <td style="padding-left: 15px;padding-right: 15px;">{{cheque|floatformat:2|intcomma}}</td>
+                                {% endif %}
+                                {% if list_sum_total == None %}
+                                <td style="padding-left: 15px;padding-right: 15px;">0</td>
+                                {% else %}
+                                <td style="padding-left: 15px;padding-right: 15px;">{{list_sum_total|floatformat:2|intcomma}}</td>
+                                {% endif %}
+                                {% if list_sum_total == None %}
+                                <td style="padding-left: 15px;padding-right: 15px;">0</td>
+                                {% else %}
+                                <td style="padding-left: 15px;padding-right: 15px;">{{list_sum_total|floatformat:2|intcomma}}</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td>Total Users</td>
+                                <td style="padding-left: 15px;padding-right: 15px;"><b>{{sub_total_summary_cash_list|floatformat:2|intcomma}}</b></td>
+                                <td style="padding-left: 15px;padding-right: 15px;"><b>{{sub_total_summary_debit_list|floatformat:2|intcomma}}</b></td>
+                                <td style="padding-left: 15px;padding-right: 15px;"><b>{{sub_total_summary_eft_list|floatformat:2|intcomma}}</b></td>
+                                <td style="padding-left: 15px;padding-right: 15px;"><b>{{sub_total_summary_m_pesa_list|floatformat:2|intcomma}}</b></td>
+                                <td style="padding-left: 15px;padding-right: 15px;"><b>{{sub_total_summary_bank_list|floatformat:2|intcomma}}</b></td>
+                                <td style="padding-left: 15px;padding-right: 15px;"><b>{{sub_total_summary_cheque_list|floatformat:2|intcomma}}</b></td>
+                                <td style="padding-left: 15px;padding-right: 15px;"><b>{{total_summary_list|floatformat:2|intcomma}}</b></td>
+                                <td style="padding-left: 15px;padding-right: 15px;"><b>{{grand_total_summary_list|floatformat:2|intcomma}}</b></td>
+                            </tr>
+                            </tbody>
+                    </table>
+                    <center><h3><u>User Collection Details</u></h3></center>
+                    <table class="table table-bordered" style="border-style: solid;font-size:x-small;" align="center">
+                        <thead>
+
+                            <tr>
+                                <th scope="col"><b>Payment Date/Time</b></th>
+                                <th scope="col"><b>Receipt No</b></th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Bill No</th>
+                                <th scope="col">MR NO</th>
+                                <th scope="col"> Name</th>
+                                <th scope="col">Receipt Amount</th>
+                            </tr>
+                        </thead>
+                            <tbody>
+                            {% for user,sub_total in all_rec %}
+                            <tr>
+                                <td colspan="8">User Name: <b>{{user.f_name|upper}}</b></td>
+                            </tr>
+                            {% for mode in mode_types %}
+                            <tr>
+                                <td colspan="8">Payment Mode: <b>{{mode|upper}}</b></td>
+                            </tr>
+                            {% for record in records %}
+
+                            {% if record.created_by.username == user.user_id %}
+                            {% if record.mode_type == mode %}
+                            <tr>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{record.date_time}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{record.receipt_no}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{record.type}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{record.bill_id}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{record.uhid}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{record.title}} {{record.f_name}} {{record.m_name}} {{record.l_name}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{record.paid_amount|floatformat:2|intcomma}}</td>
+                            </tr>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                            {% for records in records2 %}
+                            {% if records.created_by.username == user.user_id %}
+                            {% if records.mode_type == mode %}
+                            <tr>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.date_time}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.receipt_no}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.pay_type}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.bill_id}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.uhid}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.title}} {{records.f_name}} {{records.m_name}} {{records.l_name}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.paid_amount|floatformat:2|intcomma}}</td>
+                            </tr>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                            {% for records in pharmacy_records %}
+                            {% if records.created_by.username == user.user_id %}
+                            {% if records.type == mode %}
+                            <tr>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.sales_date}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.Op_sales_no}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.opd_no}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.Op_sales_no}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.uhid}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.title}} {{records.f_name}} {{records.m_name}} {{records.l_name}}</td>
+                                <td style="padding-left: 15px;padding-right: 15px;">{{records.paid_amount|floatformat:2|intcomma}}</td>
+                            </tr>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+
+                            {% endfor %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td colspan="2"><b>Grand Total Collection for user ({{user.f_name|upper}})</b></td>
+                                <td style="padding-left: 15px;padding-right: 15px;" ><b>{{sub_total|floatformat:2|intcomma}}</b></td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 15px;padding-right: 15px;" colspan="8"></td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="padding-left: 15px;padding-right: 15px;"><b>Grand Total Amount</b></td>
+                                <td style="padding-left: 15px;padding-right: 15px;"><b>{{paid_amt|floatformat:2|intcomma}}</b></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="col-sm-6 col-md-4" class="card">
+                        <canvas id="myChart" width="10" height="50" class="card"></canvas>
+                    </div>
+
+                </div><br><br>
+                {% endif %}
+    
+</div>
+</div>
+
+<script>
+    function toggleVisibility() {
+      var demoElement = document.getElementById('filter_card');
+      
+      if (demoElement.style.display === 'none') {
+        demoElement.style.display = 'block'; // Show the element
+      } else {
+        demoElement.style.display = 'none';  // Hide the element
+      }
+    }
+  </script>
+<script src="../assets/js/app.js"></script>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+
+<!-- Export csv -->
+
+<script>
+    function htmlToCSV(html, filename) {
+        var data = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText);
+            }
+
+            data.push(row.join(","));
+        }
+
+        downloadCSVFile(data.join("\n"), filename);
+    }</script>
+<script>
+    function downloadCSVFile(csv, filename) {
+        var csv_file, download_link;
+
+        csv_file = new Blob([csv], { type: "text/csv" });
+
+        download_link = document.createElement("a");
+
+        download_link.download = filename;
+
+        download_link.href = window.URL.createObjectURL(csv_file);
+
+        download_link.style.display = "none";
+
+        document.body.appendChild(download_link);
+
+        download_link.click();
+    }</script>
+
+<script>document.getElementById("download-button").addEventListener("click", function () {
+        var html = document.querySelector("table").outerHTML;
+        htmlToCSV(html, "itemwise_purchase.csv");
+    });</script>
+
+{% endblock %}

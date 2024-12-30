@@ -1,0 +1,84 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+  #id_from_date,
+  #id_to_date,
+  #id_store {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+      <div>
+        <a href="/department_consump_search" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+        <b>Item Return to Supplier</b>
+      </div>
+      <div class="">
+        <!-- <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a> -->
+        <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+        <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <!-- <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+          <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a> -->
+          
+        </div>
+      </div>
+    </div>
+
+
+   
+                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"><br>
+                  <form method="post" action="">
+                    {% csrf_token %}
+        
+                <div class="table-responsive">
+                    <table class="datatable table table-stripped table-bordered">
+                                   <thead>
+                                       <tr><th>S.No</th>
+                                           <th>Return No</th>
+                                           <th>Return Date</th>
+                                           <th>Item Name</th>
+                                           <th>Batch No</th>
+                                           <th>Expiry Date</th>
+                                           <th>Return Qty</th>
+                                           <th>Reason</th>
+                                      
+                                       </tr>
+                                   </thead>
+                                   <tbody> 
+                                        {% for data in item_return_to_mainstore %}
+                                       <tr>
+                                           <td>{{forloop.counter}}</td>
+                                           <td>{{data.return_no}}</td>
+                                           <td>{{data.return_date}}</td>
+                                           <td>{{data.item_id}}</td>
+                                           <td>{{data.batch_no}}</td>
+                                           <td>{{data.expiry_date}}</td>
+                                           <td>{{data.return_qty}}</td>
+                                           <td>{{data.reason}}</td>
+                                            
+                                        
+                                      </tr>
+                                       {% endfor  %}
+                                    </tbody>
+                                  
+                           </table>
+                           </div>
+
+                </form>
+
+              </div>
+            </div>
+          </div>
+          {% endblock %}

@@ -1,0 +1,626 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+ <style>
+   .table_form{
+    border:2px solid red;
+    color:red;
+    width:50% !important;
+  }
+  #id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_doctor{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_discount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_unit{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_net_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_co_pay{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_patient_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_receive_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }#id_service_master{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_company_name{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+  #id_patient_amount{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+background-color:white;
+  border:2px solid white;
+  #id_receive_amount{
+
+  width:100%;
+  }
+
+  #id_view{
+  background-color:white;
+  border:2px solid white;
+  width:100%;
+  }
+
+.table_form input{
+  border:2px solid white;
+  width:100%;
+  border-bottom:1px solid #eee;
+}
+.service_table tr th{
+}
+.service_table tr td{
+}
+ </style>
+ <link
+  rel="stylesheet"
+  href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"
+/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+{% endblock  %}
+{% block body_block %}
+  <!-- content -->
+  <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00041">
+<input type="hidden" name="message_id" value="MSG00041">
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="page-header row">
+            <h5 class="pageheader-title col-sm-4">Out-Patient Billing</h5>
+            <div class="col-sm-8 text-right">
+              <button class="btn-primary border-0 p-2 icon-size" name="button" type="button"><i class="fa fa-save"></i></button>
+              <button class="btn-primary border-0 p-2 icon-size" name="button" type="button"><i class="fas fa-paint-brush"></i></button>
+              <button class="btn btn-primary dropdown-toggle p-2 icon-size" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+              <div class="dropdown-menu">
+<!--                data-toggle="modal" data-target="#payment_mode_popup"-->
+                <a class="dropdown-item" href="/opd_payment_mode" >Payment Modes For Credit</a>
+                <a class="dropdown-item" href="/opd_payment_cash" >Payment Modes For Cash</a>
+<!--                <a class="dropdown-item" href="#">Another action</a>-->
+                <a class="dropdown-item" href="/opdbillrecipte">Patient Invoice</a>
+              </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal" id="payment_mode_popup" tabindex="-1" role="dialog" aria-labelledby="payment_mode_popup" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:80%;">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-white">
+                      <h5 class="modal-title" id="patient-registration-title">Payment Mode</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="Out-Patient_record">
+                      <form>
+                        <div class="row form_sec">
+                          <div class="col-md-12">
+                            <div class="today_visit" style="min-height: 300px;">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-save" aria-hidden="true"></i></button>
+                              </div>
+                              <form class="">
+                                <table class="table table-border ">
+                                  <tr style="background:#d1dae6;">
+                                    <th>Mode Type</th>
+                                    <th>Amount</th>
+                                    <th>Bank</th>
+                                    <th>Cheque/Card/DD No.</th>
+                                    <th>Expiry Date</th>
+                                    <th></th>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <div class="form-group">
+                                        <select name="cars">
+                                          <option value="Cash">Cash</option>
+                                          <option value="UPI">UPI</option>
+                                        </select>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <select name="cars" id="cars">
+                                          <option value="Bank">Bank</option>
+                                          <option value="UPI">UPI</option>
+                                        </select>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="butns">
+                                        <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                        <button class="btn-primary border-0 p-2 icon-size"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </form>
+                            </div>
+                          </div>
+                        </div><!-- row -->
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form_sec">
+                              <form>
+                                <div class="input_filed d-flex align-items-center">
+                                  <label style="flex: 0 0 100px;" for="GCR">GCR No. <small>*</small></label>
+                                  <input type="text" class="form-control" placeholder="">
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div><!-- row -->
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="billing-form bg-white p-2 mt-2">
+           <div class="row" >
+            <div class="col-4" >
+               <form method="GET" class="row">
+                  <div class="col-md-8">
+                    <label>UHID*</label><br>
+                    <input type="text" value="{{searched_uhid}}" name="uhid" required>
+                  </div>
+<!--                  <div class="col-sm-1 p-0">-->
+<!--                    <button class="btn-primary border-0 p-2 icon-size" name="uhid_searching" type="submit" value="is_uhid"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>-->
+<!--                  </div>-->
+                   <br>
+                   <div class="col-md-2">
+                   <br>
+                    <a href="/opd_billing_search" style="color:white;">
+                    <button class="btn-primary border-0 p-2 icon-size" type="button"  name="search" class="input-group-text" >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </button>
+                     </a>
+                   </div>
+
+                   <div class="col-sm-1 p-0">
+                       <br>
+                    <button class="btn-primary border-0 p-2 icon-size" name="uhid_searching" type="submit" value="is_uhid"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                  </div>
+                </form>
+            </div>
+            <div class="col-8">
+              <form method="GET" class="row">
+          <div class="col-md-5">
+            <label>Select Visit No*</label>
+             <select style="width:100%;" name="visit_no" required>
+               <option></option>
+              {% for data in records %}
+              <option value="{{data.id}}">{{data.visit_id}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-2"><br>
+            <button class="btn-primary border-0 p-2 icon-size" name="billing_search" type="submit" value="is_opd_billing"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+          </div>
+          <div class="col-sm-12 text-right"><br>
+            <button class="btn btn-primary">Pending Orders</button>
+          </div>
+        </form>
+            </div>
+          </div>
+
+
+        <div class="p-2 border mt-2">
+          <div class="row">
+            <div class="col-sm-6">
+              <h5>{{name}}</h5>
+              <p class="m-0">{{gender}} {{dob}} year ,  <strong>Mobile No.</strong>: {{mobile_number}}</p>
+            </div>
+            <div class="col-sm-3">
+              <p class="m-0"><strong> Payer</strong>: {{billing_groups1}}</p>
+            </div>
+              <div class="col-sm-3">
+              <p class="m-0"><strong>Corporate</strong>: {{corporate_name}}</p>
+            </div>
+          </div>
+        </div>
+
+        <form class="form-inline row no-gutters pt-2 pb-2 alert-primary">
+          <div class="col-sm-1 p-0">
+            <label for="formGroupExampleInput">Activity</label>
+          </div>
+          <div class="col-sm-2">
+            <select class="form-control  w-100" name="card" value="">
+              <option>Discount</option>
+            </select>
+          </div>
+          <div class="col-sm-2 p-0">
+            <label for="formGroupExampleInput">Amount Type</label>
+          </div>
+          <div class="col-sm-2">
+            <select class="form-control  w-100" name="card" value="">
+              <option>select</option>
+              <option value="volvo">Percentage</option>
+              <option value="saab" selected>Amount</option>
+            </select>
+          </div>
+          <div class="col-sm-1 p-0">
+            <label for="formGroupExampleInput">Value</label>
+          </div>
+          <div class="col-sm-2">
+            <input class="form-control" type="value" name="value" placeholder="">
+          </div>
+          <div class="col-sm-2 text-right">
+<!--            <button class="btn-primary border-0 p-2 icon-size" name="submiting_service" type="submit" form="MyForm"><i class="fa fa-calculator" aria-hidden="true"></i></button>-->
+            <button class="btn-primary border-0 p-2 icon-size" name="submiting_service" type="submit" form="MyForm">Save</button>
+            <button class="btn-primary border-0 p-2 icon-size" name="button" type="button"><i class="fas fa-paint-brush"></i></button>
+          </div>
+        </form>
+                  <form method="POST" id="MyForm" action="/opd_billing_search/UHID2210130025?visit_no=14&billing_search=is_opd_billing">
+          {% csrf_token %}
+          <table class="table mt-2 table-border form-row service_table">
+          <tr style="background: #d1dae6;">
+<!--            <th>-->
+<!--              <input type="checkbox" class="" id="customCheck1">-->
+<!--            </th>-->
+            <th>Services Name</th>
+<!--            <th>Doctor</th>-->
+            <th>Rate</th>
+            <th>Discount</th>
+<!--            &#37;-->
+            <th>&nbsp;&nbsp;Unit&nbsp;&nbsp;</th>
+            <th>NetAmount</th>
+            <th>OutstdAmt</th>
+<!--            <th>Company name</th>-->
+            <th>TotalAmt.</th>
+            <th>ReceiveAmt.</th>
+          </tr>
+          <tr>
+            <input type="hidden" name="uhid" value="{{uhid}}">
+            <input type="hidden" name="visit_id" value="{{visit_id}}">
+<!--            <td colspan=""><input type="checkbox" class="" id="customCheck1"></td>-->
+<!--            <td class="table_form"><input type="text" name="service_name" value="{{service_name}}" required></td>-->
+            <td class="table_form" style="width:80%!important;">
+              <div id="autocomplete" class="autocomplete">
+            <input type="text" name="service_name" value="{{datas.service_id}}" style="background-color:white!important;height:1em;" />
+            <ul class="autocomplete-result-list" style="color:black;" ></ul>
+         </div>
+            </td>
+<!--            <td class="table_form"><input type="text" name="doctor" value="{{w}}" required></td>-->
+            <td class="table_form"><input type="number" name="amount" readonly value="{{datas.service_charge}}"></td>
+            <td class="table_form"><input type="number" name="discount" value="{{00}}" required title="please enter number"></td>
+            <td class="table_form"><input type="number" name="unit" value="{{002}}"  required></td>
+            <td class="table_form"><input type="text" name="net_amount" value="{{datas.service_charge}}" required></td>
+            <td class="table_form"><input type="text" name="outstanding_amount" value="{{datas.service_charge}}"  required></td>
+<!--            <td class="table_form"><input type="text" name="" value="{{w}}" required></td>-->
+            <td class="table_form"><input type="text" name="total_amount" value="{{datas.service_charge}}" required></td>
+            <td class="table_form"><input type="text" name="receive_amount" value="{{datas.service_charge}}" required></td>
+            </tr>
+              {% for dat in service %}
+            <tr>
+                    <td>{{dat.service_id}}</td>
+                    <td>{{dat.service_charge}}</td>
+                    <td>{{default_discount}}</td>
+                    <td>{{default_unit}}</td>
+                    <td>{{dat.service_charge}}</td>
+                    <td>{{default_out_standing_amount}}</td>
+                    <td>{{dat.service_charge}}</td>
+                    <td>{{dat.service_charge}}</td>
+                    <td><a href="/choose_service/{{dat.id}}"><i class="fa fa-hand-pointer" aria-hidden="true"></a></td>
+<!--                        <td class="col-md-4 card" style="margin-right: 10px;" data-toggle="modal" data-target="#service" id="service_select"><i class="fa fa-hand-pointer" aria-hidden="true"></i></td>-->
+<!--                    </a>-->
+          </tr>
+              {% endfor %}
+          {% for data in temp_records %}
+              <tr>
+                  <td>{{data.service_name}}</td>
+                  <td>{{data.rate}}</td>
+                  <td>{{data.discount}}</td>
+                  <td>{{data.unit}}</td>
+                  <td>{{data.net_ammount}}</td>
+                  <td>{{data.outstanding_amount}}</td>
+                  <td>{{data.total_amount}}</td>
+                  <td>{{data.receive_amount}}</td>
+                  <td><a href="javascript:void(0);" onClick="delete_pack({{data.id}});"><i class="fa fa-times-circle" style="font-size: 20px;color: red;"></i></a></td>
+              </tr>
+              {% endfor %}
+              <tr style="background-color:#eee;color:white!important;">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>{{nt_amt}}</td>
+                  <td></td>
+                  <td>{{ttl_amt}}</td>
+                  <td colspan="2">{{rcv_amt}}</td>
+
+              </tr>
+        </table>
+        </form>
+
+        {% if messages %}
+        {% for message in messages %}
+        {{message}}
+<!--           {% if message.tags %} {{ message.tags}} {% endif %}-->
+        {% endfor %}
+        {% endif %}
+<!--        Adding Multiple services-->
+<!--          Temp Opd Bill Start-->
+<!--          <table border="2" width="100%">-->
+<!--              <thead>-->
+<!--              <th>Service Name</th>-->
+<!--              <th>Rate</th>-->
+<!--              <th>Discount</th>-->
+<!--              <th>Unit</th>-->
+<!--              <th>Net Amount</th>-->
+<!--              <th>OS Amount</th>-->
+<!--              <th>Ttl. Amount</th>-->
+<!--              <th colspan="2">Receive Amount</th>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+
+<!--              <tr style="background-color:#eee;color:white!important;">-->
+<!--                  <td></td>-->
+<!--                  <td></td>-->
+<!--                  <td></td>-->
+<!--                  <td></td>-->
+<!--                  <td>{{nt_amt}}</td>-->
+<!--                  <td></td>-->
+<!--                  <td>{{ttl_amt}}</td>-->
+<!--                  <td colspan="2">{{rcv_amt}}</td>-->
+
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--          </table>-->
+<!--        <button type="button" class="btn btn-primary" onclick="confirmSave()">Add All Services</button>-->
+<!--          Temp Opd Bill End-->
+<!-- <div class="row">-->
+<!--       <div class="col-12">-->
+<!--        <h2>Add Record</h2>-->
+<!--         <form id="insertvideo" method="POST" >-->
+<!--             {% csrf_token %}-->
+<!--              <input autocomplete="false" name="hidden" type="text" style="display:none;">-->
+
+<!--          <input type="button" class="btn btn-success addButton col-3 offset-1" value="Add"/>-->
+<!--          <input type="submit" class="btn btn-success submit_btn col-3 offset-1" value="SetService" name="multiple_submit" id="submit">-->
+
+
+
+<!--          <br><br>-->
+<!--         <table id="addrow" width="100%" border="2">-->
+<!--          <tr>-->
+<!--          <th style="border-bottom:1px solid black;">Service Name</th>-->
+<!--          <th>&nbsp;Rate&nbsp;&nbsp;&nbsp;</th>-->
+<!--          <th>Discount</th>-->
+<!--          <th>Unit</th>-->
+<!--          <th>NetAmount</th>-->
+<!--          <th>OutstdAmt</th>-->
+<!--          <th>TotalAmt</th>-->
+<!--          <th>ReceiveAmt</th>-->
+<!--          <th>Action</th>-->
+<!--         </tr>-->
+<!--          <tr class="clonetr" >-->
+<!--            <td class="table_form"  style="width:10em!important;">-->
+<!--              <div id="autocomplete" class="autocomplete">-->
+<!--                <input class="autocomplete-input" type="text" name="service_name" value="{{intell_search_ser_name}}" style="background-color:white!important;height:1em;"/>-->
+<!--                    <ul class="autocomplete-result-list" style="color:black;" ></ul>-->
+<!--                </div>-->
+
+<!--            </td>-->
+<!--              <td class="table_form" style="width:50%!important;border:1px solid white;border-bottom:1px solid black;">-->
+<!--              <div id="autocomplete" class="autocomplete" style="width:50%!important;">-->
+<!--                <input class="autocomplete-input" type="text" name="service_name" value="{{intell_search_ser_name}}" style="background-color:white!important;height:1em;"/>-->
+<!--                <ul class="autocomplete-result-list" style="color:black;" ></ul>-->
+<!--              </div>-->
+<!--            </td>-->
+<!--                <td><input type="text" id="name" name="name[]" class="form-control" required value="{{intell_search_ser_charges}}"></td>-->
+<!--                <td><input type="text"  id="email" name="amount[]" class="form-control" autocomplete="off"></td>-->
+<!--                <td><input type="text"  id="pass" name="discount[]" class="form-control" autocomplete="off"></td>-->
+<!--                <td><input type="text"  id="pass" name="unit[]" class="form-control" autocomplete="off"></td>-->
+<!--                <td><input type="text"  id="pass" name="net_amount[]" class="form-control" autocomplete="off"></td>-->
+<!--                <td><input type="text"  id="pass" name="outstanding_amount[]" class="form-control" autocomplete="off"></td>-->
+<!--                <td><input type="text"  id="pass" name="total_amount[]" class="form-control" autocomplete="off"></td>-->
+<!--                <td><input type="text"  id="pass" name="receive_amount[]" class="form-control" autocomplete="off"></td>-->
+<!--                <td><input type="button" class="btn btn-danger deleteButton" value="delete"/></td>-->
+<!--            </tr>-->
+<!--         </table>-->
+         </form>
+       </div>
+     </div>
+<!--        trying add    -->
+        <div class="space" style="min-height: 200px;"></div>
+        <form class="form-inline row pt-2 pb-2 alert-primary">
+          <div class="col-sm-1 p-0">
+            <label for="total-amount">Total Amt.</label>
+          </div>
+          <div class="col-sm-1">
+            <input class="form-control text-right" type="value" name="value" value="0">
+          </div>
+          <div class="col-sm-2 p-0">
+            <label for="patient-payable">Patient Payable</label>
+          </div>
+          <div class="col-sm-1">
+            <input class="form-control text-right" type="value" name="value" value="0">
+          </div>
+          <div class="col-sm-1 p-0">
+            <label for="advance-amount">Advance Amt.</label>
+          </div>
+          <div class="col-sm-2">
+            <input class="form-control" type="value" name="value" placeholder="">
+          </div>
+          <div class="col-sm-1 p-0">
+            <label for="patient-payable">Recevied Amt.</label>
+          </div>
+          <div class="col-sm-1">
+            <input class="form-control text-right" type="value" name="value" value="0">
+          </div>
+          <div class="col-sm-1 p-0">
+            <label for="advance-amount">Balance Amt.</label>
+          </div>
+          <div class="col-sm-1">
+            <input class="form-control text-right" type="value" name="value" value="0">
+          </div>
+          <ul class="patient_record mt-3">
+            <li class="d-flex align-items-center ml-3"><span class="badge-warning"></span>Approval</li>
+            <li class="d-flex align-items-center ml-3"><span class="badge-secondary"></span>Non-discountable</li>
+          </ul>
+        </form>
+      </div><!-- billing-form -->
+    </div>
+  </div><!-- dashboard-ecommerce -->
+</div>
+<!--         for save form -->
+<div class="modal fade" id="service" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+                 <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="service" ><b>Service </b></h5>
+                <div class="col-sm-8 text-right">
+                  <button class="border-0 p-2 icon-size" style="background-color:#25a5be;margin-right:1em;color:white;" form="MyForm" name="button" type="submit">
+                    <i class="fa fa-save fa-2x"></i>
+                  </button>
+                  <a href="/opd_billing" style="background-color:#25a5be;color:red;" >
+                    <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+                  </a>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" name="heart">×
+                </button>
+            </div><br>
+          <!-- Main block -->
+          <div class="modal-body">
+             <div class="container-fluid">
+                 <div class="body">
+                     <div class="demo-masked-input">
+                         <div class="row clearfix">
+                           <div class="col-12">
+                               <div class="form-group">
+                                   <div class="form-line">
+                                       <div class="card">
+                                           <form method="POST" id="MyForm" action="/opd_billing_search/UHID2210130025?visit_no=14&billing_search=is_opd_billing">
+                                              {% csrf_token %}
+                                              <table class="table mt-2 table-border form-row service_table">
+                                              <tr style="background: #d1dae6;">
+                                                <th>Services Name</th>
+                                                <th>Rate</th>
+                                                <th>Discount</th>
+                                    <!--            &#37;-->
+                                                <th>&nbsp;&nbsp;Unit&nbsp;&nbsp;</th>
+                                                <th>NetAmount</th>
+                                                <th>OutstdAmt</th>
+                                                <th>TotalAmt.</th>
+                                                <th>ReceiveAmt.</th>
+                                              </tr>
+                                              <tr>
+                                                <input type="hidden" name="uhid" value="{{searched_uhid}}">
+                                                <input type="hidden" name="visit_id" value="{{visit_id}}">
+                                    <!--            <td colspan=""><input type="checkbox" class="" id="customCheck1"></td>-->
+                                    <!--            <td class="table_form"><input type="text" name="service_name" value="{{service_name}}" required></td>-->
+                                                <td class="table_form" style="width:80%!important;">
+                                                  <div id="autocomplete" class="autocomplete">
+                                                <input type="text" name="service_name" value="{{service_id}}" style="background-color:white!important;height:1em;" />
+                                                <ul class="autocomplete-result-list" style="color:black;" ></ul>
+                                             </div>
+                                                </td>
+                                    <!--            <td class="table_form"><input type="text" name="doctor" value="{{w}}" required></td>-->
+                                                <td class="table_form"><input type="number" name="amount" readonly value="{{service_charge}}"></td>
+                                                <td class="table_form"><input type="number" name="discount" value="{{00}}" required title="please enter number"></td>
+                                                <td class="table_form"><input type="number" name="unit" value="{{002}}"  required></td>
+                                                <td class="table_form"><input type="text" name="net_amount" value="{{service_charge}}" required></td>
+                                                <td class="table_form"><input type="text" name="outstanding_amount" value="{{service_charge}}"  required></td>
+                                    <!--            <td class="table_form"><input type="text" name="" value="{{w}}" required></td>-->
+                                                <td class="table_form"><input type="text" name="total_amount" value="{{service_charge}}" required></td>
+                                                <td class="table_form"><input type="text" name="receive_amount" value="{{service_charge}}" required></td>
+                                                </tr>
+                                             </table>
+                                           </form>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                     </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+
+<!--  if(window.location."/choose_service/{{dat.id}}".indexOf('#service') != -1) {-->
+<!--    $('#service').modal('show');-->
+<!--  }-->
+
+<!--});-->
+<!--</script>-->
+{% endblock  %}

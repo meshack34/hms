@@ -1,0 +1,85 @@
+{% extends 'patient/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+        <div class="main_content"  style="background-image: linear-gradient(white,#9AD0EC);">
+            <div class="container-fluid"><br><br>
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <div class="card">
+                    <div class="header">
+            <div class="body">
+                <div class="table-responsive">
+                  <a href="/new-appointment">
+                    <button type="button" class="btn btn-info" style="float: right;">Create New Appointment</button>
+                </a>
+                <table class="table table-bordered table-striped table-hover save-stage dataTable"
+                    style="width:100%;">
+                        <thead>
+                            <tr>
+                              <th bgcolor= "ORANGERED">Appointment Id</th>
+                              <th bgcolor= "ORANGERED">Patient Id</th>
+                                <th bgcolor= "ORANGERED">Patient Name</th>
+                                <!-- <th bgcolor= "ORANGERED">Patient Mobile no.</th> -->
+                                <th bgcolor= "ORANGERED">Gender</th>
+                                <th bgcolor= "ORANGERED">patient_schedule_date_and_time</th>
+                                <th bgcolor= "ORANGERED">patient_scheduled_id</th>
+                                <th bgcolor= "ORANGERED">patient_payment_mode</th>
+                                <th bgcolor= "ORANGERED">doctor_name</th>
+                                <!-- <th bgcolor= "ORANGERED">doctor_department</th> -->
+                                <!-- <th bgcolor= "ORANGERED">Status</th> -->
+                                <th bgcolor= "ORANGERED">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in bookedappointments_list %}
+                          <tr>
+                            <td>{{data.patient_appointment_id}}</td>
+                            <td>{{data.patient_id}}</td>
+                            <td>{{data.patient_name|upper}}</td>
+                            <!-- <td>{{data.patient_mobile_number}}</td> -->
+                            <td>{{data.patient_gender}}</td>
+                            <td>{{data.patient_schedule_date_and_time}}</td>
+                            <td>{{data.patient_scheduled_id}}</td>
+                            <td>{{data.patient_payment_mode}}</td>
+                            <td>{{data.doctor_name}}</td>
+                            <!-- <td>{{data.doctor_department}}</td> -->
+                            <!-- <td><button type="button" name="button" class="btn btn-success" align="center">{{data.doctor_status}}</button></td> -->
+                            <td>
+                                <div class="content">
+                                  <a href="detail-appointment/{{data.patient_id}}"><i class="fa fa-user" style="font-size: 24px;color:green"></i></a>
+
+                                  <a href="cancel-appointment/{{data.patient_id}}" class="delete" data-confirm="Really, You Want To Edit Records...."><i class="fas fa-times-circle"style="font-size: 24px;color:red"></i></a>
+                                  <!-- <a href="cancel-appointment/{{data.patient_id}}"> <i class="fas fa-times-circle"style="font-size: 24px;color:red"></i></a> -->
+                                </div>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                         </tbody>
+                </table>
+                </div>
+            </div>
+</div>
+</div>
+</div>
+</div>
+  </div>
+</div>
+{% endblock %}
+{% block script_block %}
+<script>
+    var deleteLinks = document.querySelectorAll('.delete');
+
+    for(var i=0;i<deleteLinks.length;i++) {
+        deleteLinks[i].addEventListener('click',function(event) {
+            event.preventDefault();
+            var choice = confirm(this.getAttribute('data-confirm'));
+            if(choice){
+                window.location.href = this.getAttribute('href')
+            }
+            });
+    }
+
+</script>
+
+{% endblock  %}

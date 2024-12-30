@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+<style type="text/css">
+body{
+	background: #333;
+	font-family: arial;
+}
+.register_card p {
+    margin: 0 0 4px;
+    font-size: 14px;
+}
+@media print {
+	body{
+		background: #333;
+	}
+	.register_card p {
+    margin: 0 0 4px;
+    font-size: 14px;
+}
+
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+<a href="/patient_registration">
+<button type="button">Back</button>
+</a>
+<div id="hello">
+
+<table style="width: 100%;max-width: 480px;margin: 0 auto;background: #fff;padding: 16px;">
+	
+	<tr>
+		<td style="vertical-align: top;">
+            <div class="register_card">
+				<p>
+					<span>Reg No:</span><br>
+					<strong>DIU0110001001</strong>
+				</p>
+                <p>
+					<span>Name:</span><br>
+					<strong>Ram</strong>
+				</p>
+                <p>
+					<span>FH/Name:</span><br>
+					<strong>Raju</strong>
+				</p>
+				<p>
+					<span>Py Doctor:</span><br>
+					<strong>Jain</strong>
+				</p>
+                <p>
+					<span>Ref Doctor:</span><br>
+					<strong>Jain</strong>
+				</p>
+                <p>
+					<span>Address:</span><br>
+					<strong>Jain</strong>
+				</p>
+				<p>
+					<span>Reg No:</span><br>
+					<strong>205 (private)</strong>
+				</p>
+				
+			</div>	<br><br>
+            <div class="register_card">
+				<p>
+					<span>Reg No:</span><br>
+					<strong>DIU0110001002</strong>
+				</p>
+                <p>
+					<span>Name:</span><br>
+					<strong>Seetha</strong>
+				</p>
+                <p>
+					<span>FH/Name:</span><br>
+					<strong>Hari</strong>
+				</p>
+				<p>
+					<span>Py Doctor:</span><br>
+					<strong>Vein</strong>
+				</p>
+                <p>
+					<span>Ref Doctor:</span><br>
+					<strong>George</strong>
+				</p>
+                <p>
+					<span>Address:</span><br>
+					<strong>Nil</strong>
+				</p>
+				<p>
+					<span>Reg No:</span><br>
+					<strong>206 (private)</strong>
+				</p>
+				
+			</div>
+        	</td>
+		<td style="vertical-align: top; padding-left: 15px;">
+			<div class="register_card">
+                <p>
+					<span>IPD No:</span><br>
+					<strong>DIUR0001827</strong>
+				</p>
+                <p>
+					<span>Mobile No:</span><br>
+					<strong>9093658963</strong>
+				</p>
+				<p>
+					<!-- <span>Reg. No:</span><br> -->
+					<span>Age/Sex:</span><br>
+					<strong>(25Y / Male)</strong>
+				</p>
+				<p></p><p></p><p></p>
+                <p style="padding-top: 120PX;">
+                    <strong>Adm Date Time:2022/04/26 04:30 PM</strong>
+                </p>
+				
+				
+			</div><br><br>
+            <div class="register_card">
+                <p>
+					<span>IPD No:</span><br>
+					<strong>DIUR0001828</strong>
+				</p>
+                <p>
+					<span>Mobile No:</span><br>
+					<strong>9093658961</strong>
+				</p>
+				<p>
+					<!-- <span>Reg. No:</span><br> -->
+					<span>Age/Sex:</span><br>
+					<strong>(22Y / Female)</strong>
+				</p>
+				<p></p><p></p><p></p>
+                <p style="padding-top: 120PX;">
+                    <strong>Adm Date Time:2022/04/26 05:30 PM</strong>
+                </p>
+				
+				
+			</div>
+		</td>
+		<td style="vertical-align: top; padding-left: 15px;">
+            <div class="register_card">
+			<img src="../../static/images/Qr.png" width="110px">
+            </div><br><br>
+            <div class="register_card" style="padding-top: 160px;">
+            <img src="../../static/images/Qr.png" width="110px">
+            </div>
+        </td>
+        
+	</tr>
+	
+</table>
+</div><br>
+
+<button type="button"  onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;">Print</button>
+
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+</body>
+</html>

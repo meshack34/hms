@@ -1,0 +1,176 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Employee Report</h4>
+            </div>
+          
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-primary"
+                        onClick="window.location.reload();">
+                        <i class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                    <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+                    <button class="btn btn-warning" role="button"
+                        onclick="codespeedy()">PDF</button>&nbsp;
+                    <button class="btn btn-sucess" style="background-color: green;" onclick="exportTableToCSV()" role="button">CSV</button>&nbsp;
+                        <br><br>
+                        <form method="POST">
+                            {% csrf_token %}
+                        <div class="row filter-row">
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus mb-0">
+                                    <label class="focus-label">Employee Name</label>
+                                    <input type="text" class="form-control" name="emp_name" id="emp_name" list="employee_id">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus select-focus mb-0">
+                                    <label class="focus-label">Department</label>
+                                    <select class="select floating" name="deparment" id="deparment">
+                                        <option value="">Select</option>
+                                        {% for data in depart_detail %}
+                                        <option value="{{data.id}}">{{data.department_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <datalist id="employee_id">
+                                {% for data in employee %}
+                                <option value="{{data.id}}.{{data.first_name}}{{data.last_name}}"></option>
+                                {% endfor %}
+                            </datalist>
+                            <div class="col-sm-6 col-md-3">
+                                <button type="submit" class="btn btn-success btn-block">Search</button>
+                            </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"
+                                            style="background-color:white;">
+
+
+                                        <div id="hello">
+
+                                          <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                                              <tr>
+
+                                                      <div class="" >
+                                                          <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                                                          </center>
+                                                      </div>
+                                              </tr>
+                                          </table>
+
+                                          <style>
+                                              table, th, td {
+                                                border: 1px solid black;
+                                                border-collapse: collapse;
+
+                                              }
+                                              #button2{
+                                              font-size: larger;
+                                              padding: 10px;
+                                              border: none;
+                                              border-radius: 5px;
+                                          }
+                                              </style>
+                                              <center><h3> Employee Report</h3></center>
+                                          <table class="table table-bordered" style="border-style: solid;" align="center">
+                                              <thead>
+                
+                                    <tr>
+                                        <th scope="col">S.No</th>
+                                        <th scope="col">Employee ID</th>
+                                        <th scope="col">Employee Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Department</th>
+                                        <th scope="col">DOB</th>
+                                        <th scope="col">Mob No</th>
+                                        <th scope="col">Gender</th>
+                                        <th scope="col">Joining Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in emp_detail %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td style="padding-left: 15px;padding-right: 15px;">{{data.employee_id}}</td>
+                                        <td style="padding-left: 15px;padding-right: 15px;">{{data.first_name}} {{data.last_name}}</td>
+                                        <td style="padding-left: 15px;padding-right: 15px;">{{data.email_id}}</td>
+                                        <td style="padding-left: 15px;padding-right: 15px;">{{data.department_id}}</td>
+                                        <td style="padding-left: 15px;padding-right: 15px;">{{data.dob}}</td>
+                                        <td style="padding-left: 15px;padding-right: 15px;">{{data.mobile_no}}</td>
+                                        <td style="padding-left: 15px;padding-right: 15px;">{{data.gender}}</td>
+                                        <td style="padding-left: 15px;padding-right: 15px;">{{data.joining_date}}</td>
+                                      </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</div>
+<!--/ content-->
+<!-- Custom JS -->
+<script src="../assets/js/app.js"></script>
+
+<script type="text/javascript">
+
+  function codespeedy(){
+    var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+  }
+</script>
+
+<!-- Export csv -->
+
+<script>
+    function exportTableToCSV() {
+    var csv = [];
+    var rows = document.querySelectorAll("table tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+
+        for (var j = 0; j < cols.length; j++) {
+            var cellText = cols[j].innerText;
+            cellText = cellText.replace(/"/g, '""');  // Escape double quotes within cell value
+            row.push('"' + cellText + '"');
+        }
+
+        csv.push(row.join(","));
+    }
+
+    // Create a download link
+    var csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+    var link = document.createElement("a");
+    link.setAttribute("href", encodeURI(csvContent));
+    link.setAttribute("download", "employee_report.csv");
+    link.click();
+}
+</script>
+
+{% endblock %}

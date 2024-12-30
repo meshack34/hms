@@ -1,0 +1,328 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+Main Content
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+    <nav class="navbar navbar-light bg-primary">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;">Doctor Accounting</a>
+      </div>
+    </nav>
+        <br>
+        <br>
+        <div class="row">
+        <div class="col-12">
+        <div class="card">
+           <div class="card-body">
+                <div class="body">
+                    {% if 'doctor_accounting_services_save' in access.user_profile.screen_access or request.user.is_superuser %}
+                          <form method="POST">
+            {% csrf_token %}
+            <DIV id="myDiv1" >
+              <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                    <div class="row clearfix">
+                        <div class="col-sm-4">
+                            <b>Doctor Name* </b>
+                            <div class="form-group">
+                                <select name="dr_name" class="form-control" required>
+                                    <option value="">{% if doctor_name %}{{doctor_name}}{% else %} Chooes... {% endif %}</option>
+                                    {% for data in doctor_table %}
+                                    <option value="{{data.doctor_id}}">{{data.doctor_id}}.{{data.doctor_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <b>Traffic Name * </b>
+                            <div class="form-group">
+                                <select name="tariff_name" class="form-control" required>
+                                    <option value="">{% if tarif_name %}{{tarif_name}}{% else %} Chooes...  {% endif %}</option>
+                                    {% for data in tariff_table %}
+                                    <option value="{{data.id}}">{{data.id}}.{{data.tariff_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <b>Effective Date * </b>
+                            <div class="form-group">
+                                <input type="date"  class="form-control" name="date" value="{{date}}" required>
+                            </div>
+                        </div>
+                    <div class="col-sm-4">
+                        <b>Service Departments  </b>
+                        <div class="form-group">
+                            <select  name="service_departments" class="form-control" >
+                                <option  value="">{% if tarif_name %}{{ser_dep}}{% else %} Chooes...  {% endif %}</option>
+                                {% for data in service_department %}
+                                <option value="{{data.id}}">{{data.service_department}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <b>Service Sub Department</b>
+                        <div class="form-group">
+                            <select name="service_sub_departments" class="form-control" >
+                              <option  value="">{% if tarif_name %}{{ser_sub_dep}}{% else %} Chooes...  {% endif %}</option>
+                              {% for data in service_sub_department %}
+                              <option value="{{data.id}}">{{data.service_sub_department}}</option>
+                              {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group" style="padding:20px;">
+                            <div class="form-line">
+                                <input type="submit" class="btn btn-primary" name='search2' id="s2" value="Search2">
+
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                  </form>
+              </div>
+
+                    {% if tariff %}
+            <form method="POST" id="MyForm" onkeydown="return event.key != 'Enter';">
+          {% csrf_token %}
+                 <table class="datatable table table-stripped ">
+          <tr style="background: #d1dae6;">
+            <th>S.No</th>
+            <th>Services Name</th>
+            <th>Rate</th>
+            <th>Doctor Share</th>
+            <th>&nbsp;&nbsp;Hospital Share&nbsp;&nbsp;</th>
+          </tr>
+                     <tr>
+                         <td class="table_form"><input type="hidden" name="dr_names" value="{{dr_name}}" required></td>
+                         <td class="table_form"><input type="hidden" name="tariff_names" value="{{tariff_name}}" required></td>
+                         <td class="table_form"><input type="hidden" name="dates" value="{{date}}" required></td>
+                     </tr>
+                     <tr>
+                         <td></td>
+                         <td></td>
+                         <td></td>
+                        <td style="font-weight: bold;"><b>Doctor Share </b><input
+                        type="number" id="doctor_discount" name="doctor_discount"
+                        style="width: 30%; background-color: whitesmoke;"  class="form-control"><b>%</b></td>
+                        <td style="font-weight: bold;"><b>Hospital Share </b><input
+                        type="number" id="hospital_discount" name="hospital_discount"
+                        style="width: 30%; background-color: whitesmoke;"  class="form-control"><b>%</b></td>
+                     </tr>
+                     {% for tar in tariff %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td class="table_form"><input type="text" name="service_name" readonly value="{{tar.service_id}}" class="form-control"></td>
+                <td class="table_form"><input type="number"  name="service_rate" id="service_rate{{forloop.counter}}" value="{{tar.service_charge}}" required title="please enter number"  class="form-control"></td>
+                <td class="table_form"><input type="number" step=0.01 name="dr_share" id="dr_sharess{{forloop.counter}}" required  class="form-control"></td>
+                <td class="table_form"><input type="number" step=0.01  name="hospital_share" id="hospital_sharess{{forloop.counter}}" required  class="form-control"></td>
+            </tr>
+
+                     {% endfor %}
+
+          <td><button type="submit" class="btn btn-primary" name="insert" value="insert" form="MyForm">Insert</button> </td>
+        </table>
+        </form>
+        {% endif %}
+        {% endif %}
+        {% if records %}
+            <form method="POST" id="MyForm1" onkeydown="return event.key != 'Enter';">
+          {% csrf_token %}
+                 <table class="datatable table table-stripped ">
+          <tr style="background: #d1dae6;">
+            <th>S.No</th>
+            <th>Services Name</th>
+            <th>Rate</th>
+            <th>Doctor Share</th>
+            <th>&nbsp;&nbsp;Hospital Share&nbsp;&nbsp;</th>
+          </tr>
+             <tr>
+                 <td class="table_form"><input type="hidden" name="dr_names" value="{{dr_name}}" required></td>
+                 <td class="table_form"><input type="hidden" name="tariff_names" value="{{tariff_name}}" required></td>
+                 <td class="table_form"><input type="hidden" name="dates" value="{{date}}" required></td>
+             </tr>
+             <tr>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                <td style="font-weight: bold;"><b>Doctor Dis </b><input
+                type="number" id="doctor_discount_d" name="doctor_discount"
+                style="width: 30%; background-color: whitesmoke;" class="form-control"><b>%</b></td>
+                <td style="font-weight: bold;"><b>Hospital Dis </b><input
+                type="number" id="hospital_discount_d" name="hospital_discount"
+                style="width: 30%; background-color: whitesmoke;" class="form-control"><b>%</b></td>
+                {% for dat in records %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td><input type="text" name="service_name" readonly value="{{dat.service_name}}" readonly></td>
+                        <td><input type="number" name="service_rate" id="service_rate_d{{forloop.counter}}" value="{{dat.Charges}}" class="form-control" readonly required title="please enter number"></td>
+                        <td class="table_form"><input type="number"  step=0.01 name="dr_share" id="dr_sharess_d{{forloop.counter}}" class="form-control" required></td>
+                        <td class="table_form"><input type="number"  step=0.01  name="hospital_share" id="hospital_sharess_d{{forloop.counter}}" class="form-control" required></td>
+                    </tr>
+                {% endfor %}
+            <td><button type="submit" class="btn btn-primary" name="insert" value="insert" form="MyForm1">Save</button> </td>
+        </table>
+        </form>
+        {% endif %}
+        {% if not tariff and not records %}
+                    <br><br>
+               <h3 style="text-align:center;"> --------------- No Data Found ---------------------</h3>
+                    {% endif %}
+
+                    <br>
+                    <br>
+                    {% if 'doctor_accounting_services_view' in access.user_profile.screen_access or request.user.is_superuser %}
+
+                    {% if dr_acc %}
+                    <table class="datatable table table-stripped ">
+                        <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Dr ID</th>
+                            <th>Tariff ID</th>
+                            <th>Services</th>
+                            <th>Service Charge</th>
+                            <th>Effective Date</th>
+                            <th>Dr Share</th>
+                            <th>Hospital Share</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for da in dr_acc %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{da.doctor_id}}</td>
+                            <td>{{da.tariff_id}}</td>
+                            <td>{{da.service_name}}</td>
+                            <td>{{da.service_rate}}</td>
+                            <td>{{da.date}}</td>
+                            <td>{{da.doctor_share}}</td>
+                            <td>{{da.hospital_share}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% endif %}
+                    {% endif %}
+
+                
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+        <style>
+    .browser-default{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    </style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--        DOCTOR SHARE TARIFF WISE-->
+<script>
+   $(document).ready(function () {
+
+        $(document).on('keyup', '#doctor_discount', function () {
+
+            var dis = this.value;
+
+            for (i = 1; i < {{id_count}}+1; i++) {
+
+                var amount = $('#service_rate'+i).val();
+                var dr_share = amount*dis/100;
+
+                $('#dr_sharess'+i).val(dr_share);
+
+            }
+        });
+
+    });
+
+    </script>
+<!--    HOSPITAL SHARE TARIFF WISE-->
+    <script>
+   $(document).ready(function () {
+
+        $(document).on('keyup', '#hospital_discount', function () {
+
+            var dis = this.value;
+
+            for (i = 1; i < {{id_count}}+1; i++) {
+
+                var amount = $('#service_rate'+i).val();
+                var h_share = amount*dis/100;
+
+                $('#hospital_sharess'+i).val(h_share);
+
+            }
+        });
+
+    });
+
+    </script>
+<!--    DOCTOR SHARE DEPARTMENT WISE-->
+    <script>
+   $(document).ready(function () {
+
+        $(document).on('keyup', '#doctor_discount_d', function () {
+
+            var dis = this.value;
+
+            for (i = 1; i < {{id_count_d}}+1; i++) {
+
+                var amount = $('#service_rate_d'+i).val();
+                var dr_share = amount*dis/100;
+
+                $('#dr_sharess_d'+i).val(dr_share);
+
+            }
+        });
+
+    });
+
+    </script>
+<!--    HOSPITAL SHARE DEPARTMENT WISE -->
+    <script>
+   $(document).ready(function () {
+
+        $(document).on('keyup', '#hospital_discount_d', function () {
+
+            var dis = this.value;
+
+            for (i = 1; i < {{id_count_d}}+1; i++) {
+
+                var amount = $('#service_rate_d'+i).val();
+                var h_share = amount*dis/100;
+
+                $('#hospital_sharess_d'+i).val(h_share);
+
+            }
+        });
+
+    });
+
+    </script>
+{% endblock %}

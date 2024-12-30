@@ -1,0 +1,50 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="width: 100%; overflow: auto;">
+            <div class="card-head">
+                <h3 style="padding: 10px; background-color: rgb(81, 201, 201); color: white;">Opd Package Service</h3>
+            </div>
+                <table class="table"  style="overflow: auto;">
+                    <thead>
+                        <tr>
+                            <th>Package Name</th>
+                            <th>Service Name</th>
+                            <th>Profile Name</th>
+                            <th>Action </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% regroup package by package_name as record1 %}
+                    {% for group in record1 %}
+                    <tr>
+                        <td colspan="3"><b style="font-weight: bold;">{{group.grouper}}</b></td>
+                        <td><a href="{% url 'opd_package_service_edit' group.list.0.package_id %}" class="btn btn-primary">Edit</a></td>
+                    </tr>
+                    {% for data in group.list %}
+                    <tr>
+                        <td></td>
+                        {% if data.service_name == None %}
+                        <td></td>
+                        {% else %}
+                        <td>{{data.service_name}}</td>
+                        {% endif %}
+                        {% if data.profile_name == None %}
+                        <td></td>
+                        {% else %}
+                        <td>{{data.profile_name}}</td>
+                        {% endif %}
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

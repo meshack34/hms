@@ -1,0 +1,287 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    td,th{
+        text-align:center;
+    }
+</style>
+<!--Main Content-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+    <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;">Doctor Detail Report</a>
+      </div>
+    </nav>
+        <div class="row">
+        <div class="col-12">
+        <div class="card">
+        <div class="card-box mb-0">
+              <div class="header">
+                <div class="body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row filter-row">
+                    <div class="col-sm-8 col-md-2">
+                        <div class="form-group form-focus mb-0">
+                            <label class="focus-label">From </label>
+                            <input type="datetime-local"  class="form-control" name="b_start_date">
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-md-2">
+                        <div class="form-group form-focus mb-0">
+                            <label class="focus-label">To</label>
+                            <input type="datetime-local"  class="form-control" name="b_end_date">
+                        </div>
+                    </div>
+                        <div class="col-sm-8 col-md-2" >
+                          <input type="submit" class="form-control btn btn-info" value="Search">
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        <!--This for payment receipt print function-->
+        <div id="hello">
+        <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+            <tr style="border-bottom:2px solid #eee;">
+                <td id="s">
+                    <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                        <tr>
+<!--                            <td id="f"><img src="https://bharathbrands.in/images/BHARATHBRANDS-01.png" alt="logo Image" width="180px"></td>-->
+                            <td>
+                                	<div class="" >
+							<center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+							</center>
+						</div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%"id="example">
+
+                        <tr>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Dr. Name </th>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">UHID </th>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Visit ID </th>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Department </th>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">OP Net Amt </th>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">OP Disc</th>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">OP Payable Amt</th>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Total </th>
+                        </tr>
+                        <tr>
+<!--                            <tr><td style="background-color: rgb(94, 173, 177);"><b> {{res}}</b></td></tr>-->
+
+                        {% for records in all_records %}
+<!--                            <tr>-->
+<!--                                <td style="background-color:yellow;">DR.NAME: {{uhi}}: {{legnth}}</td>-->
+<!--                                <td></td>-->
+<!--                                <td></td>-->
+<!--                                <td></td>-->
+<!--                                <td></td>-->
+<!--                                <td></td>-->
+<!--                            </tr>-->
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{records.uhid}}</td>
+                                <td>{{records.visit_no}}</td>
+                                <td>{{records.department}}</td>
+                                <td>{{records.net_amount}}</td>
+                                <td>{{records.discount}}</td>
+                                <td>{{records.pay_amount}}</td>
+                                <td>{{records.paid_amount}}</td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                    </table>
+                </td>
+            </tr>
+        </table><br><br>
+                  <div class="col-sm-6 col-md-4" class="card">
+                     <canvas id="myChart" width="10" height="50" class="card"></canvas>
+                  </div>
+        </div><br><br>
+<button type="button"  onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;">Print</button>
+<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+<script>
+  $('example').margetable({
+  type: 1,
+  colindex: [{
+    index: 1,
+    dependent: [0]
+  }]
+});
+</script>
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+<!--<script>-->
+<!--const ctx = document.getElementById('myChart').getContext('2d');-->
+<!--const myChart = new Chart(ctx, {-->
+<!--    type: 'pie',-->
+<!--    data: {-->
+<!--        labels: [{% for read11 in list2 %} '{{read11}}' {% endfor %}],-->
+<!--        datasets: [{-->
+<!--            label: '# of Votes',-->
+<!--            data: [{% for read11 in list3 %} '{{read11}}', {% endfor %}],-->
+<!--            backgroundColor: [-->
+<!--                'rgba(255, 99, 132, 0.2)',-->
+<!--                'rgba(54, 162, 235, 0.2)',-->
+<!--                'rgba(255, 206, 86, 0.2)',-->
+<!--                'rgba(75, 192, 192, 0.2)',-->
+<!--                'rgba(153, 102, 255, 0.2)',-->
+<!--                'rgba(255, 159, 64, 0.2)'-->
+<!--            ],-->
+<!--            borderColor: [-->
+<!--                'rgba(255, 99, 132, 1)',-->
+<!--                'rgba(54, 162, 235, 1)',-->
+<!--                'rgba(255, 206, 86, 1)',-->
+<!--                'rgba(75, 192, 192, 1)',-->
+<!--                'rgba(153, 102, 255, 1)',-->
+<!--                'rgba(255, 159, 64, 1)'-->
+<!--            ],-->
+<!--        }]-->
+<!--    },-->
+<!--});-->
+<!--</script>-->
+
+<script>
+var xValues = [{% for data10 in list2 %}'{{data10}}',{% endfor %}];
+var yValues = [{% for data11 in list3 %}'{{data11}}',{% endfor %}];
+var barColors = [
+  "#b91d47",
+  "#00aba9",
+  "#2b5797",
+  "#e8c3b9",
+  "#1e7145"
+];
+
+new Chart("myChart", {
+  type: "pie",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "World Wide Wine Production 2018"
+    }
+  }
+});
+</script>
+                </div>
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px;overflow: auto;">
+            <h2 ><img src="{% static 'images\bill.png' %}" alt="" style="width: 50px; padding-bottom: 20px;"> Summarize Bill</h2><br>
+            <div>
+                <a href="/ipd_billing"><button type="button" class="btn btn-danger"><i class="fa fa-arrow-circle-left"></i> Back</button>&nbsp;</a>
+                      <a href="/ipd_detail_bill/{{records.admission_ID}}"><button type="button" class="btn btn-primary"><i class="  fa fa-money"> Detail Bill</i></button>&nbsp;</a>
+            </div><br><br>
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="">Uhid</label>
+                    <input type="text" value="{{records.uhid}}" class="form-control" style="border-style:outset; background-color:whitesmoke;">
+                </div>
+                <div class="col-md-4">
+                    <label for="">Admission Id</label>
+                    <input type="text" value="{{records.admission_ID}}" class="form-control" style="border-style:outset; background-color:whitesmoke;">
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="">Patient Name</label>
+                    <input type="text" value="{{reg_detail.first_name}} {{reg_detail.middle_name}} {{reg_detail.last_name}}" class="form-control" style="border-style:outset; background-color:whitesmoke;">
+                </div>
+            </div>
+        </div>
+        <div class="card" style='padding:20px; overflow:auto;'>
+            <table class=" table table-stripped" >
+                
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>No of Item</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight: bold;">Medication</td>
+                        <td>{{no_of_medication}}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Investigation</td>
+                        <td>{{no_of_investigation}}</td>
+                        <td>{{investigation_amt}}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Procedure</td>
+                        <td>{{no_of_procedure}}</td>
+                        <td>{{procedure_amt}}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Consulation</td>
+                        <td>{{no_of_consultation}}</td>
+                        <td>{{consultation_amt}}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Bed Charge</td>
+                        <td>{{no_of_bed_slip}}</td>
+                        <td>{{bed_charge_amt}}</td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td>Total Net amount </td>
+                        <td></td>
+                        <td style="padding-left:14%;"><input class="form-control" style='background-color:whitesmoke; width:100px; text-align:center; font-weight: bold;' value='{{tot_net_amt}}'></td>
+                    </tr>
+                   </tbody>
+                </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

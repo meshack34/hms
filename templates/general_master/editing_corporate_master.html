@@ -1,0 +1,83 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;" href="#">Corporate Master</a>
+      </div>
+  </nav>
+  <div class="container-fluid">
+      <div class="row clearfix">
+          <div class="card">
+                  <div class="header">
+          <div class="body">
+            <br>
+              <div class="icon-button-demo">
+              &nbsp;
+                <button type="submit" form="MyForm" class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;
+                <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+                <a href="/edit_corporate_master" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+            </div>
+              <br>
+          </div>
+          </div>
+          </div>
+
+            <form  method="POST" id="MyForm">
+                 {% csrf_token %}
+                <div class="form-row">
+                  <div class="form-group col-md-3 mb-0">
+                      {{form.valid_Upto|as_crispy_field}}
+                  </div>
+                    <div class="form-group col-md-3 mb-0">
+                      {{form.contact_No|as_crispy_field}}
+                    </div>
+                    <div class="form-group col-md-3 mb-0">
+                      {{form.email_ID|as_crispy_field}}
+                  </div>
+                    <div class="form-group col-md-3 mb-0">
+                      {{form.Office_Location_Name|as_crispy_field}}
+                  </div>
+                    <div class="form-group col-md-3 mb-0">
+                      {{form.Auth_Person|as_crispy_field}}
+                  </div>
+                    <div class="form-group col-md-3 mb-0">
+                      {{form.designation|as_crispy_field}}
+                  </div>
+                    <div class="form-group col-md-3 mb-0">
+                      {{form.address|as_crispy_field}}
+                  </div>
+                     <div class="form-group col-md-3 mb-0">
+                      {{form.City|as_crispy_field}}
+                  </div>
+                     <div class="form-group col-md-3 mb-0">
+                      {{form.PinCode|as_crispy_field}}
+                  </div>
+                     <div class="form-group col-md-3 mb-0">
+                      {{form.phone_no|as_crispy_field}}
+                  </div>
+                     <div class="form-group col-md-3 mb-0">
+                      {{form.fax|as_crispy_field}}
+                  </div>
+                     <div class="form-group col-md-3 mb-0">
+                      {{form.email|as_crispy_field}}
+                     </div>
+                         <div class="form-group col-md-3 mb-0">
+                      {{form.remark|as_crispy_field}}
+                  </div>
+                    <div class="form-group col-md-3 mb-0">
+                        <br><br>
+                      {{form.inactive|as_crispy_field}}
+                  </div>
+                </div>
+<!--                 <button type="submit"class="btn btn-success" > <i class="fas fa-save" >&nbsp;Save</i></button>-->
+               </form>
+   </div>
+  </div>
+    {% endblock  %}
+       </div>
+  </div>

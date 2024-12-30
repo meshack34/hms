@@ -1,0 +1,77 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+
+{% endblock %}
+{% block body_block %}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px;">
+            
+            <h2><img src="{% static 'images/lab_test.png' %}" alt="" style="width: 50px;">  <b>OutSource Tests</b></h2><br><br>
+       
+                <table class="datatable table table-stripped">
+                    <thead>
+                      <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Test Id</th>
+                        <th scope="col">Unid</th>
+                        <th scope="col">Service Name</th>
+                        <th scope="col">Date & Time</th>
+                        <th scope="col">Action</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in collected_records %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td><input type="text" id="id" class='form-comtrol' style="border: none;" value="{{data.test_id}}" readonly></td>
+                            <td><input type="text" id="id" class='form-comtrol' style="border: none;" value="{{data.uhid}}" readonly></td>
+                            <td><input type="text" id="id" class='form-comtrol' style="border: none;" value="{{data.profile_name}}" readonly></td>
+                            <td><input type="text" id="id" class='form-comtrol' style="border: none;" value="{{data.date_time}}" readonly></td>
+                            <td> <button class="btn btn-primary"  data-toggle="modal" data-target="#exampleModalCenter">Upload Report</button></td>
+                          </tr>
+                          {% endfor %}
+                  </table>
+                  <br><br>
+                  
+        </div>
+       
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Upload</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="upload">
+                <div class="form-group">
+                  <label for="exampleFormControlFile1">Upload Report</label>
+                  <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" form="upload" class="btn btn-primary" >Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+</div>
+
+{% endblock %}

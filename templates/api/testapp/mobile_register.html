@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% block body_block %}
+<br>
+<div class="hero">
+  <div class="outer" >
+<div class="container" align="center1">
+   <div class="col-xs-10 col-sm-10 col-md-6 col-lg-6">
+    <div class="center" style="background-color: white; ">
+
+      <div class="header">
+          <div class="card">
+            <h4> <i class="fas fa-map-marker-alt"></i>&nbsp; &nbsp;&nbsp; &nbsp;{{doctor_location}}</h4>
+             <h4><i class="fas fa-notes-medical"></i>&nbsp; &nbsp;&nbsp; &nbsp;In-Hospital Consultation</h4>
+               <h4><i class="far fa-calendar-alt"></i>&nbsp; &nbsp;&nbsp; &nbsp;{{doctor_appointment}}</h4>
+              <h4><i class="fas fa-wallet"></i>&nbsp; &nbsp;&nbsp; &nbsp;Rs.{{doctor_fee}}</h4><br>
+              <table>
+                  <tr>
+                    <td><img src="media/{{doctor_profile_image}}" alt="..." style="width:64px;height:64px;margin:auto;display:block;"></td>
+                    <td>
+                      Dr.{{doctor_name}}<br>
+                      <strong>{{doctor_department}}</strong>
+                    </td>
+                  </tr>
+                </table>
+
+          </div>
+      </div>
+  <br><br>
+  <form  method="POST" action="date_time">
+    {% csrf_token %}
+
+  <div class="col-xs-10 col-sm-10 col-md-6 col-lg-6">
+      <div class="header">
+          <!-- <div class="card"> -->
+              <!-- <table>
+                    <td>
+                      <strong>Mobile Number</strong>
+                    </td>
+                    <td>
+                      <strong>Xyz ID</strong>
+                    </td>
+              </table>&nbsp; &nbsp;
+              <h4>Enter Mobile No.</h4>-->
+            <label for="mobile_number">Mobile Number</label>
+            <input type="tel" name="mobile_number" id="mobile_number" class="form-control" placeholder="Enter mobile number" required pattern="[6-9][0-9]{9}" title="Please Enter Valid Mobile Number">&nbsp;
+            <label for="name">Name</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Enter Name" required>&nbsp;
+            <input type="submit" class="form-control btn btn-info" value="continue">&nbsp;
+            </div>
+          </div>
+      </div>
+      </form>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+
+
+</div>
+{% endblock %}

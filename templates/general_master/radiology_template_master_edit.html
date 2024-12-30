@@ -1,0 +1,39 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% block head_block %}
+
+<script src="{% static 'js/notepad.js' %}"></script>
+{% endblock %}
+{% block body_block %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4> Template Master</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="">Service</label>
+                    <input type="text" class="form-control" value="{{record.service}}" readonly>
+                    <br>
+                    <textarea name="content" id="editor" >
+                       {{record.content}}</textarea>
+                    <br><br>
+                    <button type="submit" class="btn btn-primary">save</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+
+
+{% endblock %}

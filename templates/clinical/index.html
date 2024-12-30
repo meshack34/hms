@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Dashboard</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div id="app" class="h-100">
+        <div>
+            <div class="auth-wrapper auth-v2 login-page">
+                <div class="row auth-inner m-0 h-100">
+                    <div class="d-none d-lg-flex align-items-center p-5 col-lg-7">
+
+                    </div>
+                    <div class="d-flex align-items-start auth-bg px-2 p-lg-5 col-lg-5">
+                        <div class="px-xl-2 mx-auto col-sm-8 col-md-6 col-lg-12">
+                            <span class=" d-block">
+                                <div class="heart-logo">
+                                    <img src="{% static 'assets/images/interface/dashboard/heartbeat-iconic.png' %}" alt="" width="100%">
+                                </div>
+                                <form method="POST" action="dashboard" class="auth-login-form mt-5" >
+					         	{% csrf_token %}
+						            <input type="hidden" name="screen_id" value="SCR0010">
+						            <input type="hidden" name="message_id" value="MSG0010">
+                                    <div role="group" class="form-group" id="__BVID__50">
+                                     <input id="login-email" name="username" type="text" placeholder="User Name" class="form-control" required />
+                                 </div>
+                                 <div class="form-group" id="__BVID__53">
+                                    <input id="login-password" name="password" type="password" placeholder="Password" class="form-control-merge form-control" required />
+                                </div>
+                                <!-- <button type="submit" class="btn btn-primary mt-4">Login</button> -->
+                                <div class="text-center">
+                                    <button type="submit" class="login-btn btn-lg btn btn-primary mt-4">Login</a>
+                                </div>
+                            </form>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.js' %}"></script>
+
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en" dir="ltr">
+<head>
+	<meta charset="UTF-8">
+        <title> Sidebar </title>
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+     <!--  Core Css -->
+     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+     <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+     <!-- Favicon-->
+     <!-- <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}"> -->
+	<!-- Demo CSS -->
+    <link rel="stylesheet" href="{% static 'css/demo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+
+	<script>
+		$(document).ready(function(){
+			$(".hamburger .hamburger__inner").click(function(){
+			  $(".wrapper").toggleClass("active")
+			})
+
+			$(".top_navbar .fas").click(function(){
+			   $(".profile_dd").toggleClass("active");
+			});
+		})
+	</script>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="top_navbar">
+    <div class="hamburger">
+       <div class="hamburger__inner">
+         <div class="one"></div>
+         <div class="two"></div>
+         <div class="three"></div>
+       </div>
+    </div>
+    <div class="menu">
+      <div class="logo">
+        Dash Board
+      </div>
+      <div class="right_menu">
+        <ul>
+          <li><i class="fas fa-user"></i>
+            <div class="profile_dd">
+               <div class="dd_item">Profile</div>
+               <div class="dd_item">Change Password</div>
+               <div class="dd_item">Logout</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="main_container">
+      <div class="sidebar">
+          <div class="sidebar__inner">
+
+            <ul>
+              <li>
+                <a href="#" class="active">
+                  <span class="icon"><i class="fas fa-dice-d6"></i></span>
+                  <span class="title">Home</span>
+                </a>
+              </li>
+              <li>
+                <a href="/patient">
+                  <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                  <span class="title">Patient Registration</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-hospital-user"></i></span>
+                  <span class="title">Client Management</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-ambulance"></i></span>
+                  <span class="title">Emergency</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-user-injured"></i></span>
+                  <span class="title">Procedure Room</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-procedures"></i></span>
+                  <span class="title">Operation Theatre</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">In-Patient Management</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-user-nurse"></i></span>
+                  <span class="title">Nurse Station</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-brain"></i></span>
+                  <span class="title">Mental Health</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-baby"></i></span>
+                  <span class="title">Antenatal Care</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                  <span class="title">Accounts And Revenue</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-file-medical"></i></span>
+                  <span class="title">Insurance And E-Claim</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Phlebotomy</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-flask"></i></span>
+                  <span class="title">Laboratory</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Blood Bank</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Radiology</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Linen And Laundry</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Discharge Summary</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Mortuary Management</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Feedback Management</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Inventory</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">MRD</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">MIS Reports</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Inventory Setup</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Custom Template</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">System Control</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="icon"><i class="fas fa-border-all"></i></span>
+                  <span class="title">Security And Audit</span>
+                </a>
+              </li>
+
+
+            </ul>
+          </div>
+      </div>
+      <style>
+        img{
+          border-radius: 50%;
+        }
+      </style>
+     <!--Side Nav Bar Ends-->
+
+<!--Main Content-->
+
+<div class="container">
+
+
+<div class="row">
+    <a href="">
+       <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+       <h5 style="color: rgb(15, 15, 15);">Patient </h5>
+       <h5 style="color: rgb(15, 15, 15);"> Registration</h5>
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Client </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Management</h5>
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Emergency</h5>
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/procedure.png' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Procedure </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Room</h5>
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Operation </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Theatre</h5>
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/inpatient.png' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">In-Patient </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Management</h5>
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Nurse </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Station</h5>
+    </a>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/antental.jpeg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Antenatal </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Care</h5>
+    </a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Accounts And </h5>
+        <h5  style="color: rgb(15, 15, 15);">  Revenue</h5>
+    </a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Insurance And </h5>
+        <h5  style="color: rgb(15, 15, 15);">  E-Claim</h5>
+    </a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Phlebotomy</h5>
+    </a>      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Laboratory</h5>
+    </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+     <a href="">
+        <img src="{% static 'images/radiology.png' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Radiology</h5>
+    </a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Linen And </h5>
+        <h5  style="color: rgb(15, 15, 15);">  Laundry</h5>
+    </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Discharge </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Summary</h5>
+    </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Mortuary </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Management</h5>
+    </a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Feedback </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Management</h5>
+    </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Inventory</h5>
+    </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/mrd.png' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">MRD</h5>
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/mis_report.png' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">MIS </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Reports</h5>
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/inventory_setup.jpeg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Inventory </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Setup</h5>
+    </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/doctor.jpg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Custom </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Template</h5>
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/system_control.png' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">System </h5>
+        <h5  style="color: rgb(15, 15, 15);"> Control</h5>
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="">
+        <img src="{% static 'images/security.jpeg' %}" alt="avatar" style="width: 100px;"><br><br>
+        <h5  style="color: rgb(15, 15, 15);">Security  </h5>
+        <h5  style="color: rgb(15, 15, 15);"> And Audit</h5>
+    </a>
+</div>
+</div>
+</div>
+</div>
+{% block body_block %}
+
+{% endblock %}
+
+<!-- javacripts -->
+<script src="{% static 'js/app.min.js' %}"></script>
+<script src="{% static 'js/table.min.js' %}"></script>
+<!-- Custom Js -->
+<script src="{% static 'js/admin.js' %}"></script>
+<script src="{% static 'js/pages/tables/jquery-datatable.js' %}"></script>
+
+</body>
+</html>

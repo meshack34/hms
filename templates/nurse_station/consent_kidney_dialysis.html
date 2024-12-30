@@ -1,0 +1,207 @@
+
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+{% block head_block %}
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
+    body, p{font-family: arial; font-size: 16px; }
+    p {margin: 0 0 5px;}
+    table td,table th{padding: 10px;text-align: left;}
+    @media print {
+        p {margin: 0 0 5px; }
+        table td,table th{padding: 10px;text-align: left;}
+    }
+    
+    .rectangle {
+            width: 200px;
+            height: 100px;
+            border: 2px solid black;
+        }
+    button{
+        font-size: larger;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+    input{
+    /* <!--  width: 200px;--> */
+      font-size: 20px;
+      background-color: transparent;
+      outline: none;
+      border: none;
+      border-bottom: 1px solid black;
+      min-width: 200px;
+    }
+    textarea{
+      width: 200px;
+      font-size: 20px;
+      background-color: transparent;
+      outline: none;
+      border: none;
+      border-bottom: 1px solid black;
+    /* <!--  min-width: 200px;--> */
+    }
+    
+    ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        text-decoration: underline;
+        color: black;
+    }
+    .vl {
+      border-left: 6px solid green;
+      height: 500px;
+      position: absolute;
+      left: 50%;
+      margin-left: -3px;
+      top: 0;
+    }
+    input.dashed {
+      border-bottom: 3px dashed black;
+    }
+    textarea.form-control {
+      border-bottom: 3px dashed black;
+    }
+    </style>
+{% endblock %}
+{% block body_block %}
+
+
+<!--This for payment receipt print function-->
+<div class="page-wrapper" style="background-color: hsl(0, 0%, 100%);">
+<div class="content">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/MRD/MRD_dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>Consent For Kidney Dialysis</b>
+        </div>
+        <div class="">
+          <button type="submit" class="btn text-light" form="nurse_notes" name="save_button" value="Save"><i class="fas fa-save"></i></button>
+          <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+             
+            <a class="dropdown-item btn-primary" id="download-button " type="button" onclick="printDiv('hello')">Print</a>
+            <a href="/consent_kidney_view" class="dropdown-item btn-primary"> Records</a>
+          </div>
+        </div>
+      </div>
+<div id="hello">
+    <form method="post" id="nurse_notes">
+        {% csrf_token %}
+    <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100% padding: 30px;">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                <tr>
+          
+                        <div class="" >
+                            <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                            </center>
+                        </div>
+          
+                </tr>
+            </table>
+		</td>
+	</tr>
+	    <tr >
+		    <td style="border: 2px solid black;">
+                <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+
+                    <tr>
+                        <td colspan="8" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;"><b>Consent For Kidney Dialysis Treatment</b></h3></td>
+                    </tr>
+
+                    <tr style="border-top: 2px solid black; border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" >PATIENT NAME</th>
+                        <td><input class="dashed" type="text" name="patient_name" style="width: 200%;"></td>
+                    </tr>
+
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" >PATIENT'S ADDRESS</th>
+                        <td><input class="dashed" type="text" name="patient_address" style="width: 200%;"></td>
+                    </tr>
+
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" ></th>
+                        <td><input class="dashed" type="text" name="patient_address" style="width: 200%;"></td>
+                    </tr>
+
+                    <tr style="background-color: hsl(0, 0%, 100%); border-bottom: 2px solid black; border-right: 2px solid black; border-right: 2px solid black; border-left: 2px solid black;">
+                        <th style="background-color: hsl(0, 0%, 100%);" >AGE<input type="text" name="age" class="dashed" style="width: 40%;"></th>
+                         <th style="background-color: hsl(0, 0%, 100%);" >SEX<input  class="dashed" type="text" name="gender" style="width: 40%;"></th  >
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">ADMISSION<input class="dashed" type="text" name="admissionno" ></th>
+                      <th colspan="2" style="background-color: hsl(0, 0%, 100%);"></th>
+                    </tr>
+
+                    <tr>
+                        <td colspan="12"><h4 style="margin: 0;"> <br>I <input class="dashed" type="text" name="name1" style="width: 30%;">hereby consent to test  <input class="dashed" type="text" name="blood_sample" > blood sample for <br><br> HIV and Hepatitis B & C tests the nature and effect of which have been explained to me by the<br> Doctor/Counsellor, I agree to pay the fee 
+                            for the Nephrologist/Doctor in the event of an emergency <br>treatment that may be required during the process of dialysis at the centre.
+                        </h4></td>
+                    </tr>
+                  
+                    <tr>
+                        <td colspan="12"><h4 style="margin: 0;"> <br>I <input class="dashed" type="text" name="name2" style="width: 40%;">the undersigned of P.O BOX <input class="dashed" type="text" name="PO_box" style="width: 25%;">hereby <br><br>consent to undergo Dialysis centre for myself/ Wife/ Child/ Father/Mother/Relatives.</h4></td> 
+                    </tr>
+            
+                    <tr>
+                        <td colspan="8"><h4 style="margin: 0;">I have been explained that the risk and complications of the diaysis procedures like bleeding. infection, heart failure, changes in blood pressure,  
+                            anesthetic reactions, paralysis, that may arise necessitating attention & appropriate management. Therefore, in addition to consenting to the above procedure(s), I also consent and authorize the rendering of such other care and treaments as physician/ his designee may reasonably believe necessary.
+                        </h4></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="8"><h4 style="margin: 0;">I am aware that Dialysis is an ongoing therapy which may be temporary or life long, that a patient requires on a daily/alternative day basis, depending on the clinical situation and any changes regarding stopping it would be informed.
+                        </h4></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="8"><h4 style="margin: 0;">I undersand that there is no ICU/HDU unit within the Dialysis centre and in case of an emergency, and undertake to transfer myself to another medical facility of my cholce at my own cost, meant to the centre.
+                        </h4></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="8"><h4 style="margin: 0;">I hereby agree to indemnity the Dialysis Centre and its staff from any legal obligations that may arise from the effect, if any, in future as a result in this dialysis.
+                        </h4></td>
+                    </tr>
+                    
+                    <tr style="border-top: 2px solid black; border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">SIGNATURE<input type="text" name="signature" class="dashed" style="width: 50%;"></th>
+                         <th style="background-color: hsl(0, 0%, 100%);" colspan="2">ID NO<input  class="dashed" type="text" name="ID_no"></th  >
+                    </tr>
+
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">NEXT OF KIN<input type="text" name="next_kin" class="dashed" style="width: 50%;"></th>
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">MOBILENO<input  class="dashed" type="text" name="mobileno"></th>
+                    </tr>
+
+                    <tr style=" border-right: 2px solid black; border-left: 2px solid black; background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);" >WITNESSED BY THE ADMITTING NURSE</th>
+                        <td><input class="dashed" type="text" name="witness_admitted_nurse" style="width: 228%;" required></td>
+                    </tr>
+
+                    <tr style="background-color: hsl(0, 0%, 100%); border-bottom: 2px solid black; border-right: 2px solid black; border-right: 2px solid black; border-left: 2px solid black;">
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">DATE&nbsp;&nbsp;&nbsp;<input type="date" name="date" class="dashed" style="width: 50%;" required></th>                       
+                        <th style="background-color: hsl(0, 0%, 100%);" colspan="2">TIME<input  class="dashed" type="text" name="time" required></th >             
+                    </tr>   
+    </table>
+</form>
+</div>
+</div> 
+</div>
+
+
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+     
+
+
+}
+  </script>
+{% endblock %}
+
+

@@ -1,0 +1,108 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+  .form {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+  <div class="content">
+    <button type="menu" style="font-family: monospace; width: 100%; text-align: left;"
+      class="btn btn-primary m-t-15 waves-effect"> <b>Add Employee</b></button>
+    <br><br>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="icon-button-demo">&nbsp;
+        <button type="submit" class="btn btn-success"> <i class="fas fa-save">Save</i></button>&nbsp;
+        <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i
+            class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+        <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>&nbsp;
+        <a href="/employee_list" class="btn btn-primary">Back</a>&nbsp;
+      </div>
+      <br>
+      <div class="card" style="padding: 10px;background-color:#ebebf8;">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-md-3">
+              <label>Employee First Name</label>
+              <input type="text" name="first_name" id="first_name" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Employee Last Name</label>
+              <input type="text" name="last_name" id="last_name" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Department Name</label>
+              <select name="dept_id" id="dept_id" class="form-control">
+                <option value="">Select</option>
+                {% for data in dept_detail %}
+                <option value="{{ data.id }}">{{ data.department_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label>Address</label>
+              <input type="text" name="address" id="address" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Gender</label>
+              <input type="text" name="gender" id="gender" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Email-ID</label>
+              <input type="email" name="email_id" id="email_id" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>DOB</label>
+              <input type="date" name="dob" id="dob" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Mob No</label>
+              <input type="text" name="mobile_no" id="mobile_no" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Joining Date</label>
+              <input type="date" name="joining_date" id="joining_date" class="form-control">
+            </div>
+            
+          </div>
+          <hr>
+          <button type="button" class="btn btn-primary" id="add_btn" style="float: right;">+ Add Bank Detail</button><br><br>
+          <div class="row" id="bank_detail" style="display: none;">
+            <div class="col-md-3">
+              <label>Bank Name</label>
+              <input type="text" name="bank_name" id="bank_name" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Bank Branch</label>
+              <input type="text" name="branch_name" id="branch_name" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Account No</label>
+              <input type="text" name="acc_no" id="acc_no" class="form-control">
+            </div>
+            </div>
+    </form>
+  </div>
+</div>
+</div>
+
+</div>
+<!--/ content-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $(document).on('click', '#add_btn', function () {
+      $("#bank_detail").toggle();
+    });
+  });
+</script>
+{% endblock %}

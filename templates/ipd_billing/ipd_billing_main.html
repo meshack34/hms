@@ -1,0 +1,147 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    .table_form input{
+  border:2px solid white;
+  width:100%;
+  border-bottom:1px solid #eee;
+}
+</style>
+<!-- content -->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div class="  top-heading bg-primary">
+            <h3 class="section_title" style="text-align:center"> IPD Billing</h3>
+        </div>
+        {% for message in messages %}
+        <div class="col-sm-3 ">
+            <div class="container-fluid p-0 " id="alert">
+              <div class="alert {{ message.tags }} alert-dismissible bg-{{ message.tags }}" role="alert" >
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="True">&times;</span>
+                </button>
+                <b>{{ message }}</b>
+              </div>
+            </div>
+        </div>
+        {% endfor %}
+          <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"><br>
+              <form method="POSt" id="ward_form">
+                  {% csrf_token %}
+                  <div class="row clearfix bg-grey" >
+                      <div class="col-sm-3 ">
+                          <div class="form-group col-md-12 mb-0">
+                              <label for="pat_name" style="padding-left: 20px;"><b>Name:</b>&nbsp;&nbsp;{{pat_records.titlte|upper}} {{pat_records.first_name|upper}} {{pat_records.last_name|upper}}</label>
+                              <input type="hidden"  class="form-control" id="pat_name" name="pat_name" value="{{pat_records.titlte|upper}} {{pat_records.first_name|upper}} {{pat_records.last_name|upper}}">
+                          </div>
+                      </div>
+                      <div class="col-sm-3">
+                          <div class="form-group col-md-12 mb-0">
+                              <label for="UHID_id" style="padding-left: 20px;"><b>UHID:</b>&nbsp;&nbsp;{{pat_records.uhid}}</label>
+                              <input type="hidden"  class="form-control" id="UHID_id" name="UHID_id" value="{{pat_records.uhid}}">
+                          </div>
+                    </div>
+                      <div class="col-sm-3">
+                            <div class="form-group col-md-12 mb-0">
+                                <label for="admission_id" style="padding-left: 20px;"><b class="text-nowrap">Admission Id:</b>&nbsp;&nbsp;{{adm_records.admission_ID}}</label>
+                                <input type="hidden"  class="form-control" id="admission_id" name="admission_id" value="{{adm_records.admission_ID}}">
+                            </div>
+                      </div>
+                      <div class="col-sm-3">
+                            <div class="form-group col-md-12 mb-0">
+                                <label for="doctory" style="padding-left: 20px;"><b>Doctor:</b>&nbsp;&nbsp;{{adm_records.primary_doctor}}</label>
+                                <input type="hidden"  class="form-control" id="doctory" name="doctory" value="{{adm_records}}">
+                            </div>
+                      </div>
+                      <div class="col-sm-3">
+                          <div class="form-group col-md-12 mb-0">
+                              <label for="bed_num" style="padding-left: 20px;"><b>Bed No:</b>&nbsp;&nbsp;{{adm_records.bed_no}}</label>
+                              <input type="hidden"  class="form-control" id="bed_num" name="bed_num" value="{{bed_num}}">
+                          </div>
+                      </div>
+                      <div class="col-sm-3">
+                          <div class="form-group col-md-12 mb-0">
+                              <label for="date_time" style="padding-left: 20px;"><b>Admission Date:</b>&nbsp;&nbsp;{{adm_records.admission_datetime|date:'d-m-Y'}}</label>
+                              <input type="hidden"  class="form-control" id="date_time" name="date_time" value="{{admission_date}}">
+                          </div>
+                      </div>
+                      <div class="col-sm-3">
+                          <div class="form-group col-md-12 mb-0">
+                              <label for="bed_num" style="padding-left: 20px;"><b>Ward Category:</b>&nbsp;&nbsp;{{adm_records.req_ward_cate}}</label>
+                              <input type="hidden"  class="form-control" id="bed_num" name="bed_num" value="{{bed_num}}">
+                          </div>
+                      </div>
+                      <div class="col-sm-3">
+                          <div class="form-group col-md-12 mb-0">
+                              <label for="date_time" style="padding-left: 20px;"><b>Tariff:</b>&nbsp;&nbsp;{{tariff_name.billing_group}}</label>
+                              <input type="hidden"  class="form-control" id="date_time" name="date_time" value="{{admission_date}}">
+                          </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+          <div class="row">
+            <div class="col-12" >
+                <div class="table-responsive">
+                  <div  style="overflow: auto;" >
+                      <form method="POSt" id="main_form">
+                        {% csrf_token %}
+                        <table class="table table-bordered" style="border-style: solid;font-size:x-small; overflow: auto;" align="center" id="tables">
+                            <thead>
+                                <tr>
+                                    <th>Service ID</th>
+                                    <th>Service Name</th>
+                                    <th>Rate</th>
+                                    <th>Qty</th>
+                                    <th>Payable Amount</th>
+                                    <th>Discount</th>
+                                    <th>Net Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in services %}
+                                <tr>
+                                    <td class="table_form"><input type="text" name="service_id" id="service_id" readonly value="{{data.id}}"></td>
+                                    <td class="table_form"><input type="text" name="service_name" id="service_name" readonly value="{{data.service_name}}"></td>
+                                    <td class="table_form"><input type="number" name="service_rate" id="service_rate" readonly value="{{data.service_rate}}"></td>
+                                    <td class="table_form"><input type="number" name="service_qty" id="service_qty"  value="1"></td>
+                                    <td class="table_form"><input type="number" name="payable_amt" id="payable_amt"  value="{{data.service_rate}}"></td>
+                                    <td class="table_form"><input type="number" name="service_disc" id="service_disc"  value="0"></td>
+                                    <td class="table_form"><input type="number" name="service_net_amt" id="service_net_amt" readonly value="{{data.service_rate}}"></td>
+                                </tr>
+                                {% endfor %}
+<!--                                <tr>-->
+<!--                                    <td class="table_form"><input type="text" name="service_name" id="room_name" readonly value="Bed/Room Charge"></td>-->
+<!--                                    <td class="table_form"><input type="number" name="service_rate" id="bed_rate" readonly value="{{bed_rate}}"></td>-->
+<!--                                    <td class="table_form"><input type="number" name="service_qty" id="bed_qty" readonly value="{{bed_qty}}"></td>-->
+<!--                                    <td class="table_form"><input type="number" name="service_disc" id="room_dis"  value="0"></td>-->
+<!--                                    <td class="table_form"><input type="number" name="service_net_amt" id="room_net_amt" readonly value="{{bed_charge}}"></td>-->
+<!--                                </tr>-->
+                                <tr>
+                                    <td></td>
+                                    <td><b>Total Amount</b></td>
+                                    <td class="table_form"><input type="number" name="total_rate_amt" id="total_rate" readonly value="{{total_rate}}"></td>
+                                    <td class="table_form"><input type="number" name="total_qty" id="total_qty" readonly value=""></td>
+                                    <td class="table_form"><input type="number" name="total_payable_amt" id="total_payable_amt"readonly value="{{total_rate}}"></td>
+                                    <td class="table_form"><input type="number" name="total_disc" id="total_disc" value="0"></td>
+                                    <td class="table_form"><input type="number" name="total_net_amt" id="total_net_amt" readonly value="{{total_amt}}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                          <button type="submit" class="btn btn-primary">Save</button>
+                      </form>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  <script>
+      window.setTimeout(function() {
+      $(".alert").fadeTo(500, 0).slideUp(500, function(){
+          $(this).remove();
+      });
+  }, 3000);
+  </script>
+{% endblock %}

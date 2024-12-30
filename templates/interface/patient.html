@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collapsible Sidebar</title>
+  <link href="./style.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+  	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Age Calculator -->
+  <script>
+
+    function ageCalculator() {
+        var userinput = document.getElementById("DOB").value;
+        var dob = new Date(userinput);
+
+        if(userinput==null || userinput==''){
+          document.getElementById("message").innerHTML = "**Choose a date please!";
+          return false;
+        }
+
+        else {
+        var mdate = userinput.toString();
+        var dobYear = parseInt(mdate.substring(0,4), 10);
+        var dobMonth = parseInt(mdate.substring(5,7), 10);
+        var dobDate = parseInt(mdate.substring(8,10), 10);
+
+        var today = new Date();
+        var birthday = new Date(dobYear, dobMonth-1, dobDate);
+
+        var diffInMillisecond = today.valueOf() - birthday.valueOf();
+        var year_age = Math.floor(diffInMillisecond / 31536000000);
+        var day_age = Math.floor((diffInMillisecond % 31536000000) / 86400000);
+
+
+
+         var month_age = Math.floor(day_age/30);
+         day_ageday_age = day_age % 30;
+
+         var tMnt= (month_age + (year_age*12));
+         var tDays =(tMnt*30) + day_age;
+         if (dob>today) {
+            document.getElementById("result").innerHTML = ("Invalid date input - Please try again!");
+          }
+          else {
+            document.getElementById("result").innerHTML = year_age + " yy " + month_age + " mm " + day_age + " dd"
+          }
+       }
+    }
+    </script>
+</head>
+
+<body>
+  <div class="page-container">
+    <nav class="nav">
+
+      <div class="navv justify-content-right"  style="font-size: 50px; color: #ffffff;padding-inline-end: 100%;">&#9776;</div>
+
+      <a href="dashboard" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-home"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Home</span>
+      </a>
+      <a href="patient" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-clipboard-list" style="font-size: 30px;"> </i>
+        </div>
+        <span class="nav__label">Patient Registration</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-hospital-user"  style="font-size: 30px;"> </i>
+        </div>
+        <span class="nav__label">Client Management</span>
+      </a>
+      <a href="./hello.html" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-user-injured"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Procedure Room </span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-procedures"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Operation Theatre</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-border-all"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">In-Patient Management</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-brain"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Mental Health</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-baby"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Antenatal Care</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-file-invoice-dollar"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Accounts And Revenue</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-file-medical"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Insurance And E-Claim</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-border-all"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Phlebotomy</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-flask"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Laboratory</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-border-all"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Blood Bank</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-dice-d6"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Radiology</span>
+      </a>
+
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-dice-d6"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Linen And Laundry</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-dice-d6"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Discharge Summary</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-dice-d6"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Mortuary Management</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-dice-d6"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Feedback Management</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-dice-d6"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Inventory</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-dice-d6"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">MRD</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-dice-d6"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">MIS Reports</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-dice-d6"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Inventory Setup</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-dice-d6"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Custom Template</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-dice-d6"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">System Control</span>
+      </a>
+      <a href="#" class="nav__link">
+        <div class="nav__icon-container">
+          <i class="fas fa-dice-d6"  style="font-size: 30px;"></i>
+        </div>
+        <span class="nav__label">Security And Audit</span>
+      </a>
+
+
+
+    </nav>
+
+
+    <main class="main">
+
+      <nav class="navbar navbar-light bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Patient Registration</a>
+        </div>
+      </nav><br><br><br>
+      <div class="col-lg-18">
+
+        <div class="icon-button-demo">
+          <button><i class="fas fa-plus" style="font-size: 24px;color:rgb(45, 192, 16)"></i></button>&nbsp; &nbsp;
+          <button> <i class="fas fa-edit" style="font-size: 24px;color:blue"></i></button>&nbsp; &nbsp;
+          <button> <i class="fas fa-save"style="font-size: 24px;color: red"></i></button>&nbsp; &nbsp;
+          <button> <i class="fas fa-sync-alt"style="font-size: 24px;color:blue"></i></button>&nbsp; &nbsp;
+          <button> <i class="fas fa-redo-alt"style="font-size: 24px;color:green"></i></button>&nbsp; &nbsp;
+          <button> <i class="fas fa-times-circle"style="font-size: 24px;color:red"></i></button>
+      </div><br>
+        <div class="container-fluid">
+            <div class="body" style="border:0px solid red;">
+                <div class="demo-masked-input" >
+                    <div class="row clearfix" >
+
+                        <div class="col-sm-2" >
+                            <b>Appointment Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="search" class="form-control" placeholder="Appointment Number " >
+                                </div>
+                            </div>
+                        </div> <button class="btn"><i class="fas fa-search"  data-toggle="modal" data-target=".bd-example-modal-xl" style="font-size: 18px;color:rgb(211, 22, 22)"></i></button>
+                        <div class="col-sm-2">
+                            <b>UHID</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="search" class="form-control " placeholder="Enter UHID Id &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &#x1F50e">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <b>Registration D&T</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="datetime" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Patient Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <b>Mobile Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="number" class="form-control mobile-phone-number" required>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-sm-3">
+                                <b>Title &nbsp;&nbsp; &nbsp; &nbsp;  </b>
+                                    <select class="browser-default">
+                                        <option value="" disabled selected>Choose your option</option>
+                                        <option value="1">Mr.</option>
+                                        <option value="2">Ms.</option>
+                                        <option value="3">Mx.</option>
+                                    </select>
+                            </div>
+                        <div class="col-sm-3">
+                            <b>First Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Middle Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control " >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Last Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Age</b>
+                            <div class="form-group">
+                                <div class="form-line"><br>
+                                    <h3  id="result" align="center" style="text-decoration: underline;"></h3>   </u>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <b>DOB</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="date" onclick = "ageCalculator()" id = "DOB" class="form-control">
+                                    <!-- <button type="submit" onclick = "ageCalculator()"> Calculate</button> <br><br> -->
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <b>Gender</b>
+                            <select class="browser-default">
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="1">Mr.</option>
+                                <option value="2">Ms.</option>
+                                <option value="3">Mx</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Blood Group </b>
+                            <select class="browser-default">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">O+</option>
+                                    <option value="2">O-</option>
+                                    <option value="3">A+</option>
+                                    <option value="3">A-</option>
+                                    <option value="3">B+</option>
+                                    <option value="3">B-</option>
+                                    <option value="3">AB+</option>
+                                    <option value="3">AB-</option>
+                                </select>
+                                </div>
+                        <div class="col-sm-3">
+                            <b>Martial Status </b>
+                            <div class="form-group">
+                                <select class="browser-default">
+                                        <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">Married</option>
+                                    <option value="2">Unmarried.</option>
+                                </select>
+                                </div>
+                            </div>
+                        <div class="col-sm-3">
+                            <b>Father's Husband's Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Mothers's Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Mobile Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="number" class="form-control key" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Address</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Refferred By </b>
+                            <div class="form-group">
+                                <select class="browser-default" required>
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">aaa</option>
+                                    <option value="2">bbb</option>
+                                </select>
+                                </div>
+                            </div>
+                        <div class="col-sm-3">
+                            <b>City</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>State</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Country</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Pin Code</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="number" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Aadhar Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="number" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>PAN Card Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="number" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Emergency Contact Person</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Emergency Contact Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="number" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Alternate Contact Number</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control key" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Nationality </b>
+                            <div class="form-group">
+                                <select class="browser-default">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">Indian</option>
+                                    <option value="2">Others</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <b>Email Id</b>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="email" class="form-control key" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <b>Staff Member </b>
+                                <div class="form-group">
+                                    <select class="browser-default">
+                                        <option value="" disabled selected>Choose your option</option>
+                                        <option value="1">aaa</option>
+                                        <option value="2">bbb</option>
+                                    </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <b>Relationship </b>
+                                    <div class="form-group">
+                                        <select class="browser-default">
+                                            <option value="" disabled selected>Choose your option</option>
+                                            <option value="1">Father</option>
+                                            <option value="2">Mother</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 ">
+                                        <form action="#">
+                                            <p>
+                                                <label>
+                                                    <input id="indeterminate-checkbox" type="checkbox" />
+                                                    <span>Allow Photos At Nursing Station</span>
+                                                </label>
+                                            </p>
+                                        </form>
+                                    </div>
+                        <div class="col-sm-3 ">
+                            <form action="#">
+                                <p>
+                                    <label>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Notable</span>
+                                    </label>&nbsp;
+                                </p>
+
+                            </form>
+                        </div>
+                        <!-- <button type="button"  class="btn btn-info  waves-effect" >Attach Document</button> -->
+
+                    </div>
+    </div>
+</div><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+</div>
+
+    </main>
+  </div>
+
+<!-- Modal -->
+  <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+         <div class="modal-header" style="background: skyblue;">
+          <h5 class="modal-title" id="exampleModalLabel" ><b>Register Patient Search </b></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+          </div><br>
+          <div class="modal-body">
+          <div class="row clearfix">
+            <div class="col-sm-2">
+              <b>Reg Number</b>
+              <div class="form-group">
+                  <div class="form-line">
+                      <input type="text" class="form-control" placeholder="Reg No " >
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-2">
+            <b>Patient Name</b>
+            <div class="form-group">
+                <div class="form-line">
+                    <input type="text" class="form-control" placeholder="Patient Name " >
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+          <b>DOB</b>
+          <div class="form-group">
+              <div class="form-line">
+                  <input type="date" class="form-control" placeholder="Dob" >
+              </div>
+          </div>
+      </div>
+      <div class="col-sm-2">
+        <b>Mobile Number</b>
+        <div class="form-group">
+            <div class="form-line">
+                <input type="number" class="form-control" placeholder="Mobile Number" >
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+      <b>Surburb </b>
+      <div class="form-group">
+          <select class="browser-default">
+              <option value="" disabled selected>Choose your option</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+          </select>
+          </div>
+      </div>
+    <div class="col-sm-2">
+      <b>Membership No</b>
+      <div class="form-group">
+          <div class="form-line">
+              <input type="number" class="form-control" placeholder="" >
+          </div>
+      </div>
+  </div>
+  <div class="col-sm-2">
+    <b>Serial No</b>
+    <div class="form-group">
+        <div class="form-line">
+            <input type="number" class="form-control" placeholder="" >
+        </div>
+    </div>
+</div>
+<div class="col-sm-2">
+  <b>Old OPD/Folder No.</b>
+  <div class="form-group">
+      <div class="form-line">
+          <input type="number" class="form-control" placeholder="" >
+      </div>
+  </div>
+</div>
+<div class="col-sm-3">
+  <b>Page Size </b>
+  <div class="form-group">
+      <select class="browser-default">
+          <option value="" disabled selected>Choose your option</option>
+          <option value="1">10</option>
+          <option value="2">20</option>
+      </select>
+      </div>
+  </div>
+          </div>
+          </div>
+          <!-- Table -->
+          <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8" style="border: 10px; color: black;">
+                    <div class="card">
+                        <div class="header">
+                <div class="body">
+                    <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover save-stage dataTable"
+                        style="width:100%;">
+                            <thead>
+                                <tr><th bgcolor= "ORANGERED">Reg.No.</th>
+                                    <th bgcolor= "ORANGERED"><p>Old OPD/</p><p>Folder No.</p></th>
+                                    <th bgcolor= "ORANGERED">Patient Name</th>
+                                    <th bgcolor= "ORANGERED">Age/Gender</th>
+                                    <th bgcolor= "ORANGERED">DoB</th>
+                                    <th bgcolor= "ORANGERED">Mobile No.</th>
+                                    <th bgcolor= "ORANGERED">Surburb</th>
+                                    <th bgcolor= "ORANGERED">Payer</th>
+                                    <th bgcolor= "ORANGERED">Serial No.</th>
+                                    <th bgcolor= "ORANGERED">Membership No.</th>
+                                    <th bgcolor= "ORANGERED"></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>nil</td>
+                                    <td>aaa</td>
+                                    <td>22y/M</td>
+                                    <td>11/07/1998</td>
+                                    <td>9095632541</td>
+                                    <td>East</td>
+                                    <td>NHIS</td>
+                                    <td>45697541</td>
+                                    <td>1111</td>
+                                    <td><i class="far fa-hand-pointer"></i></td>
+
+                                </tr>
+                                <tr>
+                                  <td>2</td>
+                                  <td>nil</td>
+                                  <td>hgjk</td>
+                                  <td>27y/M</td>
+                                  <td>21/07/1992</td>
+                                  <td>8095632541</td>
+                                  <td>west</td>
+                                  <td>NHIS</td>
+                                  <td>75197541</td>
+                                  <td>7965111</td>
+                                  <td><i class="far fa-hand-pointer"></i></td>
+
+                              </tr>
+                             </tbody>
+
+                    </table>
+                    </div>
+                </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Navigation
+    {
+      const collapsedClass = "nav--collapsed";
+      const lsKey = "navCollapsed";
+      const nav = document.querySelector(".nav");
+      const navBorder = nav.querySelector(".navv");
+      if (localStorage.getItem(lsKey) === "true") {
+        nav.classList.add(collapsedClass);
+      }
+      navBorder.addEventListener("click", () => {
+        nav.classList.toggle(collapsedClass);
+        localStorage.setItem(lsKey, nav.classList.contains(collapsedClass));
+      });
+    }
+  </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+<!-- javacripts -->
+<script src="{% static 'js/app.min.js' %}"></script>
+<script src="{% static 'js/table.min.js' %}"></script>
+<!-- Custom Js -->
+<script src="{% static 'js/admin.js' %}"></script>
+<script src="{% static 'js/tables/jquery-datatable.js' %}"></script>
+</body>
+
+</html>

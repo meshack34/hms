@@ -1,0 +1,221 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+<style>
+    /*#indent_no,#issuing_store,#receiving_store,#datetime,#approved_by,#priority{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    #barcode,#item_name,#batch_serial,#expiry_date,#available_qty,#issue_qty,#remarks{
+      border: 2px solid white;
+      width: 100%;
+      background-color: white;
+      border-bottom: 1px solid black;
+    }*/
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    </style>
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;" href="#">Item Return To CPC</a>
+      </div>
+      </nav>   
+    <div class="container-fluid">
+      <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+              <div class="card">
+                  <div class="header">
+          <div class="body">
+            <form method="post">
+            {% csrf_token %}
+            <br><div class="row clearfix">
+             &nbsp; &nbsp; &nbsp;<button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fas fa-plus" >Add</i></button>&nbsp;
+            <button type="button" class="btn btn-info"><a href="#"><i class="fas fa-edit"  style="color:white;">Edit</i></a></button>&nbsp;
+            <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#item_issue_list" name="Save_all" value="Save_all"> <i class="fas fa-save" >Save</i></button>&nbsp;
+            
+            <button type="button" class="btn btn-primary"  onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+            <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+        </div><br>
+<!--             
+               <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                            <div class="form-row">
+                            <div class="form-group col-md-2 mb-0">
+                          <label><b>Vendor Name</b> </label>
+                          <select name="vendor" id="vendor3"  class="form-control" required>
+                             <option>Select</option>
+                             {% for data in vendor_master %}
+                             <option value="{{data.id}}">{{data.vendor_name}}</option>
+                             {% endfor %}
+                           </select>
+                        </div>
+                    </div>
+               </div>
+               <br> -->
+               <input type="hidden" name="mainstore_id" id="mainstore_id" value="{{mainstore_id}}">
+        <div class="table-responsive">
+    <table class="datatable table table-stripped ">
+                   <thead>
+                       <tr><th>S.No</th>
+                           <th>Batch No</th>
+                           <th>Item Name</th>
+                           <th>Expiry Date</th>
+                           <th>Available Qty</th>
+                           <th>Return Qty</th>
+                           <th>Rate</th>
+                           <th>Amount</th>
+                           <th>Reason</th>
+                           <th>Return</th>
+                       </tr>
+                   </thead>
+                 
+                    <tbody> 
+                        {% for data in Item_return_child1 %}
+                       <tr>
+                           <td>{{forloop.counter}}</td>
+                           <td><input type="hidden" name="batch_no" id="batch_no2" value="{{data.batch_no}}">{{data.batch_no}}</td>
+                           <td><input type="hidden" name="item_id" id="item_id2" value="{{data.item_id_id}}">{{data.item_id}}</td>
+                           <td><input type="hidden" name="expiry_date" id="expiry_date2" value="{{data.expiry_date}}">{{data.expiry_date}}</td>
+                           <td>{{data.available_qty}}</td>
+                           <td><input type="text" name="return_qty" id="return_qty2" class="form-control"></td>
+                           <td><input type="text" name="rate2" style="background-color: white;" id="rate2" value="{{data.rate}}" class="form-control" readonly></td>
+                           <td><input type="text" name="amount" id="amount2" class="form-control"></td>
+                           <td><input type="text" name="reason" id="reason2" class="form-control"></td>
+                           <td><button type="button" class="btn btn-primary" name="inditual_save" id="inditual_save" data-cities-url="{% url 'return_to_cpc_js' %}"><i class="fa fa-undo"></i></button></td>
+                      </tr>
+                       {% endfor  %}
+                    </tbody>
+                  
+           </table>
+           </div>
+        </form>
+  </div>
+
+  
+                 
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+   $(document).ready(function () {
+    $(document).on('click', '#inditual_save', function ()
+  {
+    var dumy = this;
+    var batch_no = $(dumy).closest('tr').find('#batch_no2').val();
+    var item_id = $(dumy).closest('tr').find('#item_id2').val();
+    var expiry_date = $(dumy).closest('tr').find('#expiry_date2').val();
+    var return_qty = $(dumy).closest('tr').find('#return_qty2').val();
+    var rate = $(dumy).closest('tr').find('#rate2').val();
+    var amount = $(dumy).closest('tr').find('#amount2').val();
+    var reason = $(dumy).closest('tr').find('#reason2').val();
+    var mainstore_id = $('#mainstore_id').val();
+    
+    console.log("return_qty", batch_no, item_id, expiry_date, return_qty, rate, amount, reason);
+
+
+    var url=$("#inditual_save").attr("data-cities-url");
+    var headers = {'X-CSRFToken': '{{ csrf_token }}' }
+
+    $.ajax({
+            url:url,
+            type: "post",
+            data: {
+            batch_no: batch_no,
+            item_id: item_id,
+            expiry_date: expiry_date,
+            return_qty: return_qty,
+            rate: rate,
+            reason: reason,
+            amount: amount,
+            mainstore_id: mainstore_id,
+            },
+            headers:headers,
+            dataType : 'json',
+            success: function(data){
+              alert(data);
+            },
+            error:function(data)
+            {
+                console.log(data);
+            }
+          });
+  })})
+</script>
+<!-- <script>
+  function save_item_return() 
+  {
+    var dumy = this;
+    var batch_no = $(dumy).closest('tr').find('#batch_no2').val();
+    var item_id = $(dumy).closest('tr').find('#item_id2').val();
+    var expiry_date = $(dumy).closest('tr').find('#expiry_date2').val();
+    var return_qty = $(dumy).closest('tr').find('#return_qty2').val();
+    var rate = $(dumy).closest('tr').find('#rate2').val();
+    var amount = $(dumy).closest('tr').find('#amount2').val();
+    var reason = $(dumy).closest('tr').find('#reason2').val();
+    var vendor = $('#vendor3').val();
+    // alert('dytdyy');
+    console.log("return_qty", return_qty);
+
+
+    var url=$("#inditual_save").attr("data-cities-url");
+    var headers = {'X-CSRFToken': '{{ csrf_token }}' }
+
+    $.ajax({
+            url:url,
+            type: "post",
+            data: {
+            batch_no: batch_no,
+            item_id: item_id,
+            expiry_date: expiry_date,
+            return_qty: return_qty,
+            rate: rate,
+            reason: reason,
+            amount: amount,
+            vendor: vendor,
+            },
+            headers:headers,
+            dataType : 'json',
+            success: function(data){
+              alert(data);
+            },
+            error:function(data)
+            {
+                console.log(data);
+            }
+          });
+  }
+</script> -->
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+$(document).on('keyup', '#return_qty2', function () {
+      var dumy = this;
+        var qty = this.value;
+        var rate = $('#rate2').val();
+        var amount = qty * rate;
+        $(dumy).closest('tr').find('#amount2').val(amount);
+
+      });
+
+   
+
+</script>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+    <!-- content -->
+    <div class="page-wrapper">
+        <div class="content">
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00041">
+<input type="hidden" name="message_id" value="MSG00041">
+<div class="row">
+<div class="col-12">
+    <div class="card">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header row align-items-center">
+              <h4 class="pageheader-title col-sm-4 mb-3 ">OPD Reception View</h4>            
+            </div>
+          </div>
+        </div>
+        <div class="token-master  p-2 bg-white">
+          <div class="row">
+              <div class="col-md-3 form_sec">
+                <div class="form-group">
+                  <label>Show</label>
+                  <input type="number" name="">
+                </div>
+              </div>
+              <div class="col-md-3 form_sec"></div>
+              <div class="col-md-3 form_sec"></div>
+              <div class="col-md-3 form_sec" style="float: right;">
+                <div class="search form-group">
+                  <form>
+                    <label>Search</label><br>
+                    <input type="text" name="search">                  
+                  </form>
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+          </div>
+          <table class="table mt-2 table-border">
+            <tbody>
+              <tr style="background: #d1dae6;">
+                <th>S.No.</th>
+                <th>Date</th>
+                <th>Doc Name</th>
+                <th> Speciality</th>
+                <th>Pt Id</th>
+                <th>Pt Name</th>
+                <th>Token No.</th>
+                <th>Status</th>
+                <th>In/out Time</th>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>03-02-2022</td>
+                <td>Dr.Sandeep </td>
+                <td>General Medicine</td>
+                <td>001</td>
+                <td>Mr Ashok</td>
+                <td>001</td>
+                <td><button type="button" class="btn btn-success">in</button></td>
+                <td><button type="button" class="btn btn-primary">Finished</button></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>03-02-2022</td>
+                <td>Dr.Sandeep</td>
+                <td>General Medicine</td>
+                <td>002</td>
+                <td>Mr. Rana</td>
+                <td>002</td>
+                <td><button type="button" class="btn btn-danger">Waiting</button></td>
+                <td><button type="button" class="btn btn-primary">Finished</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="col-md-6">
+              <p>showing 1 to 2 of 2 entries</p>
+            </div>
+            <div class="col-md-6">
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
+    </div>
+</div>
+
+        </div>
+    </div>
+
+{% endblock  %}

@@ -1,0 +1,217 @@
+
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+    {% block head_block %}
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+input{
+
+    font-size: 20px;
+
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+  min-width: 200px;
+}
+textarea{
+  width: 200px;
+  font-size: 20px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    text-decoration: underline;
+    color: black;
+}
+.vl {
+  border-left: 6px solid green;
+  height: 500px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top: 0;
+}
+input.dashed {
+  border-bottom: 3px dashed black;
+}
+textarea.form-control {
+  border-bottom: 3px dashed black;
+}
+</style>
+
+<!--This for payment receipt print function-->
+<div class="page-wrapper" style="background-color: hsl(0, 0%, 100%);">
+    <div class="content">
+<div id="hello">
+    <form method="post" id="nurse_notes">
+        {% csrf_token %}
+    <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100% padding: 30px;">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                <tr>
+          
+                        <div class="" >
+                            <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                            </center>
+                        </div>
+          
+                </tr>
+            </table>
+		</td>
+	</tr>
+	    <tr >
+		    <td>
+                <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                    <tr>
+                        <td colspan="8" style="text-align:center;"><h3 style="margin: 0;"><b>Doctor Notes Form</b></h3></td>
+                    </tr>
+                    <tr style="background-color: hsl(0, 0%, 100%);">
+                        <th style="background-color: hsl(0, 0%, 100%);">Name</th>
+                        <td><input type="text" name="Name" class="dashed" value="{{records.name}}" required></td>
+                         <th style="background-color: hsl(0, 0%, 100%);" >Age</th>
+                        <td><input  class="dashed" type="text" name="age" value="{{records.age}}" required></td>
+                        <th style="background-color: hsl(0, 0%, 100%);" >Date</th>
+                        <td><input class="dashed" type="text" name="date" value="{{ records.date|date:'d-m-Y' }}
+                            " required></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: hsl(0, 0%, 100%);">Diagnosis</th>
+                    
+                        <td><input class="dashed" type="text" name="diagonsis" style="width:400%" value="{{diagnosis}}" required> </td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: hsl(0, 0%, 100%);"></th>
+                        <td><input class="dashed" type="text" name="diagonsis" value="{{diagnosis}}" style="width:400%"> </td>
+                    </tr>
+                  
+                    <tr>
+                        <th style="background-color: hsl(0, 0%, 100%);">Duration on Dialysis</th>
+                        <td><input class="dashed" type="text" name="durations" value="{{records.duration_on_dialysis}}" required></td>
+                        
+                    </tr>
+                    <tr>
+                        <th style="background-color: hsl(0, 0%, 100%);">Current Medication</th>
+                        <td><input class="dashed" type="text" name="current_medication"  style="width:400%" value="{{records.current_medications}}" required> </td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: hsl(0, 0%, 100%);"></th>
+                        <td><input class="dashed" type="text" name="current_medication" value={{records.current_medications}} style="width:400%"> </td>
+                    </tr>
+                 
+                 
+                  <tr>
+                      <th style="background-color: hsl(0, 0%, 100%);">General Status</th>
+                      <td><input class="dashed" type="text" name="general_status"  style="width:400%" value="{{records.general_status}}" required> </td>
+                  </tr>
+                  <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);">Access site and Status</th>
+                    <td><input class="dashed" type="text" name="access_site" value="{{records.access_site}}" style="width:400%"> </td>
+                </tr>
+                <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);"></th>
+                    <td><input class="dashed" type="text" name="access_site" value="{{records.access_site}}"  style="width:400%"> </td>
+                </tr>
+                <tr>
+                    <td colspan="8"><h4 style="margin: 0;"><u> <b>On Examination</b></u></h4></td>
+                </tr>
+                <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);">BP:</th>
+                    <td><input class="dashed" type="text" name="BP" value="{{records.bp}}" required></td>
+                    
+                </tr>
+                <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);">QB Rate</th>
+                    <td><input class="dashed" type="text" name="QB_rate" value="{{records.QB_rate}}" required></td>
+                    
+                </tr>
+                <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);">Ultrafiltration Volume</th>
+                    <td><input class="dashed" type="text" name="ultrafiltration" value="{{records.ultrafiltration}}" required></td>
+                    
+                </tr>
+                <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);">Investigations</th>
+                    <td><input class="dashed" type="text" name="investigations" value="{{records.investication}}"  style="width:400%" required> </td>
+                </tr>
+                <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);"></th>
+                    <td><input class="dashed" type="text" name="investigations" value="{{records.investication}}" style="width:400%"> </td>
+                </tr>
+                <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);"></th>
+                    <td><input class="dashed" type="text" name="investigations" value="{{records.investication}}" style="width:400%"> </td>
+                </tr>
+                <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);"></th>
+                    <td><input class="dashed" type="text" name="investigations" value="{{records.investication}}"  style="width:400%"> </td>
+                </tr>
+                <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);"></th>
+                    <td><input class="dashed" type="text" name="investigations" value="{{records.investication}}" style="width:400%"> </td>
+                </tr>
+
+                <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);">Plan</th>
+                    <td><input class="dashed" type="text" name="plan" value="{{records.plan}}"  style="width:400%" required> </td>
+                </tr>
+                <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);"></th>
+                    <td><input class="dashed" type="text" name="plan" value="{{records.plan}}"  style="width:400%"> </td>
+                </tr>
+                <tr>
+                    <th style="background-color: hsl(0, 0%, 100%);"></th>
+                    <td><input class="dashed" type="text" name="plan" value="{{records.plan}}"  style="width:400%"> </td>
+                </tr>
+                     
+                    <tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+    <div class="row pad-top-botm" align="center">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <hr>
+            <button type="submit" class="btn btn-success" form="nurse_notes" name="save_btn" value="Save">Save</button>&nbsp;
+            <input type="button" onclick="printDiv('hello')" class="btn btn-primary" value="Print" />
+            <a href="/doctornotes_view" class="btn btn-primary">View</a>&nbsp;
+
+        </div>
+    </div>
+
+        
+  
+    </div>
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+{% endblock %}
+
+

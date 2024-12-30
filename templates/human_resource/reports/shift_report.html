@@ -1,0 +1,103 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Shift Report</h4>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row filter-row">
+                        <div class="col-sm-4">
+
+                            <label>From Date</label>
+                            <input type="date" class="form-control" name="from_date" id="from_date">
+                        </div>
+                        <div class="col-sm-4">
+
+                            <label>To Date</label>
+                            <input type="date" class="form-control" name="to_date" id="to_date">
+                        </div>
+                        <div class="col-sm-4">
+                            <label>Department</label>
+                            <select class="select floating" name="dept_id" id="dept_id">
+                                <option value="">-</option>
+                                {% for data in dept_detail %}
+                                <option value="{{data.id}}">{{data.department_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row filter-row">
+                        <div class="col-sm-4">
+                            <label>Shift</label>
+                            <select class="select floating" name="shift_id" id="shift_id">
+                                <option value="">-</option>
+                                {% for data in shift_detail %}
+                                <option value="{{data.id}}">{{data.shift_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <label></label>
+                            <button type="submit" class="btn btn-success btn-block">Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="datatable table table-stripped ">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Employee ID</th>
+                                        <th>Employee Name</th>
+                                        <th>Department Name</th>
+                                        <th>Shift</th>
+                                        <th>From Date</th>
+                                        <th>To Date</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in assign_details %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{data.emp_id}}</td>
+                                        <td>{{data.first_name}} {{data.last_name}}</td>
+                                        <td>{{data.dept_name}}</td>
+                                        <td>{{data.shift_name}}</td>
+                                        <td>{{data.from_date}}</td>
+                                        <td>{{data.to_date}}</td>
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--/ content-->
+
+{% endblock %}

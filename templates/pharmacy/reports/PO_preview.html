@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Pharmacy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="csrf-token" content="">
+
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon.ico">
+
+    <!-- Font Family -->
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="../assets/plugins/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../assets/plugins/fontawesome/css/fontawesome.min.css">
+
+    <!-- Calendar CSS -->
+    <link rel="stylesheet" href="../assets/plugins/fullcalendar/fullcalendar.min.css">
+    <link rel="stylesheet" href="../assets/css/calendar.css">
+
+    <!-- Datatable-->
+    <link rel="stylesheet" href="../assets/css/dataTables.bootstrap4.min.css">
+
+    <!-- Select 2-->
+    <link rel="stylesheet" href="../assets/css/select2.min.css">
+
+    <!-- Datetime Picker-->
+    <link rel="stylesheet" href="../assets/plugins/datetimepicker/css/tempusdominus-bootstrap-4.min.css">
+
+    <!--custom styles-->
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+    <style>
+        #mytable,
+        .po_tr {
+            border-collapse: collapse;
+        }
+    </style>
+    {% extends 'pharmacy/base.html' %}
+    {% load static %}
+    {% load crispy_forms_tags %}
+    {% block body_block %}
+    <!-- content -->
+    <div class="page-wrapper">
+        <div class="content">
+    <div class="main-wrapper" style="padding-top:50px;padding-left:60px;">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-lg-11 col-md-12 col-sm-8 col-xs-8">
+                        <div class="card" >
+                            <div class="header"id="hello">
+                                <div class="body" >
+                                    <h1 style="text-align: center;" ><b>Purchase Order</b> </h1>
+                                </div>
+                                
+                                <div class="container">
+                                    <br>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td width="51%" valign="top">
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td width="51%" valign="top">
+                                                            <table width="100%" border="0" cellspacing="0"
+                                                                cellpadding="0">
+                                                                <tr>
+                                                                    <td
+                                                                        style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;">
+                                                                        Supplier :BISHAK PHARMA DISTIBUTORS</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td
+                                                                        style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td
+                                                                        style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;">
+                                                                        Address : 101,KING KOTI ROAD</td>
+                                                                </tr>
+                                                                <tr class="onw_tr" style="padding-right: 10px;">
+                                                                    <td
+                                                                        style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:14px;">
+                                                                        ABIDS</td>
+                                                                </tr>
+                                                                <tr class="onw_tr">
+                                                                    <td
+                                                                        style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:14px;">
+                                                                        HYDERABAD, Andhra Pradesh</td>
+                                                                </tr>
+                                                                <tr class="onw_tr">
+                                                                    <td
+                                                                        style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:14px;">
+                                                                        INDIA, PinCode</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td
+                                                                        style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;">
+                                                                        Contact Person :</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td
+                                                                        style="font-family:Verdana, Geneva, sans-serif; font-weight:400; font-size:14px;">
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                    </tr>
+                                                </table>
+                                            <td width="51%" valign="top">
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td
+                                                            style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;">
+                                                            PO No: {{po_no}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td
+                                                            style="font-family:Verdana, Geneva, sans-serif; font-weight:400; font-size:14px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td
+                                                            style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;">
+                                                            PO Date : {{datetime}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td
+                                                            style="font-family:Verdana, Geneva, sans-serif; font-weight:400; font-size:14px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td
+                                                            style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;">
+                                                            PO Type :</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td
+                                                            style="font-family:Verdana, Geneva, sans-serif; font-weight:400; font-size:14px;">
+                                                            Direct Purchase</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br>
+                              
+                                <style>
+                                    table {
+                                      font-family: arial, sans-serif;
+                                      border-collapse: collapse;
+                                      width: 100%;
+                                    }
+                                    
+                                    td, th {
+                                      border: 1px solid #dddddd;
+                                      text-align: left;
+                                      padding: 8px;
+                                    }
+                                    
+                                    tr:nth-child(even) {
+                                      background-color: #dddddd;
+                                    }
+                                    </style>
+                                 
+                                    
+                           
+                                    
+                                     <table>
+                                        <thead>
+                                            <tr><th>SI.NO</th>
+                                                <th>PO.No</th>
+                                                <th>DateTime</th>
+                                                <th>ItemName</th>
+                                                <th>Quantity</th>
+                                                <th>Stock Qty</th>
+                                                <th>Rate</th>
+                                                <th>Discount</th>
+                                                <th>Amount</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for data in po_child %}
+                                            <tr>
+                                                <td>{{forloop.counter}}</td>
+                                                <td><b>{{data.PO_Id}}</b></td>
+                                                <td >{{data.PO_datetime}}</td>
+                                                <td >{{data.item_id}}</td>
+                                                <td >{{data.qty}}</td>                         
+                                                <td >{{data.stocy_qty}}</td>
+                                                <td>{{data.rate}}</td>
+                                                <td >{{data.discount}}</td>   
+                                                <td >{{data.amount}}</td>                 
+                                               </tr>
+                                               
+                                                {% endfor %}
+                                           </tbody>
+                                     
+                                    </table> 
+                                    <br>
+                                    
+
+
+                            
+
+                            </div>
+                        </div>
+                                          
+                                <!-- HTML !-->
+       <div  align="center"><button class="button-24" role="button" onclick="codespeedy()">PDF</button><button class="button-24" style="background-color: green;" id="download-button" role="button">CSV</button></div>
+       <br>
+<style>
+/* CSS */
+.button-24 {
+  background: #FF4742;
+  border: 1px solid #FF4742;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 16px;
+  min-height: 40px;
+  outline: 0;
+  padding: 12px 14px;
+  text-align: center;
+  text-rendering: geometricprecision;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+}
+
+.button-24:hover,
+.button-24:active {
+  background-color: initial;
+  background-position: 0 0;
+  color: #FF4742;
+}
+
+.button-24:active {
+  opacity: .5;
+}
+</style>
+
+
+                     
+
+
+
+                            
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!--scripts-->
+    <!-- jQuery -->
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap Core JS -->
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Slimscroll JS -->
+    <script src="../assets/js/jquery.slimscroll.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="../assets/js/select2.min.js"></script>
+    <script src="../assets/js/moment.min.js"></script>
+
+    <!-- Datetime picker JS -->
+    <script src="../assets/plugins/datetimepicker/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Calender JS -->
+    <script src="../assets/js/calendar.min.js"></script>
+
+    <!-- Apex chart JS -->
+    <script src="../assets/js/apex.js"></script>
+
+    <!-- Data table JS -->
+    <script src="../assets/js/jquery.dataTables.min.js"></script>
+    <script src="../assets/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="../assets/js/app.js"></script>
+    <script>
+        function print_page() {
+            window.print();
+        }
+    </script>
+    <script>
+        $('example').margetable({
+        type: 1,
+        colindex: [{
+          index: 1,
+          dependent: [0]
+        }]
+      });
+      </script>
+      <script type="text/javascript">
+      
+          function codespeedy(){
+            var print_div = document.getElementById("hello");
+      var print_area = window.open();
+      print_area.document.write(print_div.innerHTML);
+      print_area.document.close();
+      print_area.focus();
+      print_area.print();
+      print_area.close();
+      // This is the code print a particular div element
+          }
+        </script>
+      <script>
+      
+          // pdf preview
+        
+        function printData()
+        {
+        var mypage = document.getElementById("hello");
+        opening = window.open("");
+        opening.document.write(mypage.outerHTML);
+        opening.print();
+        opening.close();
+        }
+        
+             
+    </script>
+    <!-- Export csv -->
+
+    <script>
+
+        // pdf preview
+
+function printData()
+{
+   var mypage = document.getElementById("hello");
+   summathaan = window.open("");
+   summathaan.document.write(mypage.outerHTML);
+   summathaan.print();
+   summathaan.close();
+}
+
+            function htmlToCSV(html, filename) {
+                var data = [];
+                var rows = document.querySelectorAll("table tr");
+                        
+                for (var i = 0; i < rows.length; i++) {
+                    var row = [], cols = rows[i].querySelectorAll("td, th");
+                            
+                    for (var j = 0; j < cols.length; j++) {
+                            row.push(cols[j].innerText);
+                    }
+                            
+                    data.push(row.join(",")); 		
+                }
+            
+                downloadCSVFile(data.join("\n"), filename);
+            }</script>
+            <script>function downloadCSVFile(csv, filename) {
+                var csv_file, download_link;
+            
+                csv_file = new Blob([csv], {type: "text/csv"});
+            
+                download_link = document.createElement("a");
+            
+                download_link.download = filename;
+            
+                download_link.href = window.URL.createObjectURL(csv_file);
+            
+                download_link.style.display = "none";
+            
+                document.body.appendChild(download_link);
+            
+                download_link.click();
+            }</script>
+            <script>document.getElementById("download-button").addEventListener("click", function () {
+                var html = document.querySelector("table").outerHTML;
+                htmlToCSV(html, "PO_report.csv");
+            });</script>
+
+
+</body>
+
+</html>
+{% endblock %}

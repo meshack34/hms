@@ -1,0 +1,68 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+{% endblock %}
+{% block body_block %}
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>PO Supplier Wise Report</b>
+            </div>
+            <div class="">
+              <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <!-- <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+                <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a> -->               
+              </div>
+            </div>
+          </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" id="filter_card"><br>
+                <div class="form-row">
+                    <div class="form-group col-md-3 mb-0">
+                        <label><b>From Date*</b></label>
+                        <input type="date" name="from_date" id="from_date" class="form-control">
+                    </div>
+                    <div class="form-group col-md-3 mb-0">
+                        <label><b>To Date*</b></label>
+                        <input type="date" name="to_date" id="to_date" class="form-control">
+                    </div>
+                    <div class="form-group col-md-3 mb-0">
+                        <label><b>Vendor Name</b> </label>
+                        <select name="vendor_id" id="vendor_id" class="form-control">
+                            <option>Select</option>
+                            {% for data in records %}
+                            <option value="{{data.id}}">{{data.vendor_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-0 py-2"><br>
+                        <button type="submit" class="btn btn-warning py-2"><i
+                                class="fa fa-search"></i></button>&nbsp;
+                    </div>
+                </div>
+                </div>
+            </form>
+
+    </div>
+</div>
+<script>
+    function toggleVisibility() {
+      var demoElement = document.getElementById('filter_card');
+      
+      if (demoElement.style.display === 'none') {
+        demoElement.style.display = 'block'; // Show the element
+      } else {
+        demoElement.style.display = 'none';  // Hide the element
+      }
+    }
+  </script>
+{% endblock %}

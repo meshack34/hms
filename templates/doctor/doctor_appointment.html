@@ -1,0 +1,84 @@
+{% extends 'doctor/base.html' %}
+{% load static %}
+{% block body_block %}
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-box mb-0">
+                    <h6 class="card-title text-bold">Todays Appointment</h6>
+            <div class="form-row">
+                <a href="appointment_list">
+                    <button type="button" class="btn btn-info" style="float: left;" data-toggle="modal"
+                        data-target="#myModal">Appointment List </button>&nbsp;
+                </a>
+                <a href="patient_list">
+                    <center><button type="button" class="btn btn-info" style="float: center;" data-toggle="modal"
+                            data-target="#myModal">Patient List </button>
+                </a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="index">
+                    <button type="button" class="btn btn-danger" style="float: right;padding: left 100px; ;"
+                        data-toggle="modal" data-target="#myModal">Logout </button>
+                </a><br><br>
+
+            </div>
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                        <div class="card">
+                            <div class="header">
+
+                                <div class="body">
+                                    <div class="table-responsive">
+                                        <table class="datatable table table-stripped ">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Appointment Id</th>
+                                                    <th>Patient Id</th>
+                                                    <th>Patient Name</th>
+                                                    <th>Email ID</th>
+                                                    <th>Service</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                              {% for data in records %}
+                                                <tr>
+                                                    <td>{{forloop.counter}}</td>
+                                                    <td>{{data.patient_appointment_id}}</td>
+                                                    <td>{{data.patient_id}}</td>
+                                                    <td>{{data.first_name}} {{data.middle_name}} {{data.last_name}}</td>
+                                                    <td>{{data.patient_email_id}}</td>
+                                                    <td>{{data.doctor_department}}</td>
+                                                </tr>
+
+                                                {% endfor %}
+
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock  %}

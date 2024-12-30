@@ -1,0 +1,316 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style type="text/css">
+    body,
+    p {
+        font-family: arial;
+        font-size: 16px;
+    }
+
+    p {
+        margin: 0 0 5px;
+    }
+
+    table td,
+    table th {
+        padding: 10px;
+        text-align: left;
+    }
+
+    @media print {
+        p {
+            margin: 0 0 5px;
+        }
+
+        table td,
+        table th {
+            padding: 10px;
+            text-align: left;
+        }
+    }
+
+    button {
+        font-size: larger;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <!-- Main Dashboard -->
+        <form method="POST">
+            <nav class="navbar navbar-light bg-blue" style="background-color: rgb(89, 206, 212)">
+                <div class="container-fluid">
+                    <a class="navbar-brand mx-auto text-white" style="color: white;"><i
+                            class="fas fa-laptop-medical"></i><b>
+                            consultant Report</b></a>
+                    <a href="/dashboard" style="padding-right:10px;"><img
+                            src="{% static 'assets/images/arrowleft.png' %}" width="30" height="30"></a>
+                    <button type="submit" value="Search" class="btn btn-default btn-circle"><img
+                            src="{% static 'assets/images/searchicon.png' %}" width="30" height="30"></button>
+                    <a id="csvdownload-button" onclick="Exportcsv()" style="padding-right:10px;"><img
+                            src="{% static 'assets/images/csv.ico' %}" width="30" height="30"></a>
+                    <a href="" onclick="codespeedy()" style="padding-right:2px;"><img
+                            src="{% static 'assets/images/printer.ico' %}" width="30" height="30"> </a>
+                </div>
+            </nav>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-box mb-0">
+                            <div class="header">
+                                <div class="body">
+                                    <div class="card-body" style="background-color: aliceblue; height: 6rem;">
+                                        {% csrf_token %}
+                                        <div class="row filter-row">
+                                            <div class="col-sm-6 col-xxl-2 col-xl-2 col-lg-3 col-md-3">
+                                                <label style="font-size:15px;"><b>Doctor Name</b></label> <br>
+                                                <div class="input-group" style="background-color: #eee;">
+                                                    <select name="consultant" class='form-control btn-sm text-left'>
+                                                        <option>---------</option>
+                                                        <option value="all">All</option>
+                                                        {% for data in doctor %}
+                                                        <option value="{{data}}">{{data}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </form>
+{% if filtering_records %}
+<div class="card">
+    <div class="card-box mb-0">
+        <div id="hello">
+            
+            <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                <tr style="border-bottom:2px solid #eee;">
+                    <td id="s">
+                        <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;"
+                            width="100%">
+                            <tr>
+                                <td id="f"><img src="https://bharathbrands.in/images/BHARATHBRANDS-01.png"
+                                        alt="logo Image" width="180px"></td>
+                                <td>
+                                    <div class=""><br>
+                                        <h2 style="margin: 0 0 10px;">BHARATHBRANDS PRIVATE LIMITED</h2>
+                                        <P>GHANA HEALTH SERVICE,P.O. BOX-23, PEKI V/R</P><br>
+                                        <h4>Constultant Report</h4>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;"
+                            width="100%" id="example">
+
+                            <tr>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Appointment Id
+                                </th>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Patient Id</th>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Patient Name</th>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Patient Mobile No
+                                </th>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Gender</th>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Patient Schedule
+                                    Date&Time</th>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Patient Scheduled
+                                    id</th>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Patient Payment
+                                    Mode</th>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Doctor Name</th>
+                                <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Doctor Department
+                                </th>
+
+                            </tr>
+                            <tr>
+                                {% for data in filtering_records %}
+                            <tr>
+                                <td>{{data.patient_appointment_id}}</td>
+                                <td>{{data.patient_id}}</td>
+                                <td>{{data.patient_name|upper}}</td>
+                                <td>{{data.patient_mobile_number}}</td>
+                                <td>{{data.patient_gender}}</td>
+                                <td>{{data.patient_schedule_date_and_time}}</td>
+                                <td>{{data.patient_scheduled_id}}</td>
+                                <td>{{data.patient_payment_mode}}</td>
+                                <td>{{data.doctor_name}}</td>
+                                <td>{{data.doctor_department}}</td>
+
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                </tr>
+            </table><br><br>
+
+        </div><br><br>
+
+        {% endif %}
+        {% if all_records %}
+        <div class="card">
+            <div class="card-box mb-0">
+                <div id="hello">
+                    
+                    <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                        <tr style="border-bottom:2px solid #eee;">
+                            <td id="s">
+                                <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;"
+                                    width="100%">
+                                    <tr>
+                                        <td id="f"><img src="https://bharathbrands.in/images/BHARATHBRANDS-01.png"
+                                                alt="logo Image" width="180px"></td>
+                                        <td>
+                                            <div class=""><br>
+                                                <h2 style="margin: 0 0 10px;">BHARATHBRANDS PRIVATE LIMITED</h2>
+                                                <P>GHANA HEALTH SERVICE,P.O. BOX-23, PEKI V/R</P><br>
+                                                <h4>Constultant Report</h4>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;"
+                                    width="100%" id="example">
+        
+                                    <tr>
+                                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Appointment Id
+                                        </th>
+                                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Patient Id</th>
+                                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Patient Name</th>
+                                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Patient Mobile No
+                                        </th>
+                                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Gender</th>
+                                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Patient Schedule
+                                            Date&Time</th>
+                                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Patient Scheduled
+                                            id</th>
+                                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Patient Payment
+                                            Mode</th>
+                                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Doctor Name</th>
+                                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Doctor Department
+                                        </th>
+        
+                                    </tr>
+                                    <tr>
+                                        {% for data in all_records %}
+                                    <tr>
+                                        <td>{{data.patient_appointment_id}}</td>
+                                        <td>{{data.patient_id}}</td>
+                                        <td>{{data.patient_name|upper}}</td>
+                                        <td>{{data.patient_mobile_number}}</td>
+                                        <td>{{data.patient_gender}}</td>
+                                        <td>{{data.patient_schedule_date_and_time}}</td>
+                                        <td>{{data.patient_scheduled_id}}</td>
+                                        <td>{{data.patient_payment_mode}}</td>
+                                        <td>{{data.doctor_name}}</td>
+                                        <td>{{data.doctor_department}}</td>
+        
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </td>
+                        </tr>
+                    </table><br><br>
+        
+                </div><br><br>
+        
+                {% endif %}
+       
+
+    </div>
+</div>
+
+<script>
+    $('example').margetable({
+        type: 1,
+        colindex: [{
+            index: 1,
+            dependent: [0]
+        }]
+    });
+</script>
+<script type="text/javascript">
+
+    function codespeedy() {
+        var print_div = document.getElementById("hello");
+        var print_area = window.open();
+        print_area.document.write(print_div.innerHTML);
+        print_area.document.close();
+        print_area.focus();
+        print_area.print();
+        print_area.close();
+        // This is the code print a particular div element
+    }
+</script>
+
+<script>
+
+    // pdf preview
+
+    function printData() {
+        var mypage = document.getElementById("hello");
+        summathaan = window.open("");
+        summathaan.document.write(mypage.outerHTML);
+        summathaan.print();
+        summathaan.close();
+    }
+
+    function htmlToCSV(html, filename) {
+        var data = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText);
+            }
+
+            data.push(row.join(","));
+        }
+
+        downloadCSVFile(data.join("\n"), filename);
+    }</script>
+
+<script>function downloadCSVFile(csv, filename) {
+        var csv_file, download_link;
+
+        csv_file = new Blob([csv], { type: "text/csv" });
+
+        download_link = document.createElement("a");
+
+        download_link.download = filename;
+
+        download_link.href = window.URL.createObjectURL(csv_file);
+
+        download_link.style.display = "none";
+
+        document.body.appendChild(download_link);
+
+        download_link.click();
+    }</script>
+<script>document.getElementById("csvdownload-button").addEventListener("click", function () {
+        var html = document.querySelector("table").outerHTML;
+        htmlToCSV(html, "Appointment.csv");
+    });</script>
+
+</div>
+</div>
+
+</div>
+</div>
+{% endblock %}

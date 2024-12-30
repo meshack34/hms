@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en" dir="ltr">
+<head>
+	<meta charset="UTF-8">
+    <title>Login | Page</title>
+	<!-- jQuery -->
+     <!--  Core Css -->
+     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+     <!-- Favicon-->
+     <!-- <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}"> -->
+	<!-- Demo CSS -->
+
+    <link rel="stylesheet" href="{% static 'css/interface/styles.css' %}">
+
+  </head>
+  <body style="background-image: url(../../static/images/bg/bg2.jpg);"><img src="../../static/images/logo/bharathbrandslogo.png" style="width: 300px; height: 200px;" />
+    <div class="container">
+    <div class="center">
+      <form method="post">
+        <div class="txt_field">
+          <input type="text" required>
+          <span></span>
+          <label>Username</label>
+        </div>
+        <div class="txt_field">
+          <input type="password" required>
+          <span></span>
+          <label>Password</label>
+        </div>
+        <input type="submit" value="Login">
+      </form><br>
+    </div>
+</div>
+    <!-- Footer<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
+    <footer >
+        <p>
+            Powered by <a href="https://www.bharathbrands.in/">Bharathbrands Pvt. Ltd.</a><img src="../../static/images/logo/bharathbrandslogo.png" style="width: 200px; height: 20px;"  />
+        </p>
+    </footer>
+  </body>
+
+</html>

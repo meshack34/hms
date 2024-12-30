@@ -1,0 +1,147 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block %}
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+    <style>
+        /* Style the container for the input */
+        .input-container {
+            position: relative;
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        /* Style the search box */
+        .input-box {
+            width: 250px;
+            padding: 8px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            outline: 2px;
+        }
+
+        .input-box::placeholder {
+            color: #3498db;
+        }
+
+        .search-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+      <div>
+        <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+        <b>Patient Search</b>
+      </div>
+      <div class="">
+        <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+        <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+        <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <!-- <a class="dropdown-item" onclick="codespeedy()" href="#">PDF</a>
+          <a class="dropdown-item" id="download-button" href="#">CSV</a> -->
+          <a href="{% url 'opd_print_view' %}"><button type="button" class="btn dropdown-item same-size-button border-0 p-2 mb-2 " name="appointment_pat">Print Bill</button></a>
+          <a href="{% url 'opdbilling_details' %}"><button type="button" class="btn dropdown-item same-size-button border-0 p-2 mb-2 " name="button">Bill Details Views</button></a>
+        </div>
+      </div>
+    </div>
+    <!-- Main Dashboard -->
+    <div class="row">
+      <div class="col-12">
+
+                
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="register_record">
+                        <table class="datatable table table-bordered table-stripped ">
+                          <thead>
+                          <tr style="background:#d1dae6;">
+                            <th>S N.No</th>
+                            <th>UHID</th>
+                            <th>Patient Name</th>
+                            <th>Doctor Name</th>
+                            <th>Department</th>
+                            <th>Insurance Name</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for data,dat in records1 %}
+                          <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td><a href="/opd_billing_search/{{data.uhid}}">{{data.uhid}}</a></td>
+                            <td>{{data.title}}.{{data.first_name}}&nbsp;{{data.middle_name}}&nbsp;{{data.last_name}}
+                            </td>
+                            <td>{{dat.doctor}}</td>
+                            <td>{{dat.clinical_department}}</td>
+<!--                            <td>{{data.pat_tariff_name}}</td>-->
+                            <td>{% if data.pat_insurance == None %}Self{% else %}{{data.pat_insurance}}{% endif %}</td>
+                          </tr>
+                          {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ <!-- Filter Start model -->
+
+ <div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header" style="background: skyblue;">
+              <h5 class="modal-title" id="exampleModalLabel1"><b>Search</b></h5>
+          </div>
+          <!-- Main block -->
+          <div class="modal-body">
+            <form method="POST">
+              {% csrf_token %}
+              <div class="row">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <input type="text" class="form-control bg-light" id="uhid" placeholder="Enter your UHID...." name="uhid">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <input type="text" class="form-control bg-light" id="patient-name" placeholder="Enter your name...." name="patient_name">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <input type="tel" name="mobile_number" maxlength="200" class="form-control bg-light"  placeholder="Enter your Mob No..." id="id_mobile_number">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group ">
+                        <button type="submit" class="btn btn-primary border-0 p-2 same-size-button mb-2 text-white" name="button"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                       
+                     </div>
+                   </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- end model -->
+{% endblock %}

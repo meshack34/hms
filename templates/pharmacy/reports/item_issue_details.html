@@ -1,0 +1,245 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+    #id_from_date,
+    #id_to_date,
+    #id_store {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <form method="post" action="">
+            {% csrf_token %}
+            <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+                <div class="container-fluid">
+                    <a class="navbar-brand" style="color: white;" href="#">Item Issue Report</a>
+                </div>
+            </nav><br>
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                        <div class="card">
+                            <div class="header">
+                                <div class="body">
+                                    <br>
+                                    <div class="icon-button-demo">&nbsp;
+                                        <button type="button" class="btn btn-primary"
+                                            onClick="window.location.reload();">
+                                            <i class="fas fa-sync-alt">Refresh</i></button>&nbsp;
+                                        <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+                                        <!--<button type="button" class="btn btn-warning" onclick="print_view()"><i-->
+                                        <!--        class="fa fa-print">PreView</i></button>&nbsp;-->
+                                        <button class="btn btn-danger" role="button"
+                                            onclick="codespeedy()">PDF</button>&nbsp;
+                                        <button class="btn btn-sucess" style="background-color: green;"
+                                            id="download-button" role="button">CSV</button>&nbsp;
+
+
+                                    </div><br>
+                                    <br>
+                                    <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;">
+
+                                         <div id="hello">
+            {% if issue_detail %}
+
+            <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                <tr>
+
+                        <div class="" >
+                            <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                            </center>
+                        </div>
+
+                </tr>
+            </table>
+
+            <style>
+                table, th, td {
+                  border: 1px solid black;
+                  border-collapse: collapse;
+
+                }
+                #button2{
+                font-size: larger;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+            }
+                </style>
+                <center><h3> Item Issue Report</h3></center>
+            <table class="table table-bordered" style="border-style: solid;" align="center">
+                <thead>
+                    <tr>
+                      <th scope="col">S.No</th>
+                      <th scope="col">Item Issue No</th>
+                      <th scope="col">Date Time</th>
+                      <th scope="col">ItemName</th>
+                      <th scope="col">Serial Batch</th>
+                      <th scope="col">Expiry Date</th>
+                      <th scope="col">Available qty</th>
+                      <th scope="col">Issued qty</th>
+                      <th scope="col">Rate</th>
+                      <th scope="col">Amount</th>
+
+                      <th scope="col">Movement Status</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in issue_detail %}
+                    <tr>
+                      <td>{{forloop.counter}}</td>
+                        <td scope="row" style="padding-left: 15px;padding-right: 15px;"><b>{{data.item_issue_no}}</b></td>
+                          <td style="padding-left: 15px;padding-right: 15px;">{{data.item_issue_date}}</td>
+                          <td style="padding-left: 15px;padding-right: 15px;">{{data.item_id}}</td>
+                          <td style="padding-left: 15px;padding-right: 15px;">{{data.serial_batch}}</td>
+                          <td style="padding-left: 15px;padding-right: 15px;">{{data.expiry_date}}</td>
+                          <td style="padding-left: 15px;padding-right: 15px;">{{data.available_qty}}</td>
+                          <td style="padding-left: 15px;padding-right: 15px;">{{data.issued_qty}}</td>
+                          <td style="padding-left: 15px;padding-right: 15px;">{{data.rate}}</td>
+                          <td style="padding-left: 15px;padding-right: 15px;">{{data.amount}}</td>
+
+                          <td style="padding-left: 15px;padding-right: 15px;">{{data.movement_status}}</td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+
+            {% endif %}
+          </div><br><br>
+
+                                        <!--<div class="header" id="pdf_print">-->
+                                        <!--    <div class="row mt-2 no-gutters">-->
+
+                                        <!--        <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">-->
+                                        <!--            <tr>-->
+                                        <!--              <td>-->
+                                        <!--                <div class="" >-->
+                                        <!--                  <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:100px;"></h2></center>-->
+
+                                        <!--                </div>-->
+                                        <!--              </td>-->
+                                        <!--            </tr>-->
+                                        <!--          </table>-->
+
+                                        <!--        <div class="table-responsive">-->
+                                        <!--            <table class="datatable table table-stripped ">-->
+                                        <!--                <thead>-->
+                                        <!--                    <tr>-->
+                                        <!--                        <th>S.No</th>-->
+                                        <!--                        <th>PO No.</th>-->
+                                        <!--                        <th>Date Time</th>-->
+                                        <!--                        <th>Item Name</th>-->
+                                        <!--                        <th>Qty</th>-->
+                                        <!--                        <th>Stock Qty</th>-->
+                                        <!--                        <th>Rate</th>-->
+                                        <!--                        <th>Discount</th>-->
+                                        <!--                        <th>Amount</th>-->
+                                        <!--                    </tr>-->
+                                        <!--                </thead>-->
+                                        <!--                <tbody>-->
+                                        <!--                    {% for data in item_detail %}-->
+                                        <!--                    <tr>-->
+                                        <!--                        <td>{{forloop.counter}}</td>-->
+                                        <!--                        <td>{{data.PO_Id}}</td>-->
+                                        <!--                        <td>{{data.PO_datetime}}</td>-->
+                                        <!--                        <td>{{data.item_id}}</td>-->
+                                        <!--                        <td>{{data.qty}}</td>-->
+                                        <!--                        <td>{{data.stocy_qty}}</td>-->
+                                        <!--                        <td>{{data.rate}}</td>-->
+                                        <!--                        <td>{{data.discount}}%</td>-->
+                                        <!--                        <td>{{data.amount}}</td>-->
+                                        <!--                    </tr>-->
+
+                                        <!--                    {% endfor %}-->
+                                        <!--                </tbody>-->
+                                        <!--            </table>-->
+                                        <!--        </div>-->
+                                        <!--    </div>-->
+                                        <!--</div>-->
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+<!-- Custom JS -->
+<script src="../assets/js/app.js"></script>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+  var print_area = window.open();
+  print_area.document.write(print_div.innerHTML);
+  print_area.document.close();
+  print_area.focus();
+  print_area.print();
+  print_area.close();
+  // This is the code print a particular div element
+    }
+  </script>
+
+<!-- Export csv -->
+
+<script>
+    function htmlToCSV(html, filename) {
+        var data = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText);
+            }
+
+            data.push(row.join(","));
+        }
+
+        downloadCSVFile(data.join("\n"), filename);
+    }</script>
+<script>
+    function downloadCSVFile(csv, filename) {
+        var csv_file, download_link;
+
+        csv_file = new Blob([csv], { type: "text/csv" });
+
+        download_link = document.createElement("a");
+
+        download_link.download = filename;
+
+        download_link.href = window.URL.createObjectURL(csv_file);
+
+        download_link.style.display = "none";
+
+        document.body.appendChild(download_link);
+
+        download_link.click();
+    }</script>
+
+<script>document.getElementById("download-button").addEventListener("click", function () {
+        var html = document.querySelector("table").outerHTML;
+        htmlToCSV(html, "itemwise_purchase.csv");
+    });</script>
+{% endblock %}

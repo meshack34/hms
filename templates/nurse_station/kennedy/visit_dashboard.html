@@ -1,0 +1,108 @@
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+{% block body_block %}
+ <!-- content -->
+ <div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+<!-- Main Dashboard -->
+<div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+  <div>
+    <a href="#" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+    <b>Visit Dashboard</b>
+  </div>
+  <div class="">
+    <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+    <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+    <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a href="/OT/clinical_notes_records" class="dropdown-item btn-primary"> Records</a> 
+      <a class="dropdown-item btn-primary" id="download-button " href="#">CSV</a>
+    </div>
+  </div>
+</div>
+    <div class="row">
+      <div class="col-md-12">
+        <div lass="table-responsive">
+          <table class="datatable table table-bordered">
+            <tr style="background: #d1dae6;" class="text-nowrap">
+              <th>SN. No.</th>
+              <th>Reg. No.</th>
+              <th>Visit No.</th>
+              <th>Bill ID.</th>
+              <th>Date & Time</th>
+              <th>Clinic Department</th>
+              <th>Patient Name</th>
+              <th>Age</th>
+              <th>Assigned User</th>
+              <th>Status</th>
+              <th>Acknowledge</th>
+            </tr>
+            {% if records %}
+            {% for dat in records %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{dat.uhid}}</td>
+              <td><a href="/cm/{{dat.uhid}}~{{dat.visit_no}}~{{dat.bill_id}}">{{dat.visit_no}}</a></td>
+              <td>{{dat.bill_id}}</td>
+              <td>{{dat.bill_date_time}}</td>
+              <td>{{dat.department}}</td>
+              <td>{{dat.pat_name}}</td>
+              <td>{{dat.pat_age}}</td>
+              <td>{{dat.doctor_name}}</td>
+              <td>{{dat.status}}</td>
+              <td>Acknowledge</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td colspan="9">No Records Found</td>
+            </tr>
+
+            {% endif %}
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+    </div>
+</div>
+</div>
+
+    </div>
+</div>
+
+<!-- +++++++++++++++++++++++++++++++++++++ start modal============================ -->
+
+        <!-- Filter Start model -->
+
+        <div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <!-- Header -->
+                  <div class="modal-header" style="background: skyblue;">
+                      <h5 class="modal-title" id="exampleModalLabel1"><b>Filter</b></h5>
+                  </div>
+                  <!-- Main block -->
+                  <div class="modal-body">
+                    <form class="form-inline row" method="GET">
+         
+                      <div class="col-sm-4">
+                        <input class="form-control" type="text" name="uhid" placeholder="UHID..." >
+                      </div>
+          
+                      <div class="col-sm-4">
+                        <input class="form-control" type="text" name="name" placeholder="Name..." >
+                      </div>
+                      <div class="col-sm-4">
+                        <input class="btn btn-primary" type="submit" name="submit" value="Search">
+                      </div>
+                    </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  
+      <!-- end model -->
+{% endblock  %}

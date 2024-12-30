@@ -1,0 +1,308 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+
+
+
+<style xmlns="http://www.w3.org/1999/html">
+
+    .table_form input {
+        border: none;
+        width: 100%;
+        border-bottom: 2px solid rgb(233, 215, 215);
+        padding-top: 20px;
+        text-align: center;
+    }
+    .table_forms input {
+        border: none;
+        width: 100%;
+        background-color: transparent;
+        padding-top: 5px;
+        text-align: center;
+    }
+</style>
+
+<style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      border: 1px solid #ddd;
+    }
+    
+    th, td {
+      text-align: center;
+      padding: 16px;
+    }
+    </style>
+
+
+<style>
+    #myInput[type=text] {
+			width: 130px;
+			box-sizing: border-box;
+			border-top: 2px solid rgba(0,0,0,0);
+			border-left: 2px solid rgba(0,0,0,0);
+			border-right: 2px solid rgba(0,0,0,0);
+			border-bottom: 2px solid rgb(233, 215, 215);
+			font-size: 16px;
+			font-weight: bold;
+			color: #999;
+			background-color: rgba(0,0,0,0);
+			background-image: url('Main/search.png');
+			background-position: 10px 12px;
+			background-repeat: no-repeat;
+			text-align: left  !important;
+			-webkit-transition: width 0.4s ease-in-out;
+			transition: width 0.4s ease-in-out;
+			font-family: 'gothic' !important;
+}
+#myInput[type=text]:focus {
+			width: 100%;
+			outline: none;
+			border-bottom: 2px solid #2E51A2;
+}
+.Dropdown {
+    position: relative;
+    display: inline-block;
+	width: 100%;
+}
+
+.dropdown_content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 940px;
+    overflow: auto;
+    text-align: left  !important;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown_content a {
+    color: black;
+    padding: 12px;
+    text-decoration: none;
+    display: block;
+}
+
+.Dropdown a:hover {background-color: #f1f1f1}
+
+.show {display:block;}
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+</style>
+
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/paitent_ward" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Consultation</b>
+            </div>
+            <div class="">
+                <button type="submit" class="btn " form="temp_form" name="main_save" value="main_save"> <i class="fas fa-save text-light"></i></button>
+                <a href="/usermanagementapp/user_management_details" type="button"><i class="fas fa-edit" style="color:white;"></i></a>
+              <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" class="text-light px-1" onClick="window.location.reload();" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" onclick="codespeedy()" href="#">PDF</a>
+                <a class="dropdown-item" id="download-button" href="#">CSV</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4"><br>
+            <form method="POSt" id="ward_form" modelAttribute="hotel">
+                {% csrf_token %}
+                <div class="row clearfix">
+                    <div class="col-sm-3">
+                        <div class="form-group col-md-12 mb-0">
+                            <label for="pat_name" style="padding-left: 20px;"><b>Name:</b>&nbsp;&nbsp;{{pat_name}}</label>
+                            <input type="hidden"  class="form-control" id="pat_name" name="pat_name" value="{{pat_name}}">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group col-md-12 mb-0">
+                            <label for="UHID_id" style="padding-left: 20px;"><b>UHID:</b>&nbsp;&nbsp;{{uhid|slice:"4:"}}</label>
+                            <input type="hidden"  class="form-control" id="UHID_id" name="UHID_id" value="{{uhid}}">
+                        </div>
+                  </div>
+                    <div class="col-sm-3">
+                          <div class="form-group col-md-12 mb-0">
+                              <label for="admission_id" style="padding-left: 20px;"><b class="text-nowrap">Admission Id:</b>&nbsp;&nbsp;{{ad_id|slice:"3:"}}</label>
+                              <input type="hidden"  class="form-control" id="admission_id" name="admission_id" value="{{ad_id}}">
+                            </div>
+                    </div>
+                    <div class="col-sm-3">
+                          <div class="form-group col-md-12 mb-0">
+                              <label for="doctory" style="padding-left: 20px;"><b>doctor:</b>&nbsp;&nbsp;{{doctory}}</label>
+                              <input type="hidden"  class="form-control" id="doctory" name="doctory" value="{{doctory}}">
+                            </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group col-md-12 mb-0">
+                            <label for="bed_num" style="padding-left: 20px;"><b>Bed No:</b>&nbsp;&nbsp;{{bed_num}}</label>
+                            <input type="hidden"  class="form-control" id="bed_num" name="bed_num" value="{{bed_num}}">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group col-md-12 mb-0">
+                            <label for="date_time" style="padding-left: 20px;"><b>Current Date:</b>&nbsp;&nbsp;{{admission_date|date:'d-m-Y'}}</label>
+                            <input type="hidden"  class="form-control" id="date_time" name="date_time" value="{{admission_date}}">
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+            
+            
+            <div class="table" style="overflow: auto;" >
+                <form id="post-form" method="post">
+                    {% csrf_token %}
+                    <table class=" table mt-2 table-bordered form-row service_table" >
+                        <tr style="background: #d1dae6;" >
+                            <th style=" padding-right: 100px;">SEARCH</th>
+                            <th style=" padding-right: 100px;">Service Name</th>
+                            <th style=" padding-right: 100px;">Service Category</th>
+                            <th style=" padding-right: 100px;">Service Sub Category</th>
+                            <th style=" padding-right: 100px;">Service Charge</th>
+                            <th style="padding-left: 100px; padding-right: 70px;">Action</th>
+                        </tr>
+                        <tr>
+                            <td> 
+                                <section class="mainSection">
+                                    <div class="Dropdown">
+                                        <center><input type="text" id="myInput" class="dropbtn" onkeypress="searchDrop()" onkeyup="mySearch()" placeholder="Search..." title="Type Series Title"></center>
+                                        <div id="myDropdown" class="dropdown_content">
+                                            <ul id="myUL">
+                                                {% for data in item %}
+                                                <li><a href="/ipd/consultation_insert/{{uhid}}/{{data.id}}">{{data.service_id}}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </section>
+                                </td>
+                                <td class="table_form"><input type="text" name="service_name" value="{{records_list.service_id}}"></td>
+                                <td class="table_form"><input type="text" name="service_category" value="{{records_list.service_category}}"></td>
+                                <td class="table_form"><input type="text" name="service_sub_category" value="{{records_list.service_sub_category}}"></td>
+
+                                <td class="table_form"><input type="text" name="service_charge" value="{{records_list.service_charge}}"></td>
+                                <td style="padding-left: 100px; padding-right: 70px;"><button type="submit" class="btn btn-primary" name="save_temp" value="save_temp">Insert</button> </td>
+                        </tr>
+
+                    </table>
+                </form>
+            </div>
+            {% if medication_records %}
+             <div class="table col-sm-12" >
+                <table >
+                    <tr style="background: #d1dae6;">
+                        <th>Service_Name</th>
+                        <th>Service Category</th>
+                        <th>Service SubCategory</th>
+                        <th>Service Department</th>
+                        <th>Service Sub Department</th>
+                        <th>service Charge</th>
+                    </tr>
+                    <form method="post" id="temp_form">
+                        {% csrf_token %}
+                    {% for data in medication_records %}
+                    <tr>
+                        <td class="table_forms"><input type="hidden" name="service_name" value="{{data.service_name.id}}" readonly>{{data.service_name}}</td>
+                        <td class="table_forms"><input type="text" name="service_category" value="{{data.service_category}}" readonly></td>
+                        <td  class="table_forms"><input type="text" name="service_sub_category" value="{{data.service_sub_category}}" readonly></td>
+                        <td  class="table_forms"><input type="text" name="service_department" value="{{data.service_department}}" readonly></td>
+                        <td class="table_forms"><input type="text" name="service_sub_department" value="{{data.service_sub_department}}" readonly></td>
+                        <td  class="table_forms"><input type="text" name="service_charge" value="{{data.service_charge}}" readonly></td>
+                    </tr>
+                    {% endfor %}
+                </form>
+                </table>
+            </div>
+            {% endif %}
+
+            {% if not medication_records %}
+            <div class="table col-sm-12" >
+                <div class="table-responsive">
+               <table class="datatable table table-border" >
+                   <tr style="background: #d1dae6;" class="text-nowrap">
+                       <th>Consultation Id</th>
+                       <th>service Charge</th>
+                       <th>Service Category</th>
+                       <th>Service Subcategory</th>
+                       <th>Service Department</th>
+                       <th>Service Subdepartment</th>
+                       <th>Service Charge</th>
+                       <th>Date</th>
+                   </tr>
+                   <form method="post" id="temp_form">
+                       {% csrf_token %}
+                   {% for data in medication_records_all %}
+                   <tr class="text-nowrap">
+                       <td >{{data.consultation_id}}</td>
+                       <td >{{data.service_name}}</td>
+                       <td >{{data.service_category}}</td>
+                       <td  >{{data.service_sub_category}}</td>
+                       <td  >{{data.service_department}}</td>
+                       <td >{{data.service_sub_department}}</td>
+                       <td  >{{data.service_charge}}</td>
+                       <td  >{{data.cons_date}}</td>
+                   </tr>
+                   {% endfor %}
+               </form>
+               </table>
+            </div>
+           </div>
+           {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<script>
+    /* When the user clicks on the button, 
+  toggle between hiding and showing the dropdown content */
+  function searchDrop() {
+      if(this.value != '') {
+          document.getElementById("myDropdown").classList.toggle("show");
+      }
+  }
+  
+  // Close the dropdown if the user clicks outside of it
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+  
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+  
+  function mySearch() {
+      var input, filter, ul, li, a, i;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("myUL");
+      li = ul.getElementsByTagName("li");
+      for (i = 0; i < li.length; i++) {
+          a = li[i].getElementsByTagName("a")[0];
+          if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+              li[i].style.display = "";
+          } else {
+              li[i].style.display = "none";
+  
+          }
+      }
+  }
+  </script>
+
+{% endblock %}

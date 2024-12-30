@@ -1,0 +1,120 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+    #num{
+      color: white;
+      font-size: 15px;
+      background-color: red;
+      padding-top: 5px;
+      padding-right: 10px;
+      padding-left: 10px;
+      padding-bottom: 5px;
+      border-radius: 40px;
+    }
+</style>
+
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+      <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>RIS Reports</b>
+        </div>
+        <div class="">
+          <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+          <a type="button" class="text-light px-1" onClick="window.location.reload();" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" onclick="codespeedy()" href="#">PDF</a>
+            <a class="dropdown-item" id="download-button" href="#">CSV</a>
+          </div>
+        </div>
+      </div>
+   
+              <div class="table-responsive">
+                <table class="datatable table table-stripped table-border">
+                    <thead>
+                      <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Test ID</th>
+                        <th scope="col">Service  Name</th>
+                        <th scope="col">Uhid</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Date & Time</th>
+                        <th scope="col">Action</th>
+                        <th></th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                          {% for data in records %}
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td><input type="hidden" id="test_idd" class='form-comtrol' style="border: none;" value="{{data.test_id}}" readonly> {{data.test_id}}</td>
+                          <td><input type="hidden" id="profile_name" class='form-comtrol' style="border: none;" value="{{data.profile_name}}" readonly> {{data.service}}</td>
+                            <td>{{data.uhid}}</td>
+                            <td>{{data.uhid.first_name}}</td>
+                            <td>{{data.created_at}}</td>
+                            <td id="pop_up">
+                              <a href="{% url 'RIS_report_print' data.id %}"><button type="button" class="btn btn-primary"><i class="fa fa-hand-pointer"></i></button></a>
+                            </td>
+                          </tr>
+                          {% endfor %}
+
+                    </tbody>
+                  </table>
+            </div>
+
+    </div>
+</div>
+
+<!-- Filter Start model -->
+
+<div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header" style="background: skyblue;">
+              <h5 class="modal-title" id="exampleModalLabel1"><b>Search</b></h5>
+          </div>
+          <!-- Main block -->
+          <div class="modal-body">
+            <form method="post" action="">
+              {% csrf_token %}
+               <div class="form-row">
+                   <div class="form-group col-md-3 mb-0">
+                       <label><b>From Date*</b> </label>
+                       <input type="date" name="from_date" id="from_date" class="form-control">
+                   </div>
+                   <div class="form-group col-md-3 mb-0">
+                       <label><b>To Date*</b></label>
+                       <input type="date" name="to_date" id="to_date" class="form-control">
+                   </div>
+                   <div class="form-group col-md-3 mb-0">
+                       <label><b>Patient Name</b></label>
+
+                      <input type="text" class="form-control" name="patient_name">
+                   </div>
+
+
+                   <div class="form-group col-md-0 mb-0" style="padding-top: 10px;"><br>
+                       <button type="submit" name="search_btn" value="search_btn"  class="btn btn-warning"><i
+                               class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                   </div>
+
+               </div>
+               <br>
+
+           </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- end model -->
+
+{% endblock %}

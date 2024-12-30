@@ -1,0 +1,55 @@
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<br>
+<div class="hero">
+  <div class="outer"  >
+<div class="container">
+  <div class="col-xs-10 col-sm-10 col-md-8 col-lg-8">
+    <div class="center" style="background-color: white; ">
+  <!-- {{date_list}} -->
+  {% if date_list %}
+  <form  method="POST" action="schedule-date">
+    {% csrf_token %}
+    <h3 align='center'>Kindly Un-Chacked For Non-Available Days</h3><hr><br>
+    <div class="row">
+      {% for date in date_list%}
+      <div class="col-lg-2 col-md-3 col-sm-3  schedule-design">
+          {{date}} &nbsp;&nbsp;&nbsp;<input type="checkbox" name="{{date}}" value="{{date}}" checked >
+      </div>
+      {% endfor %}
+    </div><br>
+    <button type="submit" name="date_submit" class="btn btn-primary btn-block own-submit" style="margin:auto; display:block;"><span class="own-span">Submit</span></button>
+    <!-- <table class="table">
+        <tr>
+          <td>Dates</td>
+          {% for date in date_list%}
+            <td>{{date}} <input type="checkbox" name="{{date}}" value="{{date}}" checked ></td>
+            {% endfor %}
+        </tr>
+    </table><br> -->
+
+  </form><br>
+  </div><br><br><br><br><br><br><br><br>
+  {% else %}
+  <form method="POST">
+    <h2 align='center'>Doctor Scheduling</h2><hr>
+    {% csrf_token %}
+
+    {{form.doctor_name|as_crispy_field}}
+    {{form.start_date|as_crispy_field}}
+    {{form.end_date|as_crispy_field}}
+    <button type="submit" name="submit" class="btn btn-primary btn-block  own-submit" style="margin:auto; display:block;"><span class="own-span">Submit</span></button>
+  </form><br>
+  {% endif %}
+
+  <br>
+
+</div><br><br><br>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}

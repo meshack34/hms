@@ -1,0 +1,54 @@
+{% extends 'qms/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+
+{% endblock  %}
+{% block body_block %}
+   <!-- content -->
+   <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="card-box mb-0">
+     <h6 class="card-title text-bold">Token_Master_configuration</h6>
+    </div>
+
+    <div class="container-fluid"><br><br>
+      <form method="POST">
+        {% csrf_token %}
+        <!-- {{form}} -->
+        {% csrf_token %}
+        <div class="form-row own_decor_forms">
+        <div class="form-group col-6">
+             {{form.Date|as_crispy_field }}
+        </div>
+        <div class="form-group col-6">
+            {{form.Doct_Name|as_crispy_field }}
+        </div>
+        <div class="form-group col-6">
+            {{form.status|as_crispy_field }}
+        </div>
+        <div class="form-group col-6">
+            {{form.Room_No|as_crispy_field }}
+        </div>
+        <div class="form-group col-6">
+            {{form.Max_Token_Assigned|as_crispy_field }}
+        </div>
+        <div class="form-group col-6">
+
+        </div>
+        &nbsp;<input type="submit" name="update" class="btn btn-primary" value="Change">
+      </form>
+
+    </div>
+
+    {% endblock  %}
+{% block script_block %}
+<script>
+document.getElementById("id_Date").readOnly = 'radonly';
+document.getElementById("id_Max_Token_Assigned").readOnly = 'radonly';
+</script>
+{% endblock  %}

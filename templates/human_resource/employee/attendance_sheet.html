@@ -1,0 +1,280 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+ <!--content-->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+ <div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="page-title">Attendance Sheet</h4>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row filter-row">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus mb-0">
+                            <label class="focus-label">Employee Name</label>
+                            <input type="text" class="form-control floating">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus mb-0">
+                            <label class="focus-label">Select Month</label>
+                            <select class="select floating">
+                                <option>-</option>
+                                <option>Jan</option>
+                                <option>Feb</option>
+                                <option>Mar</option>
+                                <option>Apr</option>
+                                <option>May</option>
+                                <option>Jun</option>
+                                <option>Jul</option>
+                                <option>Aug</option>
+                                <option>Sep</option>
+                                <option>Oct</option>
+                                <option>Nov</option>
+                                <option>Dec</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus mb-0">
+                            <label class="focus-label">Select Year</label>
+                            <select class="select floating">
+                                <option>-</option>
+                                <option>2017</option>
+                                <option>2016</option>
+                                <option>2015</option>
+                                <option>2014</option>
+                                <option>2013</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <a href="#" class="btn btn-success btn-block"> Search </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-0">
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-lg-12">
+                            <table class="table table-striped custom-table m-b-0 table-responsive at-tb">
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>1</th>
+                                        <th>2</th>
+                                        <th>3</th>
+                                        <th>4</th>
+                                        <th>5</th>
+                                        <th>6</th>
+                                        <th>7</th>
+                                        <th>8</th>
+                                        <th>9</th>
+                                        <th>10</th>
+                                        <th>11</th>
+                                        <th>12</th>
+                                        <th>13</th>
+                                        <th>14</th>
+                                        <th>15</th>
+                                        <th>16</th>
+                                        <th>17</th>
+                                        <th>18</th>
+                                        <th>19</th>
+                                        <th>20</th>
+                                        <th>21</th>
+                                        <th>22</th>
+                                        <th>23</th>
+                                        <th>24</th>
+                                        <th>25</th>
+                                        <th>26</th>
+                                        <th>27</th>
+                                        <th>28</th>
+                                        <th>29</th>
+                                        <th>30</th>
+                                        <th>31</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data,date in emp_detail %}
+                                    <tr>
+                                      <td><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#attendance" data-emp_id="{{data.employee_id}}">{{data.first_name}} {{data.last_name}}</button></td>
+                                    </tr>
+                                    <tr>
+                                   {% for data1 in date  %}
+                                        
+                                        <td>{% if data1 == '1' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %} </td>
+                                        <td>{% if data1 == '2' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %} </td>
+                                        <td>{% if data1 == '3' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '4' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '5' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '6' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>
+                                            <div class="half-day"><span class="first-off">{% if data1 == '7' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %} </span> <span class="first-off"><i class="fas fa-times text-danger"></i></span></div>
+                                        </td>
+                                        <td>{% if data1 == '8' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %} </td>
+                                        <td>{% if data1 == '9' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '10' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '11' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '12' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '13' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '14' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '15' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '16' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '17' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '18' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '19' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '20' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>
+                                            <div class="half-day"><span class="first-off"><i class="fas fa-times text-danger"></i></span> <span class="first-off">{% if data1 == '21' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %} </span></div>
+                                        </td>
+                                        <td>{% if data1 == '22' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %} </td>
+                                        <td>{% if data1 == '23' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '24' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %} </td>
+                                        <td>{% if data1 == '25' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '26' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '27' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '28' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '29' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '30' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                        <td>{% if data1 == '30' %}<i class="fa fa-check text-success"></i>{% else %} <i class="fas fa-times text-danger"></i> {% endif %}  </td>
+                                      
+                                    {% endfor %}
+                                  </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+<!-- Modal -->
+<div class="modal fade" id="attendance" tabindex="-1" role="dialog" aria-labelledby="attendanceTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background: rgb(195, 228, 222);">
+          <h5 class="modal-title" id="attendanceLongTitle"><b>Attendance</b></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            
+            <ul class="nav nav-pills">
+                <li class="active"><a data-toggle="pill" href="#home">Attendance</a></li>
+                <li><a data-toggle="pill" href="#menu1">Leave</a></li>
+                <li><a data-toggle="pill" href="#menu2">Permission</a></li>
+              </ul>
+
+              <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                  <h3>Attendance</h3><br>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="emp_id" id="emp_id">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <label>In-Time</label>
+                        <input type="time" class="form-control" name="in_time" id="in_time">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <label>Out-Time</label>
+                        <input type="time" class="form-control" name="out_time" id="out_time">
+                    </div>
+                  </div><br>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary" name="attendance" value="attendance">Save</button>
+                    </div>
+                  </div>
+                </form>
+                </div>
+                <div id="menu1" class="tab-pane fade">
+                  <h3>Leave</h3><br>
+                  <form method="POST">
+                    {% csrf_token %}
+                  <input type="hidden" name="emp_id" id="emp_id">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <label>Reason</label>
+                        <input type="text" class="form-control" name="reason" id="reason">
+                    </div>
+                  </div><br>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary" name="leave" value="leave">Save</button>
+                    </div>
+                  </div>
+                  </form>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                  <h3>Permission</h3><br>
+                  <form method="POST">
+                    {% csrf_token %}
+                  <input type="hidden" name="emp_id" id="emp_id">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <label>In-Time</label>
+                        <input type="time" class="form-control" name="p_in_time" id="p_in_time">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <label>Out-Time</label>
+                        <input type="time" class="form-control" name="p_out_time" id="p_out_time">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <label>Reason</label>
+                        <input type="text" class="form-control" name="p_reason" id="p_reason">
+                    </div>
+                  </div><br>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary" name="permission" value="permission">Save</button>
+                    </div>
+                  </div>
+                  </form>
+                </div>
+                
+              </div>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    $(document).ready(function () {
+  $('#attendance').on('show.bs.modal', function(e) {
+
+    var link     = $(e.relatedTarget)
+     
+      var emp_id = link.data("emp_id")
+      
+      var modal    = $(this)
+
+    modal.find(".modal-body #emp_id").val(emp_id);
+    
+        
+    });  
+});  
+</script>   
+
+{% endblock %}

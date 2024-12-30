@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<div class="container-fluid"  style="background-image: linear-gradient(white,#9AD0EC);">
+<br><br><br><br><br>
+<div class="container">
+  <form method="POST">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col">
+        <input type="date" class="form-control" name="start_date" required>
+      </div>
+      <div class="col">
+        <input type="date" class="form-control" name="end_date" required>
+      </div>
+      <div class="col">
+        <input type="submit" class="form-control btn btn-info" placeholder="Last name" value="Search">
+      </div>
+    </div>
+  </form>
+  <a href="/reports">Go Back</a>
+</div>
+  {% if records %}
+  <div class="container">
+    <h3>Detail Appointment Reports</h3>
+  </div>
+    <hr>
+    <table class="table table-bordered table-hover ">
+            <thead>
+                  <!-- <th bgcolor= "ORANGERED">Appointment Id</th>
+                  <th bgcolor= "ORANGERED">Patient Id</th> -->
+                    <th bgcolor= "ORANGERED">Patient Name</th>
+                    <th bgcolor= "ORANGERED">Patient Mobile no.</th>
+                    <th bgcolor= "ORANGERED">Gender</th>
+                    <th bgcolor= "ORANGERED">patient_schedule_date_and_time</th>
+                    <th bgcolor= "ORANGERED">patient_appointment_date</th>
+                    <!-- <th bgcolor= "ORANGERED">patient_scheduled_id</th> -->
+                    <th bgcolor= "ORANGERED">patient_payment_mode</th>
+                    <th bgcolor= "ORANGERED">doctor_name</th>
+                    <th bgcolor= "ORANGERED">doctor_department</th>
+
+            </thead>
+            <tbody>
+              {% for data in records %}
+              <tr>
+                <!-- <td>{{data.patient_appointment_id}}</td>
+                <td>{{data.patient_id}}</td> -->
+                <td>{{data.patient_name|upper}}</td>
+                <td>{{data.patient_mobile_number}}</td>
+                <td>{{data.patient_gender}}</td>
+                <td>{{data.patient_schedule_date_and_time}}</td>
+                <td>{{data.patient_appointment_date}}</td>
+                <!-- <td>{{data.patient_scheduled_id}}</td> -->
+                <td>{{data.patient_payment_mode}}</td>
+                <td>{{data.doctor_name}}</td>
+                <td>{{data.doctor_department}}</td>
+              </tr>
+              {% endfor %}
+
+             </tbody>
+
+    </table>
+  {% else %}
+  {% endif %}
+
+</div>
+<br><br><br><br><br>
+{% endblock %}

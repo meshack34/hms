@@ -1,0 +1,378 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<script src="https://code.jquery.com/jquery-1.12.3.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.1/js/buttons.html5.min.js"></script>
+
+<link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+<link href="https://cdn.datatables.net/buttons/1.2.1/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css">
+<style>
+    .button {
+        background-color: #f34d4d;
+    }
+
+    table {
+        display: block;
+        max-width: -moz-fit-content;
+        max-width: fit-content;
+        margin: 0 auto;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+</style>
+
+<!-- <script>
+    var buttonCommon = {
+            exportOptions: {
+                format: {
+                    body: function (data, row, column, node) {
+                        // if it is select
+                        if (column == 2) {
+                            return $(data).find("option:selected").text()
+                        } else return data
+                    }
+                }
+            }
+        };
+    $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+                // 'copy',
+                // $.extend(true, {}, buttonCommon, {
+                //     extend: "csv"
+                // }),
+                // $.extend(true, {}, buttonCommon, {
+                //     extend: "excel"
+                // }),
+                // $.extend(true, {}, buttonCommon, {
+                //     extend: "pdf"
+                // })
+            ]
+    } );
+  } );
+  </script> -->
+
+<!--Main Content-->
+<div class="page-wrapper">
+    <div class="content">
+        <!-- Main Dashboard -->
+        <div class="row">
+            <div class="col-12">
+                <div class="content widget-section">
+                    <h6 class="card-title text-bold">
+                        <div class="container">
+                            <h3>Patient Admission Report</h3>
+                            <div class="card" >
+                                <div class="card-body" style="background-color: rgb(143, 230, 241);">
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        <div class="row filter-row">
+                                            <div class="col-sm-6 col-xxl-2 col-xl-2 col-lg-3 col-md-3">
+                                                <div class="form-group mb-4">
+                                                    <label style="font-size:15px;" for="basic-url"
+                                                        class="form-label"><b> From Date</b></label>
+                                                    <div class="input-group">
+                                                        <input type="date" class="form-control"
+                                                            placeholder="Enter Company name" name="start_date">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 col-xxl-2 col-xl-2 col-lg-3 col-md-3">
+                                                <div class="form-group mb-4">
+                                                    <label style="font-size:15px;" for="basic-url"
+                                                        class="form-label"><b>To Date</b></label>
+                                                    <div class="input-group">
+                                                        <input type="date" class="form-control"
+                                                            placeholder="Enter Company name" name="end_date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-xxl-2 col-xl-2 col-lg-3 col-md-3">
+                                                <label style="font-size:15px;"><b>Doctor Name</b></label>
+                                                <div class="input-group">
+                                                    <select name="primary_doctor"
+                                                        class='form-control btn-sm text-left'>
+                                                        <option>---------</option>
+                                                        <option value="all">--All--</option>
+                                                        {% for data in doctor_list %}
+                                                        <option value="{{data}}">{{data}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-xxl-2 col-xl-2 col-lg-3 col-md-3">
+                                                <label style="font-size:15px;"><b>Department Name</b></label>
+                                                <div class="input-group">
+                                                    <select name="department_name"
+                                                        class='form-control btn-sm text-left'>
+                                                        <option>---------</option>
+                                                        <option value="all">--All--</option>
+                                                        {% for data in department_list %}
+                                                        <option value="{{data}}">{{data}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-xxl-2 col-xl-2 col-lg-3 col-md-3">
+                                                <label style="font-size:15px;"><b>Sponsor Name</b></label>
+                                                <div class="input-group">
+                                                    <select name="sponsor_name" class='form-control btn-sm text-left'>
+                                                        <option>---------</option>
+                                                        <option value="all">--All--</option>
+                                                        {% for data in sponsors_list %}
+                                                        <option value="{{data}}">{{data}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-xxl-2 col-xl-2 col-lg-3 col-md-3">
+                                                <label style="font-size:15px;"><b>Ward Category</b></label>
+                                                <div class="input-group">
+                                                    <select name="Patient_category"
+                                                        class='form-control btn-sm text-left'>
+                                                        <option>---------</option>
+                                                        <option value="all">--All--</option>
+                                                        {% for data in patient_categorys_list %}
+                                                        <option value="{{data}}">{{data}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                                <div class="col-sm-6 col-xxl-2 col-xl-2 col-lg-3 col-md-3">
+                                                    <label style="font-size:15px;"><b>Floor Name</b></label>
+                                                    <div class="input-group">
+                                                        <select name="floor_name"
+                                                            class='form-control btn-sm text-left'>
+                                                            <option>---------</option>
+                                                            <option value="all">--All--</option>
+                                                            {% for data in floors_list %}
+                                                            <option value="{{data}}">{{data}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="text-right">
+                                                    <button type="submit" class="btn btn-info m-3 rounded" value="Search">search</button>
+                                                      <a href="patient_admission1" class="btn btn-primary m-3 rounded" style="background-color:#006778">Go Back</a>
+                                                </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+
+                <div class="container">
+                    <div class="dropdown" align="right">
+                        <button class=" button btn dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Export</button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button class="dropdown-item" type="button" id="download-button">download CSV</button>
+                            <button type="button" class="dropdown-item" onclick="printData()" href="">download
+                                PDF</button>
+                        </div>
+                    </div>
+                    <hr>
+                    {% if all_records %}
+                    <h3><b> All Patient Admissions Records </b></h3>
+                    <br>
+                    <div class="card">
+                        <div class="card-body" style="background-color: rgb(240, 204, 240);">
+                            <div id="example" style="overflow-x:auto;">
+                                <table id="example" class="table " class="display table" overflow="100%"
+                                    style="background-color: rgb(237, 242, 243);">
+                                    <thead style="background-color: rgb(134, 181, 243);">
+                                        <th>SI.No</th>
+                                        <th>UHID</th>
+                                        <th>IP/Admission No</th>
+                                        <th>Admission Date</th>
+                                        <th>Patient Name</th>
+                                        <th>Age/sex</th>
+                                        <th>Doctor Name </th>
+                                        <th>Department </th>
+                                        <th class="d-none">speciality</th>
+                                        <th>Sponsor</th>
+                                        <th>Ward</th>
+                                        <th class="d-none">Billing Category</th>
+                                        <th>Bed No</th>
+                                        <th class="d-none">Bed Category</th>
+                                    </thead>
+                                    <tbody>
+                                        {% for data in all_records %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{data.uhid}}</td>
+                                            <td>{{data.admission_ID}}</td>
+                                            <td>{{data.admission_datetime}}</td>
+                                            <td>{{data.first_name}} {{data.middle_name}} {{data.Last_name}}</td>
+                                            <td>{{data.age}}/{{data.gender}}</td>
+                                            <td>{{data.primary_doctor}}</td>
+                                            <td>{{data.department}}</td>
+                                            <td class="d-none">{{data.mobile_number}}</td>
+                                            <td>{{data.corporate_name}}</td>
+                                            <td>{{data.req_ward_type}}</td>
+                                            <td class="d-none">{{data.corporate_name}}</td>
+                                            <td>{{data.bed_no}}</td>
+                                            <td class="d-none">{{data.corporate_name}}</td>
+
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if filtered_records %}
+                    <h3><b>Records</b></h3>
+                    <div class="card">
+                        <div class="card-body" style="background-color: rgb(240, 204, 240);">
+                            <script type="text/javascript" src="js/jspdf.min.js"></script>
+                            <div id="example" style="overflow-x:auto;">
+                                <table id="example" class="table " class="display table" overflow="100%"
+                                    style="background-color: rgb(255, 255, 255);">
+                                    <thead style="background-color: rgb(134, 181, 243);">
+                                        <th>SI.No</th>
+                                        <th>UHID</th>
+                                        <th>IP/Admission No</th>
+                                        <th>Admission Date</th>
+                                        <th>Patient Name</th>
+                                        <th>Age/sex</th>
+                                        <th>Doctor Name </th>
+                                        <th>Department </th>
+                                        <th class="d-none">speciality</th>
+                                        <th>Sponsor</th>
+                                        <th>Ward</th>
+                                        <th class="d-none">Billing Category</th>
+                                        <th>Bed No</th>
+                                        <th class="d-none">Bed Category</th>
+                                    </thead>
+                                    <tbody>
+                                        {% for data in filtered_records %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{data.uhid}}</td>
+                                            <td>{{data.admission_no}}</td>
+                                            <td>{{data.admission_date}}</td>
+                                            <td>{{data.first_name}} {{data.mid_name}} {{data.last_name}}</td>
+                                            <td>{{data.age}}/{{data.sex}}</td>
+                                            <td>{{data.doctor_name}}</td>
+                                            <td>{{data.department}}</td>
+                                            <td class="d-none">{{data.mobile_number}}</td>
+                                            <td>{{data.sponsor}}</td>
+                                            <td>{{data.ward}}</td>
+                                            <td class="d-none">{{data.corporate_name}}</td>
+                                            <td>{{data.bed_no}}</td>
+                                            <td class="d-none">{{data.corporate_name}}</td>
+
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <br><br><br><br><br>
+                    {% endblock %}
+                    <script>
+
+                        function printData() {
+                            var mypage = document.getElementById("example");
+                            exportpdf = window.open("");
+                            exportpdf.document.write(mypage.outerHTML);
+                            exportpdf.print();
+                            exportpdf.close();
+                        }
+
+                        function htmlToCSV(html, filename) {
+                            var data = [];
+                            var rows = document.querySelectorAll("table tr");
+
+                            for (var i = 0; i < rows.length; i++) {
+                                var row = [], cols = rows[i].querySelectorAll("td, th");
+
+                                for (var j = 0; j < cols.length; j++) {
+                                    row.push(cols[j].innerText);
+                                }
+
+                                data.push(row.join(","));
+                            }
+
+                            downloadCSVFile(data.join("\n"), filename);
+                        }</script>
+                    <script>function downloadCSVFile(csv, filename) {
+                            var csv_file, download_link;
+
+                            csv_file = new Blob([csv], { type: "text/csv" });
+
+                            download_link = document.createElement("a");
+
+                            download_link.download = filename;
+
+                            download_link.href = window.URL.createObjectURL(csv_file);
+
+                            download_link.style.display = "none";
+
+                            document.body.appendChild(download_link);
+
+                            download_link.click();
+                        }</script>
+                    <script>document.getElementById("download-button").addEventListener("click", function () {
+                            var html = document.querySelector("table").outerHTML;
+                            htmlToCSV(html, "Patient Registration Report.csv");
+                        });</script>
+
+
+                    <!--
+ Export pdf -->
+                    <script type="text/javascript"
+                        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+                    <script type="text/javascript"
+                        src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+                    <script type="text/javascript">
+                        function Export() {
+                            html2canvas(document.getElementById('example'), {
+                                onrendered: function (canvas) {
+                                    var data = canvas.toDataURL();
+                                    var docDefinition = {
+                                        content: [{
+                                            image: data,
+                                            width: 500
+                                        }]
+                                    };
+                                    pdfMake.createPdf(docDefinition).download("Patient Registration Report.pdf");
+                                }
+                            });
+                        }
+                    </script>
+
+                    <!-- <script type="text/javascript">
+
+  function codespeedy(){
+    var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+  }
+</script> -->
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,172 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+th,td{
+    text-align:center;
+}
+
+</style>
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+    <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;"> Detail Bill</a>
+      </div>
+    </nav>
+        <div class="row">
+        <div class="col-12">
+        <div class="card">
+        <div class="card-box mb-0">
+              <div class="header">
+                <div class="body">
+ 
+
+        <!--This for payment receipt print function-->
+        <div id="hello">
+        <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+            <tr style="border-bottom:2px solid #eee;">
+                <td id="s">
+                    <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                        <tr>
+                            <td id="f"><img src="https://bharathbrands.in/images/BHARATHBRANDS-01.png" alt="logo Image" width="180px"></td>
+                            <td>
+                                <div class="" ><br>
+                                    <h2 style="margin: 0 0 10px;">BHARATHBRANDS PRIVATE LIMITED</h2>
+                                    <P>GHANA HEALTH SERVICE,P.O. BOX-23, PEKI V/R</P><br>
+                                    <h4>Detail Bill</h4>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%"id="example">
+
+                        <tr>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">S.No </th>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Item </th>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Item ID's </th>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Amount </th>
+                            <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Date </th>
+                        </tr>
+                        <tr>
+
+                        {% for name,queryset in all_records %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td style="font-weight:60px;"><b>{{name}}</b></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            {% for data in queryset %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                {% if data.medication_id %}
+                                <td>{{data.medication_id}}</td>
+                                <td>{{data.service_charge}}</td>
+                                <td>{{data.date_time}}</td>
+                                {% endif %}
+                                {% if data.investigation_id %}
+                                <td>{{data.investigation_id}}</td>
+                                <td>{{data.service_charge}}</td>
+                                <td>{{data.date_time}}</td>
+                                {% endif %}
+                                {% if data.consultation_id %}
+                                <td>{{data.consultation_id}}</td>
+                                <td>{{data.service_charge}}</td>
+                                <td>{{data.cons_date}}</td>
+                                {% endif %}
+                                {% if data.procedure_id %}
+                                <td>{{data.procedure_id}}</td>
+                                <td>{{data.service_charge}}</td>
+                                <td>{{data.pro_date}}</td>
+                                {% endif %}
+                                {% if data.bed_charge %}
+                                <td>{{data.admission_ID}}</td>
+                                <td>{{data.bed_charge}}</td>
+                                <td>{{data.datetime|date:"M d, Y"}}</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                            {% endfor %}
+                            <tr>
+                                <td><hr></td>
+                                <td><hr></td>
+                                <td><hr></td>
+                                <td><hr></td>
+                                <td><hr></td>
+                                <td><hr></td>
+                                <td><hr></td>   
+                            </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="font-size:20px;"><b>Toatal Amont</b></td>
+                            <td style="font-size:20px;"><b>{{tot_net_amt}}</b></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table><br><br>
+                  <div class="col-sm-6 col-md-4" class="card">
+                     <canvas id="myChart" width="10" height="50" class="card"></canvas>
+                  </div>
+        </div><br><br>
+<button type="button"  onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;">Print</button>
+<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+<script>
+  $('example').margetable({
+  type: 1,
+  colindex: [{
+    index: 1,
+    dependent: [0]
+  }]
+});
+</script>
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+
+
+                </div>
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+{% endblock %}

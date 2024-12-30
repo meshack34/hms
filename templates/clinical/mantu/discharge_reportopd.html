@@ -1,0 +1,229 @@
+
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+    {% block body_block %}
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+input{
+  font-size: 20px;
+
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+  min-width: 200px;
+}
+textarea{
+  width: 200px;
+  font-size: 20px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    text-decoration: underline;
+    color: black;
+}
+.vl {
+  border-left: 6px solid green;
+  height: 500px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top: 0;
+}
+input.dashed {
+  border-bottom: 3px dashed black;
+}
+textarea.form-control {
+  border-bottom: 3px dashed black;
+}
+</style>
+
+<!--This for payment receipt print function-->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+      <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>Discharge Summary</b>
+        </div>
+        <div class="">
+          <button type="submit" class="btn text-light" form="nurse_notes" value="Save"><i class="fas fa-save"></i></button>
+          <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item btn-primary" onclick="printDiv('hello')" value="Print" id="download-button " href="#">Print</a>
+            <!-- <a href="/OT/clinical_notes_records" class="dropdown-item btn-primary"> Records</a> 
+            <a class="dropdown-item btn-primary" id="download-button " href="#">CSV</a> -->
+          </div>
+        </div>
+      </div>
+<div id="hello">
+    <form method="post" id="nurse_notes">
+        {% csrf_token %}
+    <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100% padding: 30px;">
+	<tr>
+		<td>
+			<table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+        <tr>
+
+                <div class="" >
+                    <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                    </center>
+                </div>
+
+        </tr>
+    </table>
+		</td>
+	</tr>
+	    <tr >
+		    <td>
+                <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                    <tr>
+                        <td colspan="8" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;"><b>DISCHARGE SUMMERY</b></h3></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: white;">PATIENT NAME</th>
+                        <td><input type="text" name="patient_name" value="{{name}}" class="dashed" ></td>
+                         <th style="background-color: white;">PANEL</th>
+                        <td><input  class="dashed" type="text" name="panel" value="{{dt.panel}}" ></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: white;">PATIENT CODE</th>
+                        <td><input class="dashed" type="text" name="p_code" value="{{dt.p_code}}"></td>
+                        <th style="background-color: white;">REGN NO</th>
+                        <td><input  class="dashed" type="text" name="regn_no" value="{{dt.uhid}}"></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: white;">GUARDIAN</th>
+                        <td><input  class="dashed" type="text" name="guardian" value="{{dt.father_or_husband_name}}"></td>
+                        <th style="background-color: white;">AGE/SEX</th>
+                        <td><input  class="dashed" type="text" name="age" value="{{dt.age}}Y/{{dt.gender}}"></td>
+                    </tr>
+                  <tr>
+                      <th style="background-color: white;">ADDRESS</th>
+                      <td><input class="dashed" type="text" name="address" value="{{dt.address}}"> </td>
+                      <th style="background-color: white;">ADMITTED ON </th>
+                      <td><input class="dashed" type="text" name="admitted" value="{{dt.registration_date_and_time}}"> </td>
+                  </tr>
+                  <tr>
+                      <th style="background-color: white;">DISCHARGE ON</th>
+                        <td><input class="dashed" type="text" name="discharge_on" value="{{date_field|date:'Y-m-d' }} {{date_field|time:'H:i'}}">
+                      <th style="background-color: white;">SOURECE</th>
+                        <td><input class="dashed" type="text" name="sourece" value="{{dt.sourece}}"></td>
+                  </tr>
+                  <tr>
+                      <th style="background-color: white;">CONSULTANT</th>
+                        <td><input class="dashed" type="text" name="consultant" value="{{records.doctor_name}}"></td>
+                      <th style="background-color: white;">NEXT APP</th>
+                        <td><input class="dashed" type="text" name="next_app" value="{{dt.next_app}}"></td>
+                    </tr>
+                  <tr>
+                      <th style="background-color: white;">WARD</th>
+                        <td colspan="6"><input class="dashed" type="text" name="ward" value="{{dt.ward}}"></td>
+                    </tr>
+                  <tr>
+                      <th style="background-color: white;">DIAGNOSIS</th>
+                        <td><input class="dashed" type="text" name="diagnosis" value="{{dt.diagnosis}}"></td>
+                    </tr>
+                  <tr>
+                      <th style="background-color: white;">ICD DETAILS</th>
+                        <td><input class="dashed" type="text" name="icd_details" value="{{dt.icd_details}}"></td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: white;">ICD Code </th>
+                        <td ><input  class="dashed" type="text" name="icd_code" value="{{dt.icd_code}}"></td>
+                        <th style="background-color: white;">ICD  NAME</th>
+                        <td ><input  class="dashed" type="text" name="icd_name" value="{{dt.icd_name}}"></td>
+                    </tr>
+                      <tr>
+                        <th style="background-color: white;">Drug Allergies</th>
+                        <td><input  class="dashed" type="text" name="drug_allergies" value="{{dt.drug_allergies}}" ></td>
+                      <tr>
+                        <th style="background-color: white;">Chief Complants</th>
+                        <td><input  class="dashed" type="text" name="chief_comp" value="{{dt.chief_comp}}"></td>
+                    </tr>
+                        <tr>
+                        <th style="background-color: white;">Chief Examnination</th>
+                            <td><input  class="dashed" type="text" name="chief_exam" value="{{dt.chief_exam}}"></td>
+
+                        </tr>
+                    <!-- <tr>
+                        <th style="background-color: white;">LAB Investigations</th>
+                    </tr> -->
+<!--                    <tr>-->
+<!--                            <td><textarea  class="dashed" name="doctor_notes" rows="2" cols="50">{{dt.doctor_notes}}</textarea></td>-->
+<!--                    </tr>-->
+                    <!-- <tr> -->
+                      <!-- <table class="table table-stripped table-highlight">
+            <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Service Name</th>
+                <th>ranges</th>
+                <th>value</th>
+                <th>Unit</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if lab_records %}
+                {% for data in lab_records %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{data.service_name}}</td>
+                    <td>{{data.range}}</td>
+                    <td>{{data.value}}</td>
+                    <td>{{data.units}}</td>
+                    <td>{{data.status}}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="6"><center> <h4> Lab Insvestigation Not Completed </h4></center></td>
+            </tr>
+
+              {% endif %}
+            </tbody>
+        </table> -->
+<!-- 
+                    </tr>
+                    <tr>
+                       <th style="background-color: #eee;">Other Investigations</th>
+                    </tr>
+                    <tr>
+                </table> -->
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+{% endblock %}
+
+

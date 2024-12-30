@@ -1,0 +1,266 @@
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% block body_block %}
+<br>
+<div class="hero">
+
+  <div class="outer" >
+<div class="container" style="margin:auto;display:block;">
+  <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+    <div class="center" style="background-color: white; ">
+      <div class="card" style="padding: 20px;"><br>
+
+      {% if success %}
+      <div class="booked_details">
+        <h1>Successfully Booked</h1>
+        <h3>appointment details</h3>
+        <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Appoitment Id</th>
+      <th scope="col">Patient Name</th>
+      <th scope="col">Phone Number</th>
+      <th scope="col">Email Id</th>
+      <th scope="col">Scheduled Date & Time</th>
+      <th scope="col">Payment Mode</th>
+      <th scope="col">Download</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{appointment_id}}</td>
+      <td>{{patient_name|title}}</td>
+      <td>{{phone}}</td>
+      <td>{{email}}</td>
+      <td>{{schedule_time}}</td>
+      <td>{{payment}}(Pay At Hospital)</td>
+      <td><a href="#">Download Appointment</a></td>
+    </tr>
+    </tbody>
+</table><br><br>
+
+<br><br>
+        <a href="booking_detail">Go To Home</a>
+      </div>
+      {% else %}
+      <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6" style="background-color: rgb(20, 42, 136); ">
+              <div class="header">
+              <div class="card">
+                <h4> <i class="fas fa-arrow-left"></i>&nbsp; &nbsp;&nbsp; &nbsp;Appointment Details</h4>
+                <h4> <i class="fas fa-stethoscope"></i>&nbsp; &nbsp;&nbsp; &nbsp;Internal Medicine</h4>
+                <h4> <i class="fas fa-map-marker-alt"></i>&nbsp; &nbsp;&nbsp; &nbsp;{{doctor_name}},{{doctor_location}}</h4>
+                <h4><i class="fas fa-notes-medical"></i>&nbsp; &nbsp;&nbsp; &nbsp;In-Hospital Consultation</h4>
+                <h4><i class="far fa-calendar-alt"></i>&nbsp; &nbsp;&nbsp; &nbsp;{{doctor_appointment}}</h4>
+                <h4><i class="fas fa-wallet"></i>&nbsp; &nbsp;&nbsp; &nbsp;Rs.{{without_discount}}</h4><br>
+                  <table>
+                      <tr>
+                        <td><img src="media/{{doctor_profile_image}}" alt="..." style="width:64px;height:64px;"></td>
+                        <td>
+                          Dr.{{doctor_name}}<br>
+                          <strong>{{doctor_department}}</strong>
+                        </td>
+                      </tr>
+                    </table>
+
+              </div>
+          </div>
+          </div><br><br>
+            <p><b>Details of the patient for whom appointment is being booked:</b></p>
+            <form method="POST" action="success-booked">
+              {% csrf_token %}
+              <div class="col-auto" style="width:50%;" >
+                <label  for="inlineFormInputGroup">Patient Name</label>
+                <div class="input-group mb-2" style="margin-left:-0px;display:auto;">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text" >
+                       <select name="sub" id="sub" style="background-color:#eee;border:1px solid #eee;">
+                          <option value="Mr.">Mr.</option>
+                          <option value="Ms.">Ms.</option>
+                          <option value="Mrs.">Mrs.</option>
+                      </select>
+                    </div>
+                  </div>
+                  <input type="text" class="form-control" name="patient_name" id="inlineFormInputGroup" placeholder="Name" value="{{name}}" >
+                </div>
+              </div>
+                <p>Gender*</p>
+                          <input type="radio" name="gender" value="Male" class="btn btn-primary" required class="form-control">&nbsp;Male&nbsp;
+                          <input type="radio" name="gender" value="Female" class="btn btn-primary" required class="form-control">&nbsp;Female&nbsp;
+                          <input type="radio" name="gender" value="Other" class="btn btn-primary" required>&nbsp;Other&nbsp;
+                            <!-- <a href="#"><button type="button" class="btn btn-primary"> Male </button></a>
+                            <a href="#"><button type="button" class="btn btn-lite"> Female </button></a>
+                            <a href="#"><button type="button" class="btn btn-lite"> Transgender </button></a> -->
+
+                            <br><label for="age">Age</label>
+                            <input type="number"  class="form-control" name="age" id="age" size="5" placeholder="Age" required style="width:50%">
+                            <br>
+                <p align="right" style="width:50%;">
+                  <a href="#">
+                    <i class="fas fa-plus btn btn-info"   style="font-size: 22px;" data-toggle="modal" data-target="#myModal">Add Members</i>
+                  </a>
+                </p>
+                {% if records_of_members %}
+                <div class="member_body">
+                  <h2>Your members</h2>
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Patient Name</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Mobile Number</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">choosed</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for data in records_of_members%}
+                      <tr>
+                        <td>{{data.title_name}}&nbsp;{{data.patient_name}}</td>
+                        <td>{{data.gender}}</td>
+                        <td>{{data.age}}</td>
+                        <td>{{data.mobile_number}}</td>
+                        <td>{{data.email}}</td>
+                        <td><input type="radio" name="add_this_member" value="{{data.mobile_number}}"></td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                {% endif %}
+                <p>Patient's Mobile No.*</p>
+                <input type="text" name="phone" class="form-control" placeholder="Mobile Number" required style="width:50%" value="{{mobile_number}}" readonly>
+                <br>
+                <p>Email ID</p>
+                <input type="email" name="email" class="form-control" placeholder="Enter e-mail id" style="width:50%" required>
+                <label for="scheduled">Your Scheduled Date and Time</label>
+                <input type="text" name="schedule_time" class="form-control" id="scheduled" placeholder="Enter e-mail id" style="width:50%" value="{{doctor_appointment}},{{scheduled}}" readonly>
+
+                <p><b>Please select a payment method*:</b></p>
+
+
+                    <div class="col-xs-10 col-sm-10 col-md-6 col-lg-6" style="background-color: rgb(20, 42, 136); ">
+                        <div class="header">
+                          <div class="card">
+                       <table>
+                        <tr>
+                            <td><input type="radio" id="patient2" name="payment" ONCLICk="ShowRadioButtonDiv('patient',2)" value="online_payment" required></td>
+                            <td> <label for="payment"><p>&nbsp; &nbsp;Pay Now &nbsp; &nbsp;<b>&#8377;{{with_discount}}</b></p>
+
+                        <p>&nbsp; &nbsp;Get 10% discount on online payment</p></label></td>
+                        </tr>
+                    </table>
+                          </div>
+                       </div>
+                    </div> <br>
+                    <div class="col-xs-10 col-sm-10 col-md-6 col-lg-6" style="background-color: rgb(20, 42, 136); ">
+                        <div class="header">
+                          <div class="card">
+                               <table>
+                        <tr>
+                            <td> <input type="radio" id="patient1" name="payment" ONCLICk="ShowRadioButtonDiv('patient',2)" value="offline_payment" required></td>
+                            <td><p></p><label for="payment"><p>&nbsp; &nbsp;Pay at Hospital &nbsp; &nbsp;<b>&#8377;{{without_discount}}</b></p>
+                       </label></td>
+                        </tr>
+                    </table>
+                           <br>
+                          </div>
+                       </div>
+                    </div>
+
+                <br> <p>Benifits for panel patient are not applicable on OPD.</p>
+
+                <input type="checkbox" id="condition" name="condition" value="condition" required>
+                <label for="condition"> As per TRAI guideline, allow us to call for the furture assistance. To read T&C&nbsp</label>
+                <!-- <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" style="width:50%;">Get Appointment</button>
+                <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" style="width:50%;">Pay Now</button> -->
+                <DIV id="patient1Div" style="display: none;">
+          <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" style="width: 50%;">Get Appointment</button>
+          </DIV>
+          <DIV id="patient2Div" style="display: none;">
+            <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" style="width: 50%;">Pay Now & Get Appoitment</button>
+          </DIV>
+            </form>
+            <br>
+      <script>
+        function ShowRadioButtonDiv(idBaseName,NumberOfButtons) {
+          for(x=1;x<=NumberOfButtons;x++){
+            CheckThisButton = idBaseName + x;
+            ThisDiv = idBaseName + x + 'Div';
+            if
+            (document.getElementById(CheckThisButton).checked)
+            {
+              document.getElementById(ThisDiv).style.display = "block";
+            }
+            else {
+              document.getElementById(ThisDiv).style.display = "none";
+            }
+          }
+          return false;
+          }
+
+      </script>
+      {% endif %}
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!--MOdel-->
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+      <!--Modal content-->
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title">Add Family Members</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                  <form role="form" action="/booking_detail" class="clearfix row" method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="form-group col-md-6">
+                        <label for="exampleInputEmail1">Title</label>
+                        <select class="form-control m-bot15" name="title" required>
+                            <option value="Mr." >Mr.</option>
+                            <option value="Ms." >Ms.</option>
+                            <option value="Mrs." >Mrs.</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-6">
+                          <label for="exampleInputEmail1"> Patient Name</label>
+                          <input type="text" class="form-control" name="patient_name" id="pname" value='' placeholder="Patient Name" required>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="exampleInputEmail1">Gender</label>
+                        <select class="form-control m-bot15" name="gender" value='' required>
+                            <option value="Male" >Male</option>
+                            <option value="Female" >Female</option>
+                            <option value="Others" >Others</option>
+
+                        </select>
+                    </div>
+                      <div class="form-group col-md-6">
+                          <label for="exampleInputEmail1"> Age</label>
+                          <input type="number" class="form-control" name="age" id="age" placeholder="Patient Age" required>
+                      </div>
+                      <div class="form-group col-md-6">
+                          <label for="exampleInputEmail1"> Patient Mobile Number</label>
+                          <input type="number" class="form-control" name="mobile_number" id="pnum"value="{{mobile_number}}" readonly>
+                      </div>
+                      <div class="form-group col-md-6">
+                          <label for="exampleInputEmail1"> Email</label>
+                          <input type="email" class="form-control" name="email" id="email" value='' placeholder="Enter Email" required>
+                      </div>
+                      <div class="form-group col-md-12">
+                          <button type="submit" name="add_member" class="btn btn-info pull-right"> Submit</button>
+                      </div>
+                  </form>
+
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

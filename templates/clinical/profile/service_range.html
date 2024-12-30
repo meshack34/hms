@@ -1,0 +1,163 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <button type="menu" style="font-family: monospace; width: 100%; text-align: left;"
+            class="btn btn-primary m-t-15 waves-effect"> <b>Service Test</b></button><br><br>
+        <div class="card" style="padding: 30px;">
+            <div>
+                <form method="post">
+                    {% csrf_token %}
+                    {% if sevice_records %}
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label> Test Name</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="test_name" class="form-control" value="{{sevice_records.service_name}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Infant</label>
+                            </div>
+                            <div class="col-md-4">
+                                        <input type="text" name="infant_mini_range" class="form-control">
+                                  
+                            </div>
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Child</label>
+                            </div>
+                            <div class="col-md-4">
+                                        <input type="text" name="chield_max_range" class="form-control">
+                                   
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Male</label>
+                            </div>
+                            <div class="col-md-4">
+                                        <input type="text" name="male_max_range" class="form-control">
+                                  
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Female</label>
+                            </div>
+                            <div class="col-md-4">
+                                        <input type="text" name="female_max_range" class="form-control">
+                                  
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label> Units</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="units" class="form-control" value="{{sevice_records.unit}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label> methodology</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="methodology" class="form-control" value="{{sevice_test_records.methodology}}">
+                            </div>
+                        </div>
+                        <br>
+                        {% endif %}
+                        {% if sevice_test_records %}
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label> Test Name</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="test_name" class="form-control" value="{{sevice_test_records.test_name}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Infant</label>
+                            </div>
+                            <div class="col-md-4">
+                                        <input type="text" name="infant_mini_range" class="form-control" value="{{sevice_test_records.infant_range}}">
+                                 
+                            </div>
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Child</label>
+                            </div>
+                            <div class="col-md-4">
+                          
+                                        <input type="text" name="chield_max_range" class="form-control" value="{{sevice_test_records.chield_range}}">
+                                   
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Male</label>
+                            </div>
+                            <div class="col-md-4">
+                                        <input type="text" name="male_max_range" class="form-control" value="{{sevice_test_records.male_range}}">
+                                  
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Female</label>
+                            </div>
+                                    <div class="col-md-6">
+                                        <input type="text" name="female_max_range" class="form-control" value="{{sevice_test_records.female_range}}">
+                                   
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label> Units</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="units" class="form-control" value="{{sevice_test_records.units}}">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label> methodology</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="methodology" class="form-control" value="{{sevice_test_records.methodology}}">
+                            </div>
+                        </div>
+                        <br>
+                        {% endif %}
+                    
+                    <button type="submit" class="btn btn-success" style="align-left: 50px;"> <i
+                            class="fas fa-save">&nbsp;Save</i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

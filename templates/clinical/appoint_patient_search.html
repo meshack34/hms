@@ -1,0 +1,164 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+
+    <style>
+        /* Style the container for the input */
+        .input-container {
+            position: relative;
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        /* Style the input box */
+        .input-box {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        /* Style the placeholder text */
+        .input-box::placeholder {
+            color: #3498db;
+        }
+
+        /* Style the search button (optional) */
+        .search-button {
+            right: 10px;
+            transform: translateY(-50%);
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Style the search button on hover (optional) */
+        .search-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="box-outer" >
+                        <div id="Patient_R" class="h-140" style="width: 100%;" >
+                            <div class="patient-registration">
+                              <div class="top-heading lightgreen_bg">
+                                <h3 class="section_title"> Appointment Patient List</h3>
+                              </div>
+                              <div class="container-fluid">
+                              <form method="POST">
+                                {% csrf_token %}
+                                <div class="row">
+                                  <div class="container">
+                                    <div class="row">
+                                      <div class="col-md-2">
+                                        <div class="form-group">
+                                          <label for="reg-no"><b>Appointment ID</b> </label>
+                                            <input type="text" class="input-box"  placeholder="Enter your Appointment ID..." id="reg-no"  name="appointmnt">
+                                        </div>
+                                      </div>
+                                      <div class="col-md-3">
+                                        <div class="form-group">
+                                          <label for="patient-name"><b>Patient Name</b></label>
+                                            <input type="text" class="input-box"  placeholder="Enter your name..." id="patient-name"  name="patient_name">
+                                        </div>
+                                      </div>
+                                      <div class="col-md-3">
+                                        <div class="form-group">
+                                          <label for="mobile-no"><b>Mobile No.</b></label>
+                                            <input type="tel" name="mobile_number" class="input-box"  placeholder="Enter your Mob No..." id="id_mobile_number">
+                                        </div>
+                                      </div>
+                                      <div class="col-md-4 mr-0 ml-auto pl-2 pr-2"><br>
+                                        <div class="form-group butns text-right">
+                                          <button type="submit" class="search-button border-0 p-2 text-white" name="button"><i class="fa fa-hand-pointer" aria-hidden="true">&nbsp; Search</i></button>
+                                         <a href="/patient_search"><button type="button" class="search-button border-0 p-2 text-white" name="appointment_pat">Registrated Patients</button></a>
+                                         <a href="/patient_registration"><button type="button" class="search-button border-0 p-2 text-white" name="button">Add</button></a>
+                                       </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+
+
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="register_record">
+                                    <table class="datatable table table-stripped">
+                                      <tr style="background:#d1dae6;">
+                                        <th>SI.No</th>
+                                        <th>Appointment ID</th>
+                                        <th>Appointment Date</th>
+                                        <th>Patient Name</th>
+                                        <th>Age/Gender</th>
+                                        <th>Mobile No</th>
+<!--                                        <th>Action</th>-->
+                                      </tr>
+
+                                       {% for data in records1 %}
+                                       <tr>
+                                        <td>{{forloop.counter}}</td>
+                                         <td><a href="/appoint_patient_register/{{data.patient_appointment_id}}"> {{data.patient_appointment_id}}</a></td>
+                                         <td>{{data.patient_appointment_date}}</td>
+                                         <td>{{data.first_name}}&nbsp;{{data.middle_name}}&nbsp;{{data.last_name}}</td>
+                                         <td>{{data.patient_age}}/{{data.patient_gender}}</td>
+                                         <td>{{data.patient_mobile_number}}</td>
+<!--                                         <td>-->
+<!--                                           <div class="dropdown">-->
+<!--                                             <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>-->
+<!--                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+<!--                                              {% if 'patient_registration_edit' in access.user_profile.screen_access or request.user.is_superuser %}-->
+<!--                                               <a class="dropdown-item" href="/patient_search_edit/{{data.uhid}}">Update</a>-->
+<!--                                               {% endif %}-->
+<!--                                               {% if 'patient_registration_delete' in access.user_profile.screen_access or request.user.is_superuser %}-->
+<!--                                               <a class="dropdown-item" href="/patient_search_delete/{{data.uhid}}">Delete</a>-->
+<!--                                               {% endif %}-->
+
+<!--                                             </div>-->
+<!--                                           </div>-->
+<!--                                         </td>-->
+                                       </tr>
+                                       {% endfor %}
+                                    </table>
+                                    <nav aria-label="Page navigation example" class="d-flex align-items-center justify-content-end">
+                                      <ul class="pagination">
+                                        <li class="page-item">
+                                          <a class="page-link" href="#!" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                          </a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#!">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                                        <li class="page-item">
+                                          <a class="page-link" href="#!" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                          </a>
+                                        </li>
+                                      </ul>
+                                    </nav>
+                                  </div>
+                                </div>
+                              </div>
+
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+{% endblock  %}

@@ -1,0 +1,361 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+
+    </style>
+{% endblock  %}
+{% block body_block %}
+
+
+
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <button type="menu" style="font-family: monospace; width: 100%; text-align: left;" class="btn btn-primary m-t-15 waves-effect"> <b>PO Item Details Report</b></button>
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+           <div class="card">
+               <div class="header">
+       <div class="body">
+        <form  method="post" >
+            {% csrf_token %}
+        <div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/PO_approval_preview" class="btn btn-warning" name ="after_approval" value="after_approval"> <i class="fa fa-print">PreView</i></a>&nbsp;
+            <button type="submit" value="Approved" onclick="Approvedmsg()" name="Approve" class="btn btn-success"><i class="fa fa-check" aria-hidden="true">Approve</i></button>&nbsp;
+            <!-- <button class="btn btn-primary btn-lg" type="button">Send Mail</button>&nbsp;&nbsp;&nbsp; -->
+
+
+            <div class="col-md-0">
+            <button type="reset" class="btn btn-primary"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+            </div>
+            <div class="col-md-0">
+                <button type="button" class="btn btn-danger"><a href='/'><i class="fas fa-times-circle" style="color:white;">Exit</i></a></button>
+            </div>
+
+        </div><br>
+
+           <div class="table-responsive">
+             <table class="datatable table table-stripped ">
+
+                   <thead>
+                       <tr>
+                            <th>SI.NO</th>
+                           <th>PO.No</th>
+                           <th>DateTime</th>
+                           <th>ItemName</th>
+                           <th>Quantity</th>
+                           <th>Stock Qty</th>
+                           <th>Rate</th>
+                           <th>Discount</th>
+                           <th>Amount</th>
+                           <th>Edit</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                     {% for data in records %}
+                     <tr>
+                            {% csrf_token %}
+                         <td>{{forloop.counter}}</td>
+                         <td><input type="hidden" style="background-color: white;" name="po_id"  id="po_id" value="{{data.PO_Id}}" class="form-control">
+                            <input type="hidden" style="background-color: white;" name="id"  id="id" value="{{data.id}}" class="form-control">{{data.PO_Id}}</td>
+                         <td name="date" id="date">{{data.PO_datetime}}</td>
+                         <td ><input type="hidden" style="background-color: white;" name="itemid" id="itemid" list="item" value="{{data.item_id}}" class="form-control">{{data.item_id}}</td>
+                         <td><input type="text" style="background-color: white;" name="quantity" id="quantity" value="{{data.qty}}" class="form-control"></td>
+                         <td name="stock" id="">{{data.stocy_qty}}</td>
+                         <td><input type="text" style="background-color: white;" name="rate" id="rate" value="{{data.rate}}" class="form-control"></td>
+                         <td><input type="text" style="background-color: white;" name="discount" id="discount" class="form-control" value="{{data.discount}}"></td>
+                         <td><input type="text" style="background-color: white;"  name="amount" id="amount" class="form-control" value="{{data.amount}}"></td>
+                         <td><button class="btn btn-primary" id="edit"><i class="fas fa-edit"></i></button></td>
+                        </tr>
+                        </form>
+                         {% endfor %}
+                         <datalist id = "item">
+                            {% for data in item_name %}
+                            <option value="{{data.item_name}}">{{data.item_name}}</option>
+                            {% endfor %}
+                         </datalist>
+                    </tbody>
+
+           </table>
+           </div>
+        <!-- </form> -->
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Add Modal -->
+
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+<style>
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600);
+
+
+
+
+
+#contact input[type="text"], #contact input[type="email"], #contact input[type="tel"], #contact input[type="url"], #contact textarea, #contact button[type="submit"] { font:400 12px/16px "Open Sans", Helvetica, Arial, sans-serif; }
+
+#contact {
+background:#F9F9F9;
+padding:25px;
+margin:50px 0;
+}
+
+#contact h3 {
+color: #F96;
+display: block;
+font-size: 30px;
+font-weight: 400;
+}
+
+#contact h4 {
+margin:5px 0 15px;
+display:block;
+font-size:13px;
+}
+
+fieldset {
+border: medium none !important;
+margin: 0 0 10px;
+min-width: 100%;
+padding: 0;
+width: 100%;
+}
+
+#contact input[type="text"], #contact input[type="email"], #contact input[type="tel"], #contact input[type="url"], #contact textarea {
+width:100%;
+border:1px solid #CCC;
+background:#FFF;
+margin:0 0 5px;
+padding:10px;
+}
+
+#contact input[type="text"]:hover, #contact input[type="email"]:hover, #contact input[type="tel"]:hover, #contact input[type="url"]:hover, #contact textarea:hover {
+-webkit-transition:border-color 0.3s ease-in-out;
+-moz-transition:border-color 0.3s ease-in-out;
+transition:border-color 0.3s ease-in-out;
+border:1px solid #AAA;
+}
+
+#contact textarea {
+height:100px;
+max-width:100%;
+resize:none;
+}
+
+#contact button[type="submit"] {
+cursor:pointer;
+width:100%;
+border:none;
+background:#0CF;
+color:#FFF;
+margin:0 0 5px;
+padding:10px;
+font-size:15px;
+}
+
+#contact button[type="submit"]:hover {
+background:#09C;
+-webkit-transition:background 0.3s ease-in-out;
+-moz-transition:background 0.3s ease-in-out;
+transition:background-color 0.3s ease-in-out;
+}
+
+#contact button[type="submit"]:active { box-shadow:inset 0 1px 3px rgba(0, 0, 0, 0.5); }
+
+#contact input:focus, #contact textarea:focus {
+outline:0;
+border:1px solid #999;
+}
+::-webkit-input-placeholder {
+color:#888;
+}
+:-moz-placeholder {
+color:#888;
+}
+::-moz-placeholder {
+color:#888;
+}
+:-ms-input-placeholder {
+color:#888;
+}
+
+</style>
+
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function Approvedmsg() {
+      alert("Approved");
+    }
+    </script>
+
+<script>
+    $(document).ready(function () {
+
+        $(document).on('click', '#edit', function () {
+
+    var dumy = this;
+    po_id = $(dumy).closest('tr').find('#id').val();
+    item = $(dumy).closest('tr').find('#itemid').val();
+    qty = $(dumy).closest('tr').find('#quantity').val();
+    rate = $(dumy).closest('tr').find('#rate').val();
+    discount = $(dumy).closest('tr').find('#discount').val();
+    amount = $(dumy).closest('tr').find('#amount').val();
+    url="{% url 'PO_pending_edit' %}";;
+    var headers = {'X-CSRFToken': '{{csrf_token}}'}
+    $.ajax({
+              url:url,
+              type: "post",
+              data: {
+                id1 :po_id,
+                item:item,
+                quantity :qty,
+                rate :rate,
+                discount :discount,
+                amount :amount,
+              },
+              headers:headers,
+              dataType : 'json',
+              success: function(data){
+                alert(data);
+
+              },
+              error:function(data)
+              {
+                  console.log(data);
+              }
+            });
+    alert(url)
+    });
+ });
+    </script>
+
+
+<script>
+    $(document).ready(function () {
+
+      $(document).on('keyup', '#quantity', function () {
+        var qty = this.value;
+        var rate = $('#rate').val();
+        if (rate == 0){
+          var amount1 = 0;
+        }else{
+          var amount1 = qty * rate;
+        }
+
+        $('#amount').val(amount1);
+
+      });
+
+      $(document).on('keyup', '#rate', function () {
+        var rate = this.value;
+        var qty = $('#quantity').val();
+        var amount1 = qty * rate;
+
+        $('#amount').val(amount1);
+
+      });
+
+      $(document).on('keyup', '#schema', function () {
+        var qty = $('#qty').val();
+        var rate = $('#rate').val();
+        var schema = $('#schema').val();
+        var amount = $('#amount').val();
+        var amount1 = qty * rate
+        var schema_cal = (amount1 * schema) / 100;
+        var amount1 = amount - schema_cal;
+
+        $('#amount').val(amount1);
+
+      });
+
+      $(document).on('keyup', '#discount', function () {
+        var amount = $('#amount').val();
+        var discount = $('#discount').val();
+        var qty = $('#quantity').val();
+        var rate = $('#rate').val();
+        var discount1 = qty * rate * discount
+        var discount_amount = parseInt(parseFloat(discount1 / 100));
+        var amount1 = amount - discount_amount;
+        var amount3 = parseFloat(amount1);
+        var amount2 = parseInt(amount3);
+        $('#amount').val(amount2);
+
+      });
+
+      $(document).on('keyup', '#tax_details', function () {
+        var tax = $('#tax_details').val();
+        var qty = $('#qty').val();
+        var amount1 = $('#amount').val();
+        var rate = $('#rate').val();
+        var amount = qty * rate;
+        var tax_amount = (amount * tax) / 100;
+        var tax_detail = parseInt(amount1) + parseInt(tax_amount);
+        $('#amount').val(tax_detail);
+
+      });
+
+    });
+  </script>
+
+
+	<script>
+		$(document).ready(function() {
+			$('#mail').on('change', function() {
+				// var form_data = new FormData($('form')[0]);
+                var file = this.files[0];
+                var formData = new FormData();
+                formData.append('file', file);
+                url=$("#mail").attr("data-cities-url");
+                var headers = {'X-CSRFToken': '{{ csrf_token }}' }
+                alert(url)
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers:headers,
+                    success: function(data) {
+
+                    alert('Mail send successfully!');
+                    },
+                    error: function(xhr, status, error) {
+                    console.error(error);
+                    alert('An error occurred while uploading the file.');
+                    }
+                });
+
+
+			});
+		});
+	</script>
+
+
+
+{% endblock  %}

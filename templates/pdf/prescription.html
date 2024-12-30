@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <title>Prescription Report</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <style>
+        section {
+            max-width: 50rem;
+            border: 1px solid;
+        }
+
+    </style>
+</head>
+<body>
+<section class="p-4 m-5">
+    <div class="title p-3">
+        <h2 class="fw-bold text-center border-bottom">Patient Prescription Report</h2>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div>
+                <span class="fw-bold">Name:</span>
+                <span class="dashes">{{patient_name}}</span>
+            </div>
+            <div>
+                <span class="fw-bold">UHID:</span>
+                <span class="dashes">{{uhid}}</span>
+            </div>
+              <div>
+                <span class="fw-bold">Visit ID:</span>
+                <span class="dashes">{{visit_id}}</span>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="vitals mb-4">
+        <h4 class="fw-bold">Vital Signs</h4>
+        <div>
+            <div class="d-flex justify-content-between mb-4">
+                <div>
+                    <span class="fw-bold">SBP:</span>
+                    <span class="dashes">{{vitals.dia_bp}}</span>
+                </div>
+                <div>
+                    <span class="fw-bold">DBP:</span>
+                    <span class="dashes">{{vitals.dia_bp}}</span>
+                </div>
+                <div>
+                    <span class="fw-bold">Temp:</span>
+                    <span class="dashes">{{vitals.temp}}</span>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mb-4">
+                <div>
+                    <span class="fw-bold">PR:</span>
+                    <span class="dashes">{{vitals.temp}}</span>
+                </div>
+                <div>
+                    <span class="fw-bold">HR:</span>
+                    <span class="dashes">{{vitals.temp}}</span>
+                </div>
+                <div>
+                    <span class="fw-bold">Urine OP:</span>
+                    <span class="dashes">{{vitals.temp}}</span>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mb-4">
+                <div>
+                    <span class="fw-bold">BS(F):</span>
+                    <span class="dashes">____________________________</span>
+                </div>
+                <div>
+                    <span class="fw-bold">BS(F):</span>
+                    <span class="dashes">____________________________</span>
+                </div>
+                <div>
+                    <span class="fw-bold">SPO:<sup>2</sup></span>
+                    <span class="dashes">____________________________</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="allergies mb-3">
+        <span class="fw-bold">Allergies </span> <span class="dashes">__________________________________________</span>
+    </div>
+
+    <div class="Complaint mb-3">
+        <span class="fw-bold">Presenting Complaint </span> <span>{{ complaints.presenting_comp }}</span>
+    </div>
+
+    <div class="complaint mb-3">
+        <span class="fw-bold">Initial Complaint </span> <span
+            class="dashes">{{complaints.initial_comp}}</span>
+    </div>
+
+    <div class="complaint py-3">
+        <p class="fw-bold fs-5">History & Examination </p>
+        <div>
+            <p>
+                <span class="fw-bold">B.P. </span> <span
+                    class="dashes">{{triage_info.past_diabetes|default:""}}</span>
+            </p>
+            <p>
+                <span class="fw-bold">Diabetic </span> <span
+                    class="dashes">{{triage_info.past_diabetes}}</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="diagnosis mb-3">
+        <span class="fw-bold">Investigation </span> <span
+            class="dashes">___________________________________________</span>
+    </div>
+
+    <div class="diagnosis mb-3">
+        <span class="fw-bold">Medicine </span> <span class="dashes">___________________________________________</span>
+    </div>
+
+    <div class="diagnosis mb-3">
+        <span class="fw-bold">Advise </span> <span class="dashes">___________________________________________</span>
+    </div>
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+</body>
+</html>

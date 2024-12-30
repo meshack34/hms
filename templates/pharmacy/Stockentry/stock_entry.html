@@ -1,0 +1,126 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+  .form-control {
+    border: 2px solid white;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid black;
+  }
+
+  #id_from_date,
+  #id_to_date,
+  #id_Store,
+  #id_MRP,
+  #id_Expiry_Date,
+  #id_Pysical_Qty,
+  #id_GST,
+  #id_CGST,
+  #id_SGST,
+  #id_IGST,
+  #id_Remark {
+    border: 2px solid rgb(233, 233, 233);
+    width: 100%;
+    background-color: rgb(233, 233, 233);
+    border-bottom: 1px solid black;
+  }
+</style>
+{% endblock %}
+{% block body_block %}
+
+<!-- content -->
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+      <div>
+        <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+        <b>Stock Entry</b>
+      </div>
+      <div class="">
+        <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+        <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+        <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a href="/view_grn_edit" class="dropdown-item btn-primary">View</a>
+          <a href='/Without_PO' class="dropdown-item btn-primary w-100 mt-2">Without-PO</i></a>
+          <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+          <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+          
+        </div>
+      </div>
+    </div>
+
+    <form method="post">      
+        <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" id="filter_card"><br>
+          {% csrf_token %}
+          <div class="form-row pb-3">
+            <div class="form-group col-md-2 mb-0">
+              <label><b>PO ID</b></label>
+              <input type="text" name="po_no" class="form-control" required>
+            </div>
+            <div class=" col-md-1"><br>
+              <button type="submit" name="search_po" value="search_po" class="btn btn-warning w-100 mt-2"><i
+                  class="fa fa-search pr-2"></i>Search</button>
+            </div>
+            <div class=" col-md-1"><br>
+              &nbsp;
+            </div>
+          </div>
+        </div>
+    </form>
+
+<div class="table-responsive ">
+  <table class="datatable table-bordered table table-stripped">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>PO No.</th>
+        <th>Date Time</th>
+        <th>Location Name</th>
+        <th>Vendor Name</th>
+        <th>Department Name</th>
+        <th>Net Amount</th>
+        <th>Basic Amount</th>
+        <th>View</th>
+
+      </tr>
+    </thead>
+    {% for data1,data2 in stock_entry%}
+    <tbody>
+
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td><b>{{data1.PO_id}}</b></td>
+        <td>{{data1.PO_datetime}}</td>
+        <td>{{data1.po_location}}</td>
+        <td>{{data1.vendar_id.vendor_name}}</td>
+        <td>{{data1.Department}}</td>
+        <td>{{data1.net_amount}}</td>
+        <td>{{data1.basic_amt}}</td>
+        <td><a class="btn btn-primary" href="/search_single_PO/{{data1.PO_id}}"><i class="fa fa-hand-pointer"
+              aria-hidden="true"></i></a>
+        </td>
+      </tr>
+
+    </tbody>
+    {% endfor %}
+
+  </table>
+</div>
+
+<script>
+  function toggleVisibility() {
+    var demoElement = document.getElementById('filter_card');
+    
+    if (demoElement.style.display === 'none') {
+      demoElement.style.display = 'block'; // Show the element
+    } else {
+      demoElement.style.display = 'none';  // Hide the element
+    }
+  }
+</script>
+{% endblock %}

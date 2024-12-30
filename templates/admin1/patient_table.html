@@ -1,0 +1,124 @@
+{% extends 'admin1/base.html' %}
+{% block body_block %}
+<!--Main Content-->
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="card-box mb-0">
+        <h6 class="card-title text-bold">Patient</h6>
+    <!--Trigger Modal-->
+    <a href="#">
+        <button type="button" class="btn btn-info" style="float: right;" data-toggle="modal" data-target="#myModal" >Add Patient</button>
+    </a><br><br>
+    <!--Modal-->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!--Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Patient</h4>
+
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" action="/patient_table" class="clearfix row" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1">  Name</label>
+                                <input type="text" class="form-control" name="pname" id="pname" value='' placeholder="">
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1"> Email ID</label>
+                                <input type="email" class="form-control" name="pemail" id="pemail" value='' placeholder="">
+                            </div>
+
+
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1"> Mobile No</label>
+                                <input type="number" class="form-control" name="pmobile" id="pmobile" value='' placeholder="">
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1"> Last Visit</label>
+                                <input type="date" class="form-control" name="plvisit" id="plvisit" value='' placeholder="">
+                            </div>
+
+
+
+
+
+                            <div class="form-group col-md-12">
+                                <button type="submit" name="submit" class="btn btn-info pull-right"> Submit</button>
+                            </div>
+
+                        </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <div class="card">
+                    <div class="header">
+
+            <div class="body">
+                <div class="table-responsive">
+                  <table class="datatable table table-stripped ">
+                        <thead>
+                            <tr><th>S.no</th>
+                                <th> Name</th>
+                                <th>Email ID</th>
+                                <th>Mobile no.</th>
+                                <th>last Visit</th>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% for i in var2 %}
+                                <td>{{i.id}}</td>
+                                <td>{{i.pname}}</td>
+                                <td>{{i.pemail}}</td>
+                                <td>{{i.pmobile}}</td>
+                                <td>{{i.plvisit}}</td>
+                                <td>
+                                    <div class="content">
+                                    <button class="btn"><i class="fa fa-user" style="font-size: 24px;color:green"></i></button>
+                                    <button class="btn">
+                                        <a href="patient_table_edit/{{i.id}}">
+                                            <i class="fa fa-edit" style="font-size: 24px;color:blue"></i>
+                                        </a>
+                                    </button>
+                                    <button class="btn">
+                                        <a href="patient_table_delete/{{i.id}}">
+                                            <i class="fa fa-trash" style="font-size: 24px;color:red"></i>
+                                        </a>
+                                    </button>
+                                    </a></div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                         </tbody>
+
+                </table>
+                </div>
+            </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+{% endblock %}

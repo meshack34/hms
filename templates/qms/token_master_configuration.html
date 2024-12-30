@@ -1,0 +1,153 @@
+{% extends 'qms/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+    table,th,td{
+        border: 1 solid black;
+
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+{% load crispy_forms_tags %}
+
+   <!-- content -->
+   <div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+<!-- Main Dashboard -->
+<div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+    <div>
+      <a href="/OT/OT_dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+      <b>Token Master Configuration</b>
+    </div>
+    <div class="">
+      <!-- <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a> -->
+      <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+      <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" onclick="codespeedy()" href="#">PDF</a>
+        <a class="dropdown-item" id="download-button" href="#">CSV</a>
+      </div>
+    </div>
+  </div>
+    <div class="row">
+    <div class="col-12">
+
+    <div class="container-fluid"><br>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="form-row own_decor_forms">
+        <div class="form-group col-md-2 mb-0">
+            {{form.Date|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-2 mb-0">
+            {{form.Doct_Name|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-2 mb-0">
+            {{form.status|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-2 mb-0">
+            {{form.Room_No|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-2 mb-0">
+            {{form.Max_Token_Assigned|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-2 mb-0">
+          <p>&nbsp;</p>
+          {% if 'token_master_configuration_save' in access.user_profile.screen_access or request.user.is_superuser %}
+          <button type="submit"class="btn btn-success" style="margin-top:-0.5em"><i class="fas fa-save">&nbsp;Save</i></button>
+          {% endif %}
+          {% if 'token_master_configuration_replicate' in access.user_profile.screen_access or request.user.is_superuser %}
+          <button type="button" class="btn btn-primary"  style="margin-top:-0.5em" data-toggle="modal" data-target=".bd-example-modal-md">Replicate</button>
+          {% endif %}
+        </div>
+        </div>
+      </form>
+    </div>
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <div class="table-responsive">
+                    {% if 'token_master_configuration_view' in access.user_profile.screen_access or request.user.is_superuser %}
+
+                  <table class=" table table-stripped table-bordered ">
+                        <thead style="background-color: rgb(216, 216, 246);">
+                            <tr>
+                                <th>Date</th>
+                                <th>Doctor Name</th>
+                                <th>Status</th>
+                                <th>Room No</th>
+                                <th>Max Token Assigned</th>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in tmc %}
+                            <tr>
+                                <td>{{data.Date}}</td>
+                                <td><img width="35" height="35" src="{{data.Doct_Name.doctor_profile_image.url}}" class="rounded-circle m-r-5" alt="Img">{{data.Doct_Name}}</span> </td>
+                                <td>{{data.status}}</td>
+                                <td>{{data.Room_No}}</td>
+                                <td>{{data.Max_Token_Assigned}}</td>
+                                {% if 'token_master_configuration_update' in access.user_profile.screen_access or request.user.is_superuser %}
+                                <td><a href="token_master_configuration/{{data.id}}" class="btn btn-primary">Update</a></td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                          
+                         </tbody>
+                   </table> 
+                   {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Replicated Related Model Start-->
+<div class="modal fade bd-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+             <div class="modal-header" style="background: skyblue;">
+              <h5 class="modal-title" id="exampleModalLabel" ><b>Replicate Token Assign</b></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              </div><br>
+
+	   <div class="container" style="text-align: center;">
+       <form method="POST">
+         {% csrf_token %}
+         <div class="form-row own_decor_forms">
+         <div class="form-group col-6">
+          {{form2.start_date|as_crispy_field }}
+         </div>
+         <div class="form-group col-6">
+              {{form2.end_date|as_crispy_field }}
+         </div>
+         <div class="form-group col-6">
+             {{form.Doct_Name|as_crispy_field }}
+         </div>
+         <div class="form-group col-6">
+             {{form.status|as_crispy_field }}
+         </div>
+         <div class="form-group col-6">
+             {{form.Room_No|as_crispy_field }}
+         </div>
+         <div class="form-group col-6">
+             {{form.Max_Token_Assigned|as_crispy_field }}
+         </div>
+ 
+        <center style="margin:auto;display:block;">
+          <button type="button"class="btn btn-danger "  data-dismiss="modal"> <i class="fas fa-cancel" >&nbsp;Cancel</i></button>
+          <button type="submit"class="btn btn-success" name="replicate" value="ReplicatedSave"> <i class="fas fa-save" >&nbsp;Save</i></button>
+        </center>
+        <br>
+       </form>
+       </div>
+        </div>
+        </div>
+</div>
+ 
+<!-- Replicated Related Model End-->
+    {% endblock  %}

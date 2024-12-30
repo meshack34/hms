@@ -1,0 +1,144 @@
+{% extends 'insurance_claim/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+    .form-control{
+      border: 2px solid white;
+      width: 100%;
+      background-color: white;
+      border-bottom: 1px solid white;
+    }
+    div.dataTables_wrapper div.dataTables_filter label{
+  display:none;
+  }
+    </style>
+    <style>
+        /* Style the search box */
+        .input-box {
+            width: 250px;
+            padding: 8px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            outline: 2px;
+        }
+    </style>
+{% endblock  %}
+{% block body_block %}
+
+<!-- content -->
+<div class="page-wrapper bg-white">
+<div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/MRD/MRD_dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>Acknowledged Claim List</b>
+        </div>
+        <div class="">
+          <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <!-- <a class="dropdown-item" onclick="codespeedy()" href="#">PDF</a>
+            <a class="dropdown-item" id="download-button" href="#">CSV</a> -->
+          </div>
+        </div>
+      </div>
+
+           <div class="table-responsive">
+                <div class="mb-3">
+                    <input type="text"  id="myinputs" class="input-box float-right" placeholder="Search Here...." >
+                </div>
+           
+             <table class="table table-stripped table-bordered" id="tableIDS">
+
+                   <thead class="text-nowrap">
+                       <tr><th>S.No.</th>
+                           <th>Bill NO</th>
+                           <th>Bill Date</th>
+                           <th>LOU NO</th>
+                           <th>Claim NO</th>
+                           <th>Batch NO</th>
+                           <th>Patient</th>
+                           <th>UHID</th>
+                           <th>Bill Amount</th>
+                           <th>Net Amount</th>
+                           <th>Claim Amount</th>
+                           <th>Paid Amount</th>
+                           <th>Action</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                    {% for data in bill_details %}
+                   <tr>
+                       <td>{{ forloop.counter }}</td>
+                       <td><input type="hidden" name="bill_no" id="bill_no" value="{{data.bill_no}}">{{data.bill_no}}</td>
+                       <td>{{data.bill_date_time}}</td>
+                       <td>{{data.lou_no}}</td>
+                       <td>{{data.claim_no}}</td>
+                       <td>{{data.batch_no}}</td>
+                       <td>{{data.pst_title}} {{data.pat_first_name}} {{data.pat_middle_name}} {{data.pat_last_name}}</td>
+                       <td>{{data.uhid}}</td>
+                       <td>{{data.net_amount}}</td>
+                       <td>{{data.paid_amount}}</td>
+                       <td>{{data.claim_amt}}</td>
+                       <td>{{data.paid_claim_amt}}</td>
+                       <td><a class="btn btn-primary" href="/payment_details_claim/{{data.bill_no}}"><i class="fa fa-hand-pointer" aria-hidden="true"></i></a></td>
+                        <!-- <button type="button" class="btn btn-primary width" id="claim_settle" style="margin-right: 5px;margin-bottom: 5px;">
+                             <i class="fa fa-hand-pointer" aria-hidden="true"></i></button> -->
+
+                   </tr>
+                   {% endfor %}
+
+                    </tbody>
+
+           </table>
+           </div>
+       </div>
+
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script>
+  var table = $('#tableIDS').DataTable();
+
+      // #myInput is a <input type="text"> element
+      $('#myinputs').on( 'keyup', function () {
+          table.search( this.value ).draw();
+      } );
+</script>
+<script>
+    $(document).ready(function () {
+    $(document).on('click', '#claim_settle', function () {
+
+        var bill_no = $('#bill_no').val();
+        var headers = {'X-CSRFToken': '{{ csrf_token }}' };
+
+        $.ajax({
+            url:"{% url 'save_claim_settle' %}",
+            type: "GET",
+            data: {
+            bill_no: bill_no,
+            },
+            headers: headers,
+            dataType : 'json',
+            success: function(data){
+                alert('Claim Amount ' + data + ' Setteled Successfully');
+             window.location.href = "{% url 'acknowledge_claim' %}";
+          },
+          error:function(data)
+            {
+                console.log(data);
+            }
+        });
+
+     });
+});
+
+
+</script>
+{% endblock  %}
+

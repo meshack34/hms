@@ -1,0 +1,273 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+{% load humanize %}
+
+<!--Main Content-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style type="text/css">
+  body,
+  p {
+    font-family: arial;
+    font-size: 16px;
+  }
+
+  p {
+    margin: 0 0 5px;
+  }
+
+  table td,
+  table th {
+    padding: 15px;
+    text-align: left;
+  }
+
+  @media print {
+    p {
+      margin: 0 0 5px;
+    }
+
+    table td,
+    table th {
+      padding: 15px;
+      text-align: left;
+    }
+  }
+</style>
+<div class="page-wrapper bg-white">
+  <div class="content px-3 py-2">
+    <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+      <div>
+        <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+        <b>NHIF Unpaid Bill Report</b>
+      </div>
+      <div class="">
+        <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+        <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+        <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+          <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+          
+        </div>
+      </div>
+    </div>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-12" id="filter_card">       
+            <div class="row filter-row" >
+              <div class="form-group col-md-3 mb-0">
+                <div class="form-group mb-4">
+                  <label style="font-size:15px;" for="basic-url" class="form-label"> From Date<b style="color: red;">*</b></label>
+                  <div class="input-group">
+                    <input type="datetime-local" class="form-control" name="start_date" >
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-3 mb-0">
+                <div class="form-group mb-4">
+                  <label style="font-size:15px;" for="basic-url" class="form-label">To Date<b style="color: red;">*</b></label>
+                  <div class="input-group">
+                    <input type="datetime-local" class="form-control" name="end_date" >
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-3 mb-0">
+                  <div class="form-group mb-4">
+                    <label style="font-size:15px;" for="basic-url" class="form-label">Billing Group<b style="color: red;">*</b></label>
+                    <div class="input-group">
+                      <select name="billing_grp" id="" class="form-control">
+                      <option value="">Choose</option>
+                      {% for data in billing_group %}
+                      <option value="{{data.id}}">{{data.billing_group}}</option>
+                      {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+              <div class="col-sm-0"><br>
+                <button type="submit" class="btn-warning p-2" name="Search"
+                    value="search_btn"><i class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+            </div>
+          </div>
+        </div>
+    </form>
+<div class="col-12">
+<div id="hello">
+  <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+      <tr>
+          <div class="" >
+              <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+              </center>
+          </div>
+      </tr>
+  </table>
+
+  <style>
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+
+      }
+      #button2{
+      font-size: larger;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+  }
+      </style>
+      <center><h3> NHIF Unpaid Bill Report  [From : {{from_date}}] - [To : {{to_date}}]</h3></center>
+    <div class="table-responsive" style="overflow: auto;">
+    <table class="table table-bordered" style="border-style: solid;font-size:x-small;" align="center">
+        <thead>
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">Patient Name</th>
+              <th scope="col">Bill No</th>
+              <th scope="col">Bill datetime </th>
+              <th scope="col">Visit Id</th>
+              <th scope="col">Member No</th>
+              <th>Department</th>
+              <th>Corparate Name</th>
+              <th scope="col">LOU No</th>
+              <th scope="col">Net Amount</th>
+              <th scope="col">Claim No</th>
+              <th scope="col">Batch No</th>
+              <th scope="col">Status</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        
+            {% for data in records %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{data.0.first_name}} {{data.0.middle_name}} {{data.0.last_name}}</td>
+              <td>{{data.0.bill_no}}</td>
+              <td style="padding-left: 15px;padding-right: 15px;">{{data.0.bill_date_time|date:'d-n-Y'}} {{data.0.bill_date_time|time:'H:i'}}</td>
+              <td>{{data.0.visit_no}}</td>
+                {% if data.0.member_id == None %}
+              <td>NA</td>
+                {% else %}
+              <td>{{data.0.member_id}}</td>
+                {% endif %}
+              <td>{{data.0.department}}</td>
+              <td>{{data.1}}</td>
+                {% if data.0.lou_no == None %}
+              <td>NA</td>
+                {% else %}
+              <td>{{data.0.lou_no}}</td>
+                {% endif %}
+              <td style="padding-left: 15px;padding-right: 15px;">{{data.0.net_amount|floatformat:2|intcomma}}</td>
+                {% if data.0.claim_no == None %}
+              <td style="padding-left: 15px;padding-right: 15px;">NA</td>
+                {% else %}
+              <td style="padding-left: 15px;padding-right: 15px;">{{data.0.claim_no}}</td>
+                {% endif %}
+                {% if data.0.batch_no == None %}
+              <td style="padding-left: 15px;padding-right: 15px;">NA</td>
+                {% else %}
+              <td style="padding-left: 15px;padding-right: 15px;">{{data.0.batch_no}}</td>
+                {% endif %}
+              <td style="padding-left: 15px;padding-right: 15px;">{% if data.0.paid_claim_amt == 0 %}UnPaid {% else %} Paid {%endif%}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+              <td colspan="7"></td>
+                <td style="background-color: rgb(209, 245, 245);" colspan="2"><b style="font-weight: bold;">Grand Total</b></td>
+              <td style="background-color: rgb(209, 245, 245);" colspan="2"><b style="font-weight: bold;">{{grand_total|floatformat:2|intcomma}}</b> </td>
+            </tr>
+
+        </tbody>
+    </table>
+  </div>
+</div>
+</div>
+  </div>
+</div>
+<script>
+  function toggleVisibility() {
+    var demoElement = document.getElementById('filter_card');
+    
+    if (demoElement.style.display === 'none') {
+      demoElement.style.display = 'block'; // Show the element
+    } else {
+      demoElement.style.display = 'none';  // Hide the element
+    }
+  }
+</script>
+<script>
+  $('example').margetable({
+    type: 1,
+    colindex: [{
+      index: 1,
+      dependent: [0]
+    }]
+  });
+</script>
+<script type="text/javascript">
+
+  function codespeedy(){
+    var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+  }
+</script>
+
+<script>
+  function htmlToCSV(html, filename) {
+      var data = [];
+      var rows = document.querySelectorAll("table tr");
+
+      for (var i = 0; i < rows.length; i++) {
+          var row = [], cols = rows[i].querySelectorAll("td, th");
+
+          for (var j = 0; j < cols.length; j++) {
+              row.push(cols[j].innerText);
+          }
+
+          data.push(row.join(","));
+      }
+
+      downloadCSVFile(data.join("\n"), filename);
+  }</script>
+<script>
+  function downloadCSVFile(csv, filename) {
+      var csv_file, download_link;
+
+      csv_file = new Blob([csv], { type: "text/csv" });
+
+      download_link = document.createElement("a");
+
+      download_link.download = filename;
+
+      download_link.href = window.URL.createObjectURL(csv_file);
+
+      download_link.style.display = "none";
+
+      document.body.appendChild(download_link);
+
+      download_link.click();
+  }</script>
+
+<script>document.getElementById("download-button").addEventListener("click", function () {
+      var html = document.querySelector("table").outerHTML;
+      htmlToCSV(html, "NHIF unpaid bill report.csv");
+  });</script>
+
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+{% endblock %}

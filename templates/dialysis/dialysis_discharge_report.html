@@ -1,0 +1,230 @@
+{% extends 'nurse_station/base.html' %}
+{% load static %}
+{% block head_block %}
+<style>
+	 table td,table th{padding: 10px;text-align: left; border-red:2px}
+	 table td,table th{font-size: 18px;}
+	 body{background-color: white;}
+	 .table1,.table2{
+	 margin:10px;
+	 }
+</style>
+    {% endblock  %}
+{% block body_block %}
+<div class="page-wrapper">
+	<div class="content">
+		<div id="hello">
+
+			<table class="table1" style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr style="border-bottom:2px solid #eee;">
+					<td>
+						<table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;"
+							width="70%">
+							<tr>
+								<td>
+									<div class="">
+										<center>
+											<h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}"
+													alt="logo Image" style="width:500px;height:85px;"></h2>
+										</center>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table
+							style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse; width=100%">
+							<tr>
+								<td colspan="8" style="text-align:center;border-bottom: 1px solid #222;">
+									<h3 style="margin: 0;">DISCHARGE SUMMARY</h3>
+								</td>
+							</tr>
+							<tr style="border: 2px solid black;">
+								<td><b>Name : {{pat_name}}</b></td>
+								<td><b>Age : {{pat_age}}Y</b></td>
+								<td><b>Gender : {{pat_sex}}</b></td>
+								<td><b>Date: {{records.created_at}} </b></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<table class="table2" style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td>
+						<table id="table2"
+							style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse; solid;"
+							width="100%">
+							<tr>
+								<td colspan="2"><b>Cause of ESRD(end-stage renal disease): <b
+											style="padding-left: 50px;"></b></b></td>
+								<td colspan="4">{{records.cause_ESRD}}</td>
+							</tr>
+							<tr>
+								<td colspan="2"><b>Duration of dialysis: <b style="padding-left: 187px;"></b> </b></td>
+								<td colspan="4">{{records.d_of_d}}</td>
+							</tr>
+							<tr>
+								<td colspan="2"><b>Coexisting Comorbidities: <b style="padding-left: 146px;"></b> </b>
+								</td>
+								<td colspan="2">{{records.cc}}</td>
+								<td colspan="2"><b>Duration: <b style="padding-left: 50px;"></b></b></td>
+								<td colspan="2">{{records.duration}}</td>
+							</tr>
+							<tr>
+								<td colspan="2"><b>Access:</b></td>
+								<td colspan="2">{{records.access}}</td>
+								<td colspan="2"><b>Status:</b></td>
+								<td colspan="2">{{records.status}}</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+						<div class="row" style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+							<div class="col-md-6">
+								<table class="table1" style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+									{% if med_records %}
+									<tr style="background-color:rgb(199, 197, 197); border: 1px solid black; border-collapse: collapse;">
+										<td colspan="4" style="text-align:center;">
+											<b>Medicine</b>
+										</td>
+										<td colspan="4"></td>
+									</tr>
+									{% for data in med_records %}
+									<tr style="border: 1px solid black; border-collapse: collapse;">
+										<td colspan="4" style="text-align:center; ">{{data.med_name}} {{data.dosage}}</td>
+									</tr>
+									{% endfor %}
+									{% endif %}
+								</table>
+							</div>
+						</div><br>
+						<div class="row" style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+							<div class="col-md-6">
+								<table
+									style="border: 1px solid black; border-collapse: collapse; text-align:center;"
+									width="100%">
+									<tr style="border: 1px solid black; border-collapse: collapse;">
+										<td colspan="4" style="text-align:center; background-color:rgb(199, 197, 197);border: 1px solid black; border-collapse: collapse;">
+											<b>Dialysis Prescription:</b>
+										</td>
+									</tr>
+									{% for data in presc_records %}
+									<tr style="border: 1px solid black; border-collapse: collapse;">
+										<td colspan="2" style="border: 1px solid black; border-collapse: collapse;">{{data.namw1}}</td>
+										<td colspan="2" style="border: 1px solid black; border-collapse: collapse;">{{data.name2}}</td>
+										{% endfor %}
+									</tr>
+								</table>
+							</div>
+							<div class="col-md-6">
+								<table
+									style="border: 1px solid black; border-collapse: collapse; text-align:center;"
+									width="100%">
+									<tr style="border: 1px solid black; border-collapse: collapse;">
+										<td colspan="4" style="text-align:center; background-color:rgb(199, 197, 197);border: 1px solid black; border-collapse: collapse;">
+											<b>Medications Post Dialysis:</b>
+										</td>
+									</tr>
+									{% for data in post_med_records %}
+									<tr style="border: 1px solid black; border-collapse: collapse;">
+										{% if data.post_med_name != None %}
+										<td colspan="2" style="border: 1px solid black; border-collapse: collapse; text-align:center;">{{data.post_med_name}}</td>
+										{% endif %}
+										{% if data.outs_ource_med_name != None %}
+										<td colspan="2" style="border: 1px solid black; border-collapse: collapse; text-align:center;">{{data.outs_ource_med_name}}</td>
+										{% endif %}
+									</tr>
+									<!--</tr>-->
+									{% endfor %}
+								</table>
+							</div>
+						</div>
+						<br>
+						<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse; solid;"
+							width="100%">
+							<tr>
+								<td colspan="8" style="text-align:center; background-color:black;"></td>
+							</tr>
+							<tr>
+								<td colspan="2"><b>Blood Pressure: </b></td>
+								<td colspan="4">{{records.bp}}</td>
+							<tr>
+								<td colspan="2"><b>Ktv (treatment adequacy):</b></td>
+								<td colspan="4">{{records.kt_v}}</td>
+							</tr>
+							<tr>
+								<td colspan="2"><b>ACC QB (accumulated blood flow):</b></td>
+								<td colspan="4">{{records.acc_qb}}</td>
+							<tr>
+								<td colspan="2"><b>OutCome:</b></td>
+								<td colspan="4">{{records.out_come}}</td>
+							</tr>
+							<tr>
+								<td colspan="2"><b>Recommendations: </b></td>
+								<td colspan="4">{{records.recommendant}}</td>
+							</tr>
+							<tr>
+								<td colspan="2"><b>TCA (to come again): </b></td>
+								<td colspan="4">{{records.tca}}</td>
+							</tr>
+							<tr>
+								<td colspan="8"></td>
+							</tr>
+								<tr>
+								<td colspan="8"></td>
+							</tr>
+								<tr>
+								<td colspan="8"></td>
+							</tr>
+								<tr>
+								<td colspan="8"></td>
+							</tr>
+							<tr>
+								<td colspan="2">Nephrologist:</td>
+<!--								<td colspan="4"><b>{{records.nephrologist}}</b></td>-->
+							</tr>
+							<tr>
+								<td colspan="4"><b>{{records.nephrologist}}</b></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div style="text-align:center;"><input type="button" class="btn btn-primary" onclick="printDiv('hello')"
+				value="Get Report" />
+			<a href="/list_new_dialysis_patient"><button type="button" class="btn btn-danger">Back</button></a>
+		</div>
+		    <!--<a href="" onclick="printData()" id="print_btn" style="padding-right:2px;"><img-->
+      <!--  src="{% static 'assets/images/printer.ico' %}" width="30" height="30"> </a>-->
+	</div>
+</div>
+
+<script>
+	function printDiv(divName) {
+		var printContents = document.getElementById(divName).innerHTML;
+		var originalContents = document.body.innerHTML;
+
+		document.body.innerHTML = printContents;
+
+		window.print();
+
+		document.body.innerHTML = originalContents;
+	}
+</script>
+<script>
+    function printData()
+{
+var mypage = document.getElementById("hello");
+summathaan = window.open("");
+summathaan.document.write(mypage.outerHTML);
+summathaan.print();
+summathaan.close();
+}
+</script>
+{% endblock %}

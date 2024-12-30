@@ -1,0 +1,249 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+    <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;">Department Wise Revenue</a>
+      </div>
+    </nav>
+<div class="row">
+<div class="col-12">
+<div class="card">
+    <div class="card-box mb-0">
+          <div class="header">
+            <div class="body">
+                      <form method="POST">
+        {% csrf_token %}
+        <div class="row filter-row">
+            <div class="col-sm-8 col-md-2">
+                <div class="form-group form-focus mb-0">
+                    <label class="focus-label">From </label>
+                    <input type="datetime-local"  class="form-control" name="start_date">
+                </div>
+            </div>
+            <div class="col-sm-8 col-md-2">
+                <div class="form-group form-focus mb-0">
+                    <label class="focus-label">To</label>
+                    <input type="datetime-local"  class="form-control" name="end_date">
+                </div>
+            </div>
+<!--            <div class="col-sm-8 col-md-2">-->
+<!--                <div class="form-group form-focus mb-0">-->
+<!--                    <label class="focus-label">Department</label>-->
+<!--                    <select style="width:100%;" name="department">-->
+<!--                        <option></option>-->
+<!--                        {% for d in record %}-->
+<!--                          <option value="{{d.id}}">{{d.clinical_department}}</option>-->
+<!--                        {% endfor %}-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="col-sm-8 col-md-2" >
+              <input type="submit" class="form-control btn btn-info" value="Search">
+            </div>
+        </div>
+        </form>
+            <hr>
+<!--                <div class="table-responsive">-->
+<!--                    {% if main_table_data %}-->
+<!--                <table class="datatable table table-stripped ">-->
+<!--                        <thead>-->
+<!--                            <tr>-->
+<!--                                <th>Department</th>-->
+<!--                                <th>OP Gross Amt</th>-->
+<!--                                <th>OP Disc</th>-->
+<!--                                <th>OP Net Amt (Rs)</th>-->
+<!--                                <th>Total Amt</th>-->
+<!--                                <th>Rev In (%)</th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--&lt;!&ndash;                        <tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;                          {% for data in filtering_records %}&ndash;&gt;-->
+<!--&lt;!&ndash;                          <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <td>{{data.clinical_department}}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <td>{{data.visit_id}}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <td>{{data.visit_type}}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <td>{{data.visit_date_time|upper}}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <td>{{data.description}}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <td>{{data.nurse_doctor}}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                          </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                          {% endfor %}&ndash;&gt;-->
+<!--&lt;!&ndash;                         </tbody>&ndash;&gt;-->
+<!--                    <tbody>-->
+<!--                    {% for dat in main_table_data %}-->
+<!--                    <tr>-->
+<!--                        <td>{{dat.visit_no}}</td>-->
+<!--                        <td>{{dat.net_amount}}</td>-->
+<!--                        <td>{{dat.discount}}</td>-->
+<!--                        <td>{{dat.pay_amount}}</td>-->
+<!--                        <td>{{dat.paid_amount}}</td>-->
+<!--                    </tr>-->
+<!--                    {% endfor %}-->
+<!--                    </tbody>-->
+<!--                </table>-->
+<!--                    {% endif %}-->
+<!--                </div>-->
+
+<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+
+<!--This for payment receipt print function-->
+<div id="hello">
+    {% if main_table_data %}
+    <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+        <tr style="border-bottom:2px solid #eee;">
+            <td>
+                <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                    <tr>
+                        <td><img src="https://bharathbrands.in/images/BHARATHBRANDS-01.png" alt="logo Image" width="180px"></td>
+                        <td>
+                            <div class="" ><br>
+                                <h2 style="margin: 0 0 10px;">BHARATHBRANDS PRIVATE LIMITED</h2>
+                                <P>GHANA HEALTH SERVICE,P.O. BOX-23, PEKI V/R</P><br>
+                                <h4>From {{start_date | date:"Y-m-d"}} To {{ end_date|date:"m D Y" }} </h4>
+                                <h5>Department Wise Revenue</h5>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%">
+
+                    <tr>
+                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Deparment</th>
+                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">OP Gross Amt</th>
+                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Discount</th>
+                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">OP Net Amount (Rs)</th>
+                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Total Amount</th>
+                        <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Rev In %</th>
+
+                    </tr>
+    <!--				<tr>-->
+    <!--					<td colspan="4"></td>-->
+    <!--				</tr>-->
+                    <tr>
+                        {% for dat in main_table_data %}
+                        <tr>
+                            <td>{{dat.visit_no}}</td>
+                            <td>{{dat.net_amount}}</td>
+                            <td>{{dat.discount}}</td>
+                            <td>{{dat.pay_amount}}</td>
+                            <td>{{dat.paid_amount}}</td>
+                            <td>10%</td>
+                        </tr>
+                        {% endfor %}
+    <!--				<tr style="background-color:#eee;color:white!important;">-->
+                    <tr style="background-color:#eee;color:grey!important;">
+                      <td>Total</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+        <canvas id="myChart" width="100" height="50" class="card"></canvas>
+<!--    <canvas id="myChart" width="5" height="5" class="card"></canvas>-->
+
+</div><br><br>
+<button type="button"  onclick="codespeedy()" style="align-content: center; box-sizing: border-box; margin: auto; display: block;">Print</button>
+{% endif %}
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+<!--      <script>-->
+<!--           var ctxgn11 = document.getElementById('myChartgn11').getContext('2d');-->
+<!--          var myChartgn11 = new Chart(ctxgn11, {-->
+<!--          type: 'pie',-->
+<!--          data: {-->
+<!--                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],-->
+<!--            datasets: [{-->
+<!--                    data: [12, 19, 3, 5, 2, 3],-->
+<!--                label: "Heart rate for two days records",-->
+<!--                borderColor: "rgb(62,149,205)",-->
+<!--                backgroundColor: "rgb(62,149,205,0.1)",-->
+<!--              },-->
+<!--            ]-->
+<!--          },-->
+<!--        });-->
+<!--    </script>-->
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+                </div>
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+{% endblock %}
+

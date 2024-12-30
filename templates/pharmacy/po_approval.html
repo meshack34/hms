@@ -1,0 +1,185 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+    #id_from_date,#id_to_date,#id_store{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+
+    </style>
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+<div class="content px-3 py-2">
+  <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+    <div>
+      <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+      <b>PO Approval</b>
+    </div>
+    <div class="">
+      <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1"  title="Filter"><i class="fa fa-filter"></i></a>
+      <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+      <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <!-- <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+        <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a> -->
+        
+      </div>
+    </div>
+  </div>
+
+      
+<!-- Tab -->
+<div class="nursing-assessment-tabs p-2 bg-white">
+    <div role="tabpanel">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs nav-justified nav-tabs-dropdown " role="tablist">
+        {% if 'approval_po' in access.user_profile.screen_access or request.user.is_superuser %}
+        <li role="presentation" class="w-50">
+          <a href="#profile" aria-controls="home" class=" btn-primary" role="tab"
+            data-toggle="tab">APPROVED PO ({{count_approved}})</a>
+        </li>
+        {% endif %}
+        {% if 'pending_po' in access.user_profile.screen_access or request.user.is_superuser %}
+        <li role="presentation" class="w-50"><a class="btn-primary active" href="#home"
+          aria-controls="profile" role="tab" data-toggle="tab"> PENDING PO ({{count_pending}})</a></li>{% endif %}
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+
+        <div role="tabpanel" class="tab-pane" id="profile">
+          <div class="row inner-tabs no-gutters ">
+
+            <h4>APPROVED PO</h4>
+            <div class="table-responsive">
+    <table class="datatable table table-stripped ">
+
+
+                   <thead class="text-nowrap">
+                       <tr><th>S.No</th>
+                           <th>PO No</th>
+                           <th>Date Time</th>
+                           <th>Vendor Name</th>
+                           <th>Location Name</th>
+                           <th>Net Amount</th>
+                           <th>Basic Amount</th>
+                           <th>View</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                     {% for data1,data2 in approved %}
+                       <tr>
+                           <td type="hidden">{{forloop.counter}}</td>
+
+                           <td>{{data1.PO_id}}</td>
+                           <td>{{data1.PO_datetime}}</td>
+                           <td>{{data2}}</td>
+                           <td>{{data1.Location}}</td>
+                           <td>{{data1.net_amount}}</td>
+                           <td>{{data1.basic_amt}}</td>
+                           <td><a class="btn btn-primary" href="/PO_approveview/{{data1.PO_id}}"><i class="fa fa-hand-pointer" name="approve_view" value="approve_view" aria-hidden="true"></i></a></td>
+
+                       </tr>
+                       {% endfor %}
+                    </tbody>
+           </table>
+           </div>
+
+          </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane active" id="home">
+          <div class="row no-gutters">
+            <h4>PENDING PO </h4>
+            <div class="table-responsive">
+    <table class="datatable table table-stripped ">
+
+<thead class="text-nowrap">
+                       <tr><th>S.No</th>
+                           <th>PO No</th>
+                           <th>Date Time</th>
+                           <th>Vendor Name</th>
+                           <th>Location Name</th>
+                           <th>Net Amount</th>
+                           <th>Basic Amount</th>
+                           <th>View</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                     {% for data1,data2 in pending1 %}
+                       <tr>
+                           <td>{{forloop.counter}}</td>
+                           <td>{{data1.PO_id}}</td>
+                           <td>{{data1.PO_datetime}}</td>
+                           <td>{{data2}}</td>
+                           <td>{{data1.Location}}</td>
+                           <td>{{data1.net_amount}}</td>
+                           <td>{{data1.basic_amt}}</td>
+                           <td><a class="btn btn-primary" href="/PO_pending_update/{{data1.PO_id}}"><i class="fa fa-hand-pointer" aria-hidden="true"></i></a></td>
+                       </tr>
+                       {% endfor %}
+                    </tbody>
+           </table>
+           </div>
+
+          </div>
+        </div>
+      </div>
+<!-- Tab Ends -->
+
+  </div>
+</div>
+
+ <!-- Filter Start model -->
+
+ <div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header" style="background: skyblue;">
+              <h5 class="modal-title" id="exampleModalLabel1"><b>Search</b></h5>
+          </div>
+          <!-- Main block -->
+          <div class="modal-body">
+            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" id="filter_card"><br>
+              <form method="post" action="">
+              {% csrf_token %}
+                <div class="form-row pb-3">
+                <div class="form-group col-md-6 mb-0">
+                  <label>From Date</label>
+                  <input type="date" name="from_date" id="from_date" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6 mb-0">
+                  <label>To Date</label>
+                  <input type="date" name="to_date" id="to_date" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6 mb-0">
+                      <label>Vendor</label>
+                      <select name="vendor_id" id="vendor_id" class="form-control">
+                          <option>select</option>
+                          {% for data in vendor %}
+                          <option value="{{data.id}}">{{data.vendor_name}}</option>
+                          {% endfor %}
+                      </select>
+                  </div>
+                  <div class=" col-md-3"><br>
+                  <button type="submit" class="btn btn-warning w-100 mt-2" ><i class="fa fa-search pr-2" ></i>Search</button>
+                </div>
+            </div>
+              </form>
+          </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- end model -->
+{% endblock %}

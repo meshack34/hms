@@ -1,0 +1,254 @@
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% block body_block %}
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner own_slider_img">
+    <div class="carousel-item active">
+        <img src="https://d3nn873nee648n.cloudfront.net/900x600/19046/220-SM891363.jpg" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="https://d3nn873nee648n.cloudfront.net/900x600/17809/220-SM779350.jpg" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="https://d3nn873nee648n.cloudfront.net/900x600/19046/220-SM891363.jpg" class="d-block w-100" alt="...">
+    </div>
+  </div>
+</div><br>
+<div class="container" style="margin:auto;display:block;">
+      {% if success %}
+      <div class="booked_details">
+        <h1>Successfully Booked</h1>
+        <h3>appointment details</h3>
+        <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Appoitment Id</th>
+      <th scope="col">Patient Name</th>
+      <th scope="col">Phone Number</th>
+      <th scope="col">Email Id</th>
+      <th scope="col">Scheduled Date & Time</th>
+      <th scope="col">Payment Mode</th>
+      <th scope="col">Download</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{appointment_id}}</td>
+      <td>{{patient_name|title}}</td>
+      <td>{{phone}}</td>
+      <td>{{email}}</td>
+      <td>{{schedule_time}}</td>
+      <td>{{payment}}(Pay At Hospital)</td>
+      <td><a href="">Download Appointment</a></td>
+    </tr>
+    </tbody>
+</table>
+
+        <a href="booking_detail">Book Another Appointment</a>
+      </div>
+      {% else %}
+      <div class="col-xs-10 col-sm-10 col-md-6 col-lg-6" style="background-color: rgb(20, 42, 136); ">
+              <div class="header">
+              <div class="card">
+                <h4> <i class="fas fa-arrow-left"></i>&nbsp; &nbsp;&nbsp; &nbsp;Appointment Details</h4>
+                <h4> <i class="fas fa-stethoscope"></i>&nbsp; &nbsp;&nbsp; &nbsp;Internal Medicine</h4>
+                <h4> <i class="fas fa-map-marker-alt"></i>&nbsp; &nbsp;&nbsp; &nbsp;{{doctor_name}},{{doctor_location}}</h4>
+                <h4><i class="fas fa-notes-medical"></i>&nbsp; &nbsp;&nbsp; &nbsp;In-Hospital Consultation</h4>
+                <h4><i class="far fa-calendar-alt"></i>&nbsp; &nbsp;&nbsp; &nbsp;{{doctor_appointment}}</h4>
+                <h4><i class="fas fa-wallet"></i>&nbsp; &nbsp;&nbsp; &nbsp;Rs.700</h4><br>
+                  <table>
+                      <tr>
+                        <td><img src="media/{{doctor_profile_image}}" alt="..." style="width:64px;height:64px;"></td>
+                        <td>
+                          Dr.{{doctor_name}}<br>
+                          <strong>{{doctor_department}}</strong>
+                        </td>
+                      </tr>
+                    </table>
+
+              </div>
+          </div>
+          </div><br><br>
+            <p><b>Details of the patient for whom appointment is being booked:</b></p>
+            <form method="POST" action="success-booked">
+              {% csrf_token %}
+              <div class="col-auto" style="width:50%;" >
+                <label for="inlineFormInputGroup">Patient Name</label>
+                <div class="input-group mb-2" style="margin-left:-0px;display:auto;">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text" >
+                       <select name="sub" id="sub" style="background-color:#eee;border:1px solid #eee;">
+                          <option value="Mr.">Mr.</option>
+                          <option value="Ms.">Ms.</option>
+                          <option value="Mrs.">Mrs.</option>
+                      </select>
+                    </div>
+                  </div>
+                  <input type="text" class="form-control" name="patient_name" id="inlineFormInputGroup" placeholder="Name" value="{{name}}" >
+                </div>
+              </div>
+                <p>Gender*</p>
+                          <input type="radio" name="gender" value="Male" class="btn btn-primary" required class="form-control">&nbsp;Male&nbsp;
+                          <input type="radio" name="gender" value="Female" class="btn btn-primary" required class="form-control">&nbsp;Female&nbsp;
+                          <input type="radio" name="gender" value="Other" class="btn btn-primary" required>&nbsp;Other&nbsp;
+                           
+
+                            <label for="age">Age</label>
+                            <input type="number" class="form-control" name="age" id="age" size="5" placeholder="Age" required style="width:50%">
+                            <br>
+                            <!--Add Members-->
+<div class="card">
+  <div class="container ">
+    <form action="">
+        <select id="title" name="title">
+          <option value="mr.">Mr.</option>
+          <option value="ms.">Ms.</option>
+          <option value="mx.">Mx.</option>
+        </select><br>
+        <input class="form-control"  type="text" placeholder="Patient_Name"><br>
+        <select id="title" name="title">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="transgender">Transgender</option>
+        </select>          <br>
+        <input class="form-control"  type="number" placeholder="age">
+               <input class="form-control "  type="number" placeholder="Phone ">
+               <input class="form-control "  type="email" placeholder="Email ">
+  <hr style="height: 2px; border-width: 0; color: red;background-color: red;">  </form>
+  </div><br>
+  <section class="addinputs">
+  </section>
+  <div class="field">
+    <div class="control">
+        <button class="button addMember">
+            Add Member
+        </button>
+    </div>
+    <div class="control">
+        <button class="button delMember">
+            Delete Member
+        </button>
+    </div>
+    <div class="control">
+        <button class="button resetForm">
+            Reset
+        </button>
+    </div>
+  </div>
+  </div>
+  </div>
+  <!--End Members-->
+                <p align="right" style="width:50%;">
+                  <a href="#">
+                    <i class="fas fa-plus btn btn-info" style="font-size: 22px;" data-toggle="modal" data-target="#myModal">Add Members</i>
+                  </a>
+                </p>
+                <p>Patient's Mobile No.*</p>
+                <input type="text" name="phone" class="form-control" placeholder="Mobile Number" required style="width:50%" value="{{mobile_number}}" readonly>
+                <br>
+                <p>Email ID</p>
+                <input type="email" name="email" class="form-control" placeholder="Enter e-mail id" style="width:50%" required>
+                <label for="scheduled">Your Scheduled Date and Time</label>
+                <input type="text" name="schedule_time" class="form-control" id="scheduled" placeholder="Enter e-mail id" style="width:50%" value="{{doctor_appointment}},{{scheduled}}" readonly>
+
+                <p><b>Please select a payment method*:</b></p>
+
+
+                    <div class="col-xs-10 col-sm-10 col-md-6 col-lg-6" style="background-color: rgb(20, 42, 136); ">
+                        <div class="header">
+                          <div class="card">
+                       <table>
+                        <tr>
+                            <td><input type="radio" id="patient2" name="payment" ONCLICk="ShowRadioButtonDiv('patient',2)" value="online_payment" required></td>
+                            <td> <label for="payment"><p>&nbsp; &nbsp;Pay Now &nbsp; &nbsp;<b>&#8377;630</b></p>
+
+                        <p>&nbsp; &nbsp;Get 10% discount on online payment</p></label></td>
+                        </tr>
+                    </table>
+                          </div>
+                       </div>
+                    </div> <br>
+                    <div class="col-xs-10 col-sm-10 col-md-6 col-lg-6" style="background-color: rgb(20, 42, 136); ">
+                        <div class="header">
+                          <div class="card">
+                               <table>
+                        <tr>
+                            <td> <input type="radio" id="patient1" name="payment" ONCLICk="ShowRadioButtonDiv('patient',2)" value="offline_payment" required></td>
+                            <td><p></p><label for="payment"><p>&nbsp; &nbsp;Pay at Hospital &nbsp; &nbsp;<b>&#8377;700</b></p>
+                       </label></td>
+                        </tr>
+                    </table>
+                           <br>
+
+
+                          </div>
+                       </div>
+                    </div>
+
+                <br> <p>Benifits for panel patient are not applicable on OPD.</p>
+
+                <input type="checkbox" id="condition" name="condition" value="condition" required>
+                <label for="condition"> As per TRAI guideline, allow us to call for the furture assistance. To read T&C&nbsp</label>
+                <!-- <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" style="width:50%;">Get Appointment</button>
+                <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" style="width:50%;">Pay Now</button> -->
+                <DIV id="patient1Div" style="display: none;">
+          <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" style="width: 50%;">Get Appointment</button>
+          </DIV><BR>
+          <DIV id="patient2Div" style="display: none;">
+            <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" style="width: 50%;">Pay Now & Get Appoitment</button>
+          </DIV>
+            </form>
+            <br><br>
+      <script>
+        function ShowRadioButtonDiv(idBaseName,NumberOfButtons) {
+          for(x=1;x<=NumberOfButtons;x++){
+            CheckThisButton = idBaseName + x;
+            ThisDiv = idBaseName + x + 'Div';
+            if
+            (document.getElementById(CheckThisButton).checked)
+            {
+              document.getElementById(ThisDiv).style.display = "block";
+            }
+            else {
+              document.getElementById(ThisDiv).style.display = "none";
+            }
+          }
+          return false;
+          }
+
+      </script>
+      {% endif %}
+</div>
+
+
+<!--Script for Add Patient-->
+<script>
+  document.querySelector(".addMember").addEventListener('click', getAdd);
+function getAdd(event) {
+  event.preventDefault();
+       var count=1;
+        document.querySelector('.addinputs').innerHTML+=` 
+        <div class="addedMember">
+          <select id="title" name="title  ${count}">
+    <option value="mr.">Mr.</option>
+    <option value="ms.">Ms.</option>
+    <option value="mx.">Mx.</option>
+  </select>
+      <input class="form-control  ${count}"  type="text" placeholder="Name ${count}">
+      <select id="gender" name="gender  ${count}">
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+    <option value="transgender">Transgender</option>
+  </select>            
+  <input class="form-control ${count}"  type="number" placeholder="age ${count}">
+         <input class="form-control ${count}"  type="number" placeholder="Phone ${count}">
+         <input class="form-control ${count}"  type="email" placeholder="Email ${count}">
+        
+         <hr style="height: 2px; border-width: 0; color: red;background-color: red;"> 
+        
+        </div>    
+          `;
+count++;
+      }
+</script>
+{% endblock %}

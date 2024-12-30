@@ -1,0 +1,381 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% block body_block %}
+
+
+
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+       <button type="menu" style="font-family: monospace; width: 100%; text-align: left;" class="btn btn-primary m-t-15 waves-effect"> <b>Service Master</b></button>
+
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+                <div class="card">
+                    <div class="header">
+            <div class="body">
+
+                    <br><div class="icon-button-demo">&nbsp;
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fas fa-plus" >Add</i></button>&nbsp;
+                        <!-- <button type="button"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;  -->
+                        <button type="button" class="btn btn-primary"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+                        <button type="button" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></button>
+
+                    </div><br>
+                    <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                        <div class="row clearfix">
+                            <p>Search</p>
+                        <div class="col-sm-2">
+                            <b>Service Category &nbsp;  </b>
+                                <select class="browser-default">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <b>Service Sub Category &nbsp;  </b>
+                                <select class="browser-default">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-warning"><i class="fas fa-search" >Search</i></button>&nbsp;
+                        </div>
+                    </div>
+</div>
+
+                <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+
+
+                        <thead>
+                            <tr><th">Service Category</th>
+                                <th">Sub Category</th>
+                                <th">Departments</th>
+                                <th">Sub Departments</th>
+                                <th">Service Name</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>nil</td>
+                                <td>nil</td>
+                                <td>nil</td>
+                                <td>nil</td>
+                                <td>nil</td>
+
+                            </tr>
+                            <tr>
+                                <td>nil</td>
+                                <td>nil</td>
+                                <td>nil</td>
+                                <td>nil</td>
+                                <td>nil</td>
+
+
+                            </tr>
+                         </tbody>
+
+                </table>
+                </div>
+            </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ADD POPUPMODAL -->
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+<!-- Header -->
+        <div class="modal-header" style="background: skyblue;">
+            <h5 class="modal-title" id="exampleModalLabel" ><b>Service Master</b></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+            </button>
+            </div><br>
+        <!-- Main block -->
+        <div class="modal-body">
+        <div class="container-fluid">
+            <div class="body" style="border:0px solid red;">
+                <div class="demo-masked-input">
+                    <div class="row clearfix">
+                        <div class="col-sm-10">
+                            <b>Service Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="search" class="form-control" placeholder="Service Name" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Service Category  </b>
+                                <select class="browser-default">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">1.</option>
+                                    <option value="2">2.</option>
+                                    <option value="3">3.</option>
+                                </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Service Sub Category  </b>
+                                <select class="browser-default">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">1.</option>
+                                    <option value="2">2.</option>
+                                    <option value="3">3.</option>
+                                </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Service Department  </b>
+                                <select class="browser-default">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">1.</option>
+                                    <option value="2">2.</option>
+                                    <option value="3">3.</option>
+                                </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Service Sub Department  </b>
+                                <select class="browser-default">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">1.</option>
+                                    <option value="2">2.</option>
+                                    <option value="3">3.</option>
+                                </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <b>Service Title</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="search" class="form-control " placeholder="" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Service Short Name</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control " placeholder="" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Unit &nbsp; &nbsp; &nbsp; &nbsp;   </b>
+                            <div class="form-line">
+
+                                <select class="browser-default">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">1.</option>
+                                    <option value="2">2.</option>
+                                    <option value="3">3.</option>
+                                </select>
+                        </div>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Consent</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Consent Name  </b>
+                                <select class="browser-default">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="1">1.</option>
+                                    <option value="2">2.</option>
+                                    <option value="3">3.</option>
+                                </select>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>OPD</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>IPD</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Nursing Charges</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Preventing Health Check Up</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Discount</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Outsource</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Emergency</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-3">
+                            <b>Emergency Percentage</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control " required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Tally Ledger</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Inactive</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Due Not Allowed</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>IsProcedure</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Editable Serv Charge</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="col-sm-2 ">
+                            <form action="#">
+                                <p>
+                                    <label><br>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>Editable Prof Change</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                            <div class="col-sm-4">
+                                <b>Service Type &nbsp;  </b>
+                                    <select class="browser-default">
+                                        <option value="" disabled selected>Choose your option</option>
+                                        <option value="1">1.</option>
+                                        <option value="2">2.</option>
+                                        <option value="3">3.</option>
+                                    </select>
+                            </div>
+                        <div class="col-sm-3">
+                            <b>Card Discount Per(%)</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <b>Billing Group Service Code</b>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control " >
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <!-- Footer -->
+                        <div class="modal-footer">
+                        <hr style="border: 10%; color: aqua;"><br>
+                   <button type="button"class="btn btn-success" > <i class="fas fa-save" >&nbsp;Save</i></button>
+                        </div>
+                    </div>
+
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+
+
+  {% endblock  %}

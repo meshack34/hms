@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<div class="hero">
+ 
+<div class="container-fluid"  style="background-image: linear-gradient(white,#9AD0EC);">
+  <div class="center" style="background-color: white;width: 88rem;">
+    <br><br>
+  {% if filtered %}
+  <div class="container">
+    <butoon type="button"  > <a href="/shorting-filter">Go Back</a></butoon>
+    <h3>Filtering basis of Consultant/Department</h3>
+  </div>
+
+  <!-- <form method="POST">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputEmail4">Constultant Name</label>
+        <select class="" name="consultant">
+        {% for data in records %}
+        <option value="{{data.doctor_name}}">{{data.doctor_name}}</option>
+        {% endfor %}
+        </select>
+      <select class="" name="department">
+        {% for data in records %}
+          <option value="{{data.doctor_department}}">{{data.doctor_department}}</option>
+        {% endfor %}
+      </select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-outline-primary btn-block">Filtering</button>
+  </form> -->
+    <hr>
+    <table class="table table-bordered table-hover ">
+            <thead>
+                  <th bgcolor= "ORANGERED">Appointment Id</th>
+                  <th bgcolor= "ORANGERED">Patient Id</th>
+                    <th bgcolor= "ORANGERED">Patient Name</th>
+                    <th bgcolor= "ORANGERED">Patient Mobile no.</th>
+                    <th bgcolor= "ORANGERED">Gender</th>
+                    <th bgcolor= "ORANGERED">patient_schedule_date_and_time</th>
+                    <th bgcolor= "ORANGERED">patient_scheduled_id</th>
+                    <th bgcolor= "ORANGERED">patient_payment_mode</th>
+                    <th bgcolor= "ORANGERED">doctor_name</th>
+                    <th bgcolor= "ORANGERED">doctor_department</th>
+
+            </thead>
+            <tbody>
+              {% for data in filtering_records %}
+              <tr>
+                <td>{{data.patient_appointment_id}}</td>
+                <td>{{data.patient_id}}</td>
+                <td>{{data.patient_name|upper}}</td>
+                <td>{{data.patient_mobile_number}}</td>
+                <td>{{data.patient_gender}}</td>
+                <td>{{data.patient_schedule_date_and_time}}</td>
+                <td>{{data.patient_scheduled_id}}</td>
+                <td>{{data.patient_payment_mode}}</td>
+                <td>{{data.doctor_name}}</td>
+                <td>{{data.doctor_department}}</td>
+              </tr>
+              {% endfor %}
+
+             </tbody>
+
+    </table>
+  {% else %}
+<div class="container">
+  <div class="container">
+    <a href="/reports">Go Back</a>
+    <h3>Filtering basis of consultant and department</h3><hr>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="filtering_button">
+        <div class="form-row">&nbsp;&nbsp;&nbsp;
+
+        <span>
+          <input type="radio" id="Button1" name="name" class="filtering_button" ONCLICk="ShowRadioButtonDiv('Button',2)" value="online_payment" required><label for="Button1"><h3>Consultant</h3></label>
+        </span>
+         <span>
+           <input type="radio" id="Button2" name="name" class="filtering_button" ONCLICk="ShowRadioButtonDiv('Button',2)" value="offline_payment" required><label for="Button2"><h3>Department</h3></label>
+         </span>
+      </div>
+      </div><br>
+        <DIV id="Button1Div" style="display: none;">
+          <!-- <button type="submit" name="submit"  class="btn btn-outline-primary btn-block" style="width: 50%;">By Consultant</button> -->
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4"><h4>Constultant Name :</h4></label>
+                <select class="" name="consultant">
+                {% for data in records %}
+               <h3> <option value="{{data.doctor_name}}">{{data.doctor_name}}</option></h3>
+                {% endfor %}
+                </select>
+              <!-- <select class="" name="department">
+                {% for data in records %}
+                  <option value="{{data.doctor_department}}">{{data.doctor_department}}</option>
+                {% endfor %}
+              </select> -->
+              </div>
+            </div>
+            <button type="submit" class="btn btn-outline-primary" style="margin-left:10%;">Filtering</button>
+            </form>
+          </DIV>
+          <DIV id="Button2Div" style="display: none;">
+            <form method="POST" action="filtering-department">
+              {% csrf_token %}
+              <div class="col-lg-10">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                <!--   <label for="inputEmail4">Constultant Name</label>
+                  <select class="" name="consultant">
+                  {% for data in records %}
+                  <option value="{{data.doctor_name}}">{{data.doctor_name}}</option>
+                  {% endfor %}
+                  </select> -->
+                 <label for="inputEmail4"><h4>Department Name :</h4></label>
+                <select class="" name="department">
+                  {% for data in records %}
+                <h3><option value="{{data.doctor_department}}">{{data.doctor_department}}</option></h3>
+                  {% endfor %}
+                </select>
+                </div>
+              </div>
+              </div>
+              <button type="submit" class="btn btn-outline-primary" style="margin-left:10%;">Filtering</button>
+              </form>
+          </DIV>
+    </form>
+
+  </div><br><br><br><br><br><br><br><br><br>
+  <!-- <form method="POST">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputEmail4">Constultant Name</label>
+        <select class="" name="consultant">
+        {% for data in records %}
+        <option value="{{data.doctor_name}}">{{data.doctor_name}}</option>
+        {% endfor %}
+        </select>
+      <select class="" name="department">
+        {% for data in records %}
+          <option value="{{data.doctor_department}}">{{data.doctor_department}}</option>
+        {% endfor %}
+      </select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-outline-primary btn-block">Filtering</button>
+    </form> -->
+</div>
+  {% endif %}
+
+</div>
+<br><br><br><br><br>
+{% endblock %}
+{% block script_block %}
+<script>
+        function ShowRadioButtonDiv(idBaseName,NumberOfButtons) {
+          for(x=1;x<=NumberOfButtons;x++){
+            CheckThisButton = idBaseName + x;
+            ThisDiv = idBaseName + x + 'Div';
+            if
+            (document.getElementById(CheckThisButton).checked)
+            {
+              document.getElementById(ThisDiv).style.display = "block";
+            }
+            else {
+              document.getElementById(ThisDiv).style.display = "none";
+            }
+          }
+          return false;
+          }
+
+      </script>
+{% endblock %}

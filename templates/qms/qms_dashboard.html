@@ -1,0 +1,175 @@
+{% extends 'qms/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+.card {
+    box-shadow: 0 0 10px #c2c0c0
+}
+#date {
+	font-family: Arial, Helvetica, sans-serif;
+	width:750px;
+	/* margin: 100px auto 0; */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 50px;
+	/* padding: 45px; */
+	background-color: #ffffff;
+	border-radius: 25px;
+	border: 5px solid #d6e5f7;
+	color: #000000;
+	height: 100px;
+	box-shadow: 0 0 10px #8f8f8f;
+}
+</style>
+{% endblock %}
+{% block body_block %}
+
+<!-- content -->
+<div class="page-wrapper" style="background-color: white;">
+    <div class="content px-3 py-2">
+        <!-- Main Dashboard -->
+        <div class="row" >
+           
+            <div class="col-md-3">
+                <div class="card bg-info text-white mb-4">
+                    
+                    <div class="card-body" style="font-size: medium;"style="font-size: medium;"><i class='fas fa-first-aid'></i>  Today Tokens <b style="float: right;">{{today_token1}}</b></div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <!-- <a class="small text-white stretched-link" href="#" onclick="openNav()" >View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div> -->
+                    </div>
+               </div>
+            </div>
+            <div class=" col-md-3">
+                <div class="card bg-warning text-white mb-4">
+                    <div class="card-body" style="font-size: medium;"> <i class='fas fa-first-aid'></i>  Today Attend Patient<b style="float: right;">{{token_created1}}</b></div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <!-- <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div> -->
+                    </div>
+                </div>
+               
+             </div>
+             <div class=" col-md-3">
+                <div class="card bg-success text-white mb-4">
+                    <div class="card-body" style="font-size: medium;"><i class='fas fa-first-aid'></i>   Available Doctors <b style="float: right;">{{avail_dr_count}}</b></div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <!-- <a class="small text-white stretched-link" href="#">View Details</a> -->
+                        <!-- <div class="small text-white"><i class="fas fa-angle-right"></i></div> -->
+                    </div>
+                </div>
+             
+             </div>
+             <div class="col-md-3">
+                <div class="card bg-danger text-white mb-4">
+                    <div class="card-body" style="font-size: medium;"><i class='fas fa-first-aid'></i>   Missed Patient Count <b style="float: right;">0</b></div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <!-- <a class="small text-white stretched-link" href="#">View Details</a> -->
+                        <!-- <div class="small text-white"><i class="fas fa-angle-right"></i></div> -->
+                    </div>
+                </div>
+             </div>
+        </div>
+   
+        <div class="row" >   
+            <div class="col-md-6">
+            
+            <div  class="container row" > 
+              
+                <div class=" card border-primary col-md-6" style="width: 18rem;">
+                    <div class="card-body text-danger">
+                    <h4 class="card-title text-info">Next Token</h4>
+                    <h1 style="font-size: 60px;"><center>2</center> </h1></div>    
+                </div>
+                <div class="card border-primary col-md-6" style="width: 18rem; ">
+                <div class="card-body">
+                  <h4 class="card-title text-primary">Current Token</h4>
+                  <h1 style="font-size: 60px;"><center>1</center> </h1>
+                </div>
+                </div>
+               <div class="card col-md-12" style="height: 270px; overflow: auto;">  
+                <table class="table">
+                    <thead>
+                        <tr style="background-color: white;">
+                            <th style="background-color: white;" colspan="2"><i class="fas fa-table me-1"></i>&nbsp; Available Doctor </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in available_doctor %}
+
+                        <tr>
+                            <td><img width="45" height="45" src="{{data.profile.url}}" class="rounded-circle m-r-5" alt="Img">&nbsp;&nbsp; <b>{{data.Doctor_name}}</b></td>
+                            <td>{{data.specialist}}</td>
+                            <td>{{data.room_no}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>                    
+                </div>  
+            </div>        
+            </div>            
+            <div class="col-md-6">
+            <div class="card mb-4 container" style="height: 450px; overflow: auto;" >
+                        <div class="card-header"><i class="fas fa-table me-1"></i>&nbsp;Tokens Details</div>           
+                          <table class="table table-bordered table-striped table-hover" >
+                            <thead>
+                                <tr>                                  
+                                    <th style="background-color: rgb(159, 189, 245);">Patient ID</th>
+                                    <th style="background-color: rgb(159, 189, 245);">Token No</th>
+                                    <th style="background-color: rgb(159, 189, 245);">Doctor</th>
+                                    <th style="background-color: rgb(159, 189, 245);">Room</th>
+                                    <th style="background-color: rgb(159, 189, 245);">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% with previous_status="" %}                    
+                                {% for data in token_created %}
+                                    <tr>
+                                        <td style="background-color: hsl(0, 0%, 100%);">{{ data.Pt_Id }}</td>
+                                        <td style="background-color: hsl(0, 0%, 100%);">{{ data.Token_No }}</td>
+                                        <td style="background-color: hsl(0, 0%, 100%);">{{ data.Doct_Name }}</td>
+                                        <td style="background-color: hsl(0, 0%, 100%);">{{ data.Room_No }}</td>
+                                        <td style="background-color: hsl(0, 0%, 100%);">
+                                            {% if data.status == "Inside" %}
+                                                <span class="custom-badge status-green">Inside</span>
+                                            {% elif data.status == "Missed Patient" %}
+                                                <span class="custom-badge status-red">Missed</span>
+                                            {% elif data.status == "Waiting" %}
+                                                {% if previous_status == "Inside" %}
+                                                    <span class="custom-badge status-red">Next</span>
+                                                {% endif %}
+                                                <span class="custom-badge status-blue">Waiting</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>                                  
+                                {% endfor %}
+                            {% endwith %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const date = document.getElementById("date");
+
+function updateDate() {
+	let newDate = new Date();
+	let year = newDate.getFullYear();
+	let month = newDate.getMonth() + 1;
+	let days = newDate.getDate();
+	let hour = newDate.getHours();
+	let mins = newDate.getMinutes();
+	let sec = newDate.getSeconds();
+	let clockJSRead = `${year}/${month}/${days} ${hour}:${mins}:${sec}`;
+	date.textContent = clockJSRead;
+}
+setInterval(updateDate, 1000);
+updateDate();
+</script>
+
+{% endblock %}

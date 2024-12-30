@@ -1,0 +1,184 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+ <!-- content -->
+ <div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+      <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/ipd/ipd_front_desk" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>Patient Registration Search</b>
+        </div>
+        <div class="">
+          <a type="button" data-toggle="modal" data-target="#myLargeModalLabel1"  class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a>
+          <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item btn-primary" id="download-button " type="button" onclick="printDiv('hello')">Print</a>
+          </div>
+        </div>
+      </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                <div class="col-md-12">
+                  <ul class="patient_record">
+                    <li class="d-flex align-items-center ml30"><span class="yellow_bg"></span>Admitted Patient</li>
+                    <li class="d-flex align-items-center ml30"><span class="red_bg"></span>Emergency Patient</li>
+                    <li class="d-flex align-items-center ml30"><span class="green_bg"></span>Expired Patient</li>
+                  </ul>
+                </div>
+              </div>
+              {% if success_search %}                
+                <h5>Already Registerd</h5>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="table-responsive">
+                      <table class="datatable table table-stripped ">
+                        <tr style="background:#d1dae6;">
+                          <th>UHID</th>
+                          <th>Patient Name</th>
+                          <th>Age/Gender</th>
+                          <th>Date Of Birth</th>
+                          <th>Action</th>
+                        </tr>
+                        {% for data in records %}
+                          <tr>
+                            <td><a href="/ipd/ipd_front_desk/{{data.uhid}}">{{data.uhid}}</a></td>
+                            <td>{{data.title}}.{{data.first_name}}&nbsp;{{data.middle_name}}&nbsp;{{data.last_name}}</td>
+                            <td>{{data.gender}}</td>
+                            <td>{{data.dob}}</td>
+                            <td>
+                              <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  <a class="dropdown-item" href="/patient_search_edit/{{data.uhid}}">Update</a>
+                                  <a class="dropdown-item" href="/patient_search_delete/{{data.uhid}}">Delete</a>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                {% else %}
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="register_record">
+                      <table class="datatable table table-stripped" id="tableIDv">
+                        <thead>
+                        <tr style="background:#d1dae6;">
+                          <th>UHID</th>
+                          <th>Patient Name</th>
+                          <th>Age/Gender</th>
+                          <th>Date Of Birth</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in records1 %}
+                        {% if data.uhid in prescription_list %}
+                          <tr style="background-color: rgb(248, 255, 196);">
+                            <td><a href="/ipd/ipd_front_desk/{{data.uhid}}">{{data.uhid}}</a></td>
+                            <td>{{data.title}}.{{data.first_name}}&nbsp;{{data.middle_name}}&nbsp;{{data.last_name}}</td>
+                            <td>{{data.gender}}</td>
+                            <td>{{data.dob}}</td>
+                          </tr>
+                        {% else %}
+                        <tr>
+                            <td><a href="/ipd/ipd_front_desk/{{data.uhid}}">{{data.uhid}}</a></td>
+                            <td>{{data.title}}.{{data.first_name}}&nbsp;{{data.middle_name}}&nbsp;{{data.last_name}}</td>
+                            <td>{{data.gender}}</td>
+                            <td>{{data.dob}}</td>
+                          </tr>
+                        {% endif %}
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+          </div>
+      </div>
+  </div>
+<!-- +++++++++++++++++++++++++++++++++++++ start modal============================ -->
+
+        <!-- Filter Start model -->
+
+        <div class="modal fade temporary_access" id="myLargeModalLabel1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <!-- Header -->
+                  <div class="modal-header" style="background: skyblue;">
+                      <h5 class="modal-title" id="exampleModalLabel1"><b>Filter</b></h5>
+                  </div>
+                  <!-- Main block -->
+                  <div class="modal-body">
+                    <form method="POST">
+                      {% csrf_token %}
+                      <div class="row">
+                        <div class="col-md-6 pl-2 pr-2">
+                          <div class="form-group row no-gutters">
+                            <label for="reg-no" class="col-form-label">UHID&nbsp;&nbsp;</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" id="reg-no" placeholder="" name="uhid">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 pl-2 pr-2">
+                          <div class="form-group row no-gutters">
+                            <label for="patient-name" class=" col-form-label" >Patient Name&nbsp;&nbsp;</label>
+                            <div class="col-sm-7">
+                              <input type="text" class="form-control" id="patient-name" placeholder="" name="patient_name">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 pl-2 pr-2">
+                          <div class="form-group row no-gutters">
+                            <label for="DOB" class="col-form-label">DOB&nbsp;&nbsp;</label>
+                            <div class="col-sm-9">
+                              <input type="date" class="form-control" id="DOB" placeholder="" name="dob">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 pl-2 pr-2">
+                          <div class="form-group row no-gutters">
+                            <label for="mobile-no" class=" col-form-label">Mobile No:&nbsp;&nbsp;</label>
+                            <div class="col-sm-7">
+                              <input type="number" class="form-control" id="mobile-no" placeholder="" name="mobile_number">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-3 mr-0 ml-auto pl-2 pr-2">
+                          <div class="form-group butns text-right">
+                           <button type="submit" class="bg-primary border-0 p-2 text-white" name="button"><i class="fa fa-hand-pointer" aria-hidden="true">&nbsp;Filter</i></button>
+                         </div>
+                       </div>
+                     </div>
+                    </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  
+      <!-- end model -->
+<!-- +===================== end model =================== -->
+<script>
+  function printDiv(divName) {
+   var printContents = document.getElementById(divName).innerHTML;
+   var originalContents = document.body.innerHTML;
+
+   document.body.innerHTML = printContents;
+
+   window.print();
+
+   document.body.innerHTML = originalContents;
+}
+</script>
+{% endblock  %}

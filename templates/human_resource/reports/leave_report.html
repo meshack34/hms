@@ -1,0 +1,116 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Leave Report</h4>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row filter-row">
+                        <!-- <div class="col-sm-4">
+
+                            <label>From Date</label>
+                            <input type="date" class="form-control" name="from_date" id="from_date">
+                        </div>
+                        <div class="col-sm-4">
+
+                            <label>To Date</label>
+                            <input type="date" class="form-control" name="to_date" id="to_date">
+                        </div> -->
+                        <div class="col-sm-4">
+                            <label>Department</label>
+                            <select class="select floating" name="dept_id" id="dept_id">
+                                <option value="">-</option>
+                                {% for data in dept_detail %}
+                                <option value="{{data.id}}">{{data.department_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    
+                        <div class="col-sm-4">
+                            <label>Leave Status</label>
+                            <select class="select floating" name="leave_status" id="leave_status">
+                                <option value="">-</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="declined">Declined</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <label></label>
+                            <button type="submit" class="btn btn-success btn-block">Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="datatable table table-stripped ">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Employee Name</th>
+                                        <th>Employee ID</th>
+                                        <th>Department Name</th>
+                                        <th>Leave Type</th>
+                                        <th>From Date</th>
+                                        <th>To Date</th>
+                                        <th>No of Days</th>
+                                        <th>Reason</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data1,data2 in leave_detail %}
+                                    <tr>
+                                        <td></td>
+                                        <td>{{data1.first_name}}{{data1.last_name}}</td>
+                                        <td>{{data1.employee_id}}</td>
+                                        <td>{{data1.dept_name}}</td>
+                                      </tr>
+                                      <tr>
+                                     {% for data in data2  %}
+                                          
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{data.leave_type}}</td>
+                                        <td>{{data.from_date}}</td>
+                                        <td>{{data.to_date}}</td>
+                                        <td>{{data.no_of_days}}</td>
+                                        <td>{{data.reason}}</td>
+
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--/ content-->
+
+{% endblock %}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% extends 'patient/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<div class="main_content" style="background-image: linear-gradient(white,#9AD0EC);">
+<div class="container">
+<br><br><br><br><br>
+  <h3>Reports</h3>
+  <div class="row row-cols-1 row-cols-md-3">
+
+  <div class="col mb-4">
+      <button   data-toggle="modal" data-target=".bd-example-modal-xl">
+      <div class="card h-100">
+        <div class="card-body">
+          <a href="appointment-detail-reports" style="color: blue;">Detail Appointment Reports</a>
+        </div><br>
+      </div></button>
+  </div>
+  <div class="col mb-4">
+    <button   data-toggle="modal" data-target=".bd-example1-modal-xl">
+    <div class="card h-100">
+      <div class="card-body">
+        <a href="shorting-filter" style="color: blue;">Consultant/Department Wise Reports </a>
+      </div>
+    </div></button>
+  </div>
+  <div class="col mb-4">
+    <button   data-toggle="modal" data-target=".bd-example-modal-xl">
+    <div class="card h-100">
+      <!-- <img src="..." class="card-img-top" alt="..."> -->
+      <div class="card-body">
+        <a href="cancellation-reports" style="color: blue;">Cancellation Reports</a>
+      </div><br>
+    </div></button>
+  </div>
+</div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+</div>
+<!-- Modal 1 Starts -->
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+<P> <CENTER>This is 1</CENTER></P>
+        </div>
+    </div>
+</div>
+<!-- Modal 2 Ends -->
+ <!-- Modal 2 Starts -->
+ <div class="modal fade bd-example1-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+<P> <CENTER>This is 2</CENTER></P>
+        </div>
+    </div>
+</div>
+      <!-- MODAL 2 ENDS -->
+      <!-- MODAL 3 -->
+      <div class="modal fade bd-example2-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+    <P> <CENTER>This is 3</CENTER></P>
+            </div>
+        </div>
+    </div>
+      <!-- MODAL 3 ENDS -->
+<br><br><br><br><br>
+{% endblock %}

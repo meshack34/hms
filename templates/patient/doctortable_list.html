@@ -1,0 +1,62 @@
+{% extends 'patient/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+        <div class="main_content"  style="background-image: linear-gradient(white,#9AD0EC);">
+            <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <div class="card">
+                    <div class="header">
+            <div class="body">
+                <div class="table-responsive">
+                  <h4>&nbsp;Doctor</h4>
+                  <a href="/doctor-view">
+                      <button type="button" class="btn btn-info" style="float: right;">Create Doctor</button>
+                  </a><br><br>
+                <table class="table table-bordered table-striped table-hover save-stage dataTable"                    style="width:100%;">
+                        <thead>
+                            <tr><th bgcolor= "ORANGERED">Id</th>
+                                <th bgcolor= "ORANGERED">Name</th>
+                                <th bgcolor= "ORANGERED">Email ID</th>
+                                <th bgcolor= "ORANGERED">Mobile no.</th>
+                                <th bgcolor= "ORANGERED">Status</th>
+                                <th bgcolor= "ORANGERED">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in doctortable_list %}
+                          <tr>
+                            <td>{{data.doctor_id}}</td>
+                            <td>{{data.doctor_name}}</td>
+                            <td>{{data.doctor_email_address}}</td>
+                            <td>{{data.doctor_phone_no}}</td>
+                            {% if inactive == data.doctor_status  %}
+                            <td>
+                              <button type="button" name="button" class="btn btn-danger" align="center">{{data.doctor_status}}</button>
+                            </td>
+                            {% else %}
+                              <td><button type="button" name="button" class="btn btn-success" align="center">{{data.doctor_status}}</button>
+                              </td>
+                            {% endif %}
+                            <td>
+                                <div class="content">
+                                    <button class="btn"><a href="detail-doctor/{{data.doctor_id}}"><i class="fa fa-user" style="font-size: 24px;color:green"></i></a></button>
+                                    <button class="btn"><a href="edit-doctor/{{data.doctor_id}}"><i class="fa fa-edit" style="font-size: 24px;color:red"></i></a></button>
+                                </div>
+                            </td>
+                          </tr>
+                          {% endfor %}
+
+                         </tbody>
+
+                </table>
+                </div>
+            </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

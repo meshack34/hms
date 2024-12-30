@@ -1,0 +1,73 @@
+{% extends 'doctor/base.html' %}
+{% load static %}
+{% block body_block %}
+   <!-- content -->
+   <div class="page-wrapper bg-white">
+    <div class="content px-3 py-2 ">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Appointment List</b>
+            </div>
+            <div class="">
+              <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a  href="doctor_appointment" class="dropdown-item btn-primary" data-toggle="modal" data-target="#myModal" role="button" type="button" id="button" > Appointment</a> 
+                <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+                <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+                
+              </div>
+            </div>
+          </div>
+<!-- Main Dashboard -->
+        <div class="row ">
+  
+            <div class="col-12">
+        
+            <div class="table-responsive">
+                <div style="overflow: auto;">
+                <table class="datatable table table-stripped table-bordered" id="myTable" >
+                    <thead class="text-nowrap">
+                        <tr>
+                            <th>SI.No</th>
+                            <th>Appointment No</th>
+                            <th>Date </th>
+                            <th>Doctor Name</th>
+                            <th>Patient Name</th>
+                            <th>Patient Id</th>
+                            <th>Gender</th>
+                            <th>Age</th>
+                            <th>Mobile</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in doctor_appointment %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.patient_appointment_id}}</td>
+                            <td class="text-nowrap">{{data.patient_schedule_date_and_time}}</td>
+                            <td>{{data.doctor_name}}</td>
+                            <td>{{data.first_name}} {{data.middle_name}} {{data.last_name}}</td>
+                            <td>{{data.patient_id}}</td>
+                            <td>{{data.patient_gender}}</td>
+                            <td>{{data.patient_age}}</td>
+                            <td>{{data.patient_mobile_number}}</td>
+                        </tr>
+                        {% endfor %}
+                  
+                        </tbody>
+
+            </table>
+        </div>
+            </div>
+
+</div>
+</div>
+
+
+
+{% endblock  %}
+

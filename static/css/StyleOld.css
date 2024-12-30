@@ -1,0 +1,193 @@
+.own_slider_img{
+}
+.own_form .form-row{
+margin:1em;
+}
+footer{
+border:5px solid #0F0E0E;
+background-color:#0F0E0E;
+color:white;
+text-align:center;
+}
+.month{
+  border: 0px solid red!important;
+}
+.month tr th{
+  padding: 5px;
+}
+*{
+  margin:0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+  font-family:'Times New Roman', Times, serif;
+}
+.body{
+  background-color: #fff;
+}
+.hero{
+  height:100%;
+  width:100%;
+  background:url("../images/doctor2.jpg") ;
+  background-position:fixed;
+  background-size:cover;
+  position:relative;
+  Overflow-x: hidden;
+  Overflow-y: hidden;
+}
+.heroo{
+  height:100%;
+  width:100%;
+  background:url("../images/doctor.jpg") ;
+  background-position:fixed;
+  background-size:cover;
+  position:relative;
+}
+
+
+.wrapper{
+  display: flex;
+  position: relative;
+}
+.wrapper .sidebar{
+  position: fixed;
+  width: 200px;
+  height: 100%;
+  background: #ffffff;
+  padding: 20px 0;
+}
+.wrapper a{
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color:ghostwhite ;
+  display: block;
+}
+
+.wrapper .sidebar h2{
+  color: #fff;
+  text-transform: uppercase;
+  text-align:center;
+  margin-bottom: 30px;
+}
+.wrapper .sidebar ul li a{
+  color: #000000;
+  display:block;
+}
+.wrapper .sidebar ul li a .fas{
+  width: 25px;
+}
+.wrapper .sidebar ul li:hover{
+  background: #098bbe;
+}
+.wrapper .sidebar ul li:hover a{
+  color: #fff;
+}
+.wrapper .main_content{
+  width: 100%;
+  margin-left: 200px;
+}
+.wrapper .main_content .header{
+  padding:20px;
+  background: #fff;
+  color: #717171;
+  border-bottom: 1px solid #e0e428;
+}
+.wrapper .main_content .info div{
+  margin-bottom: 20px;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 25px;}
+  .sidenav a {font-size: 18px;}
+}
+
+table{
+  border-collapse: collapse;
+}
+th,td{
+
+  text-align: left;
+  padding: 8px;
+}
+tr:nth-child(even){
+  background-color: #fff;
+}
+.doctor_view_form{
+
+  margin-top: 0%;
+  background-color: #eee;
+  padding: 10%;
+  padding-top: 1%;
+}
+.card div .info-box7-block button{
+  text-align: center!important;
+  margin: auto;
+  display: block;
+}
+#id_doctor_appointment{
+  border:5px solid white;
+  background-color: #eee;
+}
+.main_content{
+  margin: 1%;
+}
+.btn-work span{
+margin: 5em;
+}
+.btn-work button{
+  margin: 1%;
+}
+.own-submit .own-span{
+margin: 5em;
+}
+.schedule-design{
+
+  border: 2px solid #eee;
+}
+.member_body{
+  width: 50%;
+  box-shadow: 2px 2px 5px 5px #eee;
+  padding: 1px;
+  border-radius: 0.5em;
+}
+.center{
+  margin: auto;
+  width: 120%;
+  border: 3px solid #098bbe;
+  padding: 20px;
+}
+.outer{
+  margin: auto;
+  width: 120%;
+  border: 3px solid whitesmoke;
+  padding: 20px;
+  background-image: none;
+}
+
+.input-icons i {
+  position:absolute;
+}
+.input-icons{
+  width: 100%;
+  margin-bottom: 10px;
+}
+.icon{
+  padding: 10px;
+  min-width:40px
+}
+
+.new_appointment_style{
+  margin-top: 5%;
+  margin-left: 15%;
+  display: block;
+}
+.filtering_button{
+  width: 30%;
+}
+.filtering_button span{
+  padding-left: 10%;
+}
+.filtering_button label{
+  padding-left: 1%;
+}

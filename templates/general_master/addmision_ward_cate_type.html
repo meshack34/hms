@@ -1,0 +1,95 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+
+<!--{% if is_ward_type_view %}-->
+<!--    <form method="POST">-->
+<!--        {% csrf_token %}-->
+<!--        {{form}}-->
+<!--        <input type="submit" value="submit">-->
+<!--    </form>-->
+<!--{% endif %}-->
+<!--{% if is_ward_cate_view %}-->
+<!--    <form method="POST">-->
+<!--        {% csrf_token %}-->
+<!--        {{form}}-->
+<!--        <input type="submit" value="submit">-->
+<!--    </form>-->
+<!--{% endif %}-->
+
+{% block head_block %}
+<style>
+.room_def_deco p select,input,textarea{
+    width:40%;
+}
+.room_def_deco p label{
+    width:30%;
+}
+.room_def_deco .btn-info{
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+    box-shadow:2px 2px 5px 5px;
+}
+</style>
+{% endblock  %}
+{% block body_block %}
+<div class="page-wrapper">
+    <div class="content">
+
+    <h3>Ward Type</h3>
+    <hr>
+    <form method="POST" class="room_def_deco" id="ward_type_form" data-cities-url="{% url 'ajax_ward_type_master' %}">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Submit" name="Submit" class="btn btn-success">
+    </form>
+    <hr>
+    <table width="100%" class="OwnTableForStyleImplementation">
+        <thead>
+        <th>S.No.</th>
+        <th>Floor Name</th>
+        <th>Room Number</th>
+        <th>Ward Type</th>
+        <th>ward_category</th>
+        </thead>
+        <tbody>
+        {% for data in records %}
+        <tr>
+            <td>{{data.id}}</td>
+            <td>{{data.floor_name}}</td>
+            <td>{{data.room_number}}</td>
+            <td>{{data.ward_type}}</td>
+            <td>{{data.ward_category}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_floor_name").change(function () {
+        const url = $("#ward_type_form").attr("data-cities-url");  
+        const floor_id = $(this).val(); 
+ 
+        $.ajax({             
+            url: url,   
+            data: {
+                'floor_id': floor_id     
+            },
+            success: function (data) { 
+                $("#id_room_number").html(data);  
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (floor) {
+                console.log(floor)
+                    html_data += `<option value="${floor.id}">${floor.room_number}</option>`
+                });
+                console.log(html_data);
+                $("#id_room_number").html(html_data);
+            }
+        });
+ 
+    });
+ </script>
+ 
+{% endblock  %}

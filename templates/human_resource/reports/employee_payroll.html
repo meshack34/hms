@@ -1,0 +1,70 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Payroll Report</h4>
+            </div>
+
+        </div>
+        <!-- <div class="card">
+            <div class="card-body">
+                
+            </div>
+        </div> -->
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="datatable table table-stripped ">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Employee ID</th>
+                                        <th>Employee Name</th>
+                                        <th>Department</th>
+                                        <th>Payment Date</th>
+                                        <th>Total Earning</th>
+                                        <th>Total Deduction</th>
+                                        <th>Net Salary</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td><b>{{emp_detail.employee_id}}</b></td>
+                                        <td><b>{{emp_detail.first_name}}{{emp_detail.last_name}}</b></td>
+                                        <td><b>{{emp_detail.dept_name}}</b></td>
+                                    </tr>
+                                    {% for data in salary_detail %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{data.payment_date}}</td>
+                                        <td>{{data.total_earning}}</td>
+                                        <td>{{data.total_deduction}}</td>
+                                        <td>{{data.net_salary}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--/ content-->
+
+{% endblock %}

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		#back_btn, button {
+				font-size: larger;
+				box-sizing: border-box;
+				padding: 10px;
+			}
+	</style>
+
+</head>
+<body>
+	
+{% block head_block %}
+{% load static %}
+{% load humanize %}
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+<!--This for payment receipt print function-->
+<div id="hello">
+	<style type="text/css">
+		body,
+		p {
+			font-family: arial;
+			font-size: 12px;
+		}
+
+		p {
+			margin: 0 0 5px;
+		}
+
+		table td,
+		table th {
+			padding: 10px;
+			text-align: left;
+		}
+		
+		@media print {
+			body, #hello {
+				font-size: 12px !important;
+			}
+
+			p {
+				margin: 0 0 5px;
+				font-size: 12px !important;
+			}
+
+			table td,
+			table th {
+				font-size: 12px !important;
+				padding: 10px;
+				text-align: left;
+			}
+			#haeder tr, #haeder td, #haeder th {
+				padding: 3px;
+			}
+		}
+
+		button {
+			font-size: larger;
+			box-sizing: border-box;
+			padding: 10px;
+		}
+	</style>
+<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+	<tr style="border-bottom:2px solid #eee;">
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td>
+						<div class="">
+							<center>
+								<h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image"
+										style="width:500px;height:100px;"></h2>
+							</center>
+
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr >
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td colspan="4" style="text-align:center;border-bottom: 1px solid #222;"><h3 style="margin: 0;">Sale Return Invoice</h3></td>
+				</tr>
+				<tr>
+					<th>Name</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.patient_name}}</td>
+					<th>Sale Bill. No.</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.Op_sales_no}}</td>
+				</tr>
+
+				<tr>
+					<th>Age/Gender</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.age}} / {{ps_sale_parent.gender}}</td>
+					<th>UHID</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.uhid}}</td>
+
+				</tr>
+				<tr>
+					<th>Location</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.location_id}}</td>
+					<th>Visit No</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.visit_id}}</td>
+
+				</tr>
+				<tr>
+					<th>Doctor</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.consultant_name}}</td>
+					<th>Return Bill No</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{sales_return.sales_return_id}}</td>
+				</tr>
+				<tr>
+					<th>Mobile</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.mobile}}</td>
+					<th>Sale Date</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{ps_sale_parent.sales_date}}</td>
+				</tr>
+				<tr>
+					<th>Reason</th>
+					<td>&nbsp;&nbsp;&nbsp;{{sales_return.reason}}</td>
+					<th>Sale Return Date</th>
+					<td>:&nbsp;&nbsp;&nbsp;{{sales_return.sales_return_date}}</td>
+				</tr>
+			
+			</table>
+		</td>
+	</tr>
+<!-- table -->
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;" width="100%">
+				<tr>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">SI</th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Item Name</th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Sale Qty</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Return Qty</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Rate</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Discount</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Sale Amount</th>
+                    <th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Return Amount</th>
+					
+				</tr>
+				<tr>
+					{% for data in sales_return_child%}
+				<tr>
+                  <td>{{forloop.counter}}</td>
+                  <td>{{data.item_id}}</td>
+                  <td>{{data.sale_qty}}</td>
+                  <td>{{data.return_qty}}</td>
+				  <td>{{data.rate}}</td>
+				  <td>{{data.discount}}</td>
+                  <td>{{data.sale_amount}}</td>
+				  <td>{{data.return_amount}}</td>
+              </tr>
+			  {% endfor %}
+				
+				<tr>
+                  <td style="color: black;border-top: 1px solid#333; border-bottom: 1px solid#333; "></td>
+                  <td style="color: black;border-top: 1px solid#333; border-bottom: 1px solid#333; "></td>
+                  <td style="color: black;border-top: 1px solid#333; border-bottom: 1px solid#333; "></td>
+                  <td style="color: black;border-top: 1px solid#333; border-bottom: 1px solid#333; "></td>
+                  <td style="color: black;border-top: 1px solid#333; border-bottom: 1px solid#333; "></td>
+                  <td style="color: black;border-top: 1px solid#333; border-bottom: 1px solid#333; "></td>
+                  <td style="color: black;border-top: 1px solid#333; border-bottom: 1px solid#333; "><b>Total Amount :</b></td>
+				  <td style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">{{sales_return.total_amount}}</td>
+              </tr>
+				
+			</table>
+		</td>
+	</tr>
+
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto; border-collapse: collapse;"
+				width="100%">
+				<tr>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Payments</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Receipt No</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Mode</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Card</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Bank</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Reference No</th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; "></th>
+					<th style="border-top: 1px solid#333; border-bottom: 1px solid#333; ">Amount</th>
+				</tr>
+				{% for payment_detail in payment_details %}
+				<tr>
+					<td>{% if payment_detail.date_time != None %}{{payment_detail.date_time}}{% endif %}</td>
+					<td>{% if payment_detail.op_sale_no != None %}{{payment_detail.op_sale_no}}{% endif %}</td>
+					<td>{% if payment_detail.mode_type != None %}{{payment_detail.mode_type}}{% endif %}</td>
+					<td>{% if payment_detail.card_no != None %} {{payment_detail.card_no}} {% endif %}</td>
+					<td>{% if payment_detail.bank_no != None %}{{payment_detail.bank_no}}{% endif %}</td>
+					<td>{% if payment_detail.ref_number != None %}{{payment_detail.ref_number}}{% endif %}</td>
+					<td></td>
+					<td>{% if payment_detail.paid_amount != None %}{{payment_detail.paid_amount|floatformat:2|intcomma}}{% endif %}
+					</td>
+				</tr>
+				{% endfor %}
+				<tr>
+					<td style="border-top: 1px solid#333;" colspan="6"></td>
+					<td style="color: black;border-top: 1px solid#333;border-bottom: 1px solid#333;"><b>Net
+							Payments:</b></td>
+					<td style="border-top: 1px solid#333;border-bottom: 1px solid#333;">{% if ps_sale_parent.paid_amount != None %}{{ps_sale_parent.paid_amount|floatformat:2|intcomma}}{% endif %}</td>
+				</tr>
+
+			</table>
+		</td>
+	</tr>
+
+	<tr>
+		<th>Returned with thanks:{{amt_lang}} Kenya Shillings only</th>
+	</tr>
+	<tr>
+		<td>
+			<table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+				<tr>
+					<td colspan="10" style="text-align:right;">
+						<h6 style="margin: 0;">Signature</h6>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+
+
+</table>
+</div><br><br>
+<div style="padding-left: 45%;">
+	<button type="button" onclick="codespeedy()"
+		 id="billgenerate"
+		class="btn btn-primary">Print</button>
+	<a href="{% url 'sales_return_from_OP' %}" id="back_btn" class="btn btn-info">Back</a>
+	<br><br>
+</div>
+
+<script type="text/javascript">
+        
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+
+
+  {% endblock %}
+</body>
+</html>

@@ -1,0 +1,542 @@
+{% extends 'inventory_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+  
+    </style>
+{% endblock  %}
+{% block body_block %}
+<style>
+    #id_purchase_order_number{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+   
+    .form-control{
+      border: 2px solid white;
+      width: 100%;
+      background-color: white;
+      border-bottom: 1px solid black;
+    }
+ 
+
+    </style>
+
+<!-- content -->
+<form method="post" id="item_master"  data-cities-url="{% url 'load_itemcategoryy' %}">
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;" href="#">Item Master</a>
+      </div>
+      </nav>   
+    <div class="container-fluid">
+      <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+              <div class="card">
+                  <div class="form-row">
+                    <div class="col-sm-0"><br>
+                        <button type="button" class="btn btn-warning" id="add_item"><i class="fas fa-plus" >Add</i></button>&nbsp;
+                    </div>
+                    <div class="col-sm-0"><br>
+                        <button type="button" class="btn btn-warning"><i class="fa fa-pen" >Edit</i></button>&nbsp;                        
+                       </div>
+                    <div class="col-sm-0"><br>
+                        <button type="submit"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;
+                    </div>
+                    <div class="col-sm-0"><br>
+                        <button type="button" class="btn btn-primary"  onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+                    </div>
+                    <div class="col-sm-0"><br>
+                         <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+                    </div>              
+                   
+                    <br>
+                     
+                  <!-- <button type="button"class="btn btn-success"> <i class="fas fa-save" >Save</i></button>&nbsp;  -->
+              </div>
+<br>
+<div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;"><br>
+ 
+  
+    {% csrf_token %}
+    <div class="row clearfix">
+      <!-- <div class="col-sm-3">
+        <div class="form-group">
+          <label for="Appoints">Appointment Id</label>
+          <div class="flexContainer">
+            <input type="text" name="appointment_id"  class="form-control" id="Appoints" placeholder="">
+            data-toggle="modal" data-target="#patient-registration-modal" 
+             <button type="button"  name="search_app_id"  value="IsAppointmentId" class="input-group-text" data-toggle="modal" data-target="#patient-registration-modal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+         </div>
+       </div>
+      </div> -->
+
+   <!--  <div class="col-sm-3">
+            <div class="form-line">
+              <div class="form-group col-md-12 mb-0">
+                <label>Item ID</label>
+                
+                        <input type="text" name="store_id" class="form-control" value="IM00" readonly>
+                       
+                         <input type="text" name="store_id" class="form-control" value="1" readonly>
+                        
+              </div>
+            </div>
+    </div> -->
+    <div class="col-sm-3">
+          <div class="form-line">
+            <div class="form-group col-md-12 mb-0">
+              <label>Belongs To</label>
+              <select name="belongs_to" id="belongs_to" class="form-control">
+                  <option>select</option>
+                  {% for data in belongs_to %}
+                  <option value="{{data.id}}">{{data.belongs_to}}</option>
+                  {% endfor %}
+                </select>
+            </div>
+          </div>
+    </div>
+    <div class="col-sm-3">
+         <div class="form-line">
+          <div class="form-group col-md-12 mb-0">
+            <label>Item Category</label>
+                <select name="item_category" id="item_category" class="form-control">
+                  <option>select</option>
+                  {% for data in item_category %}
+                  <option value="{{data.id}}">{{data.item_category}}</option>
+                  {% endfor %}
+                </select>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+         <div class="form-line">
+          <div class="form-group col-md-12 mb-0">
+            <label>Item SubCategory</label>
+                <select name="item_subcategory" id="item_subcategory" class="form-control">   
+                  {% for data in item_subcategory %} 
+                 <option>Select</option> 
+                 <option value="{{data.id}}">{{data.item_subcategory}}</option>
+
+                 {% endfor %}    
+                </select>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-line">
+        <div class="form-group col-md-12 mb-0">
+          <label>Item Name</label>
+                <input type="text" name="item_name" id="item_name" class="form-control">
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-line">
+        <div class="form-group col-md-12 mb-0">
+          <label>Short Code</label>
+                <input type="text" name="short_code" id="short_code" class="form-control">
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-line">
+        <div class="form-group col-md-12 mb-0">
+          <label>Packing</label>
+                <select name="packaging" id="packaging" class="form-control">
+                   
+                  <option>select</option>
+                  {% for data in packing %}
+                  <option value="{{data.id}}">{{data.item_packing}}</option>
+                  {% endfor %} 
+                </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-line">
+        <div class="form-group col-md-12 mb-0">
+          <label>Contain</label>
+                <input type="text" name="contain" id="contain" class="form-control">
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-line">
+        <div class="form-group col-md-12 mb-0">
+          <label>Unit</label>
+                 <select name="unit" id="unit" class="form-control">
+                  <option>select</option>
+                  {% for data in item_unit %}
+                  <option value="{{data.id}}">{{data.unit}}</option>
+                  {% endfor %} 
+                </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-line">
+        <div class="form-group col-md-12 mb-0">
+          <label>Conversion Factor</label>
+                <input type="text" name="conversion_factor" id="conversion_factor" class="form-control">
+           <p>x 1 IUOM = 1 PUOM</p>          
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-line">
+        <div class="form-group col-md-12 mb-0">
+          <label>HSN Code</label>
+                <input type="text" name="hsn_code" id="hsn_code" class="form-control">
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-line">
+        <div class="form-group col-md-12 mb-0">
+          <label>Hospital Item Code</label>
+                <input type="text" name="hos_item_code" id="hos_item_code" class="form-control">
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-line">
+        <div class="form-group col-md-12 mb-0">
+          <label>GST%</label>
+              <select name="gst" id="gst" class="form-control">
+                  <option>select</option>
+                  <option value="10%">10%</option>
+                  <option value="18%">18%</option>
+                  <option value="22%">22%</option>
+                  <option value="28%">28%</option>
+                </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <div class="form-line">
+        <div class="form-group col-md-12 mb-0">
+          <label>Remark</label>
+                <input type="text" name="remark" id="remark" class="form-control">
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4"><br>
+      <label class="check_opt">Inactive
+        <input type="checkbox" name="inactive" id="inactive" class="form-control">
+        <span class="checkmark" ></span>	
+      </label>
+    </div>
+    <div class="col-md-0"><br>
+      <label class="check_opt"><b>Assets</b> 
+        <input type="checkbox" name="Assets" id="assets" class="form-control">
+        <span class="checkmark" ></span>	
+      </label>
+    </div>
+    </div>
+  </div>
+  </form>
+</div>
+<div class="card" style="background-color: rgb(233, 233, 233)">
+<div class="row" >
+<div class="col-xs-12 col-sm-0 col-md-0 col-lg-4">                           
+    <div class='container'>
+      <div class="col-lg-16">
+        <fieldset class="border" >
+          <legend class ='text-left' style="color: red;"><b>Special Attributes</b></legend>
+          <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;"><br>
+            <div class="row-clearfix">
+            <div class="form-row col-md-2 mb-2"><br>
+                <label class="check_opt">Expiry Required
+                  <input type="checkbox" name="expiry" id="expiry" class="form-control">
+                  <span class="checkmark" ></span>	
+                </label>
+                </div>          
+                <div class="form-row">
+                    <div class="col-md-6">
+                    <label class="check_opt">Is Reusable
+                      <input type="checkbox" name="is_reusable" id="is_reusable" class="form-control">
+                      <span class="checkmark" ></span>	
+                    </label>
+                    </div>
+                    <div class="col-md-6">
+                      <label>Number of Reusable</label>
+                      <input type="text" name="no_reusable" id="no_reusable" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+
+                    <div class="col-md-6">
+                       <label>Serial/Batch Controlled</label>
+                      <select id="serial_batch" name="serial_batch" class="form-control">
+                        <option>select</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                       <label>Reusable Rates</label>
+                      <input type="text" name="reusable_rate" id="reusable_rate" class="form-control">
+                    </div>
+                
+                </div>
+          </div>
+        </div>
+          
+    
+        </fieldset>
+      </div><br>
+  </div>
+</div>
+<div class="col-xs-12 col-sm-0 col-md-0 col-lg-3">
+    <div class='container'>
+      <div class="col-lg-16">
+        <fieldset class="border" >
+          <legend class ='text-left' style="color: red;"><b>Charge</b></legend>
+          <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;"><br>
+                <!-- <div class="row clearfix"> -->
+                   <div class="col-md-2">
+                    <div class="form-row col-md-2 mb-2"><br>
+                      <label class="check_opt">TPA (Non Payable)
+                        <input type="checkbox" name="tpa" id="tpa" class="form-control">
+                        <span class="checkmark" ></span>	
+                      </label>
+                      </div> 
+                   </div>
+                    <div class="col-md-2">
+                      <div class="form-row col-md-2 mb-2"><br>
+                        <label class="check_opt">Service Charge
+                          <input type="checkbox" name="service_charge" id="service_charge" class="form-control">
+                          <span class="checkmark" ></span>	
+                        </label>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+      <div class='container'>
+        <div class="col-lg-16">
+          <fieldset class="border" >
+            <legend class ='text-left' style="color: red;"><b>Stock</b></legend>
+              <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;"><br>
+                  <div class="form-row">
+                  <div class="col-md-6">
+                    <label>Min. Quantity</label>
+                      <input type="text" name="min_quantity" id="min_quantity" class="form-control">
+                </div>
+                <div class="col-md-6">
+                     <label>Max. Quantity</label>
+                      <input type="text" name="max_quantity" id="max_quantity" class="form-control">
+                </div>
+                </div>
+                <div class="form-row">
+                <div class="col-md-4">
+                   <label>Re-order Level</label>
+                      <input type="text" name="reorder_level" id="reorder_level" class="form-control">
+                </div>
+                <div class="col-md-4"><br>
+                    <label class="check_opt">Auto Indent	
+                      <input type="checkbox" name="autoindent" id="autoindent" class="form-control">
+                      <span class="checkmark"></span>
+                    </label>
+                </div>
+              </div>
+              <!--   <div class="col-md-4">
+                  <button type="button" class="btn btn-warning"><i class="fa fa-plus" ></i></button>&nbsp;
+                </div> -->
+              </div>
+        </div>
+      </div>
+    </div>
+   </fieldset>
+    </div>
+  </div>
+  </div>
+  <!-- End -->
+  <!-- Start -->
+  <div class="card" style="background-color: rgb(233, 233, 233)">
+  <div class="row" >
+    <div class="col-xs-12 col-sm-0 col-md-0 col-lg-4">                           
+        <div class='container'>
+          <div class="col-lg-16">
+            <fieldset class="border" >
+              <legend class ='text-left' style="color: red;"><b>Manufacturers</b></legend>
+              <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;"><br>
+                  <div class="form-row">
+                        <div class="col-md-9">
+                          <input type="text" name="item_manufact" id="item_manufact" class="form-control">
+                        </div>
+                    <div class="col-md-2"><br><br>
+                      <button type="button" class="btn btn-warning" id="manufacturers"><i class="fa fa-plus" ></i></button>&nbsp;
+                    </div>
+                  </div>
+                <!-- Table Start -->
+                <div class="table-responsive">
+                  <table class="datatable table table-stripped ">
+          
+          
+                            <thead>
+                                <tr><th>S.No</th>
+                                    <th>Manufacturers</th>
+          
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for data in manu_temp %}
+                                <tr>
+                                    <td>{{data.id}}</td>
+                                    <td>{{data.manufacture}}</td>
+                                </tr>
+                                {% endfor %}
+                             </tbody>
+          
+                    </table>
+                    </div>
+                <!-- Table Ends -->
+              </div>
+            </fieldset>
+          </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-0 col-md-0 col-lg-3">
+        <div class='container'>
+          <div class="col-lg-16">
+            <fieldset class="border" >
+              <legend class ='text-left' style="color: red;"><b>Suppliers</b></legend>
+              <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;"><br>
+                  <div class="form-row">
+                       <div class="col-md-8">
+                        <input type="text" name="suppliers" id="suppliers" class="form-control">
+                       </div>
+                       <div class="col-md-2"><br><br>
+                        <button type="button" class="btn btn-warning" id="supplier"><i class="fa fa-plus" ></i></button>&nbsp;
+                      </div>
+                    </div>
+                  <!-- Table Start -->
+                  <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+            
+            
+                              <thead>
+                                  <tr><th>S.No</th>
+                                      <th>Suppliers</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                 
+                                <tr>
+                                    <td>1</td>
+                                    <td>yy</td>
+                                </tr>
+                               
+                               </tbody>
+            
+                      </table>
+                      </div>
+                  <!-- Table Ends -->
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+         <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+          <div class='container'>
+            <div class="col-lg-16">
+              <fieldset class="border" >
+                <legend class ='text-left' style="color: red;"><b>Generic</b></legend>
+                  <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:white;"><br>
+                      <div class="form-row">
+                      <div class="col-md-8">
+                        <input type="text" name="generic" id="generic" class="form-control">
+                    </div>
+                    <div class="col-md-4"><br>
+                      <button type="button" class="btn btn-warning" id="generic_master"><i class="fa fa-plus" ></i></button>&nbsp;
+                    </div>
+                  </div>
+                  <!-- Table Start -->
+                  <div class="table-responsive">
+                    <table class="datatable table table-stripped ">
+            
+            
+                              <thead>
+                                  <tr><th>S.No</th>
+                                      <th>Generic</th>
+            
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                
+                                <tr>
+                                    <td>1</td>
+                                    <td>yyy</td>
+                                </tr>
+                                
+                               </tbody>
+            
+                      </table>
+                      </div>
+                  <!-- Table Ends -->
+            </div>
+          </div>
+        </div>
+       </fieldset>
+        </div>
+      </div>
+      </div>
+    </div>
+  <!-- End -->
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#item_category").change(function () {
+        const url = $("#item_master").attr("data-cities-url");
+        const itemcategory = $(this).val();
+        // alert(itemcategory);
+
+        $.ajax({
+            url: url,
+            data: {
+                'itemcategory': itemcategory
+            },
+            success: function (data) {
+                $("#item_subcategory").html(data);
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (subcategory) {
+                console.log(subcategory)
+                    html_data += `<option value="${subcategory.id}">${subcategory.itemsubcategory}</option>`
+                });
+                console.log(html_data);
+                $("#item_subcategory").html(html_data);
+
+
+            }
+        });
+
+    });
+    </script> 
+
+{% endblock  %}

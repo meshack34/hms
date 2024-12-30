@@ -1,0 +1,712 @@
+<
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+    <div class="container" style="border: 1px solid rgb(121, 118, 118);padding: 10px;" id="hello">
+        <h3 style="text-align: center;"> <b>Add Dialysis Prescription Details</b></h3>
+        <br>
+        <form method="post" id="prescription_dial">
+            {% csrf_token %}
+            <div class="col-md-12">
+                <h5><b>Patient Details</b></h5>
+                <div class="row" style="border: 1px solid rgb(121, 118, 118);padding: 10px;">
+                    <div class="col-md-4">
+                        <label>MR NO: <b>{{uhid_pat_new}}</b></label>
+                        <input type="hidden" class="form-control"name="uhid" value="{{records.uhid}}">
+                    </div>
+                    <div class="col-md-4">
+                        <label>Name: <b>{{pat_name_new| upper}}</b></label>
+    <!--                    <input type="text" class="form-control">-->
+                    </div>
+                    <div class="col-md-4">
+                        <label> AGE/GENDER: <b>{{pat_age_new}}Y/{{pat_sex_new| upper}}</b></label>
+    <!--                    <input type="text" class="form-control">-->
+                    </div>
+                    <div class="col-md-4">
+                        <label>CONTACT NO: <b>{{pat_con_no_new}}</b></label>
+    <!--                    <input type="text" class="form-control">-->
+                    </div>
+                </div>
+                <br><div class="col-12">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <div class="form-line">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label for="Doctor">Doctor: </label>
+                                        <select name="dr_nameid" class="form-control" id="Doctor">
+                                            <option>{{prescription_records.dr_name}}</option>
+                                            {% for doct in doctor_list %}
+                                            <option value="{{doct.doctor_id}}-{{doct.doctor_name}}">{{doct.doctor_name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label for="Prescription">Prescription Date: </label>
+                                        <input type="date" name="prescription_date" id="Prescription" value="{{prescription_records.prescription_date}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label for="Status"> Status : </label>
+                                        <select name="status" class="form-control" id="Status">
+                                            <option>{{prescription_records.status}}</option>
+                                            <option>Active</option>
+                                            <option>In Active</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Start Date: </label>
+                                        <input type="date" name="s_date" value="{{prescription_records.s_date}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>End Date: </label>
+                                        <input type="date" name="e_date" value="{{prescription_records.e_date}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Dry Weight </label>
+                                        <input type="text" name="dry_weight" value="{{prescription_records.dry_weight}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Dry Weight Date:</label>
+                                        <input type="date" name="dry_date" value="{{prescription_records.dry_weight_date}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Diagnosis:</label>
+                                        <input type="text" name="Diagnosis"value="{{prescription_records.diagnosis}}" class="form-control">
+                                    </div>
+
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden"  class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Day1:</label>
+                                        <select name="day1" class="form-control">
+                                            <option>{{prescription_records.day1}}</option>
+                                            <option>Mon</option>
+                                            <option>Tue</option>
+                                            <option>Wed</option>
+                                            <option>Thur</option>
+                                            <option>Fri</option>
+                                            <option>Sat</option>
+                                            <option>Sun</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Shift1:</label>
+                                        <select name="shift1" class="form-control">
+                                            <option >{{prescription_records.shift1}}</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Duration (Hour):*</label>
+                                        <select name="Duration" class="form-control">*
+                                            <option>{{prescription_records.duration}}</option>
+                                            <option>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Day2:</label>
+                                        <select name="day2" class="form-control">
+                                            <option>{{prescription_records.shift2}}</option>
+                                            <option>Mon</option>
+                                            <option>Tue</option>
+                                            <option>Wed</option>
+                                            <option>Thur</option>
+                                            <option>Fri</option>
+                                            <option>Sat</option>
+                                            <option>Sun</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Shift2:</label>
+                                        <select name="shift2" class="form-control">
+                                            <option>{{prescription_records.shift2}}</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                  <div class="form-group col-md-4 mb-0">
+                                      <label>Weekly Frequency:*</label>
+                                      <select name="Weekly" class="form-control">
+                                        <option>{{prescription_records.weekly}}</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                      </select>
+                                  </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Day3:</label>
+                                        <select name="day3" class="form-control">
+                                            <option >{{prescription_records.day3}}</option>
+                                            <option>Mon</option>
+                                            <option>Tue</option>
+                                            <option>Wed</option>
+                                            <option>Thur</option>
+                                            <option>Fri</option>
+                                            <option>Sat</option>
+                                            <option>Sun</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Shift3:</label>
+                                        <select name="shift3" class="form-control">
+                                            <option >{{prescription_records.shift3}}</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Dialysis Membrane:</label>
+                                        <select name="dialysis_membrane" class="form-control">
+                                            <option >{{prescription_records.dialysis_membrane}}</option>
+                                            <option>Hemo Dialysis Membrane</option>
+                                            <option>Polyester Polymer Membrane</option>
+                                        </select>
+                                    </div>
+                                     <div class="form-group col-md-4 mb-0">
+                                        <label>Day4:</label>
+                                        <select name="day4" class="form-control">
+                                            <option >{{prescription_records.day4}}</option>
+                                            <option>Mon</option>
+                                            <option>Tue</option>
+                                            <option>Wed</option>
+                                            <option>Thur</option>
+                                            <option>Fri</option>
+                                            <option>Sat</option>
+                                            <option>Sun</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Shift4:</label>
+                                        <select name="shift4" class="form-control">
+                                            <option >{{prescription_records.shift4}}</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden">
+                                    </div>
+                                     <div class="form-group col-md-4 mb-0">
+                                        <label>Day5:</label>
+                                        <select name="day5" class="form-control">
+                                            <option >{{prescription_records.day5}}</option>
+                                            <option>Mon</option>
+                                            <option>Tue</option>
+                                            <option>Wed</option>
+                                            <option>Thur</option>
+                                            <option>Fri</option>
+                                            <option>Sat</option>
+                                            <option>Sun</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Shift5:</label>
+                                        <select name="shift5" class="form-control">
+                                            <option >{{prescription_records.shift5}}</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Dialysis Type:*</label>
+                                        <select name="Dialysis_type" class="form-control">
+                                            <option value="{{prescription_records.dialysis_type.id}}">{{prescription_records.dialysis_type}}</option>
+                                            {% for dialy_type in dialysate_type %}
+                                            <option value="{{dialy_type.id}}">{{dialy_type.dialysis_type}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Dialyzer:</label>
+                                        <select name="Dialyzer" class="form-control">
+                                            <option >{{prescription_records.dialyzer}}</option>
+                                            {% for dialyz in dialyzer_type %}
+                                            <option value="{{dialyz.id}}">{{dialyz.dialyzer}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Dialysate Tem (C):</label>
+                                        <input type="text" name="Dialysate_temp" value="{{prescription_records.dialysate_temp}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>K+ (mEq/L)</label>
+                                        <input type="text" name="k_pluse" value="{{prescription_records.k_meql}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Ca+ (mEq/L):</label>
+                                        <input type="text" name="ca_pluse" value="{{prescription_records.ca_meal}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Mg+ (mEq/L):</label>
+                                        <input type="text" name="mg_pluse" value="{{prescription_records.mg_meal}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Glucose:</label>
+                                        <input type="text" name="glucose" value="{{prescription_records.glucose}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Target BVP:</label>
+                                        <input type="text" name="Target" value="{{prescription_records.target_bvp}}" class="form-control">
+                                    </div>
+
+                                    <table class="datatable table table-stripped">
+                                        <thead>
+                                        <tr>
+                                            <th>Temporary Access</th>
+                                            <th>Access Site</th>
+                                            <th>Date Of Intiation</th>
+                                            <th>Date Of Removal</th>
+                                            <th>Doctor Name</th>
+                                            <th>Hospital Name</th>
+                                            <th>Last Change Reason</th>
+                                            <th>Edit</th>
+                                            <th>Add</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for temp in temporary_dat %}
+                                        <tr>
+                                            <td><input id="temp_id" value="{{temp.id}}" hidden>{{temp.temp_aces}}</td>
+                                            <td>{{temp.access_site}}</td>
+                                            <td>{{temp.date_initiation}}</td>
+                                            <td>{{temp.date_removal}}</td>
+                                            <td>{{temp.doctor_name}}</td>
+                                            <td>{{temp.hospital_name}}</td>
+                                            <td>{{temp.remark}}</td>
+                                            <td><button type="button" id="delete_btn"> <i class="fa fa-trash" aria-hidden="true"></i></button></td>
+                                        {% endfor %}
+                                            <td><button type="button" class="btn btn-info" data-toggle="modal" data-target=".temporary_access"><i class="fa fa-Add" aria-hidden="true"></i>Add</button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <br>
+                                    <table class="datatable table table-stripped">
+                                        <thead>
+                                        <tr>
+                                            <th>Permanent Access</th>
+                                            <th>Access Site</th>
+                                            <th>Date Of Intiation</th>
+                                            <th>Date Of Removal</th>
+                                            <th>Doctor Name</th>
+                                            <th>Hospital Name</th>
+                                            <th>Last Change Reason</th>
+                                            <th>Add</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for pre in permanent_dat %}
+                                        <tr>
+                                            <td>{{pre.prim_aces}}</td>
+                                            <td>{{pre.access_site}}</td>
+                                            <td>{{pre.date_initiation}}</td>
+                                            <td>{{pre.date_failure}}</td>
+                                            <td>{{pre.doctor_name}}</td>
+                                            <td>{{pre.hospital_name}}</td>
+                                            <td>{{pre.remark}}</td>
+                                        {% endfor %}
+                                            <td><button type="button" class="btn btn-info" data-toggle="modal" data-target=".permanent_access"><i class="fa fa-Add" aria-hidden="true"></i>Add</button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label for="Doctor">Dialysate Flow (ml/min): </label>
+                                        <input type="text" name="dialysis_flow" value="{{prescription_records.dialysate_flow}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label for="Prescription1" ></label>
+                                        <input type="hidden" name="" id="Prescription1" value="{{prescription_records.dry_weight}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label for="Profile:"> Profile1: : </label>
+                                        <input type="text" name="Profile1" id="Profile:" value="{{prescription_records.profile1}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Blood Flow (ml/min):</label>
+                                        <input type="text" name="blood_flow" value="{{prescription_records.blood_flow}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label> </label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Profile2:</label>
+                                        <input type="text" name="Profile2" value="{{prescription_records.profile2}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Bicarb (mEq/L):</label>
+                                        <input type="text" name="Bicarb" value="{{prescription_records.bicarb}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label> </label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Profile3:</label>
+                                        <input type="text" name="Profile3" value="{{prescription_records.profile3}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>Na+ (mEq/L):</label>
+                                        <input type="text" name="na_id" value="{{prescription_records.na_meql}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Profile4:</label>
+                                        <input type="text" name="Profile5" value="{{prescription_records.profile4}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label>UF Rate</label>
+                                        <input type="text" name="uf_rate" value="{{prescription_records.uf_rate}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>UFR Profile:</label>
+                                        <input type="text" name="ufr_profile" value="{{prescription_records.ufr_profile}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden">
+                                    </div>
+                                  <div class="form-group col-md-4 mb-0">
+                                      <label>Heparin Type:</label>
+                                      <select name="heparine_type" class="form-control">
+                                        <option >{{prescription_records.heparin_type}}</option>
+                                          {% for heparin in heparin_Type %}
+                                        <option value="{{heparin.id}}">{{heparin.heparine_name}}</option>
+                                          {% endfor %}
+                                      </select>
+                                  </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Initial Dose:</label>
+                                        <input type="text" name="initial_dose" value="{{prescription_records.initial_dose}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Interim Dose:</label>
+                                        <input type="text" name="interim_dose" value="{{prescription_records.interim_dose}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Total Heparin Bolus:</label>
+                                        <input type="text" name="total_heparin" value="{{prescription_records.total_heparin_bolus}}" class="form-control">
+                                    </div>
+                                     <div class="form-group col-md-4 mb-0">
+                                        <label>Hourly (w/hr):</label>
+                                        <input type="text" name="hourly" value="{{prescription_records.hourly}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Cutoff time (min):</label>
+                                        <input type="text" name="cutoff_time" value="{{prescription_records.cut_off_time}}" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Heparin Profile:</label>
+                                        <input type="text" name="heparin_profile" value="{{prescription_records.heparin_profile}}" class="form-control" >
+                                    </div>
+                                     <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden" name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Comments:</label>
+                                        <textarea  name="Comment" class="form-control">{{prescription_records.comments}}</textarea>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label></label>
+                                        <input type="hidden"  name="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Entered by:<br><br>Inactivated by:<br><br>Inactivated Date:</label>
+                                    </div>
+                                    <div class="form-group col-md-4 mb-0">
+                                        <label>Notes(Appears in Pre):</label>
+                                        <textarea name="Notes" class="form-control">{{prescription_records.notes}}</textarea>
+                                    </div>
+                                 </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <button type="submit"class="btn btn-success" name="main_form" value="MAIN_FORM" form="prescription_dial">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" style="color-red;">Cancel</button>
+            </form>
+        </div>
+    </div>
+<!-- Add Modal -->
+<div class="modal fade temporary_access" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel1"><b>Intra Dialysis</b></h5>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <div class="form-line">
+                                              <form  method="POST" id="pop_up_pre1">
+                                                {% csrf_token %}
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="Time">Temporary Access: </label>
+                                                        <select name="temp_ac" id="Time" class="form-control">
+                                                            <option selected disabled="disabled" >--Select--</option>
+                                                            <option>Temporary i/j catheter</option>
+                                                            <option>Fistula</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="BP">Date of Initiation </label>
+                                                        <input type="date" name="date_of_initiation" id="BP" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="bp_time">Doctor</label>
+                                                        <select name="dr_name" id="bp_time" class="form-control">
+                                                            <option >--Select--</option>
+                                                           {% for doct in doctor_list %}
+                                                            <option value="{{doct.doctor_name}}">{{doct.doctor_name}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Access Type_ </label>
+                                                        <select name="access_type" class="form-control">
+                                                            <option >--Select--</option>
+                                                            {% for access in access_type %}
+                                                            <option>{{access.asset_type}}</option>
+                                                            {% endfor %}
+                                                        </select>
+
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Date Of Removal: </label>
+                                                        <input type="date" name="date_of_removal" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Remark: </label>
+                                                        <textarea name="Remark" class="form-control"></textarea>
+                                                    </div>
+                                                    <div class="form-group col-md-8 mb-0">
+                                                        <label>Hospital Name:</label>
+                                                        <input type="text" name="hospital_name" class="form-control">
+                                                    </div>
+                                                </div>
+                                                  <button type="submit"class="btn btn-success" name="temp_access" value="TEMP_ACCESS"> <i class="fas fa-save" >&nbsp;Save</i></button>
+                                                  <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" style="color-red;">Cancel</button>
+                                              </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add Modal -->
+<div class="modal fade permanent_access" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header" style="background: skyblue;">
+                <h5 class="modal-title" id="exampleModalLabel2"><b>Premanent Access</b></h5>
+            </div><br>
+            <!-- Main block -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="body">
+                        <div class="demo-masked-input">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <div class="form-line">
+                                              <form  method="POST" id="Permanent">
+                                                {% csrf_token %}
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="Time">Permanent Access: </label>
+                                                        <select name="per_access" id="Time" class="form-control">
+                                                            <option >--Select--</option>
+                                                            {% for dat in permanent_access_master%}
+                                                            <option>{{dat.name}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="BP">Date of Initiation </label>
+                                                        <input type="date" name="date_of_initiation" id="BP" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label for="bp_time">Doctor</label>
+                                                        <select name="dr_name" id="bp_time" class="form-control">
+                                                            <option >--Select--</option>
+                                                            {% for doct in doctor_list %}
+                                                            <option value="{{doct.doctor_name}}">{{doct.doctor_name}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Access Type_ </label>
+                                                        <select name="access_type" class="form-control">
+                                                            <option >--Select--</option>
+                                                            {% for access in access_type %}
+                                                            <option>{{access.asset_type}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Date Of Failure: </label>
+                                                        <input type="date" name="date_of_removal" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        <label>Remark: </label>
+                                                        <textarea name="Remark" class="form-control"></textarea>
+                                                    </div>
+                                                    <div class="form-group col-md-8 mb-0">
+                                                        <label>Hospital Name:</label>
+                                                        <input type="text" name="hospital_name" class="form-control">
+                                                    </div>
+                                                </div>
+                                                  <button type="submit"class="btn btn-success" name="Permanent_access" value="Permanent_Access" form="Permanent"> <i class="fas fa-save" >&nbsp;Save</i></button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" style="color-red;">Cancel</button>
+                                              </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $(document).on('click', '#delete_btn', function () {
+    var dummy = this;
+
+        var id = $(dummy).closest('tr').find('#temp_id').val();
+        var headers = {'X-CSRFToken': '{{ csrf_token }}' };
+        const url = "{% url 'temp_access_delete' %}";
+
+        $.ajax({
+                url:url,
+                type:"post",
+                data:{
+                  id:id,
+                 },
+                dataType: 'json',
+                headers:headers,
+                success:function(data)
+                {
+                    alert(data);
+                    window.location.href='{% url 'prescription_dialysis' pk %}'
+                },
+                error:function(data)
+                {
+                    console.log(data);
+                }
+            });
+      });
+});
+</script>
+  <script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+<!--</body>-->
+{% endblock %}

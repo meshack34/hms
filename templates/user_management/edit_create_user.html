@@ -1,0 +1,95 @@
+{% extends 'user_management/base.html' %}
+{% load static %}
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+<div class="page-wrapper">
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card" style="padding: 20px;">
+                        <div class="box-outer">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div>
+                                    <br><div class="icon-button-demo">&nbsp;
+                                        <a href="/create_userprofile" class="green_bg"> <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fas fa-plus" >Add</i></button></a>&nbsp;
+                                        <a href="/view_create_userprofile" class="gray_bg"><button type="button" class="btn btn-info"><i class="fas fa-edit"  style="color:white;">Edit</i></button></a>&nbsp;
+                                        <button type="submit" class="btn btn-success"> <i class="fas fa-save" >Save</i></button></a>&nbsp;
+                                        <button type="button" class="btn btn-primary"  onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button></a>&nbsp;
+                                        <a href="/dashboard" class="red_bg"><button type="button" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></button></a>
+                                </div><br><br>
+                                <div class="form-group">
+                                    {{form.login_id}}
+                                    {{form.user_id}}
+                                </div>
+                                <div class="form-row">
+                                    <lable>User ID</lable>
+                                    <input type="text" readonly class="form-control" value="{{form.user_id.value}}">
+                                </div>
+                                <div class="form-row">
+                                    
+                                    <div class="col-md-4">
+                                        <lable>First Name</lable>
+                                        {{form.f_name}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <lable>Middle Name</lable>
+                                        {{form.middle_name}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <lable>Last Name</lable>
+                                        {{form.last_name}}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label>Date of Birth*</label>
+                                    {{form.date_of_birth}}
+                                </div>
+                                <div class="form-row">
+                                    <label>Department</label>
+                                    {{form.department}}
+                                </div>
+                                <div class="form-row">
+                                    <label>User Profile*</label>
+                                    {{form.user_profile}}
+                                </div>
+                                <div class="form-row">
+                                    <label>locatiom*</label>
+                                    {{form.location}}
+                                </div>
+                                <div class="form-row">
+                                    <label>store</label>
+                                    {{form.store}}
+                                </div>
+                                <div class="form-row">
+                                    <label>Create Date & time</label>
+                                    {{form.create_datatime}}
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Signature</label>
+                                    {{form.signature}}
+                                </div>
+                                <div class="form-row">
+                                    <label>Status</label>
+                                    {{form.status}}
+                                </div>
+                                <div class="form-row">
+                                    <label>Date of Join</label>
+                                    {{form.date_of_join}}
+                                </div>
+                                <div class="form-row">
+                                    <label>Date of living</label>
+                                    {{form.date_of_living}}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

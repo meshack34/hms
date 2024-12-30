@@ -1,0 +1,55 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px; overflow: auto;">
+            <h2><img src="{% static 'images/lab_test.png' %}" alt="" style="width: 50px;">  <b>Lab Report</b></h2><br><br>
+            <div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">S.No</th>
+                      <th scope="col">Test Id</th>
+                      <th scope="col">Unid</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Age / Sex</th>
+                      <th scope="col">Date & Time</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for name,age,PTID,gender,date_time,uhid in records %}
+                      <tr>
+                          <td >{{forloop.counter}}</td>
+                          <td><input type="text" id="id" class='f orm-comtrol' style="border: none; text-align:center;" value="{{PTID}}" readonly></td>
+                          <td><input type="text" id="id" class='f orm-comtrol' style="border: none; text-align:center;" value="{{uhid}}" readonly></td>
+                          <td><input type="text" id="id" class='form-comtrol' style="border: none; text-align:center;" value="{{name}}" readonly></td>
+                          <td><input type="text" id="id" class='form-comtrol' style="border: none; text-align:center;" value="{{gender|first}} / {{age}}" readonly></td>
+                          <td><input type="text" id="id" class='form-comtrol' style="border: none; text-align:center;" value="{{date_time}}" readonly></td>
+                          <td id="pop_up"><a href="/lab_report_print/{{PTID}}"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" >Report</button></a></td>
+                        </tr>
+                        {% endfor %}
+                       
+                  </tbody>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function myFunction() {
+      var txt;
+      if (confirm("Press a button!")) {
+        txt = "You pressed OK!";
+      } else {
+        txt = "You pressed Cancel!";
+      }
+      document.getElementById("demo").innerHTML = txt;
+    }
+    </script>
+{% endblock %}

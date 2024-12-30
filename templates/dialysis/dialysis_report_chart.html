@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" id="hello">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report</title>
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <style>
+        #header th,
+        #header td {
+            border-style: none;
+            padding: 1px;
+        }
+
+        #body th,
+        #body td {
+            border-style: none;
+            padding: 3px;
+
+        }
+
+        #body {
+            border: 1px solid black;
+
+        }
+
+        #main_table_header td {
+            border: 1px solid black !important;
+        }
+
+        #left_border {
+            border-left: 1px solid black !important;
+        }
+        #sub_table th, #sub_table td{
+            border: 1px solid black;
+        }
+        @media print {
+
+            #print_btn {
+                display: none;
+            }
+
+          }
+    </style>
+</head>
+
+<body style="padding: 30px;">
+    <a href="" onclick="printData()" id="print_btn" style="padding-right:2px;"><img
+        src="{% static 'assets/images/printer.ico' %}" width="30" height="30"> </a>
+    <center>
+        <h4>Dialysis Report Chart</h4>
+    </center>
+    <div class="row" style="padding: 30px;">
+        <div class="col-md-4">
+            <table class="table table-sm" id="header" style="border-style: none;">
+                <tbody>
+                    <tr>
+                        <td>Name:</td>
+                        <th>{{pat_details.title}} {{pat_details.first_name}} {{pat_details.last_name}}</th>
+                    </tr>
+                    <tr>
+                        <td>MR No:</td>
+                        <th>{{pat_details.uhid}}</th>
+                    </tr>
+                    <tr>
+                        <td>Age/Gender:</td>
+                        <th>{{pat_details.age}}Y/{{pat_details.gender}}</th>
+                    </tr>
+                    <tr>
+                        <td>Virology Status:</td>
+                        <th>{{pat_details.pat_billing}}</th>
+                    </tr>
+                    <tr>
+                        <td>Center Name:</td>
+                        <td>Default Center</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <table class="table" id="body">
+        <tbody id="main_table_header">
+            <tr>
+                <td>
+                    Machine# <br>
+                    <b>{{pre_dialysis.machine_name}}</b>
+                </td>
+                <td>Station <br>
+                    <b>{{pre_dialysis.location}}</b>
+                </td>
+                <td>Allocated <br>
+                    Nurse <b>{{pre_dialysis.primary_dialysis_theraphy}}</b>
+                </td>
+                <td>Ak / Re-use# <br><b>1.00</b></td>
+                <td>Date <br><b>{{pre_dialysis.created_at}}</b></td>
+                <td>Prescribed Time <br> <b>240.00</b>(mins)</td>
+                <td>start <br><b><input style="border: 1px solid transparent;;" type="time" value="{{start_time}}" readonly></b></td>
+                <td>End <br> <b><input style="border: 1px solid transparent;" type="time" value="{{end_time}}" readonly></b></td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td colspan="4">Sterllant present</td>
+                <th id="left_border">{% if 'Sterilant Present' in listt %} YES {% else %} No {% endif %}</th>
+                <td rowspan="17" id="left_border">Checked by:
+                    <b>{{pre_dialysis.secondry_dialysis_theraphy}}</b>
+                </td>
+                <td rowspan="6"  id="left_border"></td>
+            </tr>
+            <tr>
+                <td colspan="4">Machine Disinfected</td>
+                <th id="left_border">{% if 'Machine Disinfected' in listt %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4">Machine Rinsed</td>
+                <th id="left_border">{% if 'Machine Rinsed' in listt %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4">Dialyzer Rinsed</td>
+                <th id="left_border">{% if 'Dialyzer Rinsed' in listt %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4">Dialyzer Primed</td>
+                <th id="left_border">{% if 'Dialyzer Primed' in listt %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4">Sterilant Negative</td>
+                <th id="left_border">{% if 'Sterilant Negative' in listt %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4">Dialysate Comp</td>
+                <th id="left_border">{% if 'Dialysate Comp' in listt %} YES {% else %} No {% endif %}</th>
+                <td  id="left_border" colspan="3" style="border-bottom: 1px solid black ;">Anticoagulation- {{pre_dialysis.anticoagulation}}</td>
+
+            </tr>
+            <tr>
+                <td colspan="4">Conductivity</td>
+                <th id="left_border">{% if 'Conductivity' in listt %} YES {% else %} No {% endif %}</th>
+                <td rowspan="10" colspan="2" id="left_border">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Bolus/ units <br>
+                            <b>{{pre_dialysis.total_heparin_bolus}}</b>
+                        </div>
+                        <div class="col-md-6">
+                            Hourly/ units <br>
+                            <b>{{pre_dialysis.hourly}}</b>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">Machine Test</td>
+                <th id="left_border">{% if 'Machine Test' in listt %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4">Pressure Test</td>
+                <th id="left_border">{% if 'Pressure Test' in listt %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4">Alert Test</td>
+                <th id="left_border">{% if 'Alert Test' in listt %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4">Saline Bag Sterilant Test Negative</td>
+                <th id="left_border">{% if 'Saline Bag Sterilant Test Negative' in listt %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4">Air Detector Armed</td>
+                <th id="left_border">{% if 'Air Detector Armed' in list2 %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4">Saline Clamped</td>
+                <th id="left_border">{% if 'Saline Clamped' in list2 %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4"> Pressure Limit Set</td>
+                <th id="left_border">{% if 'Pressure Limit Set' in list2 %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4">Nurses Round</td>
+                <th id="left_border">{% if 'Nurses Round' in list2 %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr style="border-bottom: 1px solid black;">
+                <td colspan="4">Dialysate Counter Flow</td>
+                <th id="left_border">{% if 'Dialysate Counter Flow' in list2 %} YES {% else %} No {% endif %}</th>
+            </tr>
+            <tr>
+                <td colspan="4" style="border-right: 1px solid black;"> Temperature : &nbsp; <b>{{pre_dialysis.tempreture}}</b></td>
+            </tr>
+            <tr>
+                <td colspan="4" style="border-right: 1px solid black;"> Conductivity : &nbsp; <b>{{conductivity}}</b></td>
+            </tr>
+            <tr>
+                <td colspan="4" style="border-right: 1px solid black;"> Dialysis Type : &nbsp;<b>{{pre_dialysis.dialysis_type}}</b></td>
+            </tr>
+            <tr>
+                <td colspan="4" style="border-right: 1px solid black;"> Access Type : &nbsp; <b>{{pre_dialysis.asset_type}}</b></td>
+            </tr>
+            <tr style="border: 1px solid black;">
+                <th colspan="8">
+                    <center>
+                        <h5>PRE DIALYSIS ASSESSMENT</h5>
+                    </center>
+                </th>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Weight Today:
+                        </div>
+                        <div class="col-md-6">
+                            <b>{{pre_dialysis.current_wt}}</b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" id="left_border">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Weight
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" id="left_border"> Chest Ausculation - Clean</td>
+                <td colspan="2" id="left_border">{% if assessment_records.chest_auscultation_clear == True %} YES {% else %} No {% endif %}</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            EST dry Weight:
+                        </div>
+
+                        <div class="col-md-6">
+                           <b>{{pre_dialysis.dry_wt_date}}</b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" id="left_border">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Gained:
+                        </div>
+
+                        <div class="col-md-6">
+                           <b> </b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" id="left_border">Peripheral Edema</td>
+                <td colspan="2" id="left_border">{% if assessment_records.peripheral_edema == True %} YES {% else %} No {% endif %}</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            BP (Sitting):
+                        </div>
+
+                        <div class="col-md-6">
+                            <b>{{pre_dialysis.bp_sitting_max}}/{{pre_dialysis.bp_sitting_min}}</b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" id="left_border">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Diiference:
+                        </div>
+
+                        <div class="col-md-6">
+                           <b>{{difference_wt|floatformat:0}} </b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" id="left_border"> Pressure Limit Sset</td>
+                <td colspan="2" id="left_border">{% if assessment_records.pressure_limit_set == True %} YES {% else %} No {% endif %}</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Body Temperature:
+                        </div>
+
+                        <div class="col-md-6">
+                            <b> {{pre_dialysis.tempreture}}</b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" id="left_border">
+                    <div class="row">
+                        <div class="col-md-6">
+                            BP:(Standing)
+                        </div>
+
+                        <div class="col-md-6">
+                           <b>{{pre_dialysis.bp_standing_max}}/{{pre_dialysis.bp_standing_min}}</b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" id="left_border"> Physical/Chest Pain or discompfort</td>
+                <td colspan="2" id="left_border">{% if assessment_records.Physical_Chest_pain_discompfort == True %} YES {% else %} No {% endif %}</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            UF Traget:
+                        </div>
+                        <div class="col-md-6">
+                             <b>{{pre_dialysis.target_UF_Vol_kg}}</b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" id="left_border">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Target  weight:
+                        </div>
+
+                        <div class="col-md-6">
+                           <b>{{pre_dialysis.target_wt}}</b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" id="left_border"> RecentSurgery/Injuries/Trauma/Bleeding</td>
+                <td colspan="2" id="left_border">{% if assessment_records.recent_surgery_injuries_trauma_bleeding == True %} YES {% else %} No {% endif %}</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Bruit/Thrill:
+                        </div>
+                        <div class="col-md-6">
+                            <b>{{pre_dialysis.bruit_thrill}}</b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" id="left_border">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Excess Weight:
+                        </div>
+                        <div class="col-md-6">
+                           <b> {{pre_dialysis.excess}}</b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" id="left_border"> intra_dialysis Complaints</td>
+                <td colspan="2" id="left_border">{% if assessment_records.intra_dialysis == True %} YES {% else %} No {% endif %}</td>
+
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Asccess Infection:
+                        </div>
+
+                        <div class="col-md-6">
+                            <b>{{pre_dialysis.access_site_infection}} </b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2"  id="left_border"></td>
+                <td colspan="2" id="left_border"> Breakfast/Lunch/Dinner</td>
+                <td colspan="2" id="left_border">{% if assessment_records.breakfast == True %} YES {% else %} No {% endif %}</td>
+            </tr>
+                <tr>
+                <td colspan="2">
+                    <div class="row">
+                        <div class="col-md-6">
+                        </div>
+
+                        <div class="col-md-6">
+                            <b></b>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2"  id="left_border"></td>
+                <td colspan="2"  id="left_border"> Perm Cath Flow</td>
+                    <td colspan="2" id="left_border"></td>
+            </tr>
+                <tr>
+                    <td colspan="8">
+                        <table class="table" id="sub_table">
+                            <thead>
+                            <tr>
+                                <th colspan="11">
+                                    <center>
+                                        <h5>INTRA DIALYSIS ASSESSMENT</h5>
+                                    </center>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>Time</th>
+                                <th>Bp</th>
+                                <th>PH</th>
+                                <th>VP</th>
+                                <th>TMP</th>
+                                <th>UER</th>
+                                <th>TotalUUE</th>
+                                <th>HEH</th>
+                                <th>COND</th>
+                                <th>Remarks</th>
+                                <th>Sign</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for dat in intra_records_per_hour %}
+                                <tr>
+                                    <td>{{dat.time}}</td>
+                                    <td>{{dat.bp_mmhg1}}/{{dat.bp_mmhg2}}</td>
+                                    <td>{{dat.heparine_pump_infusion_rate}}</td>
+                                    <td>{{dat.venus_pressure}}</td>
+                                    <td>{{dat.tmp}}</td>
+                                    <td>{{dat.uf_rate}}</td>
+                                    <td>{{dat.total_uf_removal}}</td>
+                                    <td>{{dat.blood_pump_flow_rate}}</td>
+                                    <td>{{dat.conductivity}}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="border: 1px solid black;">
+                    <th colspan="8">
+                        <center>
+                            <h5>POST DIALYSIS ASSESSMENT</h5>
+                        </center>
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="row">
+                            <div class="col-md-6">
+                               POST Weight:
+                            </div>
+                            <div class="col-md-6">
+                                <b>{{post_dialysis.measured_wt}}</b>
+                            </div>
+                        </div>
+                    </td>
+                    <td colspan="2" id="left_border">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Weight:
+                            </div>
+                        </div>
+                    </td>
+                    <td colspan="2" id="left_border">
+                        <div class="row">
+                            <div class="col-md-6">
+                               UF Reading:
+                            </div>
+                            <div class="col-md-6">
+                                <b>{{post_dialysis.uf_rate}}</b>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                BP (Sitting):
+                            </div>
+
+                            <div class="col-md-6">
+                                <b>{{post_dialysis.bp_sitting_max}}/{{post_dialysis.bp_sitting_min}}</b>
+                            </div>
+                        </div>
+                    </td>
+                    <td colspan="2" id="left_border">
+                        <div class="row">
+                            <div class="col-md-6">
+                                BP (Standing):
+                            </div>
+
+                            <div class="col-md-6">
+                               <b>{{post_dialysis.bp_standing_max}}/{{post_dialysis.bp_standing_min}}</b>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td colspan="2" id="left_border">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Body Temperature:
+                            </div>
+
+                            <div class="col-md-6">
+                               <b> {{post_dialysis.tempreture}}</b>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Symptomatic Hypertension:
+                            </div>
+
+                            <div class="col-md-6">
+                                <b></b>
+                            </div>
+                        </div>
+                    </td>
+                    <td colspan="2" id="left_border">
+                    </td>
+                    <td colspan="2" id="left_border">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Pulse:
+                            </div>
+
+                            <div class="col-md-6">
+                               <b>{{post_dialysis.pulse_sitting}}</b>
+                            </div>
+                        </div></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Prolonged Bleeding at Punctured:
+                            </div>
+
+                            <div class="col-md-6">
+                                <b>{{post_dialysis.prolonged_bleeding_at_punctured_sites}}</b>
+                            </div>
+                        </div>
+                    </td>
+                    <td colspan="2" id="left_border">
+                    </td>
+                    <td colspan="2" id="left_border">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Next Dialysis Date
+                            </div>
+
+                            <div class="col-md-6">
+                               <b>{{post_dialysis.next_day_dialysis}}</b>
+                            </div>
+                        </div></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Bruit / Thrill (AVF / Not AVG):
+                            </div>
+                            <div class="col-md-6">
+                                 <b>{{post_dialysis.bruit_thrill}}</b>
+                            </div>
+                        </div>
+                    </td>
+                    <td colspan="2" id="left_border">
+                    </td>
+                    <td colspan="2" id="left_border">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Shit:
+                            </div>
+
+                            <div class="col-md-6">
+                               <b>{{post_dialysis.shift}}</b>
+                            </div>
+                        </div></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Bruit/Thrill:
+                            </div>
+                            <div class="col-md-6">
+                                <b> Not Applicable</b>
+                            </div>
+                        </div>
+                    </td>
+                    <td colspan="2" id="left_border">
+                    </td>
+                    <td colspan="2" id="left_border">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Condition Assessment:
+                            </div>
+
+                            <div class="col-md-6">
+                               <b>{{post_dialysis.condition_assessment}}</b>
+                            </div>
+                        </div></td>
+                </tr>
+                <tr style="border: 1px solid black;">
+                    <th colspan="8">
+                        <center>
+                            <h5>Administered Drugs</h5>
+                        </center>
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="4">Drugs:</td>
+                    <td colspan="4"  id="left_border"></td>
+                </tr>
+                <tr style="border: 1px solid black;">
+                    <th colspan="8">
+                        <center>
+                            <h5>Notes</h5>
+                        </center>
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="4">Completio Notes: discharge Stable</td>
+                    <td colspan="4"  id="left_border">{{post_dialysis.completion_notes}}</td>
+                </tr>
+                <tr style="border: 1px solid black;">
+                    <th colspan="8">
+                        <center>
+                            <h5>Treatment Chart</h5>
+                        </center>
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                        <table class="table">
+                            <tr>
+                                <th>Medicine Name</th>
+                                <th>Prese Date</th>
+                                <th>Dosage</th>
+                                <th>Frequency</th>
+                                <th>Result</th>
+                                <th>Remarks</th>
+                            </tr>
+                            {% for data in post_add_drug %}
+                            <tr>
+                                <td>{{data.medicine_name}}</td>
+                                <td>{{data.date_time}}</td>
+                                <td>{{data.dosage_pr_adm}}</td>
+                                <td></td>
+                                <td>{{data.remark}}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr style="border-top: 1px solid black;">
+                                <td colspan="6"> Concluded By : {{post_dialysis.closing_attendent}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+</body>
+<script>
+    function printData()
+{
+var mypage = document.getElementById("hello");
+summathaan = window.open("");
+summathaan.document.write(mypage.outerHTML);
+summathaan.print();
+summathaan.close();
+}
+</script>
+</html>

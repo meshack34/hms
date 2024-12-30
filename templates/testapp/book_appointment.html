@@ -1,0 +1,128 @@
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% block head_block %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+{% endblock  %}
+{% block body_block %}
+<!--slider start-->
+<div class="hero">
+  <div class="outer"  >
+<div class="container" align="center1">
+      {% if records %}
+      <form  method="POST" style="width:50%;" action="mobile_register">
+        {% csrf_token %}
+        <div class="center" style="background-color: white;">
+          <div class="col-xs-10 col-sm-10 col-md-6 col-lg-6" style="background-color: rgb(20, 42, 136);" >
+            <div class="card" >
+            <div class="col-md-12"><br>
+        <i class="fas fa-map-marker-alt"></i>&nbsp; &nbsp;&nbsp;{{doctor_name}},{{doctor_location}}
+        <!-- <span>Name:</span><strong>&nbsp;Dr. </strong><br>
+        <span>Location:</span> <strong>&nbsp;</strong> -->
+        </div>
+        </div>
+        </div><br>
+        <div class="col-xs-10 col-sm-10 col-md-6 col-lg-6" style="background-color: rgb(20, 42, 136); ">
+          <div class="card" style="width: 38rem;">
+            <div class="col-md-12">
+              <div class="calendar" align="center1">          <br>
+          <strong>Choose Date:</strong>&nbsp;{{form.doctor_appointment|safe}}
+          <!-- {{calendars|safe}} -->
+        </div>
+        <div class="doctor_detail" style="text-align:left">
+          <h4>{{no_of_doctor}} Doctor available</h4>
+          <table>
+               <tr>
+                  <td>
+                    <img src="{{doctor_profile_image.url}}" alt="Not Found" style="width:64px;height:64px;">
+                  </td>
+                  <td>
+                    &nbsp;&nbsp;Dr.{{doctor_name}}<br>
+                    &nbsp;&nbsp;<strong>{{doctor_department}}, Speciality</strong>
+                  </td>
+                </tr>
+          </table><br>
+              <p>
+                <a  data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true" aria-controls="collapseExample">
+                  View Matched Doctor
+                </a>
+              </p>
+            <div class="collapse" id="collapseExample">
+              <div class="card1 card-body1">
+                <h4>Matched Your Search</h4>
+                <table class="table">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">Doctor Name</th>
+                      <th scope="col">Doctor Email Address</th>
+                      <th scope="col">Doctor Profile Images</th>
+                      <th scope="col">Doctor Department</th>
+                      <th scope="col">Doctor Location</th>
+                      <th scope="col">Select Doctor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for data in records %}
+                      <tr>
+                        <td>{{ data.doctor_name}}</td>
+                        <td>{{ data.doctor_email_address}}</td>
+                        <td>
+                          <img src="{{ data.doctor_profile_image.url}}" alt="Not Profile Images" style="width:70px;height:70px;">
+                        </td>
+                        <td>{{ data.doctor_department}}</td>
+                        <td>{{ data.doctor_location}}</td>
+                        <td><input type="radio" name="choose_doctor" value="{{data.doctor_id}}"></td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          <hr style="background-color:green;">
+          <strong>XYZ</strong>&nbsp;<span>Hospital,</span><br>
+          <span>Consaltation Fee:</span><strong>&#8377;1500</strong><br><br>
+          <div class="form-row">
+            <div class="col">
+              <input type="submit" class="form-control btn btn-info" value="Book An Appointment">
+            </div>
+          </div>
+        </div><br>
+    </form>
+    </div>
+    </div><br>
+    </div><br>
+
+    {% else %}
+    <div class="not_matched" align='center'>
+      <h3>didn't matched Records</h3>
+      <a href="/" class="btn btn-primary">Search Again</a>
+    </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    {% endif %}
+</div>
+</div>
+</div>
+
+
+
+
+<!--slider ends-->
+
+{% endblock %}
+{% block script_block %}
+<script>
+    $(function(){
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+
+        var minDate= year + '-' + month + '-' + day;
+
+        $('#id_doctor_appointment').attr('min', minDate);
+    });
+    </script>
+{% endblock %}

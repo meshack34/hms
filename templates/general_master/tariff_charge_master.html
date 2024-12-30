@@ -1,0 +1,297 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+
+<style>
+    .browser-default{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    </style>
+
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+      <div class="container-fluid">
+          <a class="navbar-brand" style="color: white;" href="#">Tariff Charges Master</a>
+      </div>
+      </nav>    <div class="container-fluid">
+      <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+              <div class="card">
+                  <div class="header">
+          <div class="body">
+            <br><div class="icon-button-demo">
+              &nbsp;<button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-xl"><i class="fas fa-plus" >Add</i></button>&nbsp;
+                <a href="edit_tariff_charge_master" class="btn btn-info"> <i class="fas fa-edit" style="color:white;">Edit</i></a>&nbsp;
+                <button type="submit"class="btn btn-success" name="submit" value="Save" form="MyForm"> <i class="fas fa-save" >Save</i></button>&nbsp;
+                <button type="button" class="btn btn-primary" onClick="window.location.reload();"> <i class="fas fa-sync-alt" >Refresh</i></button>&nbsp;
+                <a href="" class="btn btn-danger"> <i class="fas fa-times-circle">Exit</i></a>
+            </div><br>
+                  <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+                       <form method="POST" id="MyForm">
+                      {% csrf_token %}
+                      <div class="row clearfix">
+                      <div class="col-sm-3">
+                          <div class="form-group">
+                            <div class="form-group col-md-12 mb-0">
+                                {{form.tariff|as_crispy_field}}
+                            </div>
+                          </div>
+                      </div>
+                      <div class="col-sm-3">
+                          <div class="form-group">
+                              <div class="form-line">
+                                <div class="form-group col-md-12 mb-0">
+                                    {{form.apply_From|as_crispy_field}}
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-sm-3">
+                          <div class="form-group">
+                            <div class="form-group col-md-12 mb-0">
+                                {{form.Ward_Type|as_crispy_field}}
+                            </div>
+                          </div>
+                      </div>
+                      <div class="col-sm-3">
+                          <div class="form-group">
+                            <div class="form-group col-md-12 mb-0">
+                                {{form.Ward_Category|as_crispy_field}}
+                            </div>
+                          </div>
+                      </div>
+                      </div>
+                    </form>
+                  </div>
+</div><br>
+<div class="row" >
+<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+  <div class="card">
+      <div class="header">
+          <h2>
+              <p>Defined Tariff</p>
+          </h2>
+      </div>
+      <div class="body">
+          <div class="body text-center">
+                  <table class="table table-bordered table-striped table-hover "
+                      style="width:100%;">
+                  <thead>
+                     <tr>
+                      <th>Tariff Name</th>
+                      <th>Status</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                   {% for data in tariff_master %}
+                     <tr>
+                         <td>{{data.tariff_name}}</td>
+                         <td>{{data.status}}</td>
+                     </tr>
+                     {% endfor %}
+                 </tbody>
+             </table>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+  <div class="card">
+
+      <div class="header" style="padding: 10px;"><br>
+          <button type="button" class="btn btn-warning " onclick="myFunction()" >INVESTIGATIONS & SERVICES</button>
+          <button type="button" class="btn btn-warning" >COMPOSITE SERVICES</button>
+          <button type="button" class="btn btn-warning" >LOGICAL SERVICES</button>
+          <button type="button" class="btn btn-warning" >OTHER LOGICAL SERVICES</button>
+          <button type="button" class="btn btn-warning" >PROFESSIONAL FEES</button>
+          <button type="button" class="btn btn-warning" >OTHER SERVICES</button>
+          <button type="button" class="btn btn-warning" >X</button>
+
+      </div>
+      <DIV id="myDiv" >
+
+      <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233);"><br>
+          <form method="POST">
+            {% csrf_token %}
+            <div class="row clearfix">
+            <div class="col-sm-4">
+                <b>Service Departments  </b>
+                <div class="form-group">
+                    <select class="browser-default" name="service_department" required>
+                        <option value="{{ser_dep_id}}">{{s_d}}</option>
+                        {% for data in service_department %}
+                        <option value="{{data.id}}">{{data.service_department}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <b>Service Sub Department</b>
+                <div class="form-group">
+                    <select class="browser-default" name="service_sub_department" required>
+                      <option value="{{ser_sub_dep_id}}">{{s_s_d}}</option>
+                      {% for data in service_sub_department %}
+                      <option value="{{data.id}}">{{data.service_sub_department}}</option>
+                      {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="submit" class="btn btn-warning" name='search' value="Search">
+
+                    </div>
+                </div>
+            </div>
+                <div class="col-sm-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="submit" class="btn btn-warning" name="save" form="ChargeForm" value="Save">
+                    </div>
+                </div>
+            </div>
+            </div>
+          </form>
+      </div>
+</div>
+      <div class="table-responsive">
+       <form method="POST" action="add_charge" id="ChargeForm">
+           {% csrf_token %}
+            <table class="datatable table table-stripped ">
+                  <thead>
+                      <tr><th>Service Name</th>
+                           <th>Charges (INR)</th>
+                          <th>Unit</th>
+                          <th>Service Category</th>
+                          <th>Sub Category</th>
+                          <th>Inactive</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% if records is not None %}
+                    {% for data in records %}
+                      <tr>
+                          <input type="hidden" name="service_id" id="" value="{{data.id}}">
+                          <td>{{data.service_name}}</td>
+                          <td><input type="number " name="charges" value="{{data.Charges}}" class="browser-default" style="background-color:#eee;border:2px solid white;width:100%;" autofocus="autofocus"></td>
+                          <td>{{data.unit}}</td>
+                          <td>{{data.service_category}}</td>
+                          <td>{{data.service_sub_category}}</td>
+                          <td>{{data.inactive}}</td>
+                      </tr>
+                      {% endfor %}
+                      {% endif %}
+                   </tbody>
+
+          </table>
+
+       </form>
+          </div>
+     </DIV>
+
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+     <!-- Add Modal -->
+       <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+           <div class="modal-dialog modal-xl">
+             <div class="modal-content">
+                 <!-- Header -->
+                 <div class="modal-header" style="background: skyblue;">
+                     <h5 class="modal-title" id="exampleModalLabel" ><b>TARIFF MASTER</b></h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+                     </div><br>
+                  <!-- Main block -->
+                  <div class="modal-body">
+                     <div class="container-fluid">
+                         <div class="body" style="border:0px solid red;">
+                             <div class="demo-masked-input">
+                                 <div class="row clearfix">
+                                   <div class="col-12">
+                                     <form  method="POST">
+                                       {% csrf_token %}
+                                       <div class="form-row">
+                                           <div class="col-sm-3">
+                                              <div class="form-group">
+                                                <div class="form-group col-md-12 mb-0">
+                                                    {{form.tariff|as_crispy_field}}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          <div class="col-sm-3">
+                                              <div class="form-group">
+                                                    <div class="form-group col-md-12 mb-0">
+                                                        {{form.apply_From|as_crispy_field}}
+                                                    </div>
+                                              </div>
+                                          </div>
+                                          <div class="col-sm-3">
+                                              <div class="form-group">
+                                                <div class="form-group col-md-12 mb-0">
+                                                    {{form.Ward_Type|as_crispy_field}}
+                                                </div>
+                                              </div>
+                                          </div>
+                                          <div class="col-sm-3">
+                                              <div class="form-group">
+                                                <div class="form-group col-md-12 mb-0">
+                                                    {{form.Ward_Category|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                          </div>
+                                       <button type="submit" class="btn btn-success" name="submit" value="Save" > <i class="fas fa-save" >&nbsp;Save</i></button>
+                                     </form>
+                                   </div>
+                                     </div>
+                                 </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+
+</div>
+</div>
+<!-- <script>
+    function ShowRadioButtonDiv(idBaseName,NumberOfButtons) {
+      for(x=1;x<=NumberOfButtons;x++){
+        CheckThisButton = idBaseName + x;
+        ThisDiv = idBaseName + x + 'Div';
+        if
+        (document.getElementById(CheckThisButton).checked)
+        {
+          document.getElementById(ThisDiv).style.display = "block";
+        }
+        else {
+          document.getElementById(ThisDiv).style.display = "none";
+        }
+      }
+      return false;
+      }
+
+  </script> -->
+  <script>
+      function myFunction(){
+          var x = document.getElementById("myDiv");
+          if(x.style.display ==="none"){
+              x.style.display = "block";
+          }else{
+              x.style.display = "none";
+          }
+      }
+  </script>
+{% endblock  %}

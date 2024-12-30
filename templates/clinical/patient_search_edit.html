@@ -1,0 +1,207 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+ <!-- content -->
+<style>
+    .my-input {
+  /* Your custom styles here */
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+</style>
+ <div class="page-wrapper">
+    <div class="content" >
+<!-- Main Dashboard -->
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+            <div class="form-rows card">
+              <div class="form-row card-body">
+                <div class="form-box">
+                  {{ form.uhid.label_tag }}
+                  {{ form.uhid }}
+                </div>
+                <div class="form-box">
+                  {{ form.title.label_tag }}
+                  {{ form.title }}
+                </div>
+                <div class="form-box">
+                  {{ form.first_name.label_tag }}
+                  {{ form.first_name }}
+                </div>
+                <div class="form-box">
+                  {{ form.middle_name.label_tag }}
+                  {{ form.middle_name }}
+                </div>
+                <div class="form-box">
+                  {{ form.last_name.label_tag }}
+                  {{ form.last_name }}
+                </div>
+              </div>
+                 <div class="form-row">
+                <div class="form-box">
+                  {{ form.age.label_tag }}
+                  {{ form.age }}
+                </div>
+                <div class="form-box">
+                  {{ form.dob.label_tag }}
+                  {{ form.dob }}
+                </div>
+                <div class="form-box">
+                  {{ form.gender.label_tag }}
+                  {{ form.gender }}
+                </div>
+                <div class="form-box">
+                  {{ form.blood_group.label_tag }}
+                  {{ form.blood_group }}
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-box">
+                  {{ form.marital_status.label_tag }}
+                  {{ form.marital_status }}
+                </div>
+                <div class="form-box">
+                  {{ form.father_or_husband_name.label_tag }}
+                  {{ form.father_or_husband_name }}
+                </div>
+                <div class="form-box">
+                  {{ form.mother_name.label_tag }}
+                  {{ form.mother_name }}
+                </div>
+                <div class="form-box">
+                  {{ form.mobile_number.label_tag }}
+                  {{ form.mobile_number }}
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-box">
+                  {{ form.address.label_tag }}
+                  {{ form.address }}
+                </div>
+                <div class="form-box">
+                  {{ form.referred_by.label_tag }}
+                  {{ form.referred_by }}
+                </div>
+                <div class="form-box">
+                  {{ form.city.label_tag }}
+                  {{ form.city }}
+                </div>
+                <div class="form-box">
+                  {{ form.state.label_tag }}
+                  {{ form.state }}
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-box">
+                  {{ form.country.label_tag }}
+                  {{ form.country }}
+                </div>
+                <div class="form-box">
+                  {{ form.pin_code.label_tag }}
+                  {{ form.pin_code }}
+                </div>
+                <div class="form-box">
+                  {{ form.next_of_kin.label_tag }}
+                  {{ form.next_of_kin }}
+                </div>
+                <div class="form-box">
+                  {{ form.next_of_kin_mob_no.label_tag }}
+                  {{ form.next_of_kin_mob_no }}
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-box">
+                  {{ form.alternate_contact_number.label_tag }}
+                  {{ form.alternate_contact_number }}
+                </div>
+                <div class="form-box">
+                  {{ form.nationality.label_tag }}
+                  {{ form.nationality }}
+                </div>
+                <div class="form-box">
+                  {{ form.email.label_tag }}
+                  {{ form.email }}
+                </div>
+                <div class="form-box">
+                  {{ form.staff_member.label_tag }}
+                  {{ form.staff_member }}
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-box">
+                  {{ form.relationship.label_tag }}
+                  {{ form.relationship }}
+                </div>
+                <div class="form-box">
+                  {{ form.billing_group.label_tag }}
+                  {{ form.billing_group }}
+                </div>
+                <div class="form-box">
+                  {{ form.nhif_ins_cor_name.label_tag }}
+                  {{ form.nhif_ins_cor_name }}
+                </div>
+                <div class="form-box">
+                  {{ form.nhif_ins_cor_id.label_tag }}
+                  {{ form.nhif_ins_cor_id }}
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-box">
+                  {{ form.card_number.label_tag }}
+                  {{ form.card_number }}
+                </div>
+                <div class="form-box">
+                  {{ form.patient_profile.label_tag }}
+                  {{ form.patient_profile }}
+                </div>
+                <div class="form-box">
+                  {{ form.ins_doc_upload.label_tag }}
+                  {{ form.ins_doc_upload }}
+                </div>
+                <div class="form-box">
+                  {{ form.ins_id_upload.label_tag }}
+                  {{ form.ins_id_upload }}
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-box">
+                  {{ form.created_by }}
+                </div>
+                <div class="form-box">
+                  {{ form.location }}
+                </div>
+
+              </div>
+
+            </div>
+            <input type="submit" name="submit" value="Submit" class="btn btn-info">
+        </form>
+      </div>
+      </div>
+<style>
+    /* Style for the form row */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Style for each form box */
+.form-box {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Style for labels */
+.form-box label {
+  display: block;
+  font-weight: bold;
+  color: #333;
+}
+</style>
+{% endblock  %}

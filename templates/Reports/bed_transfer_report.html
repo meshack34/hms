@@ -1,0 +1,198 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style type="text/css">
+body, p{font-family: arial; font-size: 16px; }
+p {margin: 0 0 5px;}
+table td,table th{padding: 10px;text-align: left;}
+@media print {
+	p {margin: 0 0 5px; }
+	table td,table th{padding: 10px;text-align: left;}
+}
+button{
+	font-size: larger;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+</style>
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+      <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+        <div>
+          <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+          <b>Bed Transfer Report</b>
+        </div>
+        <div class="">
+          <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+          <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+          <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+            <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+            
+          </div>
+        </div>
+      </div>
+    <form method="POST">                 
+      {% csrf_token %}
+      <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" id="filter_card"><br>
+                     
+
+        <div class="form-row">
+            <div class="form-group col-md-3 mb-0">
+                <label style="font-weight: bold;" ><b>From Date*</b> </label>
+                <input type="date" class="form-control" placeholder="Enter Company name" name="start_date">
+                        
+            </div>
+
+            <div class="form-group col-md-3 mb-0">
+                <label style="font-weight: bold;"><b>To Date*</b></label>
+                <input type="date" class="form-control" placeholder="Enter Company name" name="end_date" required>
+                      
+
+            </div>
+        
+            <div class="col-sm-0"><br>
+                <button type="submit" class="btn btn-warning w-100 mt-2"  type="submit" value="Search"><i class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+            </div>
+
+        </div>
+        <br>
+    </div>
+    </form>
+                    
+    {% if records %}
+    <div class="card">
+    <div class="card-box mb-0">
+    <div id="hello">
+      <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+        <tr>
+
+                <div class="" >
+                    <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                    </center>
+                </div>
+
+        </tr>
+    </table>
+        <tr>
+            <td>
+                <table style="width: 100%; margin-top: 10px; font-size: 0.8em;" border="1px">
+                  <thead>
+                  <tr align="center" >
+                      <th style="padding:2.5px; width: 5%;" rowspan="2">SI.No</th>
+                      <th style="padding:2.5px; width: 20%;" rowspan="2">Transfer Date & Time</th>
+                      <th style="padding:2.5px; width: 20%;"  rowspan="2">UHID</th>
+                      <th style="padding:2.5px;" colspan="2">Transfer From</th>
+                      <th style="padding:2.5px;" colspan="2">Transfer To</th>
+                  </tr>
+                  <tr>
+                      <th>Bed</th>
+                      <th>Ward</th>
+                      <th>Bed</th>
+                      <th>Ward</th>
+          
+                  </tr>
+                  </thead>
+                  {% for data in records %}
+                  <tbody>
+                    <tr align="center" >
+                      <td style="padding:2.5px; width: 5%;" rowspan="2">{{forloop.counter}}</td>
+                      <td style="padding:2.5px; width: 20%;" rowspan="2">{{data.transfer_datatime}}</td>
+                      <td style="padding:2.5px; width: 20%;"  rowspan="2">{{data.uhid}}</td>
+                      
+                  </tr>
+                  <tr>
+                    <td>{{data.from_bed_no}}</td>
+                    <td>{{data.from_ward_type}}</td>
+                    <td>{{data.to_bed_no}}</td>
+                    <td>{{data.to_ward_type}}</td>
+          
+                </tr>
+              
+                  </tbody>
+                  {% endfor %}
+              </table>
+            </td>
+        </tr>
+    </table>
+  </div>         
+    </div>
+  </div>
+    
+
+{% endif %}       
+            
+</div>
+<!-- Export csv -->
+<script>
+  function toggleVisibility() {
+    var demoElement = document.getElementById('filter_card');
+    
+    if (demoElement.style.display === 'none') {
+      demoElement.style.display = 'block'; // Show the element
+    } else {
+      demoElement.style.display = 'none';  // Hide the element
+    }
+  }
+</script>
+<script>
+  function htmlToCSV(html, filename) {
+      var data = [];
+      var rows = document.querySelectorAll("table tr");
+
+      for (var i = 0; i < rows.length; i++) {
+          var row = [], cols = rows[i].querySelectorAll("td, th");
+
+          for (var j = 0; j < cols.length; j++) {
+              row.push(cols[j].innerText);
+          }
+
+          data.push(row.join(","));
+      }
+
+      downloadCSVFile(data.join("\n"), filename);
+  }</script>
+<script>
+  function downloadCSVFile(csv, filename) {
+      var csv_file, download_link;
+
+      csv_file = new Blob([csv], { type: "text/csv" });
+
+      download_link = document.createElement("a");
+
+      download_link.download = filename;
+
+      download_link.href = window.URL.createObjectURL(csv_file);
+
+      download_link.style.display = "none";
+
+      document.body.appendChild(download_link);
+
+      download_link.click();
+  }</script>
+
+<script>document.getElementById("download-button").addEventListener("click", function () {
+      var html = document.querySelector("table").outerHTML;
+      htmlToCSV(html, "Bed Transfer report.csv");
+  });</script>
+
+  <script type="text/javascript">
+
+      function codespeedy(){
+        var print_div = document.getElementById("hello");
+  var print_area = window.open();
+  print_area.document.write(print_div.innerHTML);
+  print_area.document.close();
+  print_area.focus();
+  print_area.print();
+  print_area.close();
+  // This is the code print a particular div element
+      }
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,251 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+
+<style>
+    #id_from_date,
+    #id_to_date,
+    #id_store {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Pharmacy Sale Detail Report</b>
+            </div>
+            <div class="">
+              <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+                <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+                
+              </div>
+            </div>
+          </div>
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" id="filter_card"><br>
+                <div class="form-row">
+                    <div class="form-group col-md-3 mb-0">
+                        <label>From Date</label>
+                        <input type='date' name='from_date' id='from_date' style="background-color: white;" class='form-control'
+                            value="">
+                    </div>
+                    <div class="form-group col-md-3 mb-0">
+                        <label>To Date</label>
+                        <input type='date' name='to_date' id='to_date' style="background-color: white;" class='form-control'
+                            value="">
+                    </div>
+                    <div class="form-group col-md-3 mb-0">
+                        <label>Panel</label>
+                        <select class="form-control" name="panel" id="panel">
+                            <option value="">Select</option>
+                            <option>All</option>
+                            <option>Cash</option>
+                            <option>Insurence/Credit</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-1"><br>
+                        <button type="submit" class="btn btn-warning w-100 mt-2" name="search_btn"
+                            value="search_btn"><i class="fa fa-search pr-2">&nbsp;Search</i></button>&nbsp;
+                    </div>
+
+                </div>
+            </div>
+            </form>
+                <div id="hello">
+
+                    <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                        <tr>
+
+                                <div class="" >
+                                    <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                                    </center>
+                                </div>
+                        </tr>
+                    </table>
+
+                    <style>
+                        table, th, td {
+                        border: 1px solid black;
+                        border-collapse: collapse;
+
+                        }
+                        #button2{
+                        font-size: larger;
+                        padding: 10px;
+                        border: none;
+                        border-radius: 5px;
+                    }
+                        </style>
+                        <center><h3> Pharmacysale Detail Report</h3></center>
+                    <table class="table table-bordered" style="border-style: solid;" align="center">
+                        <thead>
+                            <tr>
+                            <th scope="col">S.No</th>
+                            <th scope="col">Sale No.</th>
+                            <th scope="col">Date Time</th>
+                            <th scope="col">Item Name </th>
+                            <th scope="col">Serial Batch</th>
+                            <th scope="col">Expiry Date</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Return Qty</th>
+                            <th scope="col">Rate</th>
+                            <th scope="col">Dis</th>
+                            <th scope="col">Amt</th>
+                            <th scope="col">Return Amt</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data1,data2 in item_details %}
+                            <tr>
+                                            <td></td>
+                                            <td>{{data1.Op_sales_no}}</td>
+                                            <td>{{data1.sales_date|date:"Y-m-d H:i:s"}}</td>
+                                            <td><span style="font-weight:bold;">Patient: </span>{{data1.patient_name}}</td>
+                                            <td colspan="6"><span style="font-weight:bold;">{{data1.panel}}</span></td>
+                                            <td></td>
+                                        </tr>
+                            {% for data in data2 %}
+                            <tr>
+                            {% if data.return_status == 'returned' %}
+                            <td style="color: rgb(244, 133, 21);">{{forloop.counter}}</td>
+                            <td></td>
+                            <td></td>
+                            <td scope="row" style="padding-left: 15px;padding-right: 15px;color: rgb(244, 133, 21);">{{data.item_id}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;color: rgb(244, 133, 21);">{{data.batch_no}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;color: rgb(244, 133, 21);">{{data.expiry_date}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;color: rgb(244, 133, 21);">{{data.qty}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;color: rgb(244, 133, 21);">{{data.return_qty}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;color: rgb(244, 133, 21);">{{data.rate}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;color: rgb(244, 133, 21);">{{data.discount}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;color: rgb(244, 133, 21);">{{data.amount}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;color: rgb(244, 133, 21);">{{data.return_amount}}</td>
+                            {% else %}
+                            <td>{{forloop.counter}}</td>
+                            <td></td>
+                            <td></td>
+                            <td scope="row" style="padding-left: 15px;padding-right: 15px;">{{data.item_id}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{data.batch_no}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{data.expiry_date}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{data.qty}}</td>
+                            <td></td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{data.rate}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{data.discount}}</td>
+                            <td style="padding-left: 15px;padding-right: 15px;">{{data.amount}}</td>
+                            <td></td>
+                            {% endif %}
+                            </tr>
+                            {% endfor %}
+
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span style="font-weight:bold;">Total Amt:</span></td>
+                                <td><span style="font-weight:bold;">{{data1.total_taxable_amount}}</span></td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="col-sm-6 col-md-4" class="card">
+                        <canvas id="myChart" width="10" height="50" class="card"></canvas>
+                    </div>
+
+
+                </div>
+        
+    </div>
+</div>
+<script>
+    function toggleVisibility() {
+      var demoElement = document.getElementById('filter_card');
+      
+      if (demoElement.style.display === 'none') {
+        demoElement.style.display = 'block'; // Show the element
+      } else {
+        demoElement.style.display = 'none';  // Hide the element
+      }
+    }
+  </script>
+<!-- Custom JS -->
+<script src="../assets/js/app.js"></script>
+
+<script type="text/javascript">
+
+  function codespeedy(){
+    var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+  }
+</script>
+
+<!-- Export csv -->
+
+<script>
+    function htmlToCSV(html, filename) {
+        var data = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText);
+            }
+
+            data.push(row.join(","));
+        }
+
+        downloadCSVFile(data.join("\n"), filename);
+    }</script>
+<script>
+    function downloadCSVFile(csv, filename) {
+        var csv_file, download_link;
+
+        csv_file = new Blob([csv], { type: "text/csv" });
+
+        download_link = document.createElement("a");
+
+        download_link.download = filename;
+
+        download_link.href = window.URL.createObjectURL(csv_file);
+
+        download_link.style.display = "none";
+
+        document.body.appendChild(download_link);
+
+        download_link.click();
+    }</script>
+
+<script>document.getElementById("download-button").addEventListener("click", function () {
+        var html = document.querySelector("table").outerHTML;
+        htmlToCSV(html, "pharmacysalebill.csv");
+    });</script>
+{% endblock %}

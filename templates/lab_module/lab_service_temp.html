@@ -1,0 +1,84 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content">
+        <div class="card" style="padding: 30px; overflow: auto;">
+            <h2><img src="{% static 'images/lab_test.png' %}" alt="" style="width: 50px;">  <b>Lab Report</b></h2><br><br>
+            <div>
+             
+                    <div class="row">
+                        <div class="col-md-5">
+                            <form method="post" id="form">
+                                {% csrf_token %}
+                            <label for="">Profile Name</label>
+                            <select name="profile" id="" class="form-control">
+                                <option value=""></option>
+                                {% for data in profile %}
+                                {% ifchanged data.profile_name %}
+                                <option value="{{data.profile_name}}">{{data.profile_name}}</option>
+                                {% endifchanged %}
+                                {% endfor %}
+                            </select>
+                        </form>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-primary" form="form">Add</button>
+                        </div>
+                        <div class="col-md-5">
+                            <form method="post" action="{% url 'lab_service_temp1' ptid %}" id="form2">
+                                {% csrf_token %}
+                            <label for="">Serivce Name</label>
+                            <select name="profile" id="" class="form-control">
+                                <option value=""></option>
+                                {% for data in service %}
+                                <option value="{{data.id}}">{{data.service_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-primary" form="form2">Add</button>
+                        </div>
+                    </div>
+                    
+               
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">S.No</th>
+                      <th scope="col">Test Id</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for data in records %}
+                      <tr>
+                          <td >{{forloop.counter}}</td>
+                          <td>{{data.profile_name}}</td>
+                          <td><a href="{% url 'delete_lab_temp' data.test_id %}" class="btn btn-danger">Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                       
+                  </tbody>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function myFunction() {
+      var txt;
+      if (confirm("Press a button!")) {
+        txt = "You pressed OK!";
+      } else {
+        txt = "You pressed Cancel!";
+      }
+      document.getElementById("demo").innerHTML = txt;
+    }
+    </script>
+{% endblock %}

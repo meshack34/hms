@@ -1,0 +1,228 @@
+{% extends 'ipd/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+    .form{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+    #id_higher_category_remark{
+      border: 2px solid white;
+      width: 100%;
+      background-color: white;
+      border-bottom: 1px solid black;
+    }
+   
+/* For text inside Border */
+    fieldset{
+           background-repeat:no-repeat;
+           background-position:center;
+           background-size:cover;
+            }
+        p#innerPara{padding:20px ;}
+        legend{width:200px;padding:10px 20px;}
+    </style>
+{% endblock  %}
+{% block body_block %}
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+    <div class="container-fluid">
+
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" style="background-color:rgb(233, 233, 233)"><br>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div class="row clearfix">
+                       <div class="col-md-3">
+                        <div class="flexContainer">
+                            <button type="button" name="ward"  class="input-group-text"  >Ward</button>
+                            <select name="cars"  class="form-control" >
+                                <option value="">All</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                              </select>
+    
+                          </div>                              
+                        </div>
+                        <div class="col-md-3">
+                            <div class="flexContainer">
+                                <button type="button" name="ward"  class="input-group-text"  >Floor</button>
+                                <select name="cars"  class="form-control" >
+                                    <option value="">Choose</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                  </select>
+        
+                              </div>   
+                        </div>
+                        <div class="col-md-3">
+                            <div class="flexContainer">
+                                <button type="button" name="ward"  class="input-group-text"  >Name</button>
+                                <input type="text" class="form-control" placeholder="name">
+        
+                              </div>   
+                        </div>
+                        <div class="col-md-3">
+                            <div class="flexContainer">
+                                <button type="button" name="ward"  class="input-group-text"  >IPD</button>
+                               <input type="text" class="form-control" placeholder="IPD ">
+        
+                              </div>   
+                        </div>
+                        <div class="col-md-3">
+                            <div class="flexContainer">
+                                <button type="button" class="btn btn-success"> F2 Refresh</button>&nbsp;
+                                <button type="button" class="btn btn-primary"> Discharged Patient</button>&nbsp;
+        
+                              </div>   
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-info">Total N0 Of Patient:19</button>&nbsp;
+                        </div>
+    
+                        <div class="col-md-3">
+                            <div class="flexContainer">
+                                <button type="button" name="ward"  class="input-group-text"  >Consultant</button>
+                                <select name="cars"  class="form-control" >
+                                    <option value="">All</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                  </select>
+        
+                              </div>   
+                        </div>
+                        <div class="col-md-3">
+                            <div class="flexContainer">
+                                <button type="button" name="ward"  class="input-group-text"  >Panel</button>
+                                <select name="cars"  class="form-control" >
+                                    <option value="">All</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                  </select>
+        
+                              </div>   
+                        </div>
+                        <div class="col-md-3">
+                            <div class="flexContainer">
+                                <button type="button" name="ward"  class="input-group-text"  >Speciality </button>
+                                <select name="cars"  class="form-control" >
+                                    <option value="">All</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                  </select>
+        
+                              </div>   
+                        </div>
+                        <div class="col-md-3">
+                            <div class="flexContainer">
+                                <button type="button" name="ward"  class="input-group-text"  >Ward</button>
+                                <select name="cars"  class="form-control" >
+                                    <option value="">Choose</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                  </select>
+        
+                              </div>   
+                        </div>
+                        <div class="col-md-3">
+                            <div class="flexContainer">
+                                <input type="text" name="search"  class="form-control" placeholder="search..">
+                                 <button type="button"  name="search_app_id" class="input-group-text" data-toggle="modal" data-target="#patient-registration-modal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                             </div>
+                        </div>
+    
+                        <div class="col-md-3">
+                            <div class="flexContainer">
+                                <button type="button" name="ward"  class="input-group-text"  >Order By</button>
+                                <select name="cars"  class="form-control" >
+                                    <option value="">Admission Date</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                  </select>
+        
+                              </div>   
+                        </div>
+                        
+                      
+                       
+                    </div>
+                  </form>
+                </div>
+    </div><br>
+    
+    
+    </div>
+  <nav class="navbar navbar-light bg-blue" style="background-color: rgb(64, 64, 207);">
+   <div class="container-fluid">
+       <a class="navbar-brand" style="color: white;" href="#">IPD Patient Details </a>
+       <div class="row clearfix">
+        <div class="col-md-5">
+       <select name="cars"  class="form-control" >
+        <option value="">Choose</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+      </div>
+      <a href="" style="color: white;"><u>Save Layout</u></a>&nbsp;&nbsp;
+      <a href="" style="color: white;"><u>Reset Layout</u></a>
+
+      </div>
+   </div>
+ </nav>
+ <div class="card">
+<form method="POST">
+    {% csrf_token %}
+    <table class="datatable table table-stripped">
+    <tr style="background: #d1dae6;">
+      <th>Admission Date</th>
+      <th>IPD No.</th>
+      <th>Name</th>
+      <th>Consultant Incharge</th>
+      <th>Room</th>
+      <th>Panel</th>
+      <th>Case Type</th>
+      <th>Additional Consultant</th>
+      <th>Ward Name</th>
+    </tr>
+    <tr>
+      <td>Consultation</td>
+      <td>30000</td>
+      <td>26%</td>
+      <td>UNT</td>
+      <td>30000</td>
+      <td>2300</td>
+      <td>2333</td>
+      <td>34343</td>
+      <td>2324</td>
+    </tr>
+    <tr>
+     
+    </tr>
+
+  </table>
+</form>
+</div>
+</div>
+</div>
+
+  {% endblock  %}

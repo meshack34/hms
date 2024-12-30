@@ -1,0 +1,77 @@
+{% extends 'human_resource/employee/base.html' %}
+{% load static %}
+
+{% block head_block %}
+{% endblock %}
+{% block body_block %}
+<!--content-->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Holiday Report</h4>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row filter-row">
+                        <div class="col-sm-4">
+                            <label>Select Year</label>
+                            <select name="yearpicker" id="yearpicker" class="form-control"></select>
+                        </div>
+                        <div class="col-sm-4">
+                            <label></label>
+                            <button type="submit" class="btn btn-success btn-block"> Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="datatable table table-stripped ">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Holiday Name</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in holiday_detail %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{data.name}}</td>
+                                        <td>{{data.date}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--/ content-->
+<script type="text/javascript"
+src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"> 
+</script>
+<script type="text/javascript">
+let startYear = 1800;
+let endYear = new Date().getFullYear();
+for (i = endYear; i > startYear; i--)
+{
+$('#yearpicker').append($('<option />').val(i).html(i));
+}
+</script>
+{% endblock %}

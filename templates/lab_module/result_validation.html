@@ -1,0 +1,59 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<style>
+    th,td{
+        text-align: center;
+    }
+</style>
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/dashboard" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Result Validation</b>
+            </div>
+            <div class="">
+              <!-- <a onClick="toggleVisibility()" class="text-light px-1" title="Filter"><i class="fa fa-filter"></i></a> -->
+              <a type="button" class="text-light px-1" onClick="window.location.reload();" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" onclick="codespeedy()" href="#">PDF</a>
+                <a class="dropdown-item" id="download-button" href="#">CSV</a>
+              </div>
+            </div>
+          </div>
+
+                <table class="datatable table table-stripped table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Test Id</th>
+                        <th scope="col">Unid</th>
+                        <th scope="col">PHID</th>
+                        <th scope="col">Patient Name</th>
+                        <th scope="col">Date & Time</th>
+                        <th scope="col">Action</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in collected_records %}
+                        {% ifchanged data.PTID %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.test_id}}</td>
+                            <td>{{data.uhid}}</td>
+                            <td>{{data.PTID}}</td>
+                            <td>{{data.first_name}} {%if data.middle_name %}{{data.middle_name}}{% endif %} {{data.last_name}}</td>
+                            <td>{{data.date_time}}</td>
+                            <td id="pop_up"><a href="/result_validation_view/{{data.PTID}}"><button type="button" class="btn btn-primary">Validation</button></a></td>
+                          </tr>
+                          {% endifchanged %}
+                          {% endfor %}
+                  </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

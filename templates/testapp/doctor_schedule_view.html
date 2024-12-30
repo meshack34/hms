@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+    <form  method="POST" class="doctor_view_form">
+      <h2 align='center'>23423 7657 </h2><hr>
+      {% csrf_token %}
+      <!-- {{form | crispy}} -->
+      <div class="form-row">
+          <div class="form-group col-md-6 mb-0">
+              {{form.select_doctor|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_schedule_date|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_schedule_start_time|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_schedule_end_time|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.average_consulting_time|as_crispy_field}}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+              {{form.doctor_schedule_status|as_crispy_field}}
+          </div>
+
+      </div>
+      <input type="submit" name="submit" value="Submit" class="btn btn-primary  btn-block">
+      <br>
+      <p>
+        <a class="btn btn-primary  btn-block" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+          View All Scheduled Doctor List
+        </a>
+    </p>
+<div class="collapse" id="collapseExample">
+<div class="card1 card-body1">
+{% if records %}
+<table border="2" align="center" class="doctor_view">
+  <thead>
+    <th>Doctor Name</th>
+    <th>Doctor Schedule Day</th>
+    <th>Doctor Schedule Start time</th>
+    <th>Doctor Schedule End time</th>
+    <th>Doctor Average Consuting Time</th>
+  </thead>
+    {% for data in records %}
+      <tr>
+        <td>{{ data.select_doctor}}</td>
+        <td>{{ data.doctor_schedule_date}}</td>
+        <td>{{ data.doctor_schedule_start_time}}</td>
+        <td>{{ data.doctor_schedule_end_time}}</td>
+        <td>{{ data.average_consulting_time}}</td>
+
+      </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>There is no existing doctor list</p>
+{% endif %}
+</div>
+</div>
+      <strong>Go To Previous Page&nbsp;</strong><a href="doctor-view">Doctor View</a><br>
+      <strong>Go To Next Page&nbsp;</strong><a href="appointment-view">Book Appointment</a>
+    </form><br><br>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'patient/base.html' %}
+{% block body_block %}
+<!--Main Content-->
+        <div class="main_content"  style="background-image: linear-gradient(white,#9AD0EC);">
+            <h4>&nbsp;Doctor</h4>
+            <br><br>
+            <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8">
+                <div class="card">
+                    <div class="header">
+
+            <div class="body">
+                <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover save-stage dataTable"
+                    style="width:100%;">
+                        <thead>
+                            <tr><th bgcolor= "ORANGERED">Doctor Id</th>
+                                <th bgcolor= "ORANGERED">Doctor Name</th>
+                                <th bgcolor= "ORANGERED">Doctor Profile</th>
+                                <th bgcolor= "ORANGERED">Doctor Belongs To</th>
+                                <th bgcolor= "ORANGERED">Doctor Email</th>
+                                <th bgcolor= "ORANGERED">Doctor Location</th>
+                                <th bgcolor= "ORANGERED">Doctor Department</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                          <tr>
+                            <td>{{data.doctor_id}}</td>
+                            <td>{{data.doctor_name|upper}}</td>
+                            <td><img src="{{data.doctor_profile_image.url}}" alt="{{data.doctor_name}}" style="height:70px;width:70px"></td>
+                            <td>{{data.doctor_belogns_to}}</td>
+                            <td>{{data.doctor_email_address}}</td>
+                            <td>{{data.doctor_location}}</td>
+                            <td>{{data.doctor_department}}</td>
+                            <!-- <td><button type="button" name="button" class="btn btn-success" align="center">{{data.doctor_status}}</button></td> -->
+
+                          </tr>
+                         </tbody>
+                </table>
+                <a href="/doctor_table" class="btn btn-primary">Go Back</a>
+                </div>
+            </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

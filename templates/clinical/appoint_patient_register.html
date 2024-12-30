@@ -1,0 +1,922 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<script src="{% static 'js/country-states.js' %}"></script>
+{% endblock  %}
+{% block body_block %}
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+<input type="hidden" name="screen_id" value="SCR00037">
+<input type="hidden" name="message_id" value="MSG00037">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="box-outer">
+                        <div id="Patient_R" class="h-100">
+                            <div class="patient-registration">
+                              <div class="top-heading lightgreen_bg">
+                                <h3 class="section_title"> Patient Registration</h3>
+                              </div>
+                              <div class="container-fluid">
+                                <div class="row">
+                                  <div class="col-10">
+                                    <ul class="file-list">
+                                      <li><a href="/patient_registration" class="green_bg"><i class="fa fa-plus" aria-hidden="true"></i></a></li>
+                                      {% if 'patient_registration_add' in access.user_profile.screen_access or request.user.is_superuser %}
+                                      <li><button type="submit" form="my_form" style="background-color:#5584AC;border:2px solid #5584AC;height:2.5em;width:2.5em;color:white;border-radius:0.3em;" class="save_bg"><i style="font-size: px;" class="fa fa-save" aria-hidden="true"></i></button></li>
+                                      {% endif %}
+                                      <li onClick="window.location.reload();"><a href="#" class="reload"><i class="fa fa-undo" aria-hidden="true"></i></a></li>
+                                      {% if 'registration_card' in access.user_profile.screen_access or request.user.is_superuser %}
+                                      <li><a href="/register_card" class="slyblue_bg"><i class="fa fa-qrcode" aria-hidden="true"></i></a></li>
+                                      {% endif %}
+                                      {% if 'visitor_add' in access.user_profile.screen_access or request.user.is_superuser %}
+                                      <li><button disabled style="cursor: not-allowed;border:5px solid white;background-color:white;"><a class="slyblue_bg"  data-toggle="modal" data-target="#out-patient-visit"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a></button></li>
+                                      {% endif %}
+                                      <li><a href="/dashboard" class="red_bg"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+                                    </ul>
+
+                                  </div>
+
+                                </div>
+                                <div class="form_sec">
+                                  <form method="GET">
+                                    <div class="form-group">
+                                      <label for="Appoints">Appointment Id</label>
+                                      <div class="flexContainer">
+                                        <input type="text" name="appointment_id" value="{{appointment_patient.patient_appointment_id}}" class="form-control" id="Appoints" placeholder="">
+                                         <button type="button"  name="search_app_id"  value="IsAppointmentId" class="input-group-text"><a href="/appointment_patient_search"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></a></button>
+                                      </div>
+                                   </div>
+                                   <div class="form-group">
+                                    <label for="UHID">UHID</label>
+                                    <div class="flexContainer">
+                                      <input type="text" name="uhid" class="form-control" id="UHID" placeholder="">
+                                          <button type="button" name="search_uhid" value="IsUHID" class="input-group-text"  ><a href="/patient_search"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></a></button>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="DateTime">Registration Date Time</label>
+                                    <input type="text" class="form-control" id="DateTime" placeholder=""  readonly>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Patient Name</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" value="{{appointment_patient.first_name}} {{appointment_patient.middle_name}} {{appointment_patient.last_name}}" readonly>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Mobile Number</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" value="{{appointment_patient.patient_mobile_number}}" readonly>
+                                  </div>
+                                  </form>
+                                  <form method="POST" id="my_form" enctype="multipart/form-data">
+                                    {% csrf_token %}
+
+
+
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Title*</label>
+                                    <select name="title" id="titlee" required>
+                                      <option value="Mr">Mr.</option>
+                                      <option value="Ms">Ms.</option>
+                                      <option value="Mrs">Mrs</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">First Name*</label>
+                                    <input type="text" name="first_name" class="form-control" value="{{appointment_patient.first_name}}" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Middle Name</label>
+                                    <input type="text" name="middle_name" class="form-control" value="{{appointment_patient.middle_name}}" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Last Name*</label>
+                                    <input type="text" name="last_name" class="form-control" value="{{appointment_patient.last_name}}" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Age*</label>
+                                    <input type="text" name="age" class="form-control" value="{{age}}" id="result" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">DOB*</label>
+                                    <input type="date" name="dob" class="form-control"   onchange = "ageCalculator()" id="DOB" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Gender*</label>
+                                    <select name="gender" id="genderr"  required>
+                                      
+                                      <option value="Male" {% if appointment_patient.patient_gender == 'Male' %}selected{% endif %}>Male</option>
+                                      <option value="Female" {% if appointment_patient.patient_gender == 'Female' %}selected{% endif %}>Female</option>
+                                      <option value="Other">Other</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Blood Group*</label>
+                                    <select name="blood_group" id="bl_g">
+                                      <option value="NA">N/A</option>
+                                      <option value="A">O+</option>
+                                      <option value="B">O-</option>
+                                      <option value="C">A+</option>
+                                      <option value="C">A-</option>
+                                      <option value="C">B+</option>
+                                      <option value="C">B-</option>
+                                      <option value="C">AB+</option>
+                                      <option value="C">AB-</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Marital Status*</label>
+                                    <select name="marital_status" id="marital_status">
+                                      <!--<option value = "">------------</option>-->
+                                      <option value="Married ">Married</option>
+                                      <option value="Unmarried">Unmarried</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Father's/Husband Name</label>
+                                    <input type="text" name="father_or_husband_name" value="{{father_or_husband_name}}" class="form-control" id="formGroupExampleInput2" placeholder="" >
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Mother Name</label>
+                                    <input type="text" name="mother_name" value="{{mother_name}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Mobile Number*</label>
+
+                                    <input type="tel" name="mobile_number" maxlength="200" pattern="\+\d{1,3}\s\d{6,14}" class="textinput textInput form-control" value="+254 " id="formGroupExampleInput2">
+
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Email ID</label>
+                                    <input type="text" name="email_id" value="{{appointment_patient.patient_email_id}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Address*</label>
+                                    <input type="text" name="address" value="{{address}}" class="form-control" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Referred by*</label>
+                                    <select name="referred_by" id="reffer">
+                                      <option value="Walked By">Walked By</option>
+                                        {% for data in refered_bymaster %}
+                                        <option value="{{data.id}}">{{data.Staff_name}}</option>
+                                      {% endfor %}
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="country">Country*</label>
+                                  <select id="country" name="country">
+                                      <option>select country</option>
+                                  </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="state-code">State*</label>
+                                    <select id="state-code" name="state">
+                                        <option>select country</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">City*</label>
+                                    <input type="text" name="city" value="{{city}}">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Pin Code*</label>
+                                    <input type="text" name="pin_code" value="{{pin_code}}" class="form-control" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">National ID*</label>
+                                    <input type="text" name="aadhar_number" value="{{aadhar_number}}" class="form-control" id="formGroupExampleInput2" placeholder="" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Next Of Kin* </label>
+                                    <input type="text" name="emergency_contact_person" value="{{emergency_contact_person}}" class="form-control" id="formGroupExampleInput2" placeholder="" required>
+
+                                  </div>
+                                           <div class="form-group">
+                                    <label for="formGroupExampleInput2">Relationship*</label>
+                                    <select name="relationship">
+                                        <option selected disabled="true">--Select--</option>
+                                        {% for data in relation_master %}
+                                        <option value="{{data.id}}">{{data.relation_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Next Of Kin Mob No *</label>
+                                    <input type="tel" name="emergency_contact_num" maxlength="200" pattern="\+\d{1,3}\s\d{6,14}" class="textinput textInput form-control" value="+254 {{emergency_contact_num}}" id="formGroupExampleInput2">
+
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Alternate Mob No</label>
+
+                                    <input type="tel" name="alternate_contact_number" maxlength="200" class="form-control border border-secondary" value="+254 {{alternate_contact_number}}" id="formGroupExampleInput2">
+
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Nationality</label>
+                                    <select name="nationality">
+                                     <option value="Kenyan">Kenyan</option>
+                                      <option value="Others">Others</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formGroupExampleInput2">Staff Member</label>
+                                    <select name="staff_member">
+                                      <!--<option value="">------------</option>-->
+                                      <option value="No">No</option>
+                                      <option value="Yes">Yes</option>
+
+                                    </select>
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label class="check_opt" >Allow Photo At Nursing Station
+                                      <input type="checkbox" name="allow_photo_at_nursing_station" >
+                                      <span class="checkmark"></span>
+                                    </label>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="check_opt">Notable
+                                      <input type="checkbox" name="notable" >
+                                      <span class="checkmark"></span>
+                                    </label>
+                                  </div>
+                                    <div class="form-group" id="billing_g_1">
+                                      <label for="formGroupExampleInput2" >Billing Group*</label>
+                                      <select name="billing_group" id="billing_g">
+                                        <option selected disabled="true">--Select--</option>
+                                        {% for data in billing %}
+                                        <option value="{{data.id}}">{{data.billing_group}}</option>
+                                        {% endfor %}
+                                      </select>
+                                    </div>
+
+                                    <div class= "form-group" id="seeAnotherField_new">
+                                      <label for="formGroupExampleInput2">NHIF/Insurance/Corporate Name</label>
+                                      <select name="corporate_name" id="seeAnotherField">
+                                        <option value="Cash">------------</option>
+                                        {% for data in corporate %}
+                                        <option value="{{data.id}}"
+                                          class="doc_type" id="seeAnotherField1">{{data.corporate_Name}}</option>
+                                        {% endfor %}
+                                      </select>
+                                    </div>
+                                      <div class="form-group" id="doc_type_id" >
+                                         <table>
+                                               <thead>
+                                                   <tr>
+                                                     <th>Choose</th>
+                                                     <th>NHIF Doc </th>
+                                                   </tr>
+                                               </thead>
+                                               <tbody>
+                                                 {% for data in ins_records %}
+                                                 <tr>
+                                                   <td><input type="checkbox" value="{{data.id}}" name="choose_ins_doc"> </td>
+                                                       <td>{{data.doc_name}}</td>
+                                                    </tr>
+                                                 {% endfor %}
+                                                </tbody>
+                                         </table>
+                                      </div>
+
+                                    <div class="form-group" id="nhif_ins_cor_id">
+                                      <label for="formGroupExampleInput2">NHIF/Insurance/Corporate ID</label>
+                                      <input type="text" name="nhif_ins_cor_id" value="{{data.nhif_ins_cor_id}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group" id="relation">
+                                      <label for="formGroupExampleInput2">Relation</label>
+                                      <select name="relation">
+                                        <option value="">------------</option>
+                                        {% for data in relation_nhif %}
+                                        <option value="{{data.id}}">{{data.name}}</option>
+                                        {% endfor %}
+                                      </select>
+                                    </div>
+                                    <div class="form-group" id="valid_upto">
+                                      <label for="formGroupExampleInput2">Valid Upto *</label>
+                                      <input type="date" name="valid_upto" class="form-control" value="{{data.valid_upto}}" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group" id="div_sum_insured_amount">
+                                      <label for="formGroupExampleInput2">Avail Insured Amount*</label>
+                                      <input type="text" name="sum_insured_amount" value="{{sum_insured_amount}}" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+
+                                    <div class="form-group" id="patient_upload">
+                                      <label class="btn-text" >Photo Upload</label>
+                                      <input name="patient_profile" class="form-control" type="file" onchange="loadFile(event)"/>
+                                    </div>
+                                    <div class="form-group" id="div_ins_doc_upload">
+                                      <label class="btn-text" >NHIF ID Upload</label>
+                                      <input name="ins_doc_upload" class="form-control" type="file" />
+                                    </div>
+                                    <div class="form-group" id="div_ins_id_upload">
+                                      <label class="btn-text" >Insurance ID Upload</label>
+                                      <input name="ins_id_upload" class="form-control" type="file" />
+                                    </div>
+                                    <div class="form-group">
+                                      <label class="check_opt">InActive
+                                        <input type="checkbox" name="InActive" >
+                                        <span class="checkmark"></span>
+                                      </label>
+                                    </div>
+                                  </form>
+<!--                                                                  </div>  <br><br> <br><br>-->
+<!--                                <div class="table-responsive">-->
+<!--                                  <table class="table border">-->
+<!--                                    <tr style="background: #76aeb3;">-->
+<!--                                      <th style="color: #fff;">Billing Group</th>-->
+<!--                                      <th style="color: #fff;">Corporate Name</th>-->
+<!--                                      <th style="color: #fff;">Card Holder Name</th>-->
+<!--                                      <th style="color: #fff;">Card Name</th>-->
+<!--                                      <th style="color: #fff;">Reletion</th>-->
+<!--                                      <th style="color: #fff;">Valid Upto</th>-->
+<!--                                      <th style="color: #fff;">Sum Insured Amt</th>-->
+<!--                                      <th style="color: #fff;">Active  </th>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td colspan="8">&nbsp;</td>-->
+<!--                                    </tr>-->
+<!--                                  </table>-->
+<!--                                </div>-->
+<!--                                <form>-->
+<!--                                  <div class="row w-100">-->
+<!--                                    <div class="col-md-6">-->
+<!--                                      <div class="form-group">-->
+<!--                                        <label for="Remark">Remark</label>-->
+<!--                                        <input type="text" class="form-control" id="Remark" placeholder="">-->
+<!--                                      </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-3">-->
+<!--                                      <div class="form-group ">-->
+<!--                                        <label for="formGroupExampleInput2">Last Modified</label>-->
+<!--                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">-->
+<!--                                      </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-3">-->
+<!--                                      <div class="form-group ">-->
+<!--                                        <label for="formGroupExampleInput2">Last Modified Date</label>-->
+<!--                                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">-->
+<!--                                      </div>-->
+<!--                                    </div>-->
+<!--                                  </div>-->
+<!--                                </form>-->
+<!--                              </div>-->
+<!--                            </div>-->
+<!--                          </div>-->
+<!--                        </div>-->
+
+                        <!-- Modal -->
+                        <div class="modal"  id="patient-registration-modal" tabindex="-1" role="dialog" aria-labelledby="patient-registration-modal" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90%;">
+                            <div class="modal-content">
+                              <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="patient-registration-title">Patient Registration Search</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <form class="needs-validation">
+                                  <div class="row">
+                                    <div class="col-md-4 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="reg-no" class="col-sm-3 col-form-label">UHID</label><br>
+                                        <div class="col-sm-8">
+                                          <input type="text" class="form-control" id="reg-no" placeholder="" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="patient-name" class="col-sm-3 col-form-label">Patient Name</label>
+                                        <div class="col-sm-7">
+                                          <input type="text" class="form-control" id="patient-name" placeholder="" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="mobile-no" class="col-sm-3 col-form-label">Mobile No.</label>
+                                        <div class="col-sm-7">
+                                          <input type="number" class="form-control" id="mobile-no" placeholder="" required>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-md-4 pl-2 pr-2">
+                                      <div class="form-group row no-gutters">
+                                        <label for="DOB" class="col-sm-3 col-form-label">DOB</label>
+                                        <div class="col-sm-7">
+                                          <input type="date" class="form-control" id="DOB" placeholder="" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4 mr-0 ml-auto pl-2 pr-2">
+                                      <div class="form-group butns text-right">
+                                       <button type="submit" class="bg-primary border-0 p-2 text-white" name="button"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                                       <button type="button" class="bg-primary border-0 p-2 text-white" name="button"><i class="fas fa-paint-brush"></i></button>
+                                     </div>
+                                   </div>
+                                 </div>
+                                 </form>
+                                 <div class="row">
+                                  <div class="col-md-12">
+                                    <ul class="patient_record">
+                                      <li class="d-flex align-items-center ml30"><span class="yellow_bg"></span>Admitted Patient</li>
+                                      <li class="d-flex align-items-center ml30"><span class="red_bg"></span>Emergency Patient</li>
+                                      <li class="d-flex align-items-center ml30"><span class="green_bg"></span>Expired Patient</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="register_record">
+                                      <table class="table border">
+                                        <tr style="background:#d1dae6;">
+                                          <th>UHID/Reg No.</th>
+                                          <th>Registration date and time</th>
+                                          <th>Patient Name</th>
+                                          <th>Gender</th>
+                                          <th>DOB</th>
+                                          <th>Mobile No.</th>
+                                          <th></th>
+                                        </tr>
+                                        {% for data in records1 %}
+                                        <tr>
+                                          <td>{{data.uhid}}</td>
+                                          <td></td>
+                                          <td>{{data.title}}.&nbsp;{{data.first_name}}&nbsp;{{data.middle_name}}&nbsp;{{data.last_name}}</td>
+                                          <td>{{data.gender}}</td>
+                                          <td>{{data.dob}}</td>
+                                          <td>9009900909</td>
+                                        </tr>
+                                        {% endfor %}
+                                            <!-- <div class="dropdown">
+                                              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hand-pointer" aria-hidden="true"></i></button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                              </div> -->
+
+                                      </table>
+                                      <nav aria-label="Page navigation example" class="d-flex align-items-center justify-content-end">
+                                        <ul class="pagination">
+                                          <li class="page-item">
+                                            <a class="page-link" href="#!" aria-label="Previous">
+                                              <span aria-hidden="true">&laquo;</span>
+                                              <span class="sr-only">Previous</span>
+                                            </a>
+                                          </li>
+                                          <li class="page-item"><a class="page-link" href="#!">1</a></li>
+                                          <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                                          <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                                          <li class="page-item">
+                                            <a class="page-link" href="#!" aria-label="Next">
+                                              <span aria-hidden="true">&raquo;</span>
+                                              <span class="sr-only">Next</span>
+                                            </a>
+                                          </li>
+                                        </ul>
+                                      </nav>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+
+
+                        <!-- Modal -->
+                        <!-- style="width:40%;margin-left:30%;margin-right:auto;display:block;" -->
+                          <div class="modal" style="opacity:1;" id="out-patient-visit" tabindex="-1" role="dialog" aria-labelledby="out-patient-visit" aria-hidden="true" >
+                          <div class="modal-dialog modal-dialog-centered"  role="document" style="max-width: 55%;margin-top:5%;">
+                            <div class="modal-content">
+                              <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="patient-registration-title">Out-Patient Visit</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <a href="/patient_registration"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></a>
+                                </button>
+                              </div>
+                              <div class="modal-body"  style="overflow-y:scroll;height:29.1em;">
+                                 <form method="POST" id="VisitForm" action="/out_paient_visit">
+                                      {% csrf_token %}
+                                <div class="Out-Patient_record">
+                                  <div class="col-sm-12 text-right">
+                                      <button  type="submit" class="btn btn-primary border-0 p-2 icon-size" name="visit_form"><i class="fa fa-save"></i></button>
+                                      <button class="btn btn-primary dropdown-toggle p-2 icon-size" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+                                      <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#" >Edit</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                      </div>
+                                    </div><hr>
+                                    <div class="alert-primary patient-visit " >
+                                      <div class="row no-gutters">
+                                        <div class="col-md-3 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.uhid}}
+                                          </div>
+                                        </div>
+                                        <div class="col-md-3 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.visit_type}}
+                                          </div>
+                                        </div>
+                                        <div class="col-md-3 pl-2 pr-2">
+                                          <div class="form-group ">
+                                            {{form_visit.clinical_department}}
+                                          </div>
+                                        </div>
+                                        <div class="col-md-3 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.nurse_doctor}}
+                                          </div>
+                                        </div>
+                                        <div class="col-12 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.description}}
+                                          </div>
+                                        </div>
+                                          <div class="col-3 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.visit_id}}
+                                          </div>
+                                        </div>
+
+                                      </div><!-- row -->
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                        <div class="today_visit">
+                                          <h5>Today's Visit</h5>
+                                          <hr>
+                                        </div>
+                                      </div>
+                                    </div><!-- row -->
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                        <div class="today_visit">
+                                          <h5> <i class="fa fa-minus-square-o" aria-hidden="true"></i>  Previous Visits</h5>
+                                         {% if visited %}
+                                            <table class="table table-border ">
+                                              <tr style="background:#d1dae6;">
+                                                <th>UHID</th>
+                                                <th>Visit Id</th>
+                                                <th>Visit_Date</th>
+                                                <th>Visit Type</th>
+                                                <th>Clinic/Department</th>
+                                                <th>Doctor/Nurse Name</th>
+                                              </tr>
+                                             {% for data in visited %}
+                                              <tr>
+                                                <td>{{ data.uhid}}</td>
+                                                <td>{{ data.visit_id}}</td>
+                                                  <td>{{ data.visit_date_time}}</td>
+                                                  <td>{{ data.visit_type}}</td>
+                                                  <td>{{ data.clinical_department}}</td>
+                                                  <td>{{ data.nurse_doctor}}</td>
+
+                                              </tr>
+                                             {% endfor %}
+                                            </table>
+                                            {% endif %}
+                                        </div>
+                                      </div>
+                                    </div><!-- row -->
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                    </div>
+                    <!--end chat overlay-->
+                </div>
+            </div>
+        </div>
+        <!--end page wrapper -->
+    </div>
+        </div>
+        <!--/ Latest Patients-->
+    </div>
+<!-- Button trigger modal -->
+<!--<button type="button" class="btn btn-primary" >-->
+<!--  Launch demo modal-->
+<!--</button>-->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Choose Document</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" id="doct">
+           <div class="table-responsive">
+             <table class="datatable table table-stripped ">
+                   <thead>
+                       <tr><th>S.No.</th>
+                           <th>Choose</th>
+                           <th>Document Name</th>
+                           <th>Description</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                     {% for data in ins_records %}
+                     <tr>
+                         <td>{{data.id}}</td>
+                       <td><input type="checkbox" name="choose_ins_doc"> </td>
+                           <td>{{data.doc_name}}</td>
+                         <td>{{data.description}}</td>
+                        </tr>
+                     {% endfor %}
+                    </tbody>
+             </table>
+           </div>
+                <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" form="doct">Save changes</button>
+      </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="{% static 'assets/js/pt_reg.js' %}"></script>
+    <script>
+      var loadFile = function (event) {
+var image = document.getElementById("output");
+image.src = URL.createObjectURL(event.target.files[0]);
+};
+
+  </script>
+  <script>
+
+  function ageCalculator() {
+      //collect input from HTML form and convert into date format
+      var userinput = document.getElementById("DOB").value;
+      var dob = new Date(userinput);
+
+      //check user provide input or not
+      if(userinput==null || userinput==''){
+        document.getElementById("message").innerHTML = "**Choose a date please!";
+        return false;
+      }
+
+      //execute if the user entered a date
+      else {
+      //extract the year, month, and date from user date input
+      var dobYear = dob.getYear();
+      var dobMonth = dob.getMonth();
+      var dobDate = dob.getDate();
+
+      //get the current date from the system
+      var now = new Date();
+      //extract the year, month, and date from current date
+      var currentYear = now.getYear();
+      var currentMonth = now.getMonth();
+      var currentDate = now.getDate();
+
+      //declare a variable to collect the age in year, month, and days
+      var age = {};
+      var ageString = "";
+
+      //get years
+      yearAge = currentYear - dobYear;
+
+      //get months
+      if (currentMonth >= dobMonth)
+        //get months when current month is greater
+        var monthAge = currentMonth - dobMonth;
+      else {
+        yearAge--;
+        var monthAge = 12 + currentMonth - dobMonth;
+      }
+
+      //get days
+      if (currentDate >= dobDate)
+        //get days when the current date is greater
+        var dateAge = currentDate - dobDate;
+      else {
+        monthAge--;
+        var dateAge = 31 + currentDate - dobDate;
+
+        if (monthAge < 0) {
+          monthAge = 11;
+          yearAge--;
+        }
+      }
+      //group the age in a single variable
+      age = {
+      years: yearAge,
+      months: monthAge,
+      days: dateAge
+      };
+
+
+      if ( (age.years > 0) && (age.months > 0) && (age.days > 0) )
+         ageString = age.years + "Y " + age.months + "M  " + age.days + "D";
+      else if ( (age.years == 0) && (age.months == 0) && (age.days > 0) )
+         ageString = "Only " + age.days + " days old!";
+      //when current month and date is same as birth date and month
+      else if ( (age.years > 0) && (age.months == 0) && (age.days == 0) )
+         ageString = age.years +  " years old. Happy Birthday!!";
+      else if ( (age.years > 0) && (age.months > 0) && (age.days == 0) )
+         ageString = age.years + " years and " + age.months + " months old.";
+      else if ( (age.years == 0) && (age.months > 0) && (age.days > 0) )
+         ageString = age.months + " months and " + age.days + " days old.";
+      else if ( (age.years > 0) && (age.months == 0) && (age.days > 0) )
+         ageString = age.years + " years, and" + age.days + " days old.";
+      else if ( (age.years == 0) && (age.months > 0) && (age.days == 0) )
+         ageString = age.months + " months old.";
+      //when current date is same as dob(date of birth)
+      else ageString = "Welcome to Earth! It's first day on Earth!";
+
+      //display the calculated age
+
+      $('#result').val(age.years);
+    }
+  }
+  </script>
+<!-- Start Country State -->
+<script>
+// user country code for selected option
+let user_country_code = "KE";
+
+
+(function () {
+    // script https://www.html-code-generator.com/html/drop-down/country-region
+
+    // Get the country name and state name from the imported script.
+    let country_list = country_and_states['country'];
+    let states_list = country_and_states['states'];
+
+    // creating country name drop-down
+    let option =  '';
+    option += '<option>select country</option>';
+    for(let country_code in country_list){
+        // set selected option user country
+        let selected = (country_code == user_country_code) ? ' selected' : '';
+        option += '<option value="'+country_code+'"'+selected+'>'+country_list[country_code]+'</option>';
+    }
+    document.getElementById('country').innerHTML = option;
+
+    // creating states name drop-down
+    let text_box = '<input type="text" class="input-text" id="state">';
+    let state_code_id = document.getElementById("state-code");
+
+    function create_states_dropdown() {
+        // get selected country code
+        let country_code = document.getElementById("country").value;
+        let states = states_list[country_code];
+        // invalid country code or no states add textbox
+        if(!states){
+            state_code_id.innerHTML = text_box;
+            return;
+        }
+        let option = '';
+        if (states.length > 0) {
+          if (country_code === 'KE'){
+            option = '<select id="state">\n';
+            option += '<option value="110">Nairobi</option>';
+          } else {
+            option = '<select id="state">\n';
+          }
+
+            for (let i = 0; i < states.length; i++) {
+
+
+                option += '<option value="'+states[i].code+'">'+states[i].name+'</option>';
+            }
+            option += '</select>';
+        } else {
+            // create input textbox if no states
+            option = text_box
+        }
+        state_code_id.innerHTML = option;
+    }
+
+    // country select change event
+    const country_select = document.getElementById("country");
+    country_select.addEventListener('change', create_states_dropdown);
+
+    create_states_dropdown();
+})();
+
+</script>
+<!-- End Country State -->
+
+<!-- Modal Submit Button -->
+<script>
+   // Example starter JavaScript for disabling form submissions if there are invalid fields
+   (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.getElementsByClassName('needs-validation');
+      // Loop over them and prevent submission
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+
+</script>
+<script>
+  $("#seeAnotherField").change(function() {
+  if ($(this).val() == "ONGC") {
+    $('#otherFieldDiv').show();
+    $('#otherField').attr('required', '');
+    $('#otherField').attr('data-error', 'This field is required.');
+  } else {
+    $('#otherFieldDiv').hide();
+    $('#otherField').removeAttr('required');
+    $('#otherField').removeAttr('data-error');
+  }
+});
+$("#seeAnotherField").trigger("change");
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $('#patient_upload').show();
+    $('#seeAnotherField_new').hide();
+    $('#nhif_ins_cor_id').hide();
+    $('#valid_upto').hide();
+    $('#div_sum_insured_amount').hide();
+    $('#div_ins_doc_upload').hide();
+    $('#relation').hide();
+    $('#div_ins_id_upload').hide()
+  $("#billing_g").change(function() {
+  if ($(this).val() == "1") {
+    $('#patient_upload').show();
+    $('#seeAnotherField_new').hide();
+    $('#nhif_ins_cor_id').hide();
+    $('#valid_upto').hide();
+    $('#div_sum_insured_amount').hide();
+    $('#div_ins_doc_upload').hide();
+    $('#relation').hide();
+    $('#div_ins_id_upload').hide()
+  }
+  else if ($(this).val() > "1") {
+    $('#patient_upload').show();
+    $('#seeAnotherField_new').show();
+    $('#nhif_ins_cor_id').show();
+    $('#valid_upto').show();
+    $('#div_sum_insured_amount').show();
+    $('#div_ins_doc_upload').show();
+    $('#relation').show();
+    $('#div_ins_id_upload').show()
+  }
+
+});
+</script>
+
+
+<script>
+  $( document ).ready(function() {
+      $("#titlee").on('change', function () {
+          var el = $(this);
+          if (el.val() === "Mr") {
+            $("#genderr option").remove();
+            $("#marital_status option").remove();
+              $("#genderr").append("<option value='Male'>Male</option>\n <option value='Female'>Female</option>\n<option value='Other'>Other</option>");
+              $("#marital_status").append("<option value='Unmarried'>Unmarried</option>\n <option value='Married'>Married</option>");
+          } else if (el.val() === "Ms") {
+            $("#marital_status option").remove();
+              $("#genderr option").remove();$("#genderr").append(" <option value='Female'>Female</option>\n<option value='Male'>Male</option>\n<option value='Other'>Other</option>");
+              $("#marital_status").append("<option value='Unmarried'>Unmarried</option>\n <option value='Married'>Married</option>");
+          }else if (el.val() === "Mrs") {
+            $("#marital_status option").remove();
+            $("#genderr option").remove();
+            $("#genderr").append(" <option value='Female'>Female</option>\n<option value='Male'>Male</option>\n<option value='Other'>Other</option>");
+            $("#marital_status").append("<option value='Married'>Married</option>\n<option value='Unmarried'>Unmarried</option> ");
+        }
+      });
+
+  });
+
+
+
+  </script>
+
+    {% endblock  %}
+
+

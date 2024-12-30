@@ -1,0 +1,39 @@
+{% extends 'general_master/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+
+
+<!-- content -->
+<div class="page-wrapper">
+    <div class="content">
+        <h3 style="padding:10px;"> IPD Package Service</h3><br>
+        <div class="card" style="width: 100%; overflow: auto;">
+            
+            <div class="card-body">
+                <form method="post" >
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <label class="form-lable" style="padding:10px 10px 10px;">Package name</label>
+                            <select name="package_name" id="package_name" class="form-control" >
+                                <option value="">---select---</option>
+                                {% for data in records %}
+                                <option value="{{data.id}}">{{data.package_name}}</option>
+                                {% endfor %}
+                            </select>
+                         </div>
+                         <div class="col-md-4" style="padding-top: 50px;">
+                            
+                            <button type="submit" class="btn btn-warning" style="width: 40%;" >Next >></button>
+                         </div>
+                       
+                    
+                </form><br><br>
+             
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

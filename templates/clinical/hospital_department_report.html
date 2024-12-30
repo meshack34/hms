@@ -1,0 +1,278 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_block %}
+{% endblock %}
+{% block body_block %}
+
+
+<style>
+    .form-control {
+        border: 2px solid rgb(233, 233, 233);
+        width: 100%;
+        background-color: rgb(233, 233, 233);
+        border-bottom: 1px solid black;
+    }
+</style>
+<!-- content -->
+<div class="page-wrapper bg-white">
+    <div class="content px-3 py-2">
+        <div style="font-family: monospace;" class="w-100 bg-primary px-2 py-2 text-light br_5 d-flex justify-content-between">
+            <div>
+              <a href="/reports" class="text-light mr-2" title="Back"> <i class="fa fa-arrow-circle-left"></i></a>
+              <b>Department wise Revenue report</b>
+            </div>
+            <div class="">
+              <a type="button" onClick="toggleVisibility()" title="Filter"><i class="fa fa-filter"></i></a>
+              <a type="button" onclick="window.location.reload()" class="text-light px-1" title="Reload"><i class="fas fa-sync-alt"></i></a>
+              <a onClick="" class="text-light px-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Export" ><i class='fas fa-ellipsis-v'></i></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a  href="#" class="dropdown-item btn-primary" role="button" type="button" id="button2" onclick="codespeedy()"> PDF</a> 
+                <a class="dropdown-item btn-primary" id="download-button" role="button" href="#">CSV</a>
+                
+              </div>
+            </div>
+          </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4" id="filter_card"><br>
+                        <div class="form-row">
+                            <div class="form-group col-md-3 mb-0">
+                                <label style="font-weight: white;" >From Date<b style="color: red;">*</b> </label>
+                                <input type='date' name='b_start_date' id='from_date' style="background-color: white;" class='form-control' required>
+                            </div>
+
+                            <div class="form-group col-md-3 mb-0">
+                                <label style="font-weight: white;">To Date<b style="color: red;">*</b></label>
+                                <input type='date' name='b_end_date' style="background-color: white;" id='to_date' class='form-control' required>
+
+                            </div>
+
+
+
+                            <div class="col-sm-0"><br>
+                                <button type="submit" class="btn btn-warning w-100 mt-2" name="Search"
+                                    value="search_btn"><i class="fa fa-search">&nbsp;Search</i></button>&nbsp;
+                            </div>
+
+                        </div>
+                        <br>
+                    </div>
+                </form>
+                            
+
+        <div id="hello">
+            {% if all_one %}
+
+            <table style="width: 70%;max-width: 800px;margin: 0 auto;border-collapse: collapse;" width="50%">
+                <tr>
+
+                        <div class="" >
+                            <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:80px;"></h2>
+                            </center>
+                        </div>
+
+                </tr>
+            </table>
+
+            <style>
+                table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+
+                }
+                #button2{
+                font-size: larger;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+            }
+                </style>
+                <center><h3> Department wise Revenue Report</h3></center>
+            <table class="table table-bordered" style="border-style: solid;" align="center">
+                <thead>
+
+                    <tr>
+                        <th>SI.No</th>
+                        <th scope="col"><b>Department</b></th>
+                        <th scope="col">OP Gross Amt</th>
+                        <th scope="col">OP Disc</th>
+                        <th scope="col">OP Net Amt</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Rev In %</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for list2,list3,list4,list5,list6,list8 in all_one %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td scope="row" style="padding-left: 15px;padding-right: 15px;">{{list2}}</td>
+                        <td style="padding-left: 15px;padding-right: 15px;">{{list3}}</td>
+                        <td style="padding-left: 15px;padding-right: 15px;">{{list4}}</td>
+                        <td style="padding-left: 15px;padding-right: 15px;">{{list5}}</td>
+                        <td style="padding-left: 15px;padding-right: 15px;">{{list6}}</td>
+                        <td style="padding-left: 15px;padding-right: 15px;">{{list8|floatformat:0}}%</td>
+
+                    </tr>
+                    {% endfor %}
+                    <tr style="background-color:rgb(159, 213, 241)">
+                        <td style="border-top: 1px solid#333; border-bottom: 1px solid#333; font-weight: bold;"></td>
+                        <td style="border-top: 1px solid#333; border-bottom: 1px solid#333; font-weight: bold;"><b>Total</b></td>
+                        <td style="border-top: 1px solid#333; border-bottom: 1px solid#333; font-weight: bold;"><b>{{total_net}}</b></td>
+                        <td style="border-top: 1px solid#333; border-bottom: 1px solid#333; font-weight: bold;"><b>{{total_disc}}</b></td>
+                        <td style="border-top: 1px solid#333; border-bottom: 1px solid#333; font-weight: bold;"><b>{{total_payable}}</b></td>
+                        <td style="border-top: 1px solid#333; border-bottom: 1px solid#333; font-weight: bold;"><b>{{total_paid}}</b></td>
+                        <td style="border-top: 1px solid#333; border-bottom: 1px solid#333; font-weight: bold;"><b>100%</b></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="card" align="center">
+                <div id="chart-container" >FusionCharts XT will load here!</div>
+            </div>                                  
+            {% endif %}
+        </div>
+
+
+                     
+    </div>
+</div>
+
+<script>
+    function toggleVisibility() {
+      var demoElement = document.getElementById('filter_card');
+      
+      if (demoElement.style.display === 'none') {
+        demoElement.style.display = 'block'; // Show the element
+      } else {
+        demoElement.style.display = 'none';  // Hide the element
+      }
+    }
+  </script>
+<script src="../assets/js/app.js"></script>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+var print_area = window.open();
+print_area.document.write(print_div.innerHTML);
+print_area.document.close();
+print_area.focus();
+print_area.print();
+print_area.close();
+// This is the code print a particular div element
+    }
+  </script>
+
+
+<!-- Export csv -->
+
+<script>
+    function htmlToCSV(html, filename) {
+        var data = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText);
+            }
+
+            data.push(row.join(","));
+        }
+
+        downloadCSVFile(data.join("\n"), filename);
+    }</script>
+<script>
+    function downloadCSVFile(csv, filename) {
+        var csv_file, download_link;
+
+        csv_file = new Blob([csv], { type: "text/csv" });
+
+        download_link = document.createElement("a");
+
+        download_link.download = filename;
+
+        download_link.href = window.URL.createObjectURL(csv_file);
+
+        download_link.style.display = "none";
+
+        document.body.appendChild(download_link);
+
+        download_link.click();
+    }</script>
+
+<script>document.getElementById("download-button").addEventListener("click", function () {
+        var html = document.querySelector("table").outerHTML;
+        htmlToCSV(html, "itemwise_purchase.csv");
+    });</script>
+
+<script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+<script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+<script type="text/javascript">
+    FusionCharts.ready(function(){
+        var chartObj = new FusionCharts({
+type: 'pie2d',
+renderAt: 'chart-container',
+width: '700',
+height: '450',
+dataFormat: 'json',
+dataSource: {
+    "chart": {
+        "caption": "Department wise Revenue Report",
+        "subCaption": "This Range",
+        "numberPrefix": "$",
+        "showPercentInTooltip": "0",
+        "decimals": "1",
+        "useDataPlotColorForLabels": "1",
+        //Theme
+        "theme": "fusion"
+    },
+    "data": [
+{% for label,value in chart %}
+    {
+        "label": "{{label}}",
+        "value": {{value}}
+    },
+{% endfor %}
+    ]
+}
+}
+);
+        chartObj.render();
+    });
+</script>
+<script>
+var xValues = [{% for data10 in list2 %}'{{data10}}',{% endfor %}];
+var yValues = [{% for data11 in list3 %}'{{data11}}',{% endfor %}];
+var barColors = [
+"#b91d47",
+"#00aba9",
+"#2b5797",
+"#e8c3b9",
+"#1e7145"
+];
+
+new Chart("myChart", {
+type: "pie",
+data: {
+labels: xValues,
+datasets: [{
+  backgroundColor: barColors,
+  data: yValues
+}]
+},
+options: {
+title: {
+  display: true,
+  text: "World Wide Wine Production 2018"
+}
+}
+});
+</script>
+
+{% endblock %}

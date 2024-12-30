@@ -1,0 +1,151 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+{% endblock  %}
+{% block body_block %}
+ <!-- content -->
+ <div class="page-wrapper">
+    <div class="content">
+<!-- Main Dashboard -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="box-outer">
+                              <div class="top-heading lightgreen_bg" style="inline-size: 100%;">
+                                <h3 class="section_title">Out-Patient Visit</h3>
+                              </div>
+                              <div class="container-fluid">
+                                    <div class="Out-Patient_record">
+                                        <div class="col-sm-12 text-right">
+                                          <button type="submit" form="VisitForm" class="btn btn-primary border-0 p-2 icon-size" name="visit_form"><i class="fa fa-save"></i></button>
+                                          <button class="btn btn-primary dropdown-toggle  p-2 icon-size" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+                                          <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#" >Edit</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+    
+                                          </div>
+                                        </div><hr>
+                                    {% if error %}
+                                        <form method="POST" id="VisitForm">
+                                            <h3>Please Provide Valid UHID</h3>
+                                      {% csrf_token %}
+                                    <div class="alert-primary patient-visit mb-3">
+                                      <div class="row no-gutters">
+                                           <div class="col-md-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.uhid|as_crispy_field}}
+                                          </div>
+                                        </div>
+                                        <div class="col-md-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.visit_type|as_crispy_field}}
+                                          </div>
+                                        </div>
+                                        <div class="col-md-4 pl-2 pr-2">
+                                          <div class="form-group ">
+                                            {{form_visit.clinical_department|as_crispy_field}}
+                                          </div>
+                                        </div>
+                                        <div class="col-md-6 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.nurse_doctor|as_crispy_field}}
+                                          </div>
+                                        </div>
+                                        <div class="col-6 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.description|as_crispy_field}}
+                                          </div>
+                                        </div>
+                                      </div><!-- row -->
+                                    </div>
+                                    </form>
+                                        {% else %}
+                                        <form method="POST" id="VisitForm">
+                                      {% csrf_token %}
+                                    <div class="alert-primary patient-visit mb-3">
+                                      <div class="row no-gutters">
+
+                                        <div class="col-md-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.visit_type|as_crispy_field}}
+                                          </div>
+                                        </div>
+                                        <div class="col-md-4 pl-2 pr-2">
+                                          <div class="form-group ">
+                                            {{form_visit.clinical_department|as_crispy_field}}
+                                          </div>
+                                        </div>
+                                        <div class="col-md-6 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.nurse_doctor|as_crispy_field}}
+                                          </div>
+                                        </div>
+                                        <div class="col-6 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.description|as_crispy_field}}
+                                          </div>
+                                        </div>
+                                          <div class="col-6 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.visit_id|as_crispy_field}}
+                                          </div>
+                                        </div>
+                                           <div class="col-md-4 pl-2 pr-2">
+                                          <div class="form-group">
+                                            {{form_visit.uhid|as_crispy_field}}
+                                          </div>
+                                        </div>
+                                      </div><!-- row -->
+                                    </div>
+                                    </form>
+                                   {% endif %}
+<!--                                    <div class="row">-->
+<!--                                      <div class="col-md-12">-->
+<!--                                        <div class="today_visit">-->
+<!--                                          <h5>Today's Visit</h5>-->
+<!--                                          <hr>-->
+<!--                                        </div>-->
+<!--                                      </div>-->
+                                    </div><!-- row -->
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                        <div class="today_visit">
+                                          <h5> <i class="fa fa-minus-square-o" aria-hidden="true"></i>  Visits</h5>
+                                          {% if visited %}
+                                            <table class="table table-border ">
+                                              <tr style="background:#d1dae6;">
+                                                <th>UHID</th>
+                                                <th>Visit Id</th>
+                                                <th>Visit Date</th>
+                                                <th>Visit Type</th>
+                                                <th>Clinic/Department</th>
+                                                <th>Doctor/Nurse Name</th>
+                                              </tr>
+                                             {% for data in visited %}
+                                              <tr>
+                                                <td>{{ data.uhid}}</td>
+                                                <td>{{ data.visit_id}}</td>
+                                                  <td>{{ data.visit_date_time}}</td>
+                                                  <td>{{ data.visit_type}}</td>
+                                                  <td>{{ data.clinical_department}}</td>
+                                                  <td>{{ data.nurse_doctor}}</td>
+
+                                              </tr>
+                                             {% endfor %}
+                                            </table>
+                                            {% endif %}
+                                        </div>
+                                      </div>
+                                    </div><!-- row -->
+                                    </div>
+                                  </div>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+        
+{% endblock  %}

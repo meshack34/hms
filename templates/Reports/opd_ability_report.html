@@ -1,0 +1,266 @@
+{% extends 'clinical/base.html' %}
+{% load static %}
+{% block body_block %}
+<!--Main Content-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style type="text/css">
+  body,
+  p {
+    font-family: arial;
+    font-size: 16px;
+  }
+
+  p {
+    margin: 0 0 5px;
+  }
+
+  table td,
+  table th {
+    padding: 10px;
+    text-align: left;
+  }
+
+  @media print {
+    p {
+      margin: 0 0 5px;
+    }
+
+    table td,
+    table th {
+      padding: 10px;
+      text-align: left;
+    }
+  }
+
+  button {
+    font-size: larger;
+    box-sizing: border-box;
+    padding: 10px;
+  }
+</style>
+<div class="page-wrapper">
+  <div class="content">
+    <!-- Main Dashboard -->
+    <form method="POST">
+    <nav class="navbar navbar-light bg-blue" style="background-color: rgb(89, 206, 212)">
+      <div class="container-fluid">
+        <a class="navbar-brand mx-auto text-white" style="color: white;"><i class="fas fa-calendar-alt"></i><b> Doctor Ability Report</b></a> 
+        <a href="/dashboard"  style="padding-right:10px;" ><img src="{% static 'assets/images/arrowleft.png' %}" width="30" height="30"></a>
+        <button type="submit" value="Search" class="btn btn-default btn-circle"><img src="{% static 'assets/images/searchicon.png' %}" width="30" height="30"></button>
+        <a id="csvdownload-button" onclick="Exportcsv()" style="padding-right:10px;" ><img src="{% static 'assets/images/csv.ico' %}" width="30" height="30"></a>
+        <a href="" onclick="codespeedy()" style="padding-right:2px;" ><img src="{% static 'assets/images/printer.ico' %}" width="30" height="30"> </a>
+      </div>
+    </nav>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-box mb-0">
+            <div class="header">
+              <div class="body">
+                <div class="card">
+                  <div class="card-body" style="background-color: aliceblue;">
+                    
+                      {% csrf_token %}
+                      <div class="row filter-row">
+                        <div class="col-sm-6 col-xxl-2 col-xl-2 col-lg-3 col-md-3">
+                          <label style="font-size:15px;"><b>Doctor Name</b></label> <br>
+                          <div class="input-group" style="background-color: #eee;">
+                            <select name="search_doc" id="search_doc" class='form-control btn-sm text-left'>
+                              <option>---------</option>
+                              <option value="">All</option>
+                              {% for data in doctor %}
+                              <option value="{{data.doctor_id}}">{{data.doctor_name}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--This for payment receipt print function-->
+        <div class="card">
+          <div class="card-box mb-0">
+            <div id="print">
+              <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                <tr style="border-bottom:2px solid #eee;">
+                  <td id="s">
+                    <table style="width: 100%;max-width: 1024px;margin: 0 auto;border-collapse: collapse;" width="100%">
+                      <tr>
+                        <td>
+                          <div class="" >
+                            <center><h2><img src="{% static 'assets/images/nephromed_logo.jpg' %}" alt="logo Image" style="width:300px;height:100px;"></h2></center>
+                            
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">Doctor name</th>
+                          <th scope="col">Sunday</th>
+                          <th scope="col">Monday</th>
+                          <th scope="col">Tuesday</th>
+                          <th scope="col">Wednesday</th>
+                          <th scope="col">Thursday</th>
+                          <th scope="col">Friday</th>
+                          <th scope="col">Saturday</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for data1,doc,time in records %}
+                        <td colspan="8" style="font-size: 18px;" class="font-width-bold"><b>{{doc}}</b></td>
+                        {% for mon,tue,wen,thur,fri,sat,sun in data1.0 %}
+                        <tr>
+                          <td style="border: none;"></td>
+                          <td style="border-left: ridge; border-top: ridge; border-bottom: ridge;  font-size: 15px;">
+                            {{sun}}
+                            {% if sun != "" %}
+                            <br>
+                            <p style="font-size: 10px;">( {{time}} )</p>
+                            {% endif %}
+                          </td>
+
+                          <td style="border-top: ridge; border-bottom: ridge; font-size: 15px;">{{mon}}
+                            {% if mon != "" %}
+                            <br>
+                            <p style="font-size: 10px;">( {{time}} )</p>
+                            {% endif %}
+                          </td>
+                          <td style="border-top: ridge; border-bottom: ridge; font-size: 15px;">{{tue}}
+                            {% if tue != "" %}
+                            <br>
+                            <p style="font-size: 10px;">( {{time}} )</p>
+                            {% endif %}
+                          </td>
+                          <td style="border-top: ridge; border-bottom: ridge; font-size: 15px;">{{wen}}
+                            {% if wen != "" %}
+                            <br>
+                            <p style="font-size: 10px;">( {{time}} )</p>
+                            {% endif %}
+                          </td>
+                          <td style="border-top: ridge; border-bottom: ridge; font-size: 15px;">{{thur}}
+                            {% if thur != "" %}
+                            <br>
+                            <p style="font-size: 10px;">( {{time}} )</p>
+                            {% endif %}
+                          </td>
+                          <td style="border-top: ridge; border-bottom: ridge; font-size: 15px;">{{fri}}
+                            {% if fri != "" %}
+                            <br>
+                            <p style="font-size: 10px;">( {{time}} )</p>
+                            {% endif %}
+                          </td>
+                          <td style="border-right: ridge; border-top: ridge; border-bottom: ridge; font-size: 15px;">
+                            {{sat}}
+                            {% if sat != "" %}
+                            <br>
+                            <p style="font-size: 10px;">( {{time}} )</p>
+                            {% endif %}
+                          </td>
+                        </tr>
+                        {% endfor %}
+
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+               </table>
+            </div><br><br>
+          </div>
+        </div>
+      </div>
+
+
+        <script>
+          $('example').margetable({
+            type: 1,
+            colindex: [{
+              index: 1,
+              dependent: [0]
+            }]
+          });
+        </script>
+        <script type="text/javascript">
+
+          function codespeedy() {
+            var print_div = document.getElementById("print");
+            var print_area = window.open();
+            print_area.document.write(print_div.innerHTML);
+            print_area.document.close();
+            print_area.focus();
+            print_area.print();
+            print_area.close();
+            // This is the code print a particular div element
+          }
+        </script>
+
+<script>
+
+  // pdf preview
+
+function printData()
+{
+var mypage = document.getElementById("hello");
+summathaan = window.open("");
+summathaan.document.write(mypage.outerHTML);
+summathaan.print();
+summathaan.close();
+}
+
+      function htmlToCSV(html, filename) {
+          var data = [];
+          var rows = document.querySelectorAll("table tr");
+                  
+          for (var i = 0; i < rows.length; i++) {
+              var row = [], cols = rows[i].querySelectorAll("td, th");
+                      
+              for (var j = 0; j < cols.length; j++) {
+                      row.push(cols[j].innerText);
+              }
+                      
+              data.push(row.join(",")); 		
+          }
+      
+          downloadCSVFile(data.join("\n"), filename);
+      }</script>
+      
+      <script>function downloadCSVFile(csv, filename) {
+          var csv_file, download_link;
+      
+          csv_file = new Blob([csv], {type: "text/csv"});
+      
+          download_link = document.createElement("a");
+      
+          download_link.download = filename;
+      
+          download_link.href = window.URL.createObjectURL(csv_file);
+      
+          download_link.style.display = "none";
+      
+          document.body.appendChild(download_link);
+      
+          download_link.click();
+      }</script>
+      <script>document.getElementById("csvdownload-button").addEventListener("click", function () {
+          var html = document.querySelector("table").outerHTML;
+          htmlToCSV(html, "Appointment.csv");
+      });</script>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

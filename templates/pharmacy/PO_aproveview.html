@@ -1,0 +1,93 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head_block %}
+<style>
+    .form-control{
+      border: 2px solid rgb(233, 233, 233);
+      width: 100%;
+      background-color: rgb(233, 233, 233);
+      border-bottom: 1px solid black;
+    }
+
+    </style>
+{% endblock  %}
+{% block body_block %}
+
+
+
+<!-- content -->
+<div class="page-wrapper">
+<div class="content">
+  <button type="menu" style="font-family: monospace; width: 100%; text-align: left;" class="btn btn-primary m-t-15 waves-effect"> <b>PO Item Details Report</b></button>
+<div class="container-fluid">
+   <div class="row clearfix">
+       <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8"><br>
+           <div class="card">
+               <div class="header">
+       <div class="body">
+
+        <div class="row clearfix">&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="" class="btn btn-warning" name ="after_approval" value="after_approval"> <i class="fas fa-times-circle"></i>&nbsp;PreView</a>&nbsp;
+            <div class="col-md-0">
+            <button type="reset" class="btn btn-primary"> <i class="fas fa-sync-alt" ></i>&nbsp; Refresh</button>&nbsp;
+            </div>
+            <a href="" class="btn btn-info"> <i class="fa fa-arrow-circle-left"></i>&nbsp;Back</a>&nbsp;
+            <div class="col-md-0">
+                <a href="/purchase_order" class="btn btn-danger"> <i class="fas fa-times-circle pr-2"></i>&nbsp;Exit</a>
+            </div>
+
+        </div><br>
+
+           <div class="table-responsive">
+             <table class="datatable table table-stripped ">
+
+                   <thead>
+                       <tr><th>SI.NO</th>
+                           <th>PO.No</th>
+                           <th>DateTime</th>
+                           <th>ItemName</th>
+                           <th>Quantity</th>
+                           <th>Stock Qty</th>
+                           <th>Rate</th>
+                           <th>Discount</th>
+                           <th>Amount</th>
+
+                       </tr>
+                   </thead>
+                   <tbody>
+                     {% for data in records %}
+                     <tr>
+                         <td>{{forloop.counter}}</td>
+                         <td><b>{{data.PO_Id}}</b></td>
+                         <td >{{data.PO_datetime}}</td>
+                         <td >{{data.item_id}}</td>
+                         <td >{{data.qty}}</td>
+                         <td >{{data.stocy_qty}}</td>
+                         <td>{{data.rate}}</td>
+                         <td >{{data.discount}}</td>
+                         <td >{{data.amount}}</td>
+                        </tr>
+
+                         {% endfor %}
+                    </tbody>
+
+           </table>
+           </div>
+        <!-- </form> -->
+       </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Add Modal -->
+
+
+
+</div>
+</div>
+
+
+
+{% endblock  %}
